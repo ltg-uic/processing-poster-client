@@ -1,15 +1,8 @@
-/**
- * Sketch for Java Tutorial.
- */
 
 import processing.core.PApplet;
 import processing.core.PFont;
 import vialab.SMT.*;
 
-
-/**
- * Created by aperritano on 8/1/14.
- */
 public class TestHappyFace extends PApplet {
 
     //vars
