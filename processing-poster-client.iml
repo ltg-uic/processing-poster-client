@@ -11,13 +11,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.processing:core:2.2.1" level="project" />
-    <orderEntry type="library" name="Maven: org.processing:pde:2.2.1" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-nop:1.7.2" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.2" level="project" />
-    <orderEntry type="library" name="Maven: vialab:jbox2d-library:2.1.2.2" level="project" />
-    <orderEntry type="library" name="Maven: vialab:SMT:4.1" level="project" />
-    <orderEntry type="library" name="Maven: vialab:TUIO:4.1" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -36,6 +29,19 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="Maven: org.processing:core:2.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.processing:pde:2.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-nop:1.7.2" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.2" level="project" />
+    <orderEntry type="library" name="Maven: vialab:jbox2d-library:2.1.2.2" level="project" />
+    <orderEntry type="library" name="Maven: vialab:SMT:4.1" level="project" />
+    <orderEntry type="library" name="Maven: vialab:TUIO:4.1" level="project" />
+    <orderEntry type="library" name="Maven: ltg:simple-java-mqtt-client:1.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.fusesource.mqtt-client:mqtt-client:1.10" level="project" />
+    <orderEntry type="library" name="Maven: org.fusesource.hawtdispatch:hawtdispatch-transport:1.20" level="project" />
+    <orderEntry type="library" name="Maven: org.fusesource.hawtdispatch:hawtdispatch:1.20" level="project" />
+    <orderEntry type="library" name="Maven: org.fusesource.hawtbuf:hawtbuf:1.10" level="project" />
+    <orderEntry type="library" name="com.phloc:phloc-css:3.7.7" level="project" />
   </component>
 </module>
 

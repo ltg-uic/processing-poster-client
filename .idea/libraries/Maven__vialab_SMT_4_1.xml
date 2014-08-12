@@ -8,6 +8,7 @@
     </JAVADOC>
     <SOURCES>
       <root url="jar://$MAVEN_REPOSITORY$/vialab/SMT/4.1/SMT-4.1-sources.jar!/" />
+      <root url="file://$PROJECT_DIR$/../SMT-4.1/src" />
     </SOURCES>
   </library>
 </component>

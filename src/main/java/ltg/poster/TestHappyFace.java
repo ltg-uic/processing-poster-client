@@ -1,3 +1,4 @@
+package ltg.poster;
 
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -12,7 +13,7 @@ public class TestHappyFace extends PApplet {
     @Override
     public void setup() {
         //SMT and Processing setup
-        size(800, 600, SMT.RENDERER);
+        size(1280, 1600, SMT.RENDERER);
         SMT.init(this);
 
         //create a happy face zone
@@ -56,7 +57,7 @@ public class TestHappyFace extends PApplet {
     }
 
     public static void main(String args[]) {
-        PApplet.main(new String[] { "TestHappyFace" });
+        PApplet.main(new String[] { "ltg.poster.TestHappyFace" });
     }
 
 
