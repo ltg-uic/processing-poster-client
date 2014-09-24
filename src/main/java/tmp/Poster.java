@@ -1,21 +1,16 @@
-package ltg.poster;
+package tmp;
 
-import com.phloc.commons.charset.CCharset;
-import com.phloc.css.ECSSVersion;
-import com.phloc.css.decl.CascadingStyleSheet;
-import com.phloc.css.reader.CSSReader;
-import ltg.commons.MessageListener;
 import ltg.commons.SimpleMQTTClient;
 import processing.core.PApplet;
 import processing.core.PFont;
+import tmp.ControlButtonZone;
+import tmp.NewTextButton;
+import tmp.TextBoxZone;
 import vialab.SMT.*;
-
-import java.io.File;
 
 
 public class Poster extends PApplet {
 
-    public static CascadingStyleSheet aCSS;
     private static SimpleMQTTClient sc;
     int buttonWidth = 100;
     int buttonHeight = buttonWidth;
@@ -33,35 +28,35 @@ public class Poster extends PApplet {
     public static void main(String args[]) {
 
 
-        sc = new SimpleMQTTClient("ltg.evl.uic.edu", "test-bot");
-        sc.subscribe("quakes", new MessageListener() {
-            @Override
-            public void processMessage(String message) {
+//        sc = new SimpleMQTTClient("ltg.evl.uic.edu", "test-bot");
+//        sc.subscribe("quakes", new MessageListener() {
+//            @Override
+//            public void processMessage(String message) {
+//
+//
+//                SMT.add(new TextBoxZone("quake", Util.randInt(0,500), Util.randInt(0,500) ,300,35, message));
+//                System.out.println("Received " + message );
+//            }
+//        });
 
-
-                SMT.add(new TextBoxZone("quake", Util.randInt(0,500), Util.randInt(0,500) ,300,35, message));
-                System.out.println("Received " + message );
-            }
-        });
-
-        PApplet.main(new String[]{"ltg.poster.Poster"});
+        PApplet.main(new String[]{"tmp.Poster"});
     }
 
 
 
     public void setup() {
 
-        size(1024, 576, SMT.RENDERER);
+        size(1200, 800, SMT.RENDERER);
         SMT.init(this, TouchSource.AUTOMATIC);
         SMT.debug = true;
-        SMT.setTouchDraw( TouchDraw.SMOOTH);
+        SMT.setTouchDraw( TouchDraw.NONE);
         PFont controlButtonFont = createFont("HelveticaNeue-Bold", 23);
 
 
         //create mode buttons
         presentButton = new ControlButtonZone("PresentButton", buttonStartX, buttonStartY, buttonWidth, buttonHeight, "PRESENT", greenButtonColor, yellowButtonColor, controlButtonFont);
         editButton = new ControlButtonZone("EditButton", buttonStartX, presentButton.getY() + presentButton.getHeight() + presentButton.getY(), buttonWidth, buttonHeight, "EDIT", greenButtonColor, yellowButtonColor, controlButtonFont);
-        newTextButton = new NewTextButton("TextButton", loadImage("document6.png"), buttonStartX, editButton.getY() + editButton.getHeight() + editButton.getY() + 5,buttonWidth-5, buttonHeight-5 );
+        newTextButton = new NewTextButton("TextButton", loadImage("document6.png"), buttonStartX, editButton.getY() + editButton.getHeight() + editButton.getY() + 5,buttonWidth/2, buttonHeight/2 );
 
         SMT.add(presentButton);
         SMT.add(editButton);
@@ -75,10 +70,6 @@ public class Poster extends PApplet {
         text(round(frameRate) + "fps, # of zones: " + SMT.getZones().length, width / 2, 10);
     }
 
-    public void drawTexting(TextZone zone) {
-        fill(100, 150, 60, 200);
-
-    }
     public void pressPresentButton(ControlButtonZone zone) {
         zone.pressed();
         editButton.unpressed();

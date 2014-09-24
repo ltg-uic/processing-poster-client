@@ -29,6 +29,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="com.phloc:phloc-css:3.7.7" level="project" />
     <orderEntry type="library" name="Maven: org.processing:core:2.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.processing:pde:2.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-nop:1.7.2" level="project" />
@@ -41,7 +42,7 @@
     <orderEntry type="library" name="Maven: org.fusesource.hawtdispatch:hawtdispatch-transport:1.20" level="project" />
     <orderEntry type="library" name="Maven: org.fusesource.hawtdispatch:hawtdispatch:1.20" level="project" />
     <orderEntry type="library" name="Maven: org.fusesource.hawtbuf:hawtbuf:1.10" level="project" />
-    <orderEntry type="library" name="com.phloc:phloc-css:3.7.7" level="project" />
+    <orderEntry type="library" name="commons-configuration:commons-configuration:1.10" level="project" />
   </component>
 </module>
 

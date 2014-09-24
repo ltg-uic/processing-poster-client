@@ -1,4 +1,4 @@
-package ltg.poster;
+package tmp;
 
 import com.phloc.commons.charset.CCharset;
 import com.phloc.css.ECSSVersion;

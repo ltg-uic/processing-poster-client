@@ -1,4 +1,4 @@
-package ltg.poster;
+package tmp;
 
 import vialab.SMT.SwipeKeyboard;
 import vialab.SMT.Zone;
@@ -20,9 +20,18 @@ public class TextBoxZone extends Zone implements KeyListener {
         keyboard = new SwipeKeyboard();
         keyboard.setLocation( x, y+200);
         keyboard.addKeyListener(this);
-        keyboard.setVisible(true);
-        keyboard.setPickable(true);
+        keyboard.setVisible(false);
+        keyboard.setPickable(false);
 
+        Zone grandchild = new Zone( "Handle", x + width, y, 50, 50);
+
+        this.add(grandchild);
+
+
+    }
+
+    public void drawHandle(Zone zone) {
+        fill(0);
     }
 
     public void draw() {
@@ -30,13 +39,18 @@ public class TextBoxZone extends Zone implements KeyListener {
        stroke(255);
        rect( 0, 0, dimension.width, dimension.height);
        //draw text
-       fill( 255);
-       textAlign( RIGHT, CENTER);
-       textSize( 15);
+       fill(255);
+       textAlign(RIGHT, CENTER);
+       textSize(15);
        text(getTextstring(), dimension.width/2,dimension.height/2);
    }
 
-    public void touchDown() {
+    public void touch(TextBoxZone zone) {
+        keyboard.setVisible(true);
+        keyboard.setPickable(true);
+    }
+
+    public void touchDown(TextBoxZone zone) {
         keyboard.setVisible(true);
         keyboard.setPickable(true);
     }

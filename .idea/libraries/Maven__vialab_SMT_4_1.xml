@@ -4,11 +4,10 @@
       <root url="jar://$MAVEN_REPOSITORY$/vialab/SMT/4.1/SMT-4.1.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/vialab/SMT/4.1/SMT-4.1-javadoc.jar!/" />
+      <root url="http://vialab.science.uoit.ca/smt/javadoc/index.html" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/vialab/SMT/4.1/SMT-4.1-sources.jar!/" />
-      <root url="file://$PROJECT_DIR$/../SMT-4.1/src" />
+      <root url="file://$PROJECT_DIR$/../../multi-touch/SMT-4.1/src" />
     </SOURCES>
   </library>
 </component>

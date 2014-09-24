@@ -1,4 +1,4 @@
-package ltg.poster;
+package tmp;
 
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -57,7 +57,7 @@ public class TestHappyFace extends PApplet {
     }
 
     public static void main(String args[]) {
-        PApplet.main(new String[] { "ltg.poster.TestHappyFace" });
+        PApplet.main(new String[] { "tmp.TestHappyFace" });
     }
 
 

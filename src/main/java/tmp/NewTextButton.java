@@ -1,4 +1,4 @@
-package ltg.poster;
+package tmp;
 
 import processing.core.PImage;
 import vialab.SMT.ImageZone;

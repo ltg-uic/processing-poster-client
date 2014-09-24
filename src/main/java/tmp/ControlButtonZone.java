@@ -1,4 +1,4 @@
-package ltg.poster;
+package tmp;
 
 import javafx.scene.paint.Color;
 import processing.core.PFont;
@@ -66,6 +66,9 @@ public class ControlButtonZone extends ButtonZone {
         }
     }
 
+    public void touch() {
+
+    }
 
     public void pressed() {
         this.color = pressedButtonColor;
