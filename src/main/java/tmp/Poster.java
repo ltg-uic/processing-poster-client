@@ -3,10 +3,9 @@ package tmp;
 import ltg.commons.SimpleMQTTClient;
 import processing.core.PApplet;
 import processing.core.PFont;
-import tmp.ControlButtonZone;
-import tmp.NewTextButton;
-import tmp.TextBoxZone;
-import vialab.SMT.*;
+import vialab.SMT.SMT;
+import vialab.SMT.TouchDraw;
+import vialab.SMT.TouchSource;
 
 
 public class Poster extends PApplet {
@@ -34,7 +33,7 @@ public class Poster extends PApplet {
 //            public void processMessage(String message) {
 //
 //
-//                SMT.add(new TextBoxZone("quake", Util.randInt(0,500), Util.randInt(0,500) ,300,35, message));
+//                SMT.add(new TextBoxZone("quake", ColorHelper.randInt(0,500), ColorHelper.randInt(0,500) ,300,35, message));
 //                System.out.println("Received " + message );
 //            }
 //        });

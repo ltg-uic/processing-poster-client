@@ -6,6 +6,9 @@
     <JAVADOC>
       <root url="file://$PROJECT_DIR$/../../processing/src/processing_src/build/javadoc/core" />
       <root url="file://$PROJECT_DIR$/../../processing/src/processing_src/build/javadoc/everything" />
+      <root url="http://vialab.science.uoit.ca/smt/javadoc/" />
+      <root url="file://$PROJECT_DIR$/../../processing/src/processing_src/build/javadoc/core/processing" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/processing/core/2.2.1/core-2.2.1-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
       <root url="file://$PROJECT_DIR$/../../multi-touch/SMT-4.1/src" />
@@ -24,6 +27,7 @@
       <root url="file://$PROJECT_DIR$/../../processing/src/processing_src/pdex/src" />
       <root url="file://$PROJECT_DIR$/../../processing/src/processing_src/build/macosx/appbundler/src" />
       <root url="file://$PROJECT_DIR$/../../processing/src/processing_src/build/shared/tools/MovieMaker/src" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/processing/core/2.2.1/core-2.2.1-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
