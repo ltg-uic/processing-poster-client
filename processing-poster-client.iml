@@ -31,18 +31,21 @@
     </orderEntry>
     <orderEntry type="library" name="com.phloc:phloc-css:3.7.7" level="project" />
     <orderEntry type="library" name="commons-configuration:commons-configuration:1.10" level="project" />
-    <orderEntry type="library" name="org.jbox2d:jbox2d-library:2.1.2.2" level="project" />
+    <orderEntry type="library" name="org.jbox2d:jbox2d-testbed:2.1.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.processing:core:2.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.processing:pde:2.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-nop:1.7.2" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.2" level="project" />
-    <orderEntry type="library" name="Maven: vialab:SMT41b:4.1b3" level="project" />
-    <orderEntry type="library" name="Maven: vialab:TUIO:4.1" level="project" />
+    <orderEntry type="library" name="Maven: vialab:SMT:4.2" level="project" />
+    <orderEntry type="library" name="Maven: vialab:TUIO:4.2" level="project" />
     <orderEntry type="library" name="Maven: ltg:simple-java-mqtt-client:1.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.fusesource.mqtt-client:mqtt-client:1.10" level="project" />
     <orderEntry type="library" name="Maven: org.fusesource.hawtdispatch:hawtdispatch-transport:1.20" level="project" />
     <orderEntry type="library" name="Maven: org.fusesource.hawtdispatch:hawtdispatch:1.20" level="project" />
     <orderEntry type="library" name="Maven: org.fusesource.hawtbuf:hawtbuf:1.10" level="project" />
     <orderEntry type="library" name="Maven: javaxt:javaxt-core:1.6.2" level="project" />
+    <orderEntry type="library" name="Maven: commons-configuration:commons-configuration:1.10" level="project" />
+    <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
+    <orderEntry type="library" name="Maven: commons-logging:commons-logging:1.1.1" level="project" />
   </component>
 </module>

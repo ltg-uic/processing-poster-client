@@ -42,41 +42,16 @@
             <version>1.7.2</version>
         </dependency>
 
-        <!---->
-        <!--<dependency>-->
-            <!--<groupId>vialab</groupId>-->
-            <!--<artifactId>SMT</artifactId>-->
-            <!--<version>4.1</version>-->
-        <!--</dependency>-->
-
         <dependency>
             <groupId>vialab</groupId>
-            <artifactId>SMT41b</artifactId>
-            <version>4.1b3</version>
+            <artifactId>SMT</artifactId>
+            <version>4.2</version>
         </dependency>
-
-        <!--<dependency>-->
-            <!--<groupId>vialab</groupId>-->
-            <!--<artifactId>TUIO</artifactId>-->
-            <!--<version>4.1b3</version>-->
-            <!--<type>pom</type>-->
-        <!--</dependency>-->
-
-
-
-
-        <!--<dependency>-->
-            <!--<groupId>vialab</groupId>-->
-            <!--<artifactId>TUIO</artifactId>-->
-            <!--<version>4.1b3</version>-->
-            <!--<type>pom</type>-->
-        <!--</dependency>-->
-
 
         <dependency>
             <groupId>vialab</groupId>
             <artifactId>TUIO</artifactId>
-            <version>4.1</version>
+            <version>4.2</version>
         </dependency>
 
         <dependency>
@@ -91,7 +66,11 @@
             <version>1.6.2</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+            <version>1.10</version>
+        </dependency>
     </dependencies>
 
 </project>

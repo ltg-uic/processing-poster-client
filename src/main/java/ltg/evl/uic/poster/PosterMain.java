@@ -1,6 +1,5 @@
 package ltg.evl.uic.poster;
 
-import javaxt.io.File;
 import ltg.evl.util.DownloadHelper;
 import org.apache.commons.configuration.CompositeConfiguration;
 import org.apache.commons.configuration.ConfigurationException;
@@ -9,11 +8,7 @@ import org.apache.commons.configuration.SystemConfiguration;
 import processing.core.PApplet;
 import processing.core.PFont;
 import vialab.SMT.*;
-import vialab.SMT.swipekeyboard.SwipeKeyboardEvent;
-import vialab.SMT.swipekeyboard.SwipeKeyboardListener;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 /**
  * Created by aperritano on 9/24/14.
