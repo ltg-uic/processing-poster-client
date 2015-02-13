@@ -1,5 +1,8 @@
 package ltg.evl.uic.poster;
 
+import ltg.evl.JSON.Poster;
+import ltg.evl.JSON.PosterItem;
+import ltg.evl.util.DBHelper;
 import ltg.evl.util.DownloadHelper;
 import org.apache.commons.configuration.CompositeConfiguration;
 import org.apache.commons.configuration.ConfigurationException;
@@ -7,7 +10,12 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.configuration.SystemConfiguration;
 import processing.core.PApplet;
 import processing.core.PFont;
+import processing.core.PImage;
 import vialab.SMT.*;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 
 /**
@@ -20,9 +28,16 @@ public class PosterMain extends PApplet implements DownloadHelper.NewFileAddedEv
     private PFont face_font;
     private String[] mainBackground = config.getStringArray("color.mainBackground");
     private static String backpackPath;
+    private Poster poster;
+    private ArrayList<PosterItem> posterItems = new ArrayList<>();
+    
     @Override
     public void setup() {
         //size(config.getInt("window.width"), config.getInt("window.height"), SMT.RENDERER);
+        
+        Poster poster = new Poster();
+        poster.setResolution(new Dimension(displayWidth,displayHeight));
+        
         size(displayWidth, displayHeight, SMT.RENDERER);
         SMT.init(this, TouchSource.AUTOMATIC);
 
@@ -83,7 +98,10 @@ public class PosterMain extends PApplet implements DownloadHelper.NewFileAddedEv
             }
 
         };
-
+        
+        
+        
+        
         SMT.add(newTextButtonZone);
 
 
@@ -98,7 +116,7 @@ public class PosterMain extends PApplet implements DownloadHelper.NewFileAddedEv
 //        keyboard.addKeyListener(this);
 
           ParagraphZone texty = new ParagraphZone( "Texty", 300, 100, 1000, 200);
-          SMT.add( texty);
+        //  SMT.add( texty);
 //        keyboard.addKeyListener( texty);
 //        keyboard.addSwipeKeyboardListener( texty);
 
@@ -138,7 +156,24 @@ public class PosterMain extends PApplet implements DownloadHelper.NewFileAddedEv
 
     @Override
     public void newFileAdded(DownloadHelper.FileWatchEvent evt) {
-        SMT.add(new ImageZone(loadImage(evt.getFilePath())));
+        ImageZone imageZone = new ImageZone(loadImage(evt.getFilePath()));
+        SMT.add(imageZone);
+    }
+    
+    public void save() {
+        Zone[] zones = SMT.getZones();
+        for (Zone zone : zones) {
+            PosterItem pi = new PosterItem();
+            pi.setSize(pi.getSize());
+            pi.setLocation(pi.getLocation());
+            
+            if( zone instanceof ImageZone ) {
+                BufferedImage bi = (BufferedImage) zone.getImage();
+                //DBHelper.getSingleton().saveAttachment(pi,bi);
+            }
+
+        }
+
     }
 
     public static void main(String args[])  {

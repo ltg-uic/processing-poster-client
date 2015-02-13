@@ -46,13 +46,13 @@ public class ParagraphZone extends Zone {
                 halfDimension.height + halfAscent - halfDescent);
 
 
-        System.out.println("FLOAT TEXT FLOAT " + ((int)textWidth(text)) );
-        System.out.println("TEXT A " + textAscent() );
-        System.out.println("TEXT D " + textDescent() );
-        System.out.println("Half W " + halfDimension.width );
-        System.out.println("Half H " + halfDimension.height );
-        System.out.println("WINDOW H " + getHeight());
-        System.out.println("WINDOW W " + getWidth());
+//        System.out.println("FLOAT TEXT FLOAT " + ((int)textWidth(text)) );
+//        System.out.println("TEXT A " + textAscent() );
+//        System.out.println("TEXT D " + textDescent() );
+//        System.out.println("Half W " + halfDimension.width );
+//        System.out.println("Half H " + halfDimension.height );
+//        System.out.println("WINDOW H " + getHeight());
+//        System.out.println("WINDOW W " + getWidth());
 
 
         popStyle();
