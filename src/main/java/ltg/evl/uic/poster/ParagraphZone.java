@@ -8,20 +8,20 @@ import vialab.SMT.Zone;
  */
 public class ParagraphZone extends Zone {
     String content;
-    float  winWidth;
-    public ParagraphZone( String name, int x, int y, int width, int height){
+    float winWidth;
+
+    public ParagraphZone(String name, int x, int y, int width, int height) {
         super(name, x, y, width, height);
         applet.registerMethod("keyEvent", this);
-        content = new String( "Hellollll!");
-
+        content = new String("Hellollll!");
 
 
     }
 
     @Override
-    public void draw(){
+    public void draw() {
         pushStyle();
-        fill( 10, 10, 10, 80);
+        fill(10, 10, 10, 80);
         strokeWeight(3);
         stroke(200, 120, 120, 150);
         rect(0, 0, getWidth(), getHeight());
@@ -29,9 +29,9 @@ public class ParagraphZone extends Zone {
         popStyle();
     }
 
-    public void drawText(String text){
+    public void drawText(String text) {
         pushStyle();
-        fill( 255, 255, 255, 255);
+        fill(255, 255, 255, 255);
         textAlign(CENTER);
         textMode(SHAPE);
 
@@ -41,9 +41,9 @@ public class ParagraphZone extends Zone {
         float halfDescent = textDescent() / 2;
 
 
-        text( text,
-                getWidth()/2,
-                halfDimension.height + halfAscent - halfDescent);
+        text(text,
+             getWidth() / 2,
+             halfDimension.height + halfAscent - halfDescent);
 
 
 //        System.out.println("FLOAT TEXT FLOAT " + ((int)textWidth(text)) );
@@ -59,29 +59,27 @@ public class ParagraphZone extends Zone {
     }
 
     @Override
-    public void touch(){
+    public void touch() {
         rst();
     }
 
     @Override
     public void keyEvent(processing.event.KeyEvent event) {
 
-        if( event.getAction() == processing.event.KeyEvent.PRESS ) {
-            if( event.getKey() == '\b' ) {
-                content = content.substring(0,content.length() - 1);
+        if (event.getAction() == processing.event.KeyEvent.PRESS) {
+            if (event.getKey() == '\b') {
+                content = content.substring(0, content.length() - 1);
             } else {
-                content += String.format( "%s", String.valueOf(event.getKey()));
+                content += String.format("%s", String.valueOf(event.getKey()));
             }
 
 
-           setWidth(getWidth()+10);
+            setWidth(getWidth() + 10);
 
             System.out.println("KEY " + String.valueOf(event.getKey()));
         }
 
     }
-
-
 
 
 }

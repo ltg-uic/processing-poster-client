@@ -38,7 +38,7 @@ public class Poster extends PApplet {
 //            }
 //        });
 
-        PApplet.main(new String[]{"tmp.ltg.evl.JSON.Poster"});
+        PApplet.main(new String[]{"tmp.PPoster"});
     }
 
 

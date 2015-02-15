@@ -104,7 +104,7 @@ public class DownloadHelper {
                         System.out.println(event.toString());
 
                         //new file
-                        if( event.getEventID() == event.MODIFY ) {
+                        if( event.getEventID() == Directory.Event.MODIFY) {
                             File newFile = new File(event.getFile());
                             System.out.println("File content type:" + newFile.getContentType());
 
@@ -116,7 +116,7 @@ public class DownloadHelper {
 
                         }
                         //Compare files before/after the event
-                        if (event.getEventID() == event.RENAME) {
+                        if (event.getEventID() == Directory.Event.RENAME) {
                             System.out.println(
                                     event.getOriginalFile() + " vs " + event.getFile()
                             );
@@ -154,7 +154,7 @@ public class DownloadHelper {
     }
 
     public interface NewFileAddedEventListener extends EventListener {
-        public void newFileAdded(FileWatchEvent evt);
+        void newFileAdded(FileWatchEvent evt);
     }
 
     public static void downloadFileToBackpack(final String url, final String savePath) {
