@@ -1,4 +1,4 @@
 {
-  "hosts": "localhost:27017",
+  "hosts": "ltg.evl.uic.edu:27017",
   "database": "poster"
 }

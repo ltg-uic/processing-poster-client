@@ -2,12 +2,18 @@ package tmp;
 
 import processing.core.PApplet;
 import processing.core.PFont;
-import vialab.SMT.*;
+import vialab.SMT.SMT;
+import vialab.SMT.Touch;
+import vialab.SMT.Zone;
 
 public class TestHappyFace extends PApplet {
 
     //vars
     PFont face_font = null;
+
+    public static void main(String args[]) {
+        PApplet.main(new String[]{"tmp.TestHappyFace"});
+    }
 
     //Setup function for the applet
     @Override
@@ -41,7 +47,7 @@ public class TestHappyFace extends PApplet {
         //add our zones to the sketch
         SMT.add(anonyzone, happyzone);
 
-        //load fonts
+        //loadUserLayout fonts
         face_font = createFont("Droid Sans Bold", 80);
     }
 
@@ -55,11 +61,6 @@ public class TestHappyFace extends PApplet {
     public void touchAnonyZone(Zone zone) {
         zone.pinch();
     }
-
-    public static void main(String args[]) {
-        PApplet.main(new String[] { "tmp.TestHappyFace" });
-    }
-
 
     //happy face zone
     class HappyFaceZone extends Zone {

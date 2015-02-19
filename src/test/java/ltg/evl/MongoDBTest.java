@@ -45,7 +45,7 @@ public class MongoDBTest {
         return randomNum;
     }
 
-    @Ignore
+    @Test
     public void createDefaultUser() throws IOException {
         User user = new User();
         user.setName("DrBanner");
@@ -53,7 +53,7 @@ public class MongoDBTest {
         helper.dbClient().store(user);
     }
 
-    @Test
+    @Ignore
     public void getPosterItemPicture() {
 
         Query<PosterItem> posterItemQuery = helper.dbClient()

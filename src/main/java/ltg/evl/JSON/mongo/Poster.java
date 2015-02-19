@@ -20,7 +20,7 @@ public class Poster {
     private String name;
     
     @Reference
-    private List<PosterItem> posterItems = new ArrayList<>();
+    private List<ltg.evl.json.mongo.PosterItem> posterItems = new ArrayList<>();
     public Poster() {}
     
     public Poster(int height, int width, String name) {
