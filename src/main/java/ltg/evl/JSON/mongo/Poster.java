@@ -1,6 +1,5 @@
 package ltg.evl.json.mongo;
 
-import de.caluga.morphium.annotations.Embedded;
 import de.caluga.morphium.annotations.Entity;
 import de.caluga.morphium.annotations.Id;
 import de.caluga.morphium.annotations.Reference;
@@ -23,7 +22,12 @@ public class Poster {
     @Reference
     private List<PosterItem> posterItems = new ArrayList<>();
     public Poster() {}
-
+    
+    public Poster(int height, int width, String name) {
+        this.height = height;
+        this.width = width;
+        this.name = name;
+    }
 
     @Override
     public String toString() {
@@ -34,32 +38,36 @@ public class Poster {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public Poster setId(ObjectId id) {
         this.id = id;
+        return this;
     }
 
     public int getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public Poster setHeight(int height) {
         this.height = height;
+        return this;
     }
 
     public int getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
+    public Poster setWidth(int width) {
         this.width = width;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Poster setName(String name) {
         this.name = name;
+        return this;
     }
 
     public List<PosterItem> getPosterItems() {

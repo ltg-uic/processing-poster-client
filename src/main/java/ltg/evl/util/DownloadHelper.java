@@ -1,15 +1,12 @@
 package ltg.evl.util;
 
 
+import com.google.common.io.Resources;
+import com.mongodb.gridfs.GridFS;
+import com.mongodb.gridfs.GridFSInputFile;
 import javaxt.io.Directory;
 import javaxt.io.File;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EventListener;
@@ -28,50 +25,41 @@ public class DownloadHelper {
         startDirectoryWatch();
     }
 
+    public static void saveImageIntoMongoDB(String fileName, String filePath) throws IOException {
+        java.io.File imageFile = new java.io.File(filePath);
+        GridFS gfsPhoto = new GridFS(DBHelper.helper().dbClient().getDatabase(), "image");
+        GridFSInputFile gfsFile = gfsPhoto.createFile(imageFile);
+        gfsFile.setFilename(fileName);
+        gfsFile.save();
+    }
+
+    public static void downloadFileToBackpack(final String url, final String savePath) {
+        Thread download = new Thread() {
+            public void run() {
+                javaxt.io.Image image = new javaxt.http.Request(url).getResponse().getImage();
+                image.saveAs(savePath);
+            }
+        };
+        download.start();//start the thread
+    }
+
+    public static byte[] getImageBytes(String filename) {
+        return new javaxt.io.Image(Resources.getResource(filename).getPath()).getByteArray();
+    }
+
+    public static javaxt.io.Image getImage(byte[] bytes) {
+        return new javaxt.io.Image(bytes);
+
+    }
+
     public File[] getAllBackpackFiles() {
         javaxt.io.Directory directory = new javaxt.io.Directory(backpackPath);
         return directory.getFiles();
     }
 
     public void writeJSONFile(Object obj) {
-        
-        
     }
 
-    public static String encodeToString(BufferedImage image, String type) {
-        String imageString = null;
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-        try {
-            ImageIO.write(image, type, bos);
-            byte[] imageBytes = bos.toByteArray();
-
-            BASE64Encoder encoder = new BASE64Encoder();
-            imageString = encoder.encode(imageBytes);
-
-            bos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return imageString;
-    }
-
-    public static BufferedImage decodeToImage(String imageString) {
-
-        BufferedImage image = null;
-        byte[] imageByte;
-        try {
-            BASE64Decoder decoder = new BASE64Decoder();
-            imageByte = decoder.decodeBuffer(imageString);
-            ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
-            image = ImageIO.read(bis);
-            bis.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return image;
-    }
-    
     public void startDirectoryWatch() {
 
         Thread filePoll = new Thread() {
@@ -134,6 +122,10 @@ public class DownloadHelper {
         eventListeners.add(listener);
     }
 
+    public interface NewFileAddedEventListener extends EventListener {
+        void newFileAdded(FileWatchEvent evt);
+    }
+
     public class FileWatchEvent {
 
         private String contentType;
@@ -152,21 +144,5 @@ public class DownloadHelper {
             return contentType;
         }
     }
-
-    public interface NewFileAddedEventListener extends EventListener {
-        void newFileAdded(FileWatchEvent evt);
-    }
-
-    public static void downloadFileToBackpack(final String url, final String savePath) {
-        Thread download = new Thread() {
-            public void run() {
-                javaxt.io.Image image = new javaxt.http.Request(url).getResponse().getImage();
-                image.saveAs(savePath);
-            }
-        };
-        download.start();//start the thread
-    }
-
-
 
 }

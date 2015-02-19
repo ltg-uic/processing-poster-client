@@ -8,4 +8,6 @@
 
 # Maven
 log/
+lib/
+out/
 target/

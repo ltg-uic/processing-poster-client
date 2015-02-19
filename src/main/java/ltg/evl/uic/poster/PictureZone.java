@@ -8,17 +8,23 @@ import vialab.SMT.ImageZone;
  */
 public class PictureZone extends ImageZone {
 
-    private String uuid;
+    private String UUID;
 
-    public PictureZone(PImage image) {
-        super(image);
+    public PictureZone(PImage image, String UUID, int x, int y, int width, int height) {
+        super(image, x, y, width, height);
+        this.UUID = UUID;
     }
 
     public String getUUID() {
-        return uuid;
+        return UUID;
     }
 
-    public void setUUID(String uuid) {
-        this.uuid = uuid;
+    public void setUUID(String UUID) {
+        this.UUID = UUID;
+    }
+
+    @Override
+    public String toString() {
+        return "id:" + getUUID() + " W: " + getWidth() + " H: " + getHeight() + " X: " + getX() + " Y:" + getY();
     }
 }

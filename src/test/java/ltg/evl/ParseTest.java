@@ -32,13 +32,13 @@ import java.util.UUID;
 public class ParseTest {
 
 
-
     PUser user = new PUser();
-    
+
     String imageFileId = UUID.randomUUID().toString();
-    
+    ParseFile file;
+
     @BeforeClass
-    public static void setUpClass()  {
+    public static void setUpClass() {
 
 
         CompositeConfiguration config = new CompositeConfiguration();
@@ -54,16 +54,15 @@ public class ParseTest {
         ParseRegistry.registerSubclass(PItem.class);
         ParseRegistry.registerSubclass(PImageFile.class);
         Parse.initialize(config.getString("parse.appid"), config.getString("parse.clientkey"));
-        
+
     }
 
-    ParseFile file;
     @Test
     public void uploadImage() {
         final Image img = new Image(ClassLoader.getSystemResource("document6.png").getPath());
 
 
-        file = new ParseFile("image.png",  img.getByteArray());
+        file = new ParseFile("image.png", img.getByteArray());
         try {
             file.save(new SaveCallback() {
                 @Override
@@ -83,7 +82,6 @@ public class ParseTest {
         }
     }
 
-    
 
     @Ignore
     public void insertPosterItem() throws IOException, ParseException {
@@ -97,13 +95,13 @@ public class ParseTest {
 
         final Image img = new Image(ClassLoader.getSystemResource("document6.png").getPath());
 
-       // pi.setImage("document6.png", img);
+        // pi.setImage("document6.png", img);
         pi.setImageFileId(UUID.randomUUID().toString());
         pi.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException parseException) {
-                    final PImageFile pim = new PImageFile();
-                    pim.setImageFileId(pi.getImageFileId());
+                final PImageFile pim = new PImageFile();
+                pim.setImageFileId(pi.getImageFileId());
 //                    pim.saveInBackground(new SaveCallback() {
 //                        @Override
 //                        public void done(ParseException parseException) {
@@ -127,9 +125,9 @@ public class ParseTest {
                 }
             }
         });
-       pi.save();
+        pi.save();
     }
-    
+
 //    @Test
 //    public void getPosterItem() {
 //        ParseQuery<PItem> query = ParseQuery.getQuery(PItem.class);
@@ -185,10 +183,6 @@ public class ParseTest {
         poster.setName("new poster");
         poster.save();
 
-     
-        
-
-
 
 //        poster.addPosterItems(pi);
 //        poster.saveInBackground();
@@ -202,7 +196,7 @@ public class ParseTest {
 
     }
 
-    public void convert(String fileName , byte[] data) throws IOException {
+    public void convert(String fileName, byte[] data) throws IOException {
         File myFile = new File(fileName);
         System.out.println("filename is " + myFile);
         OutputStream out = new FileOutputStream(myFile);

@@ -18,9 +18,19 @@ public class PosterItem  {
     private int height;
     private String name;
     private String imageId;
+    private String imageBytes;
 
     public PosterItem(){}
 
+    public PosterItem(int x, int y, int width, int height, String name, String imageId, String imageBytes){
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.name = name;
+        this.imageId = imageId;
+        this.imageBytes = imageBytes;
+    }
 
     public int getX() {
         return x;
@@ -68,5 +78,26 @@ public class PosterItem  {
 
     public void setImageId(String imageId) {
         this.imageId = imageId;
+    }
+
+    public String getImageBytes() {
+        return imageBytes;
+    }
+
+    public void setImageBytes(String imageBytes) {
+        this.imageBytes = imageBytes;
+    }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "id: " + getId().toString() + " W: " + width + " H: " + height + " X: " + x + " Y:" + y ;
     }
 }

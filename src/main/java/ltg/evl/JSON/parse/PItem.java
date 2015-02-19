@@ -1,15 +1,7 @@
 package ltg.evl.json.parse;
 
-import javaxt.io.Image;
-import org.parse4j.*;
-import org.parse4j.callback.FindCallback;
-import org.parse4j.callback.GetCallback;
-import org.parse4j.callback.GetDataCallback;
-import org.parse4j.callback.SaveCallback;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import org.parse4j.ParseClassName;
+import org.parse4j.ParseObject;
 
 /**
  * Created by aperritano on 2/13/15.
@@ -25,17 +17,17 @@ public class PItem extends ParseObject {
     private String fileUUID;
 
 
-    
-    public PItem() {}
+    public PItem() {
+    }
 
     public String getType() {
-        return  getString("type");
+        return getString("type");
     }
-    
+
     public void setType(String type) {
         put("type", type);
     }
-    
+
 //    public void setImage(String name, Image image) {
 //
 //
@@ -69,15 +61,15 @@ public class PItem extends ParseObject {
 //
 //
 //    }
-    
+
     public String getImageFileId() {
         return getString("imageFileId");
-        
+
     }
-    
+
     public void setImageFileId(String imageId) {
-        put("imageFileId",imageId);
-        
+        put("imageFileId", imageId);
+
     }
 
     public int getHeight() {
@@ -101,7 +93,7 @@ public class PItem extends ParseObject {
     }
 
     public void setY(int y) {
-        put("y",y);
+        put("y", y);
     }
 
     public int getX() {
@@ -109,7 +101,7 @@ public class PItem extends ParseObject {
     }
 
     public void setX(int x) {
-        put("x",x);
+        put("x", x);
     }
 
 //    public String getFileUUID() {

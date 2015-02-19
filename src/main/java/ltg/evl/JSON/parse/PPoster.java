@@ -9,7 +9,7 @@ import java.util.List;
  */
 @ParseClassName("PPoster")
 public class PPoster extends ParseObject {
-    
+
     public PPoster() {
 
     }
@@ -33,27 +33,26 @@ public class PPoster extends ParseObject {
     }
 
     public String getName() {
-        return  getString("name");
+        return getString("name");
     }
 
     public void setName(String name) {
         put("name", name);
     }
 
-
-    public void setHeight(int height) {
-        put("height", height);
-    }
-    
     public int getHeight() {
         return getInt("height");
     }
 
-    public void setWidth(int width) {
-        put("width", width);
+    public void setHeight(int height) {
+        put("height", height);
     }
 
     public int getWidth() {
         return getInt("width");
+    }
+
+    public void setWidth(int width) {
+        put("width", width);
     }
 }

@@ -1,8 +1,14 @@
 package ltg.evl.uic.poster;
 
+import ltg.evl.uic.poster.listeners.LoadUserListerner;
+import ltg.evl.uic.poster.listeners.SaveUserListerner;
 import processing.core.PFont;
 import vialab.SMT.Touch;
 import vialab.SMT.Zone;
+import vialab.SMT.event.TouchListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by aperritano on 2/15/15.
@@ -15,6 +21,9 @@ public class ControlButtonZone extends Zone {
     private int buttonOutline;
     private int buttonColor;
     private String buttonText;
+    private List<TouchListener> touchListeners = new ArrayList<>();
+    private List<LoadUserListerner> loadUserListerners = new ArrayList<>();
+    private List<SaveUserListerner> saveUserListerners = new ArrayList<>();
 
     public ControlButtonZone(String name, int x, int y, int width, int height, String buttonText) {
         super(name, x, y, width, height);
@@ -63,6 +72,36 @@ public class ControlButtonZone extends Zone {
         if (this.getNumTouches() == 0) {
             buttonColor = buttonBackground;
             System.out.println("touch up");
+
+            if (getButtonText().equals("SAVE")) {
+                for (SaveUserListerner saveUserListerner : saveUserListerners) {
+                    saveUserListerner.saveUser("DrBanner");
+                }
+
+            } else {
+                for (LoadUserListerner loadUserListerner : loadUserListerners) {
+                    loadUserListerner.loadUser("DrBanner");
+                }
+            }
         }
+//        for (TouchListener listener : touchListeners) {
+//            listener.handleTouchUp(new TouchEvent(this, TouchEvent.TouchType.UP, touch));
+//        }
+
+
+    }
+
+
+    public void addTouchListener(TouchListener touchListener) {
+        touchListeners.add(touchListener);
+    }
+
+    public void addLoadUserListener(LoadUserListerner loadUserListerner) {
+        loadUserListerners.add(loadUserListerner);
+    }
+
+    public void addSaveListener(SaveUserListerner saveUserListerner) {
+        saveUserListerners.add(saveUserListerner);
+        
     }
 }

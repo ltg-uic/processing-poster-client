@@ -4,7 +4,6 @@ import de.caluga.morphium.annotations.Entity;
 import de.caluga.morphium.annotations.Id;
 import de.caluga.morphium.annotations.Reference;
 import de.caluga.morphium.annotations.caching.NoCache;
-import javafx.geometry.Pos;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;

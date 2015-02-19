@@ -9,22 +9,23 @@ import org.parse4j.ParseObject;
  */
 @ParseClassName("PImageFile")
 public class PImageFile extends ParseObject {
-    
-    public PImageFile() {}
-    
-    public void setImageFileId(String imageId) {
-        put("imageFileId", imageId);
+
+    public PImageFile() {
     }
-    
+
     public String getImageFileId() {
         return getString("imageFileId");
     }
-    
-    public void setImageFile(ParseFile parseFile) {
-        put("imageFile",parseFile);
+
+    public void setImageFileId(String imageId) {
+        put("imageFileId", imageId);
     }
-    
+
     public ParseFile getImageFile() {
         return getParseFile("imageFile");
+    }
+
+    public void setImageFile(ParseFile parseFile) {
+        put("imageFile", parseFile);
     }
 }
