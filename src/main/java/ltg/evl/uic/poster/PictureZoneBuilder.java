@@ -1,5 +1,6 @@
 package ltg.evl.uic.poster;
 
+import ltg.evl.json.mongo.PosterItem;
 import processing.core.PImage;
 
 public class PictureZoneBuilder {
@@ -9,6 +10,7 @@ public class PictureZoneBuilder {
     private int y;
     private int width;
     private int height;
+    private PosterItem posterItem;
 
     public PictureZoneBuilder setImage(PImage image) {
         this.image = image;
@@ -40,7 +42,16 @@ public class PictureZoneBuilder {
         return this;
     }
 
+    public PictureZoneBuilder setPosterItem(PosterItem posterItem) {
+        this.posterItem = posterItem;
+        return this;
+    }
+
     public PictureZone createPictureZone() {
         return new PictureZone(image, uuid, x, y, width, height);
+    }
+
+    public PictureZone toPictureZone() {
+        return new PictureZone(posterItem, image);
     }
 }

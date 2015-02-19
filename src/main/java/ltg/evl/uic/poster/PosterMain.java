@@ -35,8 +35,6 @@ public class PosterMain extends PApplet implements LoadUserListerner, SaveUserLi
     private int mainBackgroundColor;
     private int from;
     private int to;
-    private Circle[] circles;
-
 
     public static void main(String args[]) {
         logger = Logger.getLogger(PosterMain.class.getName());
@@ -66,16 +64,10 @@ public class PosterMain extends PApplet implements LoadUserListerner, SaveUserLi
     public void setup() {
 
         doInit();
-        circles = new Circle[5];
 
-        from = color(255, 8, 8);
-        to = color(8, 187, 255);
 
-        for(int i=0; i<circles.length; i++) {
-            circles[i] = new Circle();
-        }
-        
-        size(displayWidth, displayHeight, SMT.RENDERER);
+        // size(displayWidth, displayHeight, SMT.RENDERER);
+        size(2000, 1050, SMT.RENDERER);
         SMT.init(this, TouchSource.AUTOMATIC);
 
         thread("doInit");
@@ -143,7 +135,6 @@ public class PosterMain extends PApplet implements LoadUserListerner, SaveUserLi
             background(mainBackgroundColor);
             fill(0, 0, 0, 255);
             // text(round(frameRate) + "fps, # of zones: " + SMT.getZones().length, width / 2, height / 2);
-        for(int i=0; i< circles.length; i++) circles[i].draw();
 
 
     }
@@ -183,16 +174,18 @@ public class PosterMain extends PApplet implements LoadUserListerner, SaveUserLi
             }
             PImage pixelImage = loadImageMT(awtImage);
 
-            PictureZone pz = new PictureZoneBuilder().setImage(pixelImage)
-                                                     .setHeight(posterItem.getHeight())
-                                                     .setWidth(posterItem.getWidth())
-                                                     .setUUID(posterItem.getId().toString())
-                                                     .setX(posterItem.getX())
-                                                     .setY(posterItem.getY()).createPictureZone();
 
-            SMT.add(pz);
-            pz.setX(posterItem.getX());
-            pz.setY(posterItem.getY());
+            PictureZone pz = new PictureZoneBuilder().setImage(pixelImage).setPosterItem(posterItem).toPictureZone();
+
+
+            boolean hasAdded = SMT.add(pz);
+
+            if (hasAdded) {
+
+
+                pz.startAnimation();
+            }
+            
         }
 
     }
@@ -241,49 +234,5 @@ public class PosterMain extends PApplet implements LoadUserListerner, SaveUserLi
 
     }
 
-    
-    class Circle {
-        float x = random(0,width);
-        float y = random(0,height);
-        int diameter = 5;
-        Ani diameterAni;
-        int c = color(0);
 
-        Circle() {
-            // diameter animation
-            
-
-            
-            diameterAni = new Ani(this, random(1,5), 0.5f, "diameter", 50.0f, Ani.EXPO_IN_OUT, "onEnd:randomize");
-            // repeat yoyo style (go up and down)
-            diameterAni.setPlayMode(Ani.YOYO);
-            // repeat 3 times
-            diameterAni.repeat(3);
-        }
-
-        void draw() {
-            fill(c);
-            ellipse(x,y,diameter,diameter);
-            fill(0);
-            text(diameterAni.getRepeatNumber()+" / "+diameterAni.getRepeatCount(), x, y+diameter);
-        }
-
-        void randomize(Ani _ani) {
-            c = lerpColor(from, to, random(1));
-
-            // new repeat count
-            int newCount = 1+2*round(random(4));
-            diameterAni.repeat(newCount);
-            // restart
-            diameterAni.start();
-
-            // move to new position
-            
-
-            
-            Ani.to(this, 1.5f, "x", random(0,width), Ani.EXPO_IN_OUT);
-            Ani.to(this, 1.5f, "y", random(0,height), Ani.EXPO_IN_OUT);
-        }
-    }
-    
 }
