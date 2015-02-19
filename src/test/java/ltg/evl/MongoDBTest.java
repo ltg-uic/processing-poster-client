@@ -5,7 +5,7 @@ import de.caluga.morphium.async.AsyncOperationCallback;
 import de.caluga.morphium.async.AsyncOperationType;
 import de.caluga.morphium.query.Query;
 import javaxt.io.Image;
-import ltg.evl.json.mongo.*;
+import ltg.evl.uic.poster.json.mongo.*;
 import ltg.evl.util.DBHelper;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;

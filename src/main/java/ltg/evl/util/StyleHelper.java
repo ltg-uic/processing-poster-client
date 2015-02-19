@@ -1,6 +1,6 @@
-package ltg.evl.uic.poster;
+package ltg.evl.util;
 
-import ltg.evl.json.mongo.PosterItem;
+import ltg.evl.uic.poster.json.mongo.PosterItem;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.configuration.*;
 import processing.core.PApplet;

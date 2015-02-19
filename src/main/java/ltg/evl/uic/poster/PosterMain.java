@@ -1,12 +1,13 @@
 package ltg.evl.uic.poster;
 
 import de.looksgood.ani.Ani;
-import ltg.evl.json.mongo.PosterItem;
-import ltg.evl.json.mongo.User;
+import ltg.evl.uic.poster.json.mongo.PosterItem;
+import ltg.evl.uic.poster.json.mongo.User;
 import ltg.evl.uic.poster.listeners.LoadUserListerner;
 import ltg.evl.uic.poster.listeners.SaveUserListerner;
 import ltg.evl.util.DBHelper;
 import ltg.evl.util.DownloadHelper;
+import ltg.evl.util.StyleHelper;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import processing.core.PApplet;

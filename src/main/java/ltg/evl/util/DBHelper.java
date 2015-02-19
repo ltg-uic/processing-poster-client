@@ -5,11 +5,11 @@ import de.caluga.morphium.MorphiumConfig;
 import de.caluga.morphium.async.AsyncOperationCallback;
 import de.caluga.morphium.async.AsyncOperationType;
 import de.caluga.morphium.query.Query;
-import ltg.evl.json.mongo.Poster;
-import ltg.evl.json.mongo.PosterBuilder;
-import ltg.evl.json.mongo.PosterItem;
-import ltg.evl.json.mongo.User;
 import ltg.evl.uic.poster.PictureZone;
+import ltg.evl.uic.poster.json.mongo.Poster;
+import ltg.evl.uic.poster.json.mongo.PosterBuilder;
+import ltg.evl.uic.poster.json.mongo.PosterItem;
+import ltg.evl.uic.poster.json.mongo.User;
 import org.apache.log4j.Logger;
 import vialab.SMT.Zone;
 

@@ -1,10 +1,10 @@
 package ltg.evl;
 
 import javaxt.io.Image;
-import ltg.evl.json.parse.PImageFile;
-import ltg.evl.json.parse.PItem;
-import ltg.evl.json.parse.PPoster;
-import ltg.evl.json.parse.PUser;
+import ltg.evl.uic.poster.json.parse.PImageFile;
+import ltg.evl.uic.poster.json.parse.PItem;
+import ltg.evl.uic.poster.json.parse.PPoster;
+import ltg.evl.uic.poster.json.parse.PUser;
 import org.apache.commons.configuration.CompositeConfiguration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;

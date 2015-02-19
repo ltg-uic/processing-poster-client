@@ -2,6 +2,7 @@ package ltg.evl.uic.poster;
 
 import ltg.evl.uic.poster.listeners.LoadUserListerner;
 import ltg.evl.uic.poster.listeners.SaveUserListerner;
+import ltg.evl.util.StyleHelper;
 import processing.core.PFont;
 import vialab.SMT.Touch;
 import vialab.SMT.Zone;

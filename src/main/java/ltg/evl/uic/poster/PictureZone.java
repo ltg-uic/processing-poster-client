@@ -1,7 +1,7 @@
 package ltg.evl.uic.poster;
 
 import de.looksgood.ani.Ani;
-import ltg.evl.json.mongo.PosterItem;
+import ltg.evl.uic.poster.json.mongo.PosterItem;
 import processing.core.PImage;
 import vialab.SMT.SMT;
 import vialab.SMT.Zone;

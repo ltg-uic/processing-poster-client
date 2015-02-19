@@ -1,6 +1,6 @@
 package ltg.evl.util;
 
-import ltg.evl.json.mongo.PosterItem;
+import ltg.evl.uic.poster.json.mongo.PosterItem;
 
 import java.util.List;
 
