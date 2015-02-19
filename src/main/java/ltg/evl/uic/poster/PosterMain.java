@@ -1,5 +1,6 @@
 package ltg.evl.uic.poster;
 
+import de.looksgood.ani.Ani;
 import ltg.evl.json.mongo.PosterItem;
 import ltg.evl.json.mongo.User;
 import ltg.evl.uic.poster.listeners.LoadUserListerner;
@@ -30,30 +31,12 @@ public class PosterMain extends PApplet implements LoadUserListerner, SaveUserLi
     private static DownloadHelper downloadHelper;
 
     private static String backpackPath;
-    String[] urls = {
-            "http://processing.org",
-            "http://www.processing.org/exhibition/",
-            "http://www.processing.org/reference/",
-            "http://www.processing.org/reference/libraries",
-            "http://www.processing.org/reference/tools",
-            "http://www.processing.org/reference/environment",
-            "http://www.processing.org/learning/",
-            "http://www.processing.org/learning/basics/",
-            "http://www.processing.org/learning/topics/",
-            "http://www.processing.org/learning/gettingstarted/",
-            "http://www.processing.org/download/",
-            "http://www.processing.org/shop/",
-            "http://www.processing.org/about/",
-            "http://www.processing.org/about/people"
-    };
-    // This will keep track of whether the thread is finished
-    boolean finished = true;
-    // And how far along
-    float percent = 0;
-    // A variable to keep all the data loaded
-    String allData;
+    
     private int mainBackgroundColor;
-    private boolean mode;
+    private int from;
+    private int to;
+    private Circle[] circles;
+
 
     public static void main(String args[]) {
         logger = Logger.getLogger(PosterMain.class.getName());
@@ -75,11 +58,23 @@ public class PosterMain extends PApplet implements LoadUserListerner, SaveUserLi
         System.out.println("Setup started");
         StyleHelper.helper().setGraphicsContext(this);
         mainBackgroundColor = StyleHelper.createColor("color.mainBackground");
+        // Ani.init() must be called always first!
+        Ani.init(this);
     }
 
     @Override
     public void setup() {
 
+        doInit();
+        circles = new Circle[5];
+
+        from = color(255, 8, 8);
+        to = color(8, 187, 255);
+
+        for(int i=0; i<circles.length; i++) {
+            circles[i] = new Circle();
+        }
+        
         size(displayWidth, displayHeight, SMT.RENDERER);
         SMT.init(this, TouchSource.AUTOMATIC);
 
@@ -144,72 +139,17 @@ public class PosterMain extends PApplet implements LoadUserListerner, SaveUserLi
     @Override
     public void draw() {
 
-        if (finished) {
+
             background(mainBackgroundColor);
             fill(0, 0, 0, 255);
             // text(round(frameRate) + "fps, # of zones: " + SMT.getZones().length, width / 2, height / 2);
-        } else if (finished == false) {
-            progressbar();
-        }
+        for(int i=0; i< circles.length; i++) circles[i].draw();
+
 
     }
 
-    public void progressbar() {
-        if (!finished) {
-            stroke(0);
-            noFill();
-            rect(width / 2 - 150, height / 2, 300, 10);
-            fill(0);
-            // The size of the rectangle is mapped to the percentage completed
-            float w = map(percent, 0, 1, 0, 300);
-            rect(width / 2 - 150, height / 2, w, 10);
-            textSize(14);
-            textAlign(CENTER);
-            fill(0);
-            text("Loading", width / 2, height / 2 + 30);
-        }
-
-    }
-
-    @Override
-    public void mouseClicked() {
-        thread("loadData");
-        mode = true;
-    }
 
 
-    public void loadData() {
-        // The thread is not completed
-        finished = false;
-        // Reset the data to empty
-        allData = "";
-
-        // Look at each URL
-        // This example is doing some highly arbitrary things just to make it take longer
-        // If you had a lot of data parsing you needed to do, this can all happen in the background
-        for (int i = 0; i < urls.length; i++) {
-            String[] lines = loadStrings(urls[i]);
-            // Demonstrating some arbitrary text splitting, joining, and sorting to make the thread take longer
-            String allTxt = join(lines, " ");
-            String[] words = splitTokens(allTxt, "\t+\n <>=\\-!@#$%^&*(),.;:/?\"\'");
-            for (int j = 0; j < words.length; j++) {
-                words[j] = words[j].trim();
-                words[j] = words[j].toLowerCase();
-            }
-            words = sort(words);
-            allData += join(words, " ");
-            percent = PApplet.parseFloat(i) / urls.length;
-        }
-
-        String[] words = split(allData, " ");
-        words = sort(words);
-        allData = join(words, " ");
-
-        // The thread is completed!
-        finished = true;
-        mode = false;
-    }
-    
     @Override
     public void loadUser(final String userName) {
         Thread later = new Thread() {
@@ -300,4 +240,50 @@ public class PosterMain extends PApplet implements LoadUserListerner, SaveUserLi
         }
 
     }
+
+    
+    class Circle {
+        float x = random(0,width);
+        float y = random(0,height);
+        int diameter = 5;
+        Ani diameterAni;
+        int c = color(0);
+
+        Circle() {
+            // diameter animation
+            
+
+            
+            diameterAni = new Ani(this, random(1,5), 0.5f, "diameter", 50.0f, Ani.EXPO_IN_OUT, "onEnd:randomize");
+            // repeat yoyo style (go up and down)
+            diameterAni.setPlayMode(Ani.YOYO);
+            // repeat 3 times
+            diameterAni.repeat(3);
+        }
+
+        void draw() {
+            fill(c);
+            ellipse(x,y,diameter,diameter);
+            fill(0);
+            text(diameterAni.getRepeatNumber()+" / "+diameterAni.getRepeatCount(), x, y+diameter);
+        }
+
+        void randomize(Ani _ani) {
+            c = lerpColor(from, to, random(1));
+
+            // new repeat count
+            int newCount = 1+2*round(random(4));
+            diameterAni.repeat(newCount);
+            // restart
+            diameterAni.start();
+
+            // move to new position
+            
+
+            
+            Ani.to(this, 1.5f, "x", random(0,width), Ani.EXPO_IN_OUT);
+            Ani.to(this, 1.5f, "y", random(0,height), Ani.EXPO_IN_OUT);
+        }
+    }
+    
 }
