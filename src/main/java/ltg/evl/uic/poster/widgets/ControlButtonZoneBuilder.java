@@ -1,4 +1,4 @@
-package ltg.evl.uic.poster;
+package ltg.evl.uic.poster.widgets;
 
 public class ControlButtonZoneBuilder {
     private String name;

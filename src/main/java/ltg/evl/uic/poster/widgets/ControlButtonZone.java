@@ -1,4 +1,4 @@
-package ltg.evl.uic.poster;
+package ltg.evl.uic.poster.widgets;
 
 import ltg.evl.uic.poster.listeners.LoadUserListerner;
 import ltg.evl.uic.poster.listeners.SaveUserListerner;

@@ -1,5 +1,6 @@
-package ltg.evl.uic.poster;
+package ltg.evl.uic.poster.widgets;
 
+import com.google.common.base.Objects;
 import de.looksgood.ani.Ani;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
 import processing.core.PImage;
@@ -11,14 +12,15 @@ import vialab.SMT.Zone;
  */
 public class PictureZone extends Zone {
 
-    //-- from image zone
 
-    int diameter = 50;
-    Ani widthAni, heightAni;
+    private Ani widthAni;
+    private Ani heightAni;
+    
     /**
      * The PImage that contains the image passed by the user *
      */
     private PImage image;
+
     /**
      * The tint colour of the image zone *
      */
@@ -30,21 +32,27 @@ public class PictureZone extends Zone {
     private int initialY = 0;
     
     public PictureZone(PImage image, String UUID, int x, int y, int width, int height) {
-        this(image, x, y, width, height);
+        this(image, x, y, 0, 0);
         this.UUID = UUID;
+        this.initialX = x;
+        this.initialY = y;
+        this.setAnimationHeight(height);
+        this.setAnimationWidth(width);
+        Ani.init(this.applet);
+        
+        
     }
 
     public PictureZone(PosterItem posterItem, PImage image) {
-        this.image = image;
-        this.setHeight(0);
-        this.setWidth(0);
+        this(image, 300, 300, 10, 10);
         this.setUUID(posterItem.getId().toString());
         this.setAnimationHeight(posterItem.getHeight());
         this.setAnimationWidth(posterItem.getWidth());
-        this.setX(posterItem.getX());
-        this.setY(posterItem.getY());
         this.initialX = posterItem.getX();
         this.initialY = posterItem.getY();
+
+        // Ani.init() must be called always first!
+        Ani.init(this.applet);
     }
 
     /**
@@ -79,6 +87,8 @@ public class PictureZone extends Zone {
         this(name, image, x, y, width, height);
         this.tint = tint;
     }
+
+    //-- from image zone
 
     /**
      * PictureZone constructor, creates a rectangular zone and draws a PImage to it.
@@ -157,24 +167,39 @@ public class PictureZone extends Zone {
     }
 
     @Override
+    public String toString() {
+
+        return Objects.toStringHelper(this)
+                      .omitNullValues()
+                      .add("UUID", getUUID())
+                      .add("x", getX())
+                      .add("y", getY())
+                      .add("initialX", initialX)
+                      .add("initialY", initialY)
+                      .add("height", getHeight())
+                      .add("width", getWidth())
+                      .add("animationHeight", getAnimationHeight())
+                      .add("animationWidth", getAnimationWidth())
+                      .toString();
+
+    }
+
+    //get accessor methods
+
+    @Override
     public void draw() {
         tint(getTint());
         image(this.image, 0, 0, this.width, this.height);
     }
 
-    //-- from image zone
-
     public String getUUID() {
         return UUID;
     }
 
+    //set accessor methods
+
     public void setUUID(String UUID) {
         this.UUID = UUID;
-    }
-
-    @Override
-    public String toString() {
-        return "id:" + getUUID() + " W: " + getWidth() + " H: " + getHeight() + " X: " + getX() + " Y:" + getY();
     }
 
     public int getAnimationHeight() {
@@ -193,11 +218,16 @@ public class PictureZone extends Zone {
         this.animationWidth = animationWidth;
     }
 
-    public void startAnimation() {
-        // Ani.init() must be called always first!
-        Ani.init(this.applet);
+    public void startAnimation(boolean isOUT) {
+
         setX(initialX);
         setY(initialY);
+
+        if (!isOUT) {
+            animationWidth = 0;
+            animationHeight = 0;
+        }
+
         // define a Ani with callbacks, specify the method name after the keywords: onStart, onEnd, onDelayEnd and onUpdate
         widthAni = new Ani(this, 1.5f, "width", animationWidth, Ani.EXPO_IN_OUT, "onStart:itsStarted");
         heightAni = new Ani(this, 1.5f, "height", animationHeight, Ani.EXPO_IN_OUT, "onStart:itsStarted");
@@ -208,8 +238,6 @@ public class PictureZone extends Zone {
     public void itsStarted() {
         System.out.println("STARTED");
     }
-
-    //get accessor methods
 
     /**
      * Get the image being drawn by this zone
@@ -228,8 +256,6 @@ public class PictureZone extends Zone {
     public void setZoneImage(PImage image) {
         this.image = image;
     }
-
-    //set accessor methods
 
     /**
      * Get the tint of the image drawn by this zone

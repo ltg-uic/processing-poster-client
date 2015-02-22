@@ -1,5 +1,6 @@
 package ltg.evl.uic.poster.json.mongo;
 
+import com.google.common.base.Objects;
 import de.caluga.morphium.annotations.Entity;
 import de.caluga.morphium.annotations.Id;
 import de.caluga.morphium.annotations.caching.NoCache;
@@ -97,8 +98,18 @@ public class PosterItem {
         this.id = id;
     }
 
-    @Override
     public String toString() {
-        return "id: " + getId().toString() + " W: " + width + " H: " + height + " X: " + x + " Y:" + y;
+
+        return Objects.toStringHelper(this)
+                      .omitNullValues()
+                      .add("id", id)
+                      .add("x", getX())
+                      .add("y", getY())
+                      .add("name", getName())
+                      .add("imageId", getImageId())
+                      .add("height", getHeight())
+                      .add("width", getWidth())
+                      .toString();
+
     }
 }

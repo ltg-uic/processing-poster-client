@@ -92,7 +92,7 @@ public class DownloadHelper {
                         System.out.println(event.toString());
 
                         //new file
-                        if( event.getEventID() == Directory.Event.MODIFY) {
+                        if (event.getEventID() == Directory.Event.MODIFY) {
                             File newFile = new File(event.getFile());
                             System.out.println("File content type:" + newFile.getContentType());
 
@@ -107,7 +107,7 @@ public class DownloadHelper {
                         if (event.getEventID() == Directory.Event.RENAME) {
                             System.out.println(
                                     event.getOriginalFile() + " vs " + event.getFile()
-                            );
+                                              );
                         }
                     }
 

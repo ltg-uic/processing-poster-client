@@ -55,6 +55,7 @@
     <orderEntry type="library" name="de.caluga:morphium:2.2.16" level="project" />
     <orderEntry type="library" name="org.apache.commons:commons-collections4:4.0" level="project" />
     <orderEntry type="library" name="com.google.guava:guava:14.0.1" level="project" />
+    <orderEntry type="library" name="Ani" level="project" />
     <orderEntry type="library" name="Maven: org.processing:core:2.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.processing:pde:2.2.1" level="project" />
     <orderEntry type="library" name="Maven: vialab:SMT:4.2" level="project" />
@@ -68,6 +69,7 @@
     <orderEntry type="library" name="Maven: commons-configuration:commons-configuration:1.10" level="project" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
     <orderEntry type="library" name="Maven: commons-logging:commons-logging:1.1.1" level="project" />
-    <orderEntry type="library" name="Ani" level="project" />
+    <orderEntry type="library" name="Maven: com.allanbank:mongodb-async-driver:2.0.1" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:guava:18.0" level="project" />
   </component>
 </module>

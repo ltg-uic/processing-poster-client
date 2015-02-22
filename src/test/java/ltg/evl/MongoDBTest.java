@@ -1,12 +1,17 @@
 package ltg.evl;
 
+import com.google.common.collect.FluentIterable;
 import com.google.common.io.Resources;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 import de.caluga.morphium.async.AsyncOperationCallback;
 import de.caluga.morphium.async.AsyncOperationType;
 import de.caluga.morphium.query.Query;
 import javaxt.io.Image;
 import ltg.evl.uic.poster.json.mongo.*;
+import ltg.evl.uic.poster.widgets.PictureZone;
 import ltg.evl.util.DBHelper;
+import ltg.evl.util.collections.PosterItemToPictureZone;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -18,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Executors;
 
 /**
  * Created by aperritano on 2/11/15.
@@ -46,6 +52,22 @@ public class MongoDBTest {
     }
 
     @Test
+    public void getUsers() {
+
+        List<PosterItem> pis = DBHelper.helper().getPosterItemsForUser("DrBanner");
+
+        ListeningExecutorService service = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(10));
+
+
+        FluentIterable<PictureZone> pictureZones = FluentIterable.from(pis).transform(new PosterItemToPictureZone());
+
+        for (PictureZone pictureZone : pictureZones) {
+            System.out.println(pictureZone.toString());
+        }
+
+    }
+
+    @Ignore
     public void createDefaultUser() throws IOException {
         User user = new User();
         user.setName("DrBanner");
@@ -104,7 +126,7 @@ public class MongoDBTest {
 //            }
 //        });
     }
-    
+
     @Ignore
     public void insertPosterItemPicture() {
 
@@ -141,23 +163,6 @@ public class MongoDBTest {
         User user = helper.fetchUser("DrBanner");
         System.out.println(user);
     }
-
-    @Ignore
-    public void getUsers() {
-        Query<User> u = helper.dbClient().createQueryFor(User.class);
-        List<User> users = u.asList();
-
-        if (users.isEmpty()) {
-            helper.createUser("DrBanner", "poster");
-        }
-
-        for (User user : users) {
-            System.out.println("USER " + user);
-        }
-
-
-    }
-
 
     public List<PosterItem> getPosterItems() throws IOException {
 
