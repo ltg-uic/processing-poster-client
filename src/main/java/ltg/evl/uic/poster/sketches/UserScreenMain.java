@@ -1,14 +1,11 @@
 package ltg.evl.uic.poster.sketches;
 
-import ltg.evl.uic.poster.json.mongo.PosterItem;
-import ltg.evl.uic.poster.json.mongo.User;
 import ltg.evl.uic.poster.listeners.LoadUserListerner;
 import ltg.evl.uic.poster.listeners.SaveUserListerner;
 import ltg.evl.uic.poster.widgets.ControlButtonZone;
 import ltg.evl.uic.poster.widgets.ControlButtonZoneBuilder;
 import ltg.evl.uic.poster.widgets.PictureZone;
 import ltg.evl.uic.poster.widgets.TopBarZone;
-import ltg.evl.util.DBHelper;
 import ltg.evl.util.DownloadHelper;
 import ltg.evl.util.StyleHelper;
 import org.apache.log4j.Level;
@@ -40,7 +37,7 @@ public class UserScreenMain extends PApplet implements LoadUserListerner, SaveUs
         logger = Logger.getLogger(UserScreenMain.class.getName());
         logger.setLevel(Level.INFO);
 
-        // DBHelper.helper().fetchUsers();
+        // DBHelper.getInstance().fetchUsers();
 
         PApplet.main(new String[]{"ltg.evl.uic.poster.sketches.UserScreenMain"});
 
@@ -98,13 +95,13 @@ public class UserScreenMain extends PApplet implements LoadUserListerner, SaveUs
         // SMT.add(saveButton, loadButton);
 
 
-//        DBHelper.helper().addDBListener(new DBListener() {
+//        DBHelper.getInstance().addDBListener(new DBListener() {
 //            @Override
 //            public void posterItemsUpdated(List<PosterItem> posterItems) {
 //                for (PosterItem posterItem : posterItems) {
 //                    Image awtImage = null;
 //                    try {
-//                        awtImage = StyleHelper.helper().getImage(posterItem);
+//                        awtImage = StyleHelper.getInstance().getImage(posterItem);
 //                    } catch (ExecutionException e) {
 //                        e.printStackTrace();
 //                    } catch (InterruptedException e) {
@@ -163,12 +160,12 @@ public class UserScreenMain extends PApplet implements LoadUserListerner, SaveUs
         }
 
 
-        User user = DBHelper.helper().fetchUser(userName);
+        // User user = DBHelper.getInstance().fetchUser(userName);
 
-        for (PosterItem posterItem : user.getPosters().get(0).getPosterItems()) {
+//        for (PosterItem posterItem : user.getPosters().get(0).getPosterItems()) {
 //            Image awtImage = null;
 //            try {
-//                awtImage = StyleHelper.helper().getImage(posterItem);
+//                awtImage = StyleHelper.getInstance().getImage(posterItem);
 //            } catch (ExecutionException e) {
 //                e.printStackTrace();
 //            } catch (InterruptedException e) {
@@ -188,7 +185,7 @@ public class UserScreenMain extends PApplet implements LoadUserListerner, SaveUs
 //                pz.startAnimation();
 //            }
 
-        }
+//        }
 
     }
 
@@ -205,34 +202,34 @@ public class UserScreenMain extends PApplet implements LoadUserListerner, SaveUs
     }
 
     private void saveUserLayout(String userName) {
-        User user = DBHelper.helper().fetchUser(userName);
+        //     User user = DBHelper.getInstance().fetchUser(userName);
 
         java.util.List<PictureZone> pictureZones = new ArrayList<>();
 
-        for (Zone zone : SMT.getZones()) {
-            if (zone instanceof PictureZone) {
-                PictureZone pz = (PictureZone) zone;
-
-                String uuid = pz.getUUID();
-
-                PosterItem posterItem = DBHelper.helper().getPosterItem(uuid);
-
-                System.out.println("Zone: " + pz.toString());
-                System.out.println("posteritem " + posterItem.toString());
-                System.out.println(" ");
-
-                posterItem.setWidth(pz.getWidth());
-                posterItem.setHeight(pz.getHeight());
-                posterItem.setY(pz.getY());
-                posterItem.setX(pz.getX());
-
-                //  DBHelper.helper().replacePosterItem(posterItem);
-
-                DBHelper.helper().dbClient().store(posterItem);
-
-            }
-
-        }
+//        for (Zone zone : SMT.getZones()) {
+//            if (zone instanceof PictureZone) {
+//                PictureZone pz = (PictureZone) zone;
+//
+//                String uuid = pz.getUUID();
+//
+//                PosterItem posterItem = DBHelper.getInstance().getPosterItem(uuid);
+//
+//                System.out.println("Zone: " + pz.toString());
+//                System.out.println("posteritem " + posterItem.toString());
+//                System.out.println(" ");
+//
+//                posterItem.setWidth(pz.getWidth());
+//                posterItem.setHeight(pz.getHeight());
+//                posterItem.setY(pz.getY());
+//                posterItem.setX(pz.getX());
+//
+//                //  DBHelper.getInstance().replacePosterItem(posterItem);
+//
+//                //DBHelper.getInstance().dbClient().store(posterItem);
+//
+//            }
+//
+//        }
 
     }
 

@@ -2,12 +2,9 @@ package ltg.evl.util;
 
 
 import com.google.common.io.Resources;
-import com.mongodb.gridfs.GridFS;
-import com.mongodb.gridfs.GridFSInputFile;
 import javaxt.io.Directory;
 import javaxt.io.File;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.List;
@@ -25,13 +22,13 @@ public class DownloadHelper {
         startDirectoryWatch();
     }
 
-    public static void saveImageIntoMongoDB(String fileName, String filePath) throws IOException {
-        java.io.File imageFile = new java.io.File(filePath);
-        GridFS gfsPhoto = new GridFS(DBHelper.helper().dbClient().getDatabase(), "image");
-        GridFSInputFile gfsFile = gfsPhoto.createFile(imageFile);
-        gfsFile.setFilename(fileName);
-        gfsFile.save();
-    }
+//    public static void saveImageIntoMongoDB(String fileName, String filePath) throws IOException {
+//        java.io.File imageFile = new java.io.File(filePath);
+//        GridFS gfsPhoto = new GridFS(DBHelper.getInstance().dbClient().getDatabase(), "image");
+//        GridFSInputFile gfsFile = gfsPhoto.createFile(imageFile);
+//        gfsFile.setFilename(fileName);
+//        gfsFile.save();
+//    }
 
     public static void downloadFileToBackpack(final String url, final String savePath) {
         Thread download = new Thread() {
@@ -94,7 +91,7 @@ public class DownloadHelper {
                         //new file
                         if (event.getEventID() == Directory.Event.MODIFY) {
                             File newFile = new File(event.getFile());
-                            System.out.println("File content type:" + newFile.getContentType());
+                            System.out.println("File content getType:" + newFile.getContentType());
 
 
                             for (NewFileAddedEventListener listener : eventListeners) {

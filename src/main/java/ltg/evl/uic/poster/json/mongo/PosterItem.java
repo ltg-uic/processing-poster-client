@@ -1,37 +1,61 @@
 package ltg.evl.uic.poster.json.mongo;
 
+import com.fasterxml.jackson.jr.ob.JSON;
+import com.google.api.client.json.GenericJson;
+import com.google.api.client.util.Key;
 import com.google.common.base.Objects;
-import de.caluga.morphium.annotations.Entity;
-import de.caluga.morphium.annotations.Id;
-import de.caluga.morphium.annotations.caching.NoCache;
-import org.bson.types.ObjectId;
 
-@NoCache
-@Entity(translateCamelCase = true)
-public class PosterItem {
+import java.io.IOException;
 
-    @Id
-    private ObjectId id;
+public class PosterItem extends GenericJson {
 
+
+    @Key
+    private String id;
+    @Key
     private int x;
+    @Key
     private int y;
+    @Key
     private int width;
+    @Key
     private int height;
+    @Key
+    private int rotation;
+    @Key
     private String name;
-    private String imageId;
+    @Key
+    private String type;
+    @Key
     private String imageBytes;
+    @Key
+    private String color;
+
 
     public PosterItem() {
     }
 
-    public PosterItem(int x, int y, int width, int height, String name, String imageId, String imageBytes) {
+    public PosterItem(String id, int x, int y, int width, int height, String name, String type, String imageBytes,
+                      String color, int rotation) {
+        this.id = id;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.name = name;
-        this.imageId = imageId;
+        this.type = type;
         this.imageBytes = imageBytes;
+    }
+
+    public static PosterItem toObj(String json) {
+        try {
+            PosterItem bean = JSON.std.beanFrom(PosterItem.class, json);
+            return bean;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
     public int getX() {
@@ -74,12 +98,12 @@ public class PosterItem {
         this.name = name;
     }
 
-    public String getImageId() {
-        return imageId;
+    public String getType() {
+        return type;
     }
 
-    public void setImageId(String imageId) {
-        this.imageId = imageId;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getImageBytes() {
@@ -90,11 +114,11 @@ public class PosterItem {
         this.imageBytes = imageBytes;
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -105,11 +129,42 @@ public class PosterItem {
                       .add("id", id)
                       .add("x", getX())
                       .add("y", getY())
+                      .add("rotation", getRotation())
                       .add("name", getName())
-                      .add("imageId", getImageId())
+                      .add("type", getType())
                       .add("height", getHeight())
                       .add("width", getWidth())
+                      .add("Color", getColor())
                       .toString();
 
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public int getRotation() {
+        return rotation;
+    }
+
+    public void setRotation(int rotation) {
+        this.rotation = rotation;
+    }
+
+    public String toJSON() {
+
+        String json = null;
+        try {
+            json = JSON.std.asString(this);
+            return json;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

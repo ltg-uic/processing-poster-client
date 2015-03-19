@@ -21,11 +21,11 @@ public class PItem extends ParseObject {
     }
 
     public String getType() {
-        return getString("type");
+        return getString("getType");
     }
 
     public void setType(String type) {
-        put("type", type);
+        put("getType", type);
     }
 
 //    public void setImage(String name, Image image) {

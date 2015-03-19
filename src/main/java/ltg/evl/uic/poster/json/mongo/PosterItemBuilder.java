@@ -6,8 +6,22 @@ public class PosterItemBuilder {
     private int width;
     private int height;
     private String name;
-    private String imageId;
+    private String type;
     private String imageBytes;
+    private String id;
+    private String color;
+    private int rotation;
+
+
+    public PosterItemBuilder setColor(String color) {
+        this.color = color;
+        return this;
+    }
+
+    public PosterItemBuilder setRotation(int rotation) {
+        this.rotation = rotation;
+        return this;
+    }
 
     public PosterItemBuilder setX(int x) {
         this.x = x;
@@ -34,8 +48,8 @@ public class PosterItemBuilder {
         return this;
     }
 
-    public PosterItemBuilder setImageId(String imageId) {
-        this.imageId = imageId;
+    public PosterItemBuilder setType(String type) {
+        this.type = type;
         return this;
     }
 
@@ -44,7 +58,11 @@ public class PosterItemBuilder {
         return this;
     }
 
+    public PosterItemBuilder setId(String id) {
+        this.id = id;
+        return this;
+    }
     public PosterItem createPosterItem() {
-        return new PosterItem(x, y, width, height, name, imageId, imageBytes);
+        return new PosterItem(id, x, y, width, height, name, type, imageBytes, color, rotation);
     }
 }

@@ -1,34 +1,50 @@
 package ltg.evl.uic.poster.json.mongo;
 
-import de.caluga.morphium.annotations.Entity;
-import de.caluga.morphium.annotations.Id;
-import de.caluga.morphium.annotations.Reference;
-import de.caluga.morphium.annotations.caching.NoCache;
-import org.bson.types.ObjectId;
+import com.fasterxml.jackson.jr.ob.JSON;
+import com.google.api.client.json.GenericJson;
+import com.google.api.client.util.Key;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@NoCache
-@Entity(translateCamelCase = true)
-public class Poster {
+public class Poster extends GenericJson {
 
-    @Id
-    private ObjectId id;
+    @Key
+    private String id;
+    @Key
     private int height;
+    @Key
     private int width;
+    @Key
     private String name;
+    @Key
+    private String color;
 
-    @Reference
-    private List<ltg.evl.uic.poster.json.mongo.PosterItem> posterItems = new ArrayList<>();
+//    private List<PosterItem> posterItems = new ArrayList<>();
+
+    @Key
+    private List<String> posterItems = new ArrayList<>();
 
     public Poster() {
     }
 
-    public Poster(int height, int width, String name) {
+    public Poster(String id, int height, int width, String name) {
         this.height = height;
         this.width = width;
         this.name = name;
+        this.id = id;
+    }
+
+    public static Poster toObj(String json) {
+        try {
+            Poster bean = JSON.std.beanFrom(Poster.class, json);
+            return bean;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
     @Override
@@ -36,13 +52,12 @@ public class Poster {
         return "poster";
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public Poster setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
-        return this;
     }
 
     public int getHeight() {
@@ -67,21 +82,47 @@ public class Poster {
         return name;
     }
 
+//    public List<PosterItem> getPosterItems() {
+//        return posterItems;
+//    }
+//
+//    public void setPosterItems(List<PosterItem> posterItems) {
+//        this.posterItems = posterItems;
+//    }
+//
+//    public void addPosterItems(PosterItem posterItem) {
+//        posterItems.add(posterItem);
+//
+//    }
+
     public Poster setName(String name) {
         this.name = name;
         return this;
     }
 
-    public List<PosterItem> getPosterItems() {
+    public List<String> getPosterItems() {
         return posterItems;
     }
 
-    public void setPosterItems(List<PosterItem> posterItems) {
+    public void setPosterItems(List<String> posterItems) {
         this.posterItems = posterItems;
     }
 
-    public void addPosterItems(PosterItem posterItem) {
+    public void addPosterItems(String posterItem) {
         posterItems.add(posterItem);
 
+    }
+
+    public String toJSON() {
+
+        String json = null;
+        try {
+            json = JSON.std.asString(this);
+            return json;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

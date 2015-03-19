@@ -5,7 +5,6 @@ import ltg.evl.uic.poster.json.mongo.PosterItem;
 import ltg.evl.uic.poster.widgets.PictureZone;
 import ltg.evl.util.ImageLoader;
 import processing.core.PImage;
-import vialab.SMT.SMT;
 
 /**
  * Created by aperritano on 2/20/15.
@@ -22,11 +21,10 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                                                   posterItem.getHeight());
 
 
-        boolean hasAdded = SMT.add(pictureZone);
-        if (hasAdded) {
-            // topBarZone.stopTimer();
-            pictureZone.startAnimation(true);
-        }
+//        boolean hasAdded = SMT.add(pictureZone);
+//        if (hasAdded) {
+//            pictureZone.startAnimation(true);
+//        }
 
 
         return pictureZone;

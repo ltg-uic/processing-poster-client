@@ -131,7 +131,7 @@ public class ParseTest {
 //    @Test
 //    public void getPosterItem() {
 //        ParseQuery<PItem> query = ParseQuery.getQuery(PItem.class);
-//      //  query.whereLessThanOrEqualTo("type", "image");
+//      //  query.whereLessThanOrEqualTo("getType", "image");
 //
 //        final ArrayList<String> ids = new ArrayList<>();
 //        query.findInBackground(new FindCallback<PItem>() {
