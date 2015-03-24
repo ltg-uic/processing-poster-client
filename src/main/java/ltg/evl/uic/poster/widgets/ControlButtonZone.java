@@ -29,9 +29,9 @@ public class ControlButtonZone extends Zone {
     public ControlButtonZone(String name, int x, int y, int width, int height, String buttonText) {
         super(name, x, y, width, height);
 
-        this.buttonBackground = StyleHelper.createColor("button.color.background");
-        this.buttonOutline = StyleHelper.createColor("button.color.outline");
-        this.buttonHighlight = StyleHelper.createColor("button.color.highlight");
+        this.buttonBackground = StyleHelper.helper().createColor("button.color.background");
+        this.buttonOutline = StyleHelper.helper().createColor("button.color.outline");
+        this.buttonHighlight = StyleHelper.helper().createColor("button.color.highlight");
         this.buttonColor = buttonBackground;
 
         this.buttonFont = StyleHelper.helper().createFont("button.font.name", "button.font.size");

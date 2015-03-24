@@ -1,32 +1,31 @@
 package tmp;
 
-import vialab.SMT.SwipeKeyboard;
+import processing.core.PFont;
+import vialab.SMT.TextBox;
 import vialab.SMT.Zone;
 
-import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 /**
  * Created by aperritano on 8/11/14.
  */
-public class TextBoxZone extends Zone implements KeyListener {
+public class TextBoxZone extends TextBox implements KeyListener {
 
+    private PFont font = null;
     private String textstring;
-    private SwipeKeyboard keyboard;
 
-    public TextBoxZone(String id, int x, int y, int width, int height, String textstring) {
+    public TextBoxZone(String id, int x, int y, int width, int height) {
         super(id, x, y, width, height);
         this.setTextstring(textstring);
-        keyboard = new SwipeKeyboard();
-        keyboard.setLocation( x, y+200);
-        keyboard.addKeyListener(this);
-        keyboard.setVisible(false);
-        keyboard.setPickable(false);
+    }
 
-        Zone grandchild = new Zone( "Handle", x + width, y, 50, 50);
+    public TextBoxZone(String id, String content) {
+        super(content, id);
+    }
 
-        this.add(grandchild);
-
+    public TextBoxZone(String content, String name, int x, int y, int width, int height) {
+        super(content, name, x, y, width, height);
+        font = applet.createFont("HelveticaNeue-Bold", 23);
 
     }
 
@@ -34,49 +33,24 @@ public class TextBoxZone extends Zone implements KeyListener {
         fill(0);
     }
 
+    @Override
     public void draw() {
-       fill(79, 129, 189);
-       stroke(255);
-       rect( 0, 0, dimension.width, dimension.height);
-       //draw text
-       fill(255);
-       textAlign(RIGHT, CENTER);
-       textSize(15);
-       text(getTextstring(), dimension.width/2,dimension.height/2);
+        pushStyle();
+        //set background color
+        //fill(255);
+        //else
+        //     noFill();
+        //set frame color
+        //draw background/frame rectangle
+        //fill(0);
+        //rect( 0, 0, width, height);
+        //draw text
+        //fill(2);
+        textFont(font, 30);
+        //textSize(27);
+        text(getContent(), 0, 0, width + 100, height + 100);
+        popStyle();
    }
-
-    public void touch(TextBoxZone zone) {
-        keyboard.setVisible(true);
-        keyboard.setPickable(true);
-    }
-
-    public void touchDown(TextBoxZone zone) {
-        keyboard.setVisible(true);
-        keyboard.setPickable(true);
-    }
-
-    public void keyPressed(KeyEvent e) {
-        System.out.println( "KEY PRESSED: " + e.getKeyChar());
-
-        char key = e.getKeyChar();
-        switch( key ){
-            case '\b': //backspace
-                if( ! getTextstring().isEmpty())
-                    setTextstring(getTextstring().substring(
-                            0, getTextstring().length() - 1));
-                break;
-            case '\n': //enter
-                if( getTextstring().isEmpty()) break;
-                keyboard.setVisible( false);
-                keyboard.setPickable( false);
-                setTextstring(":: Access Granted ::");
-                break;
-            case (char) 65535: //unknown keys
-                break;
-            default: //any other keys
-                setTextstring(textstring += key);
-        }
-    }
 
     public String getTextstring() {
         return textstring;
@@ -86,11 +60,4 @@ public class TextBoxZone extends Zone implements KeyListener {
         this.textstring = textstring;
     }
 
-    public SwipeKeyboard getKeyboard() {
-        return keyboard;
-    }
-
-    public void setKeyboard(SwipeKeyboard keyboard) {
-        this.keyboard = keyboard;
-    }
 }

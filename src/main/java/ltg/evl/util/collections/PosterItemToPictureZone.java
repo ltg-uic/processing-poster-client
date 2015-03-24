@@ -12,21 +12,13 @@ import processing.core.PImage;
 public class PosterItemToPictureZone implements Function<PosterItem, PictureZone> {
     @Override
     public PictureZone apply(PosterItem posterItem) {
-
-
         PImage pImage = ImageLoader.toPImage(posterItem.getImageBytes());
-        PictureZone pictureZone = new PictureZone(pImage, posterItem.getId().toString(),
+
+        PictureZone pictureZone = new PictureZone(pImage, posterItem.getUuid().toString(),
                                                   posterItem.getX(),
                                                   posterItem.getY(), posterItem.getWidth(),
                                                   posterItem.getHeight());
-
-
-//        boolean hasAdded = SMT.add(pictureZone);
-//        if (hasAdded) {
-//            pictureZone.startAnimation(true);
-//        }
-
-
         return pictureZone;
+
     }
 }

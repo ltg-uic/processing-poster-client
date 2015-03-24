@@ -1,10 +1,7 @@
 package tmp;
 
-import javafx.scene.paint.Color;
 import processing.core.PFont;
 import vialab.SMT.ButtonZone;
-
-import static java.lang.Math.random;
 
 /**
  * Created by aperritano on 7/31/14.
@@ -24,6 +21,8 @@ public class ControlButtonZone extends ButtonZone {
 
         //blic ButtonZone(String name, int x, int y, int width, int height, String text, PFont font,
         //this(name, x, y, width, height, text, 16, font, angle);
+
+
         deactivated = false;
         this.buttonStartX = buttonStartX;
         this.buttonStartY = buttonStartY;

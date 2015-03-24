@@ -4,7 +4,7 @@ public class PosterBuilder {
     private int height;
     private int width;
     private String name;
-    private String id;
+    private String uuid;
 
     public PosterBuilder setHeight(int height) {
         this.height = height;
@@ -21,12 +21,12 @@ public class PosterBuilder {
         return this;
     }
 
-    public PosterBuilder setId(String id) {
-        this.id = id;
+    public PosterBuilder setUuid(String uuid) {
+        this.uuid = this.uuid;
         return this;
     }
 
     public Poster createPoster() {
-        return new Poster(id, height, width, name);
+        return new Poster(uuid, height, width, name);
     }
 }

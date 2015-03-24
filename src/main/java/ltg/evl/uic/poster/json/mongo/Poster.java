@@ -3,6 +3,7 @@ package ltg.evl.uic.poster.json.mongo;
 import com.fasterxml.jackson.jr.ob.JSON;
 import com.google.api.client.json.GenericJson;
 import com.google.api.client.util.Key;
+import org.bson.types.ObjectId;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,8 +11,8 @@ import java.util.List;
 
 public class Poster extends GenericJson {
 
-    @Key
-    private String id;
+    @Key("_id")
+    private ObjectId id;
     @Key
     private int height;
     @Key
@@ -20,8 +21,8 @@ public class Poster extends GenericJson {
     private String name;
     @Key
     private String color;
-
-//    private List<PosterItem> posterItems = new ArrayList<>();
+    @Key
+    private String uuid;
 
     @Key
     private List<String> posterItems = new ArrayList<>();
@@ -29,11 +30,11 @@ public class Poster extends GenericJson {
     public Poster() {
     }
 
-    public Poster(String id, int height, int width, String name) {
+    public Poster(String uuid, int height, int width, String name) {
         this.height = height;
         this.width = width;
         this.name = name;
-        this.id = id;
+        this.uuid = uuid;
     }
 
     public static Poster toObj(String json) {
@@ -52,11 +53,11 @@ public class Poster extends GenericJson {
         return "poster";
     }
 
-    public String getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 
@@ -81,19 +82,6 @@ public class Poster extends GenericJson {
     public String getName() {
         return name;
     }
-
-//    public List<PosterItem> getPosterItems() {
-//        return posterItems;
-//    }
-//
-//    public void setPosterItems(List<PosterItem> posterItems) {
-//        this.posterItems = posterItems;
-//    }
-//
-//    public void addPosterItems(PosterItem posterItem) {
-//        posterItems.add(posterItem);
-//
-//    }
 
     public Poster setName(String name) {
         this.name = name;
@@ -124,5 +112,13 @@ public class Poster extends GenericJson {
         }
 
         return null;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

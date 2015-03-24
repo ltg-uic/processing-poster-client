@@ -4,14 +4,19 @@ import com.fasterxml.jackson.jr.ob.JSON;
 import com.google.api.client.json.GenericJson;
 import com.google.api.client.util.Key;
 import com.google.common.base.Objects;
+import org.bson.types.ObjectId;
 
 import java.io.IOException;
 
 public class PosterItem extends GenericJson {
 
 
+    public static String IMAGE = "img";
+    public static String TEXT = "txt";
+    @Key("_id")
+    private ObjectId id;
     @Key
-    private String id;
+    private String uuid;
     @Key
     private int x;
     @Key
@@ -30,14 +35,17 @@ public class PosterItem extends GenericJson {
     private String imageBytes;
     @Key
     private String color;
+    @Key
+    private String content;
+
 
 
     public PosterItem() {
     }
 
-    public PosterItem(String id, int x, int y, int width, int height, String name, String type, String imageBytes,
+    public PosterItem(String uuid, int x, int y, int width, int height, String name, String type, String imageBytes,
                       String color, int rotation) {
-        this.id = id;
+        this.uuid = uuid;
         this.x = x;
         this.y = y;
         this.width = width;
@@ -56,6 +64,14 @@ public class PosterItem extends GenericJson {
         }
         return null;
 
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public int getX() {
@@ -114,11 +130,11 @@ public class PosterItem extends GenericJson {
         this.imageBytes = imageBytes;
     }
 
-    public String getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 
@@ -127,6 +143,7 @@ public class PosterItem extends GenericJson {
         return Objects.toStringHelper(this)
                       .omitNullValues()
                       .add("id", id)
+                      .add("uuid", uuid)
                       .add("x", getX())
                       .add("y", getY())
                       .add("rotation", getRotation())
@@ -135,6 +152,7 @@ public class PosterItem extends GenericJson {
                       .add("height", getHeight())
                       .add("width", getWidth())
                       .add("Color", getColor())
+                      .add("content", getContent())
                       .toString();
 
     }
@@ -166,5 +184,13 @@ public class PosterItem extends GenericJson {
         }
 
         return null;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

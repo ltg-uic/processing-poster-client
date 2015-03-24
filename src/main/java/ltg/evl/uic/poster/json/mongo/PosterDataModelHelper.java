@@ -11,29 +11,22 @@ import java.util.List;
 public class PosterDataModelHelper {
 
     private static PosterDataModelHelper ourInstance = new PosterDataModelHelper();
-    private final EventBus eventBus;
+    public final EventBus eventBus;
 
-    private List<User> allUsers = Lists.newArrayList();
-    private List<PosterItem> allPosterItems = Lists.newArrayList();
-    private List<Poster> allPosters = Lists.newArrayList();
+    public List<User> allUsers = Lists.newArrayList();
+    public List<PosterItem> allPosterItems = Lists.newArrayList();
+    public List<Poster> allPosters = Lists.newArrayList();
 
     private Boolean hasNotFinishedFetchingAll = true;
     //  private List<User> allConfigurations = Lists.newArrayList();
 
 
     private PosterDataModelHelper() {
-
-
         eventBus = new EventBus();
-
     }
 
     public static PosterDataModelHelper getInstance() {
         return ourInstance;
-    }
-
-    public void addUserSubscriber(UserSubscriber userSubscriber) {
-        eventBus.register(userSubscriber);
     }
 
     public void addObjectSubscriber(ObjectSubscriber objectSubscriber) {
@@ -52,12 +45,6 @@ public class PosterDataModelHelper {
         allPosters.addAll(posters);
     }
 
-    public void updatePosterItemsCollection(PosterItem posterItem) {
-        allPosterItems.add(posterItem);
-        //  allPosters.get(0).addPosterItems(posterItem.getId());
-        // eventBus.post(new ObjectEvent(ObjectEvent.OBJ_TYPES.POST_ITEM, posterItem));
-    }
-
     public void updateUserCollection(User user) {
         allUsers.add(user);
     }
@@ -70,7 +57,7 @@ public class PosterDataModelHelper {
         List<Poster> filtered = Lists.newArrayList();
         for (String posterId : user.getPosters()) {
             for (Poster poster : allPosters) {
-                if (poster.getId().equals(posterId)) {
+                if (poster.getUuid().equals(posterId)) {
                     filtered.add(poster);
                 }
             }
@@ -82,7 +69,7 @@ public class PosterDataModelHelper {
         List<PosterItem> filtered = Lists.newArrayList();
         for (String posterItemId : poster.getPosterItems()) {
             for (PosterItem posterItem : allPosterItems) {
-                if (posterItem.getId().equals(posterItemId)) {
+                if (posterItem.getUuid().equals(posterItemId)) {
                     filtered.add(posterItem);
                 }
             }
@@ -91,7 +78,23 @@ public class PosterDataModelHelper {
     }
 
     public void initializationDone() {
-        eventBus.post(new CollectionEvent(CollectionEvent.EVENT_TYPES.ADD_ALL, allUsers));
+        eventBus.post(new ObjectEvent(ObjectEvent.OBJ_TYPES.INIT_ALL, null));
 
+    }
+
+    public void updatePosterItemCollection(PosterItem posterItem) {
+
+//        ce.setPosterItems(Lists.newArrayList(posterItem));
+        allPosterItems.add(posterItem);
+        eventBus.post(new ObjectEvent(ObjectEvent.OBJ_TYPES.POST_ITEM, posterItem));
+        //eventBus.post(ce);
+    }
+
+    public void addPosterItemUUIDWithPosterId(String posterItemUuuid, String posterId) {
+        for (Poster poster : allPosters) {
+            if (poster.getUuid().equals(posterId)) {
+                poster.addPosterItems(posterItemUuuid);
+            }
+        }
     }
 }

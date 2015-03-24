@@ -47,8 +47,8 @@ public class UserScreenMain extends PApplet implements LoadUserListerner, SaveUs
     public void doInit() {
         System.out.println("Setup started");
         StyleHelper.helper().setGraphicsContext(this);
-        mainBackgroundColor = StyleHelper.createColor("color.mainBackground");
-        defaultBarColor = StyleHelper.createColor("color.keyboard.background");
+        mainBackgroundColor = StyleHelper.helper().createColor("color.mainBackground");
+        defaultBarColor = StyleHelper.helper().createColor("color.keyboard.background");
     }
 
     @Override

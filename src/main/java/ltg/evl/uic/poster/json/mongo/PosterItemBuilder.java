@@ -1,6 +1,7 @@
 package ltg.evl.uic.poster.json.mongo;
 
 public class PosterItemBuilder {
+
     private int x;
     private int y;
     private int width;
@@ -8,7 +9,7 @@ public class PosterItemBuilder {
     private String name;
     private String type;
     private String imageBytes;
-    private String id;
+    private String uuid;
     private String color;
     private int rotation;
 
@@ -58,11 +59,11 @@ public class PosterItemBuilder {
         return this;
     }
 
-    public PosterItemBuilder setId(String id) {
-        this.id = id;
+    public PosterItemBuilder setUuid(String uuid) {
+        this.uuid = uuid;
         return this;
     }
     public PosterItem createPosterItem() {
-        return new PosterItem(id, x, y, width, height, name, type, imageBytes, color, rotation);
+        return new PosterItem(uuid, x, y, width, height, name, type, imageBytes, color, rotation);
     }
 }

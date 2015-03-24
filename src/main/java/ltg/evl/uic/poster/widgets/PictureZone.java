@@ -32,16 +32,15 @@ public class PictureZone extends Zone {
     private int initialY = 0;
     
     public PictureZone(PImage image, String UUID, int x, int y, int width, int height) {
-        this(image, x, y, 0, 0);
+        this(image, x, y, width, height);
         this.UUID = UUID;
         this.initialX = x;
         this.initialY = y;
         this.setAnimationHeight(height);
         this.setAnimationWidth(width);
-        Ani.init(this.applet);
-        
-        
+//        Ani.init(this.applet);
     }
+
 
     public PictureZone(PosterItem posterItem, PImage image) {
         this(image, 300, 300, 10, 10);
@@ -220,19 +219,19 @@ public class PictureZone extends Zone {
 
     public void startAnimation(boolean isOUT) {
 
-        setX(initialX);
-        setY(initialY);
-
-        if (!isOUT) {
-            animationWidth = 0;
-            animationHeight = 0;
-        }
-
-        // define a Ani with callbacks, specify the method name after the keywords: onStart, onEnd, onDelayEnd and onUpdate
-        widthAni = new Ani(this, 1.5f, "width", animationWidth, Ani.EXPO_IN_OUT, "onStart:itsStarted");
-        heightAni = new Ani(this, 1.5f, "height", animationHeight, Ani.EXPO_IN_OUT, "onStart:itsStarted");
-        widthAni.start();
-        heightAni.start();
+//        setX(initialX);
+//        setY(initialY);
+//
+//        if (!isOUT) {
+//            animationWidth = 0;
+//            animationHeight = 0;
+//        }
+//
+//        // define a Ani with callbacks, specify the method name after the keywords: onStart, onEnd, onDelayEnd and onUpdate
+//        widthAni = new Ani(this, 1.5f, "width", animationWidth, Ani.EXPO_IN_OUT, "onStart:itsStarted");
+//        heightAni = new Ani(this, 1.5f, "height", animationHeight, Ani.EXPO_IN_OUT, "onStart:itsStarted");
+//        widthAni.start();
+//        heightAni.start();
     }
 
     public void itsStarted() {

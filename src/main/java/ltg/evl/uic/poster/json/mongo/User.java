@@ -3,6 +3,7 @@ package ltg.evl.uic.poster.json.mongo;
 import com.fasterxml.jackson.jr.ob.JSON;
 import com.google.api.client.json.GenericJson;
 import com.google.api.client.util.Key;
+import org.bson.types.ObjectId;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,15 +11,21 @@ import java.util.List;
 
 
 public class User extends GenericJson {
-    @Key
-    private String id;
-    @Key
-    private String name;
 
-    //private List<Poster> posters = new ArrayList<>();
+    @Key("_id")
+    public ObjectId id;
 
     @Key
-    private List<String> posters = new ArrayList<>();
+    public String uuid;
+
+    @Key
+    public String name;
+
+    @Key
+    public List<String> nameTags = new ArrayList<>();
+
+    @Key
+    public List<String> posters = new ArrayList<>();
 
 
     public User() {
@@ -26,6 +33,12 @@ public class User extends GenericJson {
 
     public User(String name) {
         this.name = name;
+    }
+
+    public User(String name, String uuid, List<String> nameTags) {
+        this.name = name;
+        this.uuid = uuid;
+        this.nameTags = nameTags;
     }
 
     public static User toObj(String json) {
@@ -50,6 +63,14 @@ public class User extends GenericJson {
 
     }
 
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
     public String getName() {
         return name;
     }
@@ -58,27 +79,11 @@ public class User extends GenericJson {
         this.name = name;
     }
 
-//    public List<Poster> getPosters() {
-//        return posters;
-//    }
-//
-//    public void setPosters(List<Poster> posters) {
-//        this.posters = posters;
-//    }
-//
-//    public void addPoster(Poster poster) {
-//        posters.add(poster);
-//    }
-//
-//    public void removePoster(Poster poster) {
-//        posters.remove(poster);
-//    }
-
-    public String getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 
@@ -111,4 +116,11 @@ public class User extends GenericJson {
         return null;
     }
 
+    public List<String> getNameTags() {
+        return nameTags;
+    }
+
+    public void setNameTags(List<String> nameTags) {
+        this.nameTags = nameTags;
+    }
 }

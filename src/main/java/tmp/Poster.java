@@ -1,6 +1,8 @@
 package tmp;
 
+import com.google.common.io.Resources;
 import ltg.commons.SimpleMQTTClient;
+import ltg.evl.uic.poster.widgets.RemoveButtonZone;
 import processing.core.PApplet;
 import processing.core.PFont;
 import vialab.SMT.SMT;
@@ -38,7 +40,7 @@ public class Poster extends PApplet {
 //            }
 //        });
 
-        PApplet.main(new String[]{"tmp.PPoster"});
+        PApplet.main(new String[]{"tmp.Poster"});
     }
 
 
@@ -61,6 +63,58 @@ public class Poster extends PApplet {
         SMT.add(editButton);
         SMT.add(newTextButton);
 
+//        TextZone textZone = new TextZone("HELLO", 0, 0, 200, 200, false);
+
+        javaxt.io.Image image = new javaxt.io.Image(Resources.getResource("1.jpg").getPath());
+
+//        PosterItem pi = new PosterItemBuilder().setName("posteritem-test")
+//                                               .setUuid("A41B9E1B8325873000044")
+//                                               .setWidth(200)
+//                                               .setHeight(200)
+//                                               .setX(5)
+//                                               .setY(5)
+//                                               .setColor("#34567")
+//                                               .setRotation(0)
+//                                               .setType("jpg").setImageBytes(
+//                        Base64.encodeBase64String(image.getByteArray()))
+//                                               .createPosterItem();
+//
+//
+//
+//        FluentIterable<PictureZone> pictureZones = FluentIterable.from(Lists.newArrayList(pi))
+//                                                                 .transform(new PosterItemToPictureZone());
+//        TextBoxZone tbx = new TextBoxZone("HELLLLO", "Texting", 5, 5, 300, 35);
+//        for (PictureZone pictureZone : pictureZones) {
+//            if( pictureZone != null ) {
+//
+//
+////                SMT.add(pictureZone);
+////                pictureZone.add();
+//
+//               // pictureZone.add(textZone);
+//                //boolean hasAdded = SMT.add(pictureZone);
+//
+//                //pictureZone.startAnimation(true);
+//            }
+//        }
+
+
+        RemoveButtonZone removeButtonZone = new RemoveButtonZone("RemoveButton", "Remove", controlButtonFont, 200, 200,
+                                                                 100, 60);
+
+        SMT.add(removeButtonZone);
+
+
+        //textZone.addText("HEHHHHHHHHHH");
+
+//        TextBox textBox = new TextBox("hu", "HELLLO", 200, 200, 200, 200);
+//        textBox.setBgColor(255,255,255,255);
+//        textBox.setTextColor(57,57,57,255);
+
+//        TextBoxZone tbx = new TextBoxZone("HELLLLO", "Texting", 200, 200, 300, 35);
+//
+//
+//        SMT.add(tbx);
     }
 
     public void draw() {
@@ -86,8 +140,6 @@ public class Poster extends PApplet {
         int x = new Float(random(10, 500)).intValue();
         int y = new Float(random(10, 500)).intValue();
 
-        TextBoxZone tbx = new TextBoxZone("Texting", x, y, 300, 35, "");
-        SMT.add(tbx,tbx.getKeyboard() );
 
     }
 

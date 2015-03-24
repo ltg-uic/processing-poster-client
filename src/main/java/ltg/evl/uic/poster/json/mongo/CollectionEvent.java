@@ -7,12 +7,12 @@ import java.util.List;
  */
 public class CollectionEvent {
 
-    private final List<User> users;
     private final EVENT_TYPES eventType;
+    private List<User> users = null;
+    private List<PosterItem> posterItems = null;
 
-    public CollectionEvent(EVENT_TYPES eventType, List<User> users) {
+    public CollectionEvent(EVENT_TYPES eventType) {
         this.eventType = eventType;
-        this.users = users;
     }
 
 
@@ -24,5 +24,17 @@ public class CollectionEvent {
         return users;
     }
 
-    public enum EVENT_TYPES {ADD_ALL}
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public List<PosterItem> getPosterItems() {
+        return this.posterItems;
+    }
+
+    public void setPosterItems(List<PosterItem> posterItems) {
+        this.posterItems = posterItems;
+    }
+
+    public enum EVENT_TYPES {ADD_ALL, ADD_POSTER_ITEM, ADD_USER, ADD_POSTER, INIT}
 }

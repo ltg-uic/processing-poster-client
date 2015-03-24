@@ -1,6 +1,5 @@
 package ltg.evl.util;
 
-import org.apache.commons.configuration.*;
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PImage;
@@ -11,17 +10,9 @@ import processing.core.PImage;
 public class StyleHelper {
 
 
-    private static CompositeConfiguration config;
-    private static PApplet graphicsContext;
+    private PApplet graphicsContext;
 
     private StyleHelper() {
-        config = new CompositeConfiguration();
-        config.addConfiguration(new SystemConfiguration());
-        try {
-            config.addConfiguration(new PropertiesConfiguration(ClassLoader.getSystemResource("system.properties")));
-        } catch (ConfigurationException e) {
-            e.printStackTrace();
-        }
 
     }
 
@@ -29,8 +20,8 @@ public class StyleHelper {
         return StaticHolder.INSTANCE;
     }
 
-    public static int createColor(String color) {
-        String[] c = config.getStringArray(color);
+    public int createColor(String color) {
+        String[] c = PosterServices.getInstance().getConfig().getStringArray(color);
         return graphicsContext.color(Float.parseFloat(c[0]), Float.parseFloat(c[1]), Float.parseFloat(c[2]),
                                      Float.parseFloat(c[3]));
     }
@@ -41,15 +32,12 @@ public class StyleHelper {
     }
 
     public void setGraphicsContext(PApplet graphicsContext) {
-        StyleHelper.graphicsContext = graphicsContext;
-    }
-
-    public Configuration getConfiguration() {
-        return config;
+        this.graphicsContext = graphicsContext;
     }
 
     public PFont createFont(String fontName, String fontSize) {
-        return graphicsContext.createFont(config.getString(fontName), config.getInt(fontSize));
+        return graphicsContext.createFont(PosterServices.getInstance().getConfig().getString(fontName),
+                                          PosterServices.getInstance().getConfig().getInt(fontSize));
     }
 
     public PImage createImage(String fileName) {

@@ -7,12 +7,12 @@ import com.google.api.client.json.GenericJson;
  */
 public class ObjectEvent {
 
-    private final GenericJson jsonObject;
+    private final GenericJson genericJson;
     private final OBJ_TYPES eventType;
 
-    public ObjectEvent(OBJ_TYPES eventType, GenericJson jsonObject) {
+    public ObjectEvent(OBJ_TYPES eventType, GenericJson genericJson) {
         this.eventType = eventType;
-        this.jsonObject = jsonObject;
+        this.genericJson = genericJson;
     }
 
 
@@ -20,10 +20,10 @@ public class ObjectEvent {
         return eventType;
     }
 
-    public GenericJson getJsonObject() {
-        return jsonObject;
+    public GenericJson getGenericJson() {
+        return genericJson;
     }
 
 
-    public enum OBJ_TYPES {USER, POST_ITEM, POSTER}
+    public enum OBJ_TYPES {USER, POST_ITEM, POSTER, INIT_ALL}
 }
