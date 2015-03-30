@@ -3,17 +3,17 @@ package ltg.evl.uic.poster.json.mongo;
 import com.fasterxml.jackson.jr.ob.JSON;
 import com.google.api.client.json.GenericJson;
 import com.google.api.client.util.Key;
-import org.bson.types.ObjectId;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class User extends GenericJson {
 
-    @Key("_id")
-    public ObjectId id;
+    @Key
+    public Map _id;
 
     @Key
     public String uuid;
@@ -79,12 +79,12 @@ public class User extends GenericJson {
         this.name = name;
     }
 
-    public ObjectId getId() {
-        return id;
+    public Map get_id() {
+        return _id;
     }
 
-    public void setId(ObjectId id) {
-        this.id = id;
+    public void set_id(Map _id) {
+        this._id = _id;
     }
 
     public List<String> getPosters() {
@@ -101,6 +101,17 @@ public class User extends GenericJson {
 
     public void removePoster(String poster) {
         posters.remove(poster);
+    }
+
+
+    @Override
+    public String toString() {
+        try {
+            return toPrettyString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public String toJSON() {

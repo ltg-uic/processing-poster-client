@@ -58,7 +58,7 @@ public class DBHelper {
 //
 //    public PosterItem getPosterItem(String uuid) {
 ////        for (PosterItem posterItem : users.get(0).getPosters().get(0).getPosterItems()) {
-////            if (posterItem.getId().toString().equals(uuid)) {
+////            if (posterItem.get_id().toString().equals(uuid)) {
 ////                return posterItem;
 ////            }
 ////        }
@@ -152,8 +152,8 @@ public class DBHelper {
 //        return user;
 //    }
 //
-//    public Poster getEmptyPoster(String postername) {
-//        Poster poster = new PosterBuilder().createPoster();
+//    public PosterTest getEmptyPoster(String postername) {
+//        PosterTest poster = new PosterBuilder().createPoster();
 //        poster.setName(postername);
 //        return poster;
 //    }

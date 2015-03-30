@@ -85,7 +85,8 @@ public class MongoDBTest {
         return pis;
     }
 
-    @Test
+
+    @Ignore
     public void multipleRequests() throws IOException, InterruptedException, GeneralSecurityException, ExecutionException {
 
         // testUser();
@@ -153,6 +154,28 @@ public class MongoDBTest {
 
     }
 
+    @Test
+    public void testObjectId() throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
+        // ObjectId o = new ObjectId("5516f60ce1b8325873000178");
+
+        //System.out.println("print " + o.toStringBabble() + " " + o.toStringMongod());
+
+        RESTHelper.getInstance().getAllCollections();
+
+        List<Poster> allPosters = PosterDataModelHelper.getInstance().allPosters;
+
+        for (Poster p : allPosters) {
+            System.out.println("Poster " + p.toPrettyString() + "\n\nOBJECT _id" + p.get_id().get("$oid"));
+        }
+
+        allPosters.get(0).getPosterItems().remove(0);
+
+        RESTHelper.getInstance()
+                  .postCollection(allPosters.get(0), RESTHelper.PosterUrl.updateDeletePoster(
+                          allPosters.get(0).get_id().get("$oid").toString(),
+                          RESTHelper.PosterUrl.REQUEST_TYPE.UPDATE), Poster.class);
+
+    }
 
     public Poster getPoster(String posterName) throws IOException {
         Poster poster = new PosterBuilder().setHeight(2876)

@@ -12,7 +12,7 @@ public class PictureZoneToPosterItem implements Function<PictureZone, PosterItem
     public PosterItem apply(PictureZone pictureZone) {
 //        String uuid = pictureZone.getUUID();
 //        for (PosterItem posterItem : RESTHelper.getInstance().users.get(0).getPosters().get(0).getPosterItems()) {
-//            if (posterItem.getId().toString().equals(uuid)) {
+//            if (posterItem.get_id().toString().equals(uuid)) {
 //                posterItem.setWidth(pictureZone.getWidth());
 //                posterItem.setHeight(pictureZone.getHeight());
 //                posterItem.setY(pictureZone.getY());

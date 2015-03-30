@@ -1,7 +1,10 @@
 package tmp;
 
+import ltg.evl.uic.poster.widgets.TextBoxZone;
 import processing.core.PFont;
 import vialab.SMT.ButtonZone;
+import vialab.SMT.SMT;
+import vialab.SMT.Zone;
 
 /**
  * Created by aperritano on 7/31/14.
@@ -14,7 +17,7 @@ public class ControlButtonZone extends ButtonZone {
     private final int buttonStartX;
     private final int pressedButtonColor;
     private final int unpressedButtonColor;
-
+    public boolean pressed = false;
 
     public ControlButtonZone(String name, int buttonStartX, int buttonStartY, int buttonWidth, int buttonHeight, String text, int pressedButtonColor, int unpressedButtonColor, PFont font) {
         super(name, buttonStartX, buttonStartY, buttonWidth, buttonHeight, text,font,0);
@@ -70,6 +73,17 @@ public class ControlButtonZone extends ButtonZone {
     }
 
     public void pressed() {
+        pressed = !pressed;
+
+        Zone[] activeZones = SMT.getZones();
+
+        for (Zone zone : activeZones) {
+            if (zone instanceof TextBoxZone) {
+                TextBoxZone t = (TextBoxZone) zone;
+                t.setVisible(pressed);
+            }
+        }
+
         this.color = pressedButtonColor;
         this.pressedColor = pressedButtonColor;
     }

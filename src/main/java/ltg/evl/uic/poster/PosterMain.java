@@ -9,12 +9,8 @@ import ltg.commons.SimpleMQTTClient;
 import ltg.evl.uic.poster.json.mongo.*;
 import ltg.evl.uic.poster.listeners.LoadUserListerner;
 import ltg.evl.uic.poster.listeners.SaveUserListerner;
-import ltg.evl.uic.poster.widgets.ControlButtonZone;
-import ltg.evl.uic.poster.widgets.ControlButtonZoneBuilder;
-import ltg.evl.uic.poster.widgets.PictureZone;
-import ltg.evl.uic.poster.widgets.TopBarZone;
+import ltg.evl.uic.poster.widgets.*;
 import ltg.evl.util.DownloadHelper;
-import ltg.evl.util.MQTTPipe;
 import ltg.evl.util.RESTHelper;
 import ltg.evl.util.StyleHelper;
 import ltg.evl.util.collections.PictureZoneToPosterItem;
@@ -24,10 +20,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import processing.core.PApplet;
 import processing.core.PFont;
-import tmp.TextBoxZone;
-import vialab.SMT.SMT;
-import vialab.SMT.TouchSource;
-import vialab.SMT.Zone;
+import vialab.SMT.*;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -81,7 +74,7 @@ public class PosterMain extends PApplet implements LoadUserListerner, SaveUserLi
 
         logger.debug("POSTER MQTT CLIENT STARTED");
 
-        MQTTPipe.getInstance();
+        // MQTTPipe.getInstance();
     }
 
     @Override
@@ -110,8 +103,20 @@ public class PosterMain extends PApplet implements LoadUserListerner, SaveUserLi
                     List<User> allUsers = PosterDataModelHelper.getInstance().allUsers;
 
                     if (allUsers != null && !allUsers.isEmpty()) {
-                        loadPosterForUser(allUsers.get(1));
+                        loadPosterForUser(allUsers.get(0));
                     }
+
+                } else if (objectEvent.getEventType().equals(ObjectEvent.OBJ_TYPES.DELETE_POSTER_ITEM)) {
+
+                    String posterItemId = objectEvent.getItemId();
+//                    for(PosterItem pi : PosterDataModelHelper.getInstance().allPosterItems) {
+//                        if(pi.getUuid().equals(posterItemId)) {
+//                            PosterDataModelHelper.getInstance().allPosterItems.remove(pi);
+//                        }
+//                    }
+
+
+                    SMT.remove(posterItemId);
 
                 }
 
@@ -166,6 +171,7 @@ public class PosterMain extends PApplet implements LoadUserListerner, SaveUserLi
 
         for (PictureZone pictureZone : pictureZones) {
             if (pictureZone != null) {
+
                 boolean hasAdded = SMT.add(pictureZone);
                 if (hasAdded) {
                     // topBarZone.stopTimer();
@@ -234,11 +240,30 @@ public class PosterMain extends PApplet implements LoadUserListerner, SaveUserLi
         saveButton.addSaveListener(new SaveUserListerner() {
             @Override
             public void saveUser(String userName) {
-                MQTTPipe.getInstance().publishMessage("HELLO");
+
+                saveUserLayout("");
+                // MQTTPipe.getInstance().publishMessage("HELLO");
             }
         });
-        //SMT.add(presentButton, editButton);
-        SMT.add(saveButton);
+
+        loadButton.addSaveListener(new SaveUserListerner() {
+            @Override
+            public void saveUser(String userName) {
+
+            }
+        });
+
+
+        ButtonZone testButton = new ButtonZone("TestButton", 100, 100, 200, 200, "EXIT Button") {
+
+            @Override
+            public void press(Touch touch) {
+                System.exit(0);
+            }
+        };
+
+        SMT.add(loadButton, testButton);
+        //SMT.add(saveButton);
         //loadButton.addLoadUserListener(this);
         //saveButton.addSaveListener(this);
     }

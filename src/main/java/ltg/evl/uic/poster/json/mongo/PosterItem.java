@@ -3,18 +3,18 @@ package ltg.evl.uic.poster.json.mongo;
 import com.fasterxml.jackson.jr.ob.JSON;
 import com.google.api.client.json.GenericJson;
 import com.google.api.client.util.Key;
-import com.google.common.base.Objects;
-import org.bson.types.ObjectId;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class PosterItem extends GenericJson {
 
 
+
     public static String IMAGE = "img";
     public static String TEXT = "txt";
-    @Key("_id")
-    private ObjectId id;
+    @Key
+    private Map _id;
     @Key
     private String uuid;
     @Key
@@ -37,8 +37,6 @@ public class PosterItem extends GenericJson {
     private String color;
     @Key
     private String content;
-
-
 
     public PosterItem() {
     }
@@ -130,32 +128,42 @@ public class PosterItem extends GenericJson {
         this.imageBytes = imageBytes;
     }
 
-    public ObjectId getId() {
-        return id;
+    public Map get_id() {
+        return _id;
     }
 
-    public void setId(ObjectId id) {
-        this.id = id;
+    public void set_id(Map _id) {
+        this._id = _id;
     }
 
+    @Override
     public String toString() {
-
-        return Objects.toStringHelper(this)
-                      .omitNullValues()
-                      .add("id", id)
-                      .add("uuid", uuid)
-                      .add("x", getX())
-                      .add("y", getY())
-                      .add("rotation", getRotation())
-                      .add("name", getName())
-                      .add("type", getType())
-                      .add("height", getHeight())
-                      .add("width", getWidth())
-                      .add("Color", getColor())
-                      .add("content", getContent())
-                      .toString();
-
+        try {
+            return this.toPrettyString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
+
+    //    public String toString() {
+//
+//        return Objects.toStringHelper(this)
+//                      .omitNullValues()
+//                      .add("_id", _id)
+//                      .add("uuid", uuid)
+//                      .add("x", getX())
+//                      .add("y", getY())
+//                      .add("rotation", getRotation())
+//                      .add("name", getName())
+//                      .add("type", getType())
+//                      .add("height", getHeight())
+//                      .add("width", getWidth())
+//                      .add("Color", getColor())
+//                      .add("content", getContent())
+//                      .toString();
+//
+//    }
 
     public String getColor() {
         return color;

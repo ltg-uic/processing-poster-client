@@ -8,12 +8,12 @@ import com.google.api.client.json.JsonObjectParser;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.Lists;
+import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.*;
 import ltg.evl.uic.poster.json.mongo.*;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.*;
@@ -39,7 +39,9 @@ public class RESTHelper {
 
     //Singleton constructor
     private RESTHelper() {
-        // enableLogging();
+        BASE_URL = PosterServices.getInstance().getConfig().getString("poster.base.url");
+        enableLogging();
+        //initAllCollections();
     }
 
 
@@ -86,8 +88,7 @@ public class RESTHelper {
     }
 
     public void initAllCollections() {
-        enableLogging();
-        BASE_URL = PosterServices.getInstance().getConfig().getString("poster.base.url");
+        //enableLogging();
 
         ListeningExecutorService service = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(10));
         ListenableFuture<Void> doRestCallsForAll = service.submit(new Callable<Void>() {
@@ -132,7 +133,7 @@ public class RESTHelper {
         HttpRequestFactory requestFactory =
                 transport.createRequestFactory(new HttpRequestInitializer() {
                     @Override
-                    public void initialize(com.google.api.client.http.HttpRequest request) throws IOException {
+                    public void initialize(HttpRequest request) throws IOException {
                         request.setParser(new JsonObjectParser(JSON_FACTORY));
                     }
 
@@ -145,18 +146,29 @@ public class RESTHelper {
             request = requestFactory.buildPostRequest(url, new JsonHttpContent(new JacksonFactory(), jsonObject));
             Future<HttpResponse> httpUserResponseFuture = request.executeAsync(pool);
             HttpResponse response = httpUserResponseFuture.get();
-            parseResponseObject(response, someClass);
+            parseResponseObject(response, someClass, PosterUrl.REQUEST_TYPE.ADD);
         } else if (url.request_type.equals(PosterUrl.REQUEST_TYPE.DELETE)) {
             request = requestFactory.buildDeleteRequest(url);
             Future<HttpResponse> httpUserResponseFuture = request.executeAsync(pool);
             HttpResponse response = httpUserResponseFuture.get();
-            parseResponseObject(response, someClass);
+            parseResponseObject(response, someClass, PosterUrl.REQUEST_TYPE.DELETE);
         } else if (url.request_type.equals(PosterUrl.REQUEST_TYPE.UPDATE)) {
             request = requestFactory.buildPutRequest(url, new JsonHttpContent(new JacksonFactory(), jsonObject));
             Future<HttpResponse> httpUserResponseFuture = request.executeAsync(pool);
             HttpResponse response = httpUserResponseFuture.get();
-            parseResponseObject(response, someClass);
+            parseResponseObject(response, someClass, PosterUrl.REQUEST_TYPE.UPDATE);
         }
+
+
+    }
+
+    public void deletePosterItem(
+            final String uuid) throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
+
+        final ImmutableList<Poster> imPosters = ImmutableList.copyOf(PosterDataModelHelper.getInstance().allPosters);
+
+        final ImmutableList<PosterItem> imPosterItems = ImmutableList.copyOf(
+                PosterDataModelHelper.getInstance().allPosterItems);
 
 
     }
@@ -167,7 +179,6 @@ public class RESTHelper {
         ExecutorService pool = Executors.newCachedThreadPool();
 
         ApacheHttpTransport transport = new ApacheHttpTransport.Builder().doNotValidateCertificate().build();
-
 
         HttpRequestFactory requestFactory =
                 transport.createRequestFactory(new HttpRequestInitializer() {
@@ -227,11 +238,15 @@ public class RESTHelper {
             logger.log(Level.INFO, "PROCESSING USER RESPONSE");
             User[] users = response.parseAs(User[].class);
 
+            List<User> userList = Lists.newArrayList();
             if (users.length < 0) {
-                List<User> userList = Lists.newArrayList();
+
                 PosterDataModelHelper.getInstance().updateAllUserCollection(userList);
             } else {
-                PosterDataModelHelper.getInstance().updateAllUserCollection(Arrays.asList(users));
+                for (User u : users) {
+                    userList.add(u);
+                }
+                PosterDataModelHelper.getInstance().updateAllUserCollection(userList);
             }
 
 
@@ -239,22 +254,31 @@ public class RESTHelper {
             logger.log(Level.INFO, "PROCESSING POSTER RESPONSE");
             Poster[] posters = response.parseAs(Poster[].class);
 
+            List<Poster> posterList = Lists.newArrayList();
             if (posters.length < 0) {
-                List<Poster> posterList = Lists.newArrayList();
+
                 PosterDataModelHelper.getInstance().updateAllPosterCollection(posterList);
             } else {
-                PosterDataModelHelper.getInstance().updateAllPosterCollection(Arrays.asList(posters));
+
+                for (Poster p : posters) {
+                    posterList.add(p);
+                }
+                PosterDataModelHelper.getInstance().updateAllPosterCollection(posterList);
             }
 
         } else if (someClass.equals(PosterItem.class)) {
             logger.log(Level.INFO, "PROCESSING POSTER_ITEM RESPONSE");
             PosterItem[] posterItems = response.parseAs(PosterItem[].class);
 
+            List<PosterItem> posterItemList = Lists.newArrayList();
             if (posterItems.length < 0) {
-                List<PosterItem> posterItemList = Lists.newArrayList();
                 PosterDataModelHelper.getInstance().updateAllPosterItemsCollection(posterItemList);
             } else {
-                PosterDataModelHelper.getInstance().updateAllPosterItemsCollection(Arrays.asList(posterItems));
+
+                for (PosterItem pi : posterItems) {
+                    posterItemList.add(pi);
+                }
+                PosterDataModelHelper.getInstance().updateAllPosterItemsCollection(posterItemList);
             }
         }
 
@@ -289,7 +313,7 @@ public class RESTHelper {
                     // we want this handler to run immediately after we push the big red button!
                     public void onSuccess(Void nothing) {
                         logger.log(Level.INFO, "DONE! FETCH POSTER ITEM");
-                        //update poster with new id
+                        //update poster with new _id
                     }
 
                     public void onFailure(Throwable thrown) {
@@ -336,15 +360,18 @@ public class RESTHelper {
 
         HttpResponse posterItemReponse = httpPosterItemResponseFuture.get();
 
-        String posterItemUUID = parseResponseObject(posterItemReponse, PosterItem.class);
+        String posterItemUUID = parseResponseObject(posterItemReponse, PosterItem.class, PosterUrl.REQUEST_TYPE.ADD);
 
         PosterDataModelHelper.getInstance()
                              .addPosterItemUUIDWithPosterId(posterItemUUID, posterMessage.getPosterUuid());
 
     }
 
-    private String parseResponseObject(HttpResponse response, Class<?> someClass) throws IOException {
+    private String parseResponseObject(HttpResponse response, Class<?> someClass,
+                                       PosterUrl.REQUEST_TYPE requestType) throws IOException {
 
+        if (requestType.equals(PosterUrl.REQUEST_TYPE.DELETE) || requestType.equals(PosterUrl.REQUEST_TYPE.UPDATE))
+            return null;
 
         if (someClass.equals(User.class)) {
             User user = response.parseAs(User.class);

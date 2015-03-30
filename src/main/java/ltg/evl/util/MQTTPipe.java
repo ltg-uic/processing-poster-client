@@ -31,7 +31,7 @@ public class MQTTPipe implements MessageListener {
         enableLogging();
 
         BASE_ADDRESS = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.host");
-        BASE_CLIENT_ID = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.client.id");
+        BASE_CLIENT_ID = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.client._id");
         BASE_CHANNEL_IN = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.channel.in");
         BASE_CHANNEL_OUT = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.channel.out");
 
