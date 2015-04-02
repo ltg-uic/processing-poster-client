@@ -42,7 +42,7 @@ public class PosterItem extends GenericJson {
     }
 
     public PosterItem(String uuid, int x, int y, int width, int height, String name, String type, String imageBytes,
-                      String color, int rotation) {
+                      String color, int rotation, String content) {
         this.uuid = uuid;
         this.x = x;
         this.y = y;
@@ -51,6 +51,7 @@ public class PosterItem extends GenericJson {
         this.name = name;
         this.type = type;
         this.imageBytes = imageBytes;
+        this.content = content;
     }
 
     public static PosterItem toObj(String json) {

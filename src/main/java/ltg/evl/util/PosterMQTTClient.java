@@ -12,10 +12,10 @@ public class PosterMQTTClient extends SimpleMQTTClient {
 
 //        this.connection.listener(new Listener() {
 //            public void onConnected() {
-//                publish( PosterServices.getInstance().getConfig().getString("poster.base.mqtt.channel"), "WE ARE CONNECTED BITCHES");
+//                publish( PosterServices.helper().getConfig().getString("poster.base.mqtt.channel"), "WE ARE CONNECTED BITCHES");
 //            }
 //            public void onDisconnected() {
-//                publish( PosterServices.getInstance().getConfig().getString("poster.base.mqtt.channel"), "WE ARE NOT CONNECTED BITCHES");
+//                publish( PosterServices.helper().getConfig().getString("poster.base.mqtt.channel"), "WE ARE NOT CONNECTED BITCHES");
 //            }
 //
 //            @Override
@@ -25,7 +25,7 @@ public class PosterMQTTClient extends SimpleMQTTClient {
 //
 //            @Override
 //            public void onFailure(Throwable throwable) {
-//                publish( PosterServices.getInstance().getConfig().getString("poster.base.mqtt.channel"), "FAIL BITCHES");
+//                publish( PosterServices.helper().getConfig().getString("poster.base.mqtt.channel"), "FAIL BITCHES");
 //            }
 //        });
     }

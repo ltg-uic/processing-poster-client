@@ -2,28 +2,31 @@ package ltg.evl.uic.poster;
 
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
+import com.google.common.eventbus.Subscribe;
 import com.google.common.io.Resources;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import ltg.commons.SimpleMQTTClient;
 import ltg.evl.uic.poster.json.mongo.*;
-import ltg.evl.uic.poster.listeners.LoadUserListerner;
+import ltg.evl.uic.poster.listeners.LoadUserListener;
+import ltg.evl.uic.poster.listeners.LoginDialogEvent;
 import ltg.evl.uic.poster.listeners.SaveUserListerner;
 import ltg.evl.uic.poster.widgets.*;
 import ltg.evl.util.DownloadHelper;
 import ltg.evl.util.RESTHelper;
-import ltg.evl.util.StyleHelper;
-import ltg.evl.util.collections.PictureZoneToPosterItem;
 import ltg.evl.util.collections.PosterItemToPictureZone;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import processing.core.PApplet;
 import processing.core.PFont;
-import vialab.SMT.*;
+import vialab.SMT.SMT;
+import vialab.SMT.TouchSource;
+import vialab.SMT.Zone;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -33,7 +36,7 @@ import java.util.concurrent.Executors;
 /**
  * Created by aperritano on 9/24/14.
  */
-public class PosterMain extends PApplet implements LoadUserListerner, SaveUserListerner {
+public class PosterMain extends PApplet implements LoadUserListener, SaveUserListerner {
 
 
     public static final int DIVISOR = 10000;
@@ -47,8 +50,8 @@ public class PosterMain extends PApplet implements LoadUserListerner, SaveUserLi
     private int from;
     private int to;
     private TopBarZone topBarZone;
-    private tmp.ControlButtonZone presentButton;
-    private tmp.ControlButtonZone editButton;
+    private UserButton presentButton;
+    private UserButton editButton;
 
     public static void main(String args[]) {
         logger = Logger.getLogger(PosterMain.class.getName());
@@ -56,7 +59,7 @@ public class PosterMain extends PApplet implements LoadUserListerner, SaveUserLi
         //backpackPath = StyleHelper.helper().getConfiguration().getString("backpack.path");
 
 
-        StyleHelper.helper();
+        // StyleHelper.helper();
 
         PApplet.main(new String[]{"ltg.evl.uic.poster.PosterMain"});
 
@@ -70,17 +73,35 @@ public class PosterMain extends PApplet implements LoadUserListerner, SaveUserLi
 
     public void doInit() {
         System.out.println("Setup started");
-        StyleHelper.helper().setGraphicsContext(this);
+        //StyleHelper.helper().setGraphicsContext(this);
 
         logger.debug("POSTER MQTT CLIENT STARTED");
 
-        // MQTTPipe.getInstance();
+        // MQTTPipe.helper();
     }
+
+    @Subscribe
+    public void handleLoginDialogEvent(LoginDialogEvent event) {
+        if (event.getEventType() == LoginDialogEvent.EVENT_TYPES.USER) {
+            logger.log(Level.INFO, "user event with user uuid: " + event.getUuid());
+            DialogZoneController.getInstance().hideUserPage();
+            DialogZoneController.getInstance().showPosterPage();
+        } else if (event.getEventType() == LoginDialogEvent.EVENT_TYPES.POSTER) {
+            logger.log(Level.INFO, "poster event with poster uuid: " + event.getUuid());
+            DialogZoneController.getInstance().hidePosterPage();
+
+            //first save
+            //then load
+
+            loadPosterItems(PosterDataModel.helper().getAllPostersItemsForPoster(event.getUuid()), true);
+        }
+    }
+
 
     @Override
     public void setup() {
 
-        thread("doInit");
+        //thread("doInit");
 
         int w = displayWidth - 100;
         int h = displayHeight - 100;
@@ -90,7 +111,10 @@ public class PosterMain extends PApplet implements LoadUserListerner, SaveUserLi
         size(w, h, SMT.RENDERER);
         SMT.init(this, TouchSource.AUTOMATIC);
 
-        setupControlButtons();
+        //setupControlButtons();
+
+        final DialogZoneController dialogZoneController = DialogZoneController.getInstance();
+
 
         ObjectSubscriber objectSubscriber = new ObjectSubscriber() {
             @Override
@@ -100,18 +124,13 @@ public class PosterMain extends PApplet implements LoadUserListerner, SaveUserLi
                     PosterItem newPosterItem = (PosterItem) objectEvent.getGenericJson();
                     loadPosterItems(Lists.newArrayList(newPosterItem), false);
                 } else if (objectEvent.getEventType().equals(ObjectEvent.OBJ_TYPES.INIT_ALL)) {
-                    List<User> allUsers = PosterDataModelHelper.getInstance().allUsers;
-
-                    if (allUsers != null && !allUsers.isEmpty()) {
-                        loadPosterForUser(allUsers.get(0));
-                    }
-
+                    DialogZoneController.getInstance().showUserPage();
                 } else if (objectEvent.getEventType().equals(ObjectEvent.OBJ_TYPES.DELETE_POSTER_ITEM)) {
 
                     String posterItemId = objectEvent.getItemId();
-//                    for(PosterItem pi : PosterDataModelHelper.getInstance().allPosterItems) {
+//                    for(PosterItem pi : PosterDataModel.helper().allPosterItems) {
 //                        if(pi.getUuid().equals(posterItemId)) {
-//                            PosterDataModelHelper.getInstance().allPosterItems.remove(pi);
+//                            PosterDataModel.helper().allPosterItems.remove(pi);
 //                        }
 //                    }
 
@@ -123,30 +142,41 @@ public class PosterMain extends PApplet implements LoadUserListerner, SaveUserLi
             }
         };
 
+//        UserLoadEvent ule = new UserLoadEvent(){
+//            @Override
+//            public void handleUserLoadEvent(String userUuid) {
+//                super.handleUserLoadEvent(userUuid);
+//                DialogZoneController.helper().hideUserPage();
+//                DialogZoneController.helper().showPosterPage();
+//            }
+//        };
+//
+//        PosterLoadEvent ple = new PosterLoadEvent(){
+//            @Override
+//            public void handlePosterLoadEvent(String posterUuid) {
+//                super.handlePosterLoadEvent(posterUuid);
+//                DialogZoneController.helper().hidePosterPage();
+//                Collection<PosterItem> allPostersItemsForPoster = PosterDataModel.helper()
+//                                                                           .getAllPostersItemsForPoster(posterUuid);
+//                if (!allPostersItemsForPoster.isEmpty()) {
+//                    loadPosterItems(allPostersItemsForPoster, true);
+//                }
+//            }
+//        };
+
+
+        dialogZoneController.registerForLoginEvent(this);
 
         logger.debug("POSTER MODELER STARTED");
-        // PosterDataModelHelper.getInstance().addUserSubscriber(userSubscriber);
-        PosterDataModelHelper.getInstance().addObjectSubscriber(objectSubscriber);
+        // PosterDataModel.helper().addUserSubscriber(userSubscriber);
+        PosterDataModel.helper().addObjectSubscriber(objectSubscriber);
 
         logger.debug("POSTER MODELER INIT ALL COLLECTIONS");
         RESTHelper.getInstance().initAllCollections();
     }
 
-    private void loadPosterForUser(User user) {
 
-        List<Poster> allPostersForUser = PosterDataModelHelper.getInstance().getAllPostersForUser(user);
-
-        if (!allPostersForUser.isEmpty()) {
-            Poster poster = allPostersForUser.get(0);
-            List<PosterItem> allPostersItemsForPoster = PosterDataModelHelper.getInstance()
-                                                                             .getAllPostersItemsForPoster(poster);
-            loadPosterItems(allPostersItemsForPoster, true);
-        }
-
-
-    }
-
-    public void loadPosterItems(List<PosterItem> posterItems, boolean shouldRemove) {
+    public void loadPosterItems(Collection<PosterItem> posterItems, boolean shouldRemove) {
 
         if (shouldRemove)
             removeAlZones();
@@ -190,7 +220,7 @@ public class PosterMain extends PApplet implements LoadUserListerner, SaveUserLi
             }
         }
 
-        // DBHelper.getInstance().shutdownThreads();
+        // DBHelper.helper().shutdownThreads();
     }
 
     private void setupControlButtons() {
@@ -210,69 +240,15 @@ public class PosterMain extends PApplet implements LoadUserListerner, SaveUserLi
 
         PFont controlButtonFont = createFont("HelveticaNeue-Bold", 23);
 
-        //create mode buttons
-        presentButton = new tmp.ControlButtonZone("PresentButton", buttonStartX, buttonStartY, buttonWidth,
-                                                  buttonHeight, "PRESENT", greenButtonColor, yellowButtonColor,
-                                                  controlButtonFont);
-        editButton = new tmp.ControlButtonZone("EditButton", buttonStartX,
-                                               presentButton.getY() + presentButton.getHeight() + presentButton.getY(),
-                                               buttonWidth, buttonHeight, "EDIT", greenButtonColor, yellowButtonColor,
-                                               controlButtonFont);
 
 
-
-        ControlButtonZone saveButton = new ControlButtonZoneBuilder().setButtonText("SAVE")
-                                                                     .setName("save_button")
-                                                                     .setHeight(200)
-                                                                     .setWidth(200)
-                                                                     .setX(50)
-                                                                     .setY(200)
-                                                                     .createControlButtonZone();
-
-        ControlButtonZone loadButton = new ControlButtonZoneBuilder().setButtonText("LOAD")
-                                                                     .setName("load_button")
-                                                                     .setHeight(200)
-                                                                     .setWidth(200)
-                                                                     .setX(50)
-                                                                     .setY(500)
-                                                                     .createControlButtonZone();
-
-        saveButton.addSaveListener(new SaveUserListerner() {
-            @Override
-            public void saveUser(String userName) {
-
-                saveUserLayout("");
-                // MQTTPipe.getInstance().publishMessage("HELLO");
-            }
-        });
-
-        loadButton.addSaveListener(new SaveUserListerner() {
-            @Override
-            public void saveUser(String userName) {
-
-            }
-        });
-
-
-        ButtonZone testButton = new ButtonZone("TestButton", 100, 100, 200, 200, "EXIT Button") {
-
-            @Override
-            public void press(Touch touch) {
-                System.exit(0);
-            }
-        };
-
-        SMT.add(loadButton, testButton);
-        //SMT.add(saveButton);
-        //loadButton.addLoadUserListener(this);
-        //saveButton.addSaveListener(this);
     }
 
     @Override
     public void draw() {
-        background(255, 255, 255, 255);
-        fill(0, 0, 0, 255);
-        text(round(frameRate) + "fps, # of zones: " + SMT.getZones().length, width / 2, height / 2);
+        background(255);
+        fill(0);
+        text(round(frameRate) + "fps, # of zones: " + SMT.getZones().length, width / 2, 10);
     }
 
     @Override
@@ -340,30 +316,12 @@ public class PosterMain extends PApplet implements LoadUserListerner, SaveUserLi
     }
 
     private void saveUserLayout(String userName) {
-
-
-
         final List<PictureZone> pictureZoneList = Lists.newArrayList();
 
         for (Zone zone : SMT.getZones()) {
-            if (zone instanceof PictureZone)
-                pictureZoneList.add((PictureZone) zone);
+            if (zone instanceof PictureZone || zone instanceof TextBoxZone)
+                PosterDataModel.helper().saveZoneState(zone);
         }
-
-
-        FluentIterable<PosterItem> posterItems = FluentIterable.from(pictureZoneList)
-                                                               .transform(new PictureZoneToPosterItem());
-
-        User user = null;
-
-//            user = RESTHelper.getInstance().users.get(0);
-//        try {
-//            RESTHelper.getInstance().saveUser(user);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-
     }
 
 

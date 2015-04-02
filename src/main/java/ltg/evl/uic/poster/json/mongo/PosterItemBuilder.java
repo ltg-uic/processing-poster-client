@@ -12,7 +12,7 @@ public class PosterItemBuilder {
     private String uuid;
     private String color;
     private int rotation;
-
+    private String content;
 
     public PosterItemBuilder setColor(String color) {
         this.color = color;
@@ -63,7 +63,13 @@ public class PosterItemBuilder {
         this.uuid = uuid;
         return this;
     }
+
+    public PosterItemBuilder setContent(String content) {
+        this.content = content;
+        return this;
+    }
+
     public PosterItem createPosterItem() {
-        return new PosterItem(uuid, x, y, width, height, name, type, imageBytes, color, rotation);
+        return new PosterItem(uuid, x, y, width, height, name, type, imageBytes, color, rotation, content);
     }
 }

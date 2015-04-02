@@ -22,7 +22,7 @@ public class PosterBuilder {
     }
 
     public PosterBuilder setUuid(String uuid) {
-        this.uuid = this.uuid;
+        this.uuid = uuid;
         return this;
     }
 

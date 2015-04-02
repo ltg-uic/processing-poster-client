@@ -1,6 +1,6 @@
 package ltg.evl.uic.poster.sketches;
 
-import ltg.evl.uic.poster.listeners.LoadUserListerner;
+import ltg.evl.uic.poster.listeners.LoadUserListener;
 import ltg.evl.uic.poster.listeners.SaveUserListerner;
 import ltg.evl.uic.poster.widgets.ControlButtonZone;
 import ltg.evl.uic.poster.widgets.ControlButtonZoneBuilder;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 /**
  * Created by aperritano on 9/24/14.
  */
-public class UserScreenMain extends PApplet implements LoadUserListerner, SaveUserListerner {
+public class UserScreenMain extends PApplet implements LoadUserListener, SaveUserListerner {
 
 
     protected static Logger logger;
@@ -37,7 +37,7 @@ public class UserScreenMain extends PApplet implements LoadUserListerner, SaveUs
         logger = Logger.getLogger(UserScreenMain.class.getName());
         logger.setLevel(Level.INFO);
 
-        // DBHelper.getInstance().fetchUsers();
+        // DBHelper.helper().fetchUsers();
 
         PApplet.main(new String[]{"ltg.evl.uic.poster.sketches.UserScreenMain"});
 
@@ -95,13 +95,13 @@ public class UserScreenMain extends PApplet implements LoadUserListerner, SaveUs
         // SMT.add(saveButton, loadButton);
 
 
-//        DBHelper.getInstance().addDBListener(new DBListener() {
+//        DBHelper.helper().addDBListener(new DBListener() {
 //            @Override
 //            public void posterItemsUpdated(List<PosterItem> posterItems) {
 //                for (PosterItem posterItem : posterItems) {
 //                    Image awtImage = null;
 //                    try {
-//                        awtImage = StyleHelper.getInstance().getImage(posterItem);
+//                        awtImage = StyleHelper.helper().getImage(posterItem);
 //                    } catch (ExecutionException e) {
 //                        e.printStackTrace();
 //                    } catch (InterruptedException e) {
@@ -160,12 +160,12 @@ public class UserScreenMain extends PApplet implements LoadUserListerner, SaveUs
         }
 
 
-        // User user = DBHelper.getInstance().fetchUser(userName);
+        // User user = DBHelper.helper().fetchUser(userName);
 
 //        for (PosterItem posterItem : user.getPosters().get(0).getPosterItems()) {
 //            Image awtImage = null;
 //            try {
-//                awtImage = StyleHelper.getInstance().getImage(posterItem);
+//                awtImage = StyleHelper.helper().getImage(posterItem);
 //            } catch (ExecutionException e) {
 //                e.printStackTrace();
 //            } catch (InterruptedException e) {
@@ -202,7 +202,7 @@ public class UserScreenMain extends PApplet implements LoadUserListerner, SaveUs
     }
 
     private void saveUserLayout(String userName) {
-        //     User user = DBHelper.getInstance().fetchUser(userName);
+        //     User user = DBHelper.helper().fetchUser(userName);
 
         java.util.List<PictureZone> pictureZones = new ArrayList<>();
 
@@ -212,7 +212,7 @@ public class UserScreenMain extends PApplet implements LoadUserListerner, SaveUs
 //
 //                String uuid = pz.getUUID();
 //
-//                PosterItem posterItem = DBHelper.getInstance().getPosterItem(uuid);
+//                PosterItem posterItem = DBHelper.helper().getPosterItem(uuid);
 //
 //                System.out.println("Zone: " + pz.toString());
 //                System.out.println("posteritem " + posterItem.toString());
@@ -223,9 +223,9 @@ public class UserScreenMain extends PApplet implements LoadUserListerner, SaveUs
 //                posterItem.setY(pz.getY());
 //                posterItem.setX(pz.getX());
 //
-//                //  DBHelper.getInstance().replacePosterItem(posterItem);
+//                //  DBHelper.helper().replacePosterItem(posterItem);
 //
-//                //DBHelper.getInstance().dbClient().store(posterItem);
+//                //DBHelper.helper().dbClient().store(posterItem);
 //
 //            }
 //

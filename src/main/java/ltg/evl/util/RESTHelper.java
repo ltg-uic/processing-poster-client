@@ -111,7 +111,7 @@ public class RESTHelper {
             // we want this handler to run immediately after we push the big red button!
             public void onSuccess(Void explosion) {
                 logger.log(Level.INFO, "STARTING ALL REST DONE START INIT");
-                PosterDataModelHelper.getInstance().initializationDone();
+                PosterDataModel.helper().initializationDone();
             }
 
             public void onFailure(Throwable thrown) {
@@ -165,10 +165,10 @@ public class RESTHelper {
     public void deletePosterItem(
             final String uuid) throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
 
-        final ImmutableList<Poster> imPosters = ImmutableList.copyOf(PosterDataModelHelper.getInstance().allPosters);
+        final ImmutableList<Poster> imPosters = ImmutableList.copyOf(PosterDataModel.helper().allPosters);
 
         final ImmutableList<PosterItem> imPosterItems = ImmutableList.copyOf(
-                PosterDataModelHelper.getInstance().allPosterItems);
+                PosterDataModel.helper().allPosterItems);
 
 
     }
@@ -241,12 +241,12 @@ public class RESTHelper {
             List<User> userList = Lists.newArrayList();
             if (users.length < 0) {
 
-                PosterDataModelHelper.getInstance().updateAllUserCollection(userList);
+                PosterDataModel.helper().updateAllUserCollection(userList);
             } else {
                 for (User u : users) {
                     userList.add(u);
                 }
-                PosterDataModelHelper.getInstance().updateAllUserCollection(userList);
+                PosterDataModel.helper().updateAllUserCollection(userList);
             }
 
 
@@ -257,13 +257,13 @@ public class RESTHelper {
             List<Poster> posterList = Lists.newArrayList();
             if (posters.length < 0) {
 
-                PosterDataModelHelper.getInstance().updateAllPosterCollection(posterList);
+                PosterDataModel.helper().updateAllPosterCollection(posterList);
             } else {
 
                 for (Poster p : posters) {
                     posterList.add(p);
                 }
-                PosterDataModelHelper.getInstance().updateAllPosterCollection(posterList);
+                PosterDataModel.helper().updateAllPosterCollection(posterList);
             }
 
         } else if (someClass.equals(PosterItem.class)) {
@@ -272,13 +272,13 @@ public class RESTHelper {
 
             List<PosterItem> posterItemList = Lists.newArrayList();
             if (posterItems.length < 0) {
-                PosterDataModelHelper.getInstance().updateAllPosterItemsCollection(posterItemList);
+                PosterDataModel.helper().updateAllPosterItemsCollection(posterItemList);
             } else {
 
                 for (PosterItem pi : posterItems) {
                     posterItemList.add(pi);
                 }
-                PosterDataModelHelper.getInstance().updateAllPosterItemsCollection(posterItemList);
+                PosterDataModel.helper().updateAllPosterItemsCollection(posterItemList);
             }
         }
 
@@ -324,7 +324,7 @@ public class RESTHelper {
                 });
 
 
-                //PosterDataModelHelper.getInstance().updatePosterItemCollection((PosterItem) posterMessage);
+                //PosterDataModel.helper().updatePosterItemCollection((PosterItem) posterMessage);
             } else if (posterMessage.getType().equals(PosterMessage.USER)) {
 
             }
@@ -362,7 +362,7 @@ public class RESTHelper {
 
         String posterItemUUID = parseResponseObject(posterItemReponse, PosterItem.class, PosterUrl.REQUEST_TYPE.ADD);
 
-        PosterDataModelHelper.getInstance()
+        PosterDataModel.helper()
                              .addPosterItemUUIDWithPosterId(posterItemUUID, posterMessage.getPosterUuid());
 
     }
@@ -378,7 +378,7 @@ public class RESTHelper {
 
             if (user == null) {
             } else {
-                PosterDataModelHelper.getInstance().updateUserCollection(user);
+                PosterDataModel.helper().updateUserCollection(user);
                 return user.getUuid();
             }
         } else if (someClass.equals(Poster.class)) {
@@ -386,7 +386,7 @@ public class RESTHelper {
 
             if (poster == null) {
             } else {
-                PosterDataModelHelper.getInstance().updatePosterCollection(poster);
+                PosterDataModel.helper().updatePosterCollection(poster);
                 return poster.getUuid();
             }
 
@@ -395,7 +395,7 @@ public class RESTHelper {
 
             if (posterItem == null) {
             } else {
-                PosterDataModelHelper.getInstance().updatePosterItemCollection(posterItem);
+                PosterDataModel.helper().updatePosterItemCollection(posterItem);
                 return posterItem.getUuid();
             }
         }

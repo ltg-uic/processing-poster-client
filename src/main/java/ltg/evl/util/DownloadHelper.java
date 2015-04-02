@@ -24,7 +24,7 @@ public class DownloadHelper {
 
 //    public static void saveImageIntoMongoDB(String fileName, String filePath) throws IOException {
 //        java.io.File imageFile = new java.io.File(filePath);
-//        GridFS gfsPhoto = new GridFS(DBHelper.getInstance().dbClient().getDatabase(), "image");
+//        GridFS gfsPhoto = new GridFS(DBHelper.helper().dbClient().getDatabase(), "image");
 //        GridFSInputFile gfsFile = gfsPhoto.createFile(imageFile);
 //        gfsFile.setFilename(fileName);
 //        gfsFile.save();

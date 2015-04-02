@@ -1,9 +1,11 @@
 package ltg.evl.uic.poster.widgets;
 
-import ltg.evl.uic.poster.json.mongo.PosterDataModelHelper;
+import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
 import processing.core.PFont;
+import vialab.SMT.SMT;
 import vialab.SMT.TextBox;
+import vialab.SMT.Touch;
 import vialab.SMT.Zone;
 
 import java.awt.event.KeyListener;
@@ -15,6 +17,8 @@ public class TextBoxZone extends TextBox implements KeyListener, DeleteButtonLis
     private boolean isShowing;
     private DeleteButton deleteButton;
     private PFont font = applet.createFont("HelveticaNeue-Bold", 23);
+    private boolean isDrawingOutline;
+    private int outline = ZoneHelper.getInstance().blueOutline;
     private DeleteButtonListener deleteButtonListener;
 
     public TextBoxZone(String uuid, String text, int x, int y, int width, int height) {
@@ -42,8 +46,14 @@ public class TextBoxZone extends TextBox implements KeyListener, DeleteButtonLis
     }
 
     @Override
+    public void touch() {
+        super.touch();
+        SMT.putZoneOnTop(this);
+    }
+
+    @Override
     public void deleteZone(Zone zone) {
-        PosterDataModelHelper.getInstance().removePosterItem(this.getName());
+        PosterDataModel.helper().removePosterItem(this.getName());
     }
 
     public void show(boolean isShowing) {
@@ -61,6 +71,13 @@ public class TextBoxZone extends TextBox implements KeyListener, DeleteButtonLis
 
     @Override
     public void draw() {
+        if (isDrawingOutline) {
+            stroke(outline);
+            strokeWeight(4);
+            smooth();
+            rect(0, 0, this.getWidth(), this.getHeight());
+        }
+
         pushStyle();
         //set background color
         //fill(255);
@@ -77,6 +94,19 @@ public class TextBoxZone extends TextBox implements KeyListener, DeleteButtonLis
         text(getContent(), 0, 0, width + 100, height + 100);
         popStyle();
     }
+
+    @Override
+    public void touchDown(Touch touch) {
+        this.isDrawingOutline = true;
+        deleteButton.setDrawingOutline(isDrawingOutline);
+    }
+
+    @Override
+    public void touchUp(Touch touch) {
+        this.isDrawingOutline = false;
+        deleteButton.setDrawingOutline(isDrawingOutline);
+    }
+
 
     public String getText() {
         return text;

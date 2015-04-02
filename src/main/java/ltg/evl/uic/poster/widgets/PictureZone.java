@@ -2,11 +2,12 @@ package ltg.evl.uic.poster.widgets;
 
 import com.google.common.base.Objects;
 import de.looksgood.ani.Ani;
-import ltg.evl.uic.poster.json.mongo.PosterDataModelHelper;
+import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
 import ltg.evl.util.ImageLoader;
 import processing.core.PImage;
 import vialab.SMT.ImageZone;
+import vialab.SMT.SMT;
 import vialab.SMT.Touch;
 import vialab.SMT.Zone;
 
@@ -65,7 +66,7 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
 
     @Override
     public void deleteZone(Zone zone) {
-        PosterDataModelHelper.getInstance().removePosterItem(this.getName());
+        PosterDataModel.helper().removePosterItem(this.getName());
     }
     @Override
     public String toString() {
@@ -90,10 +91,17 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
         if (isDrawingOutline) {
             stroke(outline);
             strokeWeight(4);
-            rect(0, 0, this.getWidth(), this.getHeight());
+            smooth();
+            rect(0, 0, this.getWidth() + 1, this.getHeight() + 1);
         }
         image(this.getZoneImage(), 0, 0, this.getWidth(), this.getHeight());
 
+    }
+
+    @Override
+    public void touch() {
+        super.touch();
+        SMT.putZoneOnTop(this);
     }
 
     @Override

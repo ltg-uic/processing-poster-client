@@ -1,9 +1,9 @@
 package ltg.evl.uic.poster.widgets;
 
-import ltg.evl.uic.poster.listeners.LoadUserListerner;
+import ltg.evl.uic.poster.listeners.LoadUserListener;
 import ltg.evl.uic.poster.listeners.SaveUserListerner;
-import ltg.evl.util.StyleHelper;
 import processing.core.PFont;
+import vialab.SMT.SMT;
 import vialab.SMT.Touch;
 import vialab.SMT.Zone;
 import vialab.SMT.event.TouchListener;
@@ -23,18 +23,18 @@ public class ControlButtonZone extends Zone {
     private int buttonColor;
     private String buttonText;
     private List<TouchListener> touchListeners = new ArrayList<>();
-    private List<LoadUserListerner> loadUserListerners = new ArrayList<>();
+    private List<LoadUserListener> loadUserListerners = new ArrayList<>();
     private List<SaveUserListerner> saveUserListerners = new ArrayList<>();
 
     public ControlButtonZone(String name, int x, int y, int width, int height, String buttonText) {
         super(name, x, y, width, height);
 
-        this.buttonBackground = StyleHelper.helper().createColor("button.color.background");
-        this.buttonOutline = StyleHelper.helper().createColor("button.color.outline");
-        this.buttonHighlight = StyleHelper.helper().createColor("button.color.highlight");
+        this.buttonBackground = SMT.getApplet().color(29, 128, 240);
+        this.buttonOutline = SMT.getApplet().color(29, 128, 240);
+        this.buttonHighlight = SMT.getApplet().color(29, 128, 240);
         this.buttonColor = buttonBackground;
 
-        this.buttonFont = StyleHelper.helper().createFont("button.font.name", "button.font.size");
+        this.buttonFont = SMT.getApplet().createFont("HelveticaNeue-Bold", 12);
         this.buttonText = buttonText;
     }
 
@@ -80,7 +80,7 @@ public class ControlButtonZone extends Zone {
                 }
 
             } else {
-                for (LoadUserListerner loadUserListerner : loadUserListerners) {
+                for (LoadUserListener loadUserListerner : loadUserListerners) {
                     loadUserListerner.loadUser("DrBanner");
                 }
             }
@@ -97,7 +97,7 @@ public class ControlButtonZone extends Zone {
         touchListeners.add(touchListener);
     }
 
-    public void addLoadUserListener(LoadUserListerner loadUserListerner) {
+    public void addLoadUserListener(LoadUserListener loadUserListerner) {
         loadUserListerners.add(loadUserListerner);
     }
 

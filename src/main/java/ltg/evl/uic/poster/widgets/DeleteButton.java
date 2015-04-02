@@ -10,8 +10,8 @@ public class DeleteButton extends PictureZone implements DeleteButtonListener {
     private DeleteButtonListener deleteButtonListener;
     private boolean isDrawingOutline;
     private int redColor = ZoneHelper.getInstance().redOutline;
-    private int blueColor = ZoneHelper.getInstance().blueOutline;
-    private int outlineColor = ZoneHelper.getInstance().blueOutline;
+    private int whiteOutline = ZoneHelper.getInstance().whiteOutline;
+    private int outlineColor = redColor;
 
 
     public DeleteButton(PImage image, String UUID, int x, int y, int width, int height) {
@@ -27,23 +27,22 @@ public class DeleteButton extends PictureZone implements DeleteButtonListener {
         rst(false, false, false);
     }
 
-    @Override
-    public void press(Touch touch) {
-        outlineColor = redColor;
-        super.press(touch);
-    }
+//    @Override
+//    public void press(Touch touch) {
+//        outlineColor = redColor;
+//        super.press(touch);
+//    }
 
     @Override
     public void touchDown(Touch touch) {
-        this.isDrawingOutline = true;
-        outlineColor = redColor;
+        outlineColor = whiteOutline;
         System.out.println("Delete Touched Down");
 
     }
 
     @Override
     public void touchUp(Touch touch) {
-        this.isDrawingOutline = false;
+        outlineColor = redColor;
         System.out.println("Delete Touched up");
         deleteButtonListener.deleteZone(this);
     }
@@ -51,14 +50,14 @@ public class DeleteButton extends PictureZone implements DeleteButtonListener {
     @Override
     public void drawImpl() {
         if (isDrawingOutline) {
-
-            stroke(outlineColor);
-            strokeWeight(4);
-
-            ellipse(this.getWidth() / 2, this.getHeight() / 2, this.getWidth(), this.getHeight());
+            outlineColor = whiteOutline;
+        } else {
+            outlineColor = redColor;
         }
+        smooth();
+        fill(outlineColor);
+        ellipse(this.getWidth() / 2, this.getHeight() / 2, this.getWidth() - 3, this.getHeight() - 3);
         image(this.getZoneImage(), 0, 0, this.getWidth(), this.getHeight());
-
     }
 
 
@@ -67,9 +66,8 @@ public class DeleteButton extends PictureZone implements DeleteButtonListener {
         deleteButtonListener.deleteZone(zone);
     }
 
-    public void setDrawingOutline(boolean drawingOutline) {
-        this.outlineColor = blueColor;
-        this.isDrawingOutline = drawingOutline;
+    public void setDrawingOutline(boolean isDrawingOutline) {
+        this.isDrawingOutline = isDrawingOutline;
 
     }
 }

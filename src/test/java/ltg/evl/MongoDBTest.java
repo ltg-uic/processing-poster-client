@@ -1,8 +1,8 @@
 package ltg.evl;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
-import com.google.common.util.concurrent.*;
 import ltg.evl.uic.poster.json.mongo.*;
 import ltg.evl.util.RESTHelper;
 import org.apache.commons.codec.binary.Base64;
@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.kohsuke.randname.RandomNameGenerator;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -17,9 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
 
 /**
  * Created by aperritano on 2/11/15.
@@ -27,7 +26,7 @@ import java.util.concurrent.Executors;
 public class MongoDBTest {
     public static final String A41B9E1B8325873000044 = "550a41b9e1b8325873000044";
 
-//    DBHelper getInstance = DBHelper.getInstance();
+//    DBHelper helper = DBHelper.helper();
 
     Logger logger = Logger.getLogger(getClass().getName());
 
@@ -90,8 +89,8 @@ public class MongoDBTest {
     public void multipleRequests() throws IOException, InterruptedException, GeneralSecurityException, ExecutionException {
 
         // testUser();
-        //RESTHelper.getInstance().testPullUser();
-        //RESTHelper.getInstance().getAllCollections();
+        //RESTHelper.helper().testPullUser();
+        //RESTHelper.helper().getAllCollections();
 
 
         // createPosterItem();
@@ -101,45 +100,45 @@ public class MongoDBTest {
         //updatePosterItem();
 
 
-        final String pid1 = createRestPoster("Interstellar");
-        final String pid2 = createRestPoster("Black Holes");
-
-        ListeningExecutorService service = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(10));
-
-
-        ListenableFuture<Boolean> explosion = service.submit(new Callable<Boolean>() {
-            public Boolean call() {
-
-                Boolean val = true;
-                return val;
-            }
-        });
-        Futures.addCallback(explosion, new FutureCallback<Boolean>() {
-
-
-            // we want this handler to run immediately after we push the big red button!
-            public void onSuccess(Boolean explosion) {
-
-                try {
-                    createUser("GALAXIES", Lists.asList("Dr.Banner", new String[]{"P.Parker", "MJ"}), pid1);
-                    createUser("SUPERNOVAS", Lists.asList("Octavian", new String[]{"Caliguia", "Otho"}), pid2);
-                } catch (GeneralSecurityException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-
-            public void onFailure(Throwable thrown) {
-                // battleArchNemesis(); // escaped the explosion!
-            }
-        });
+//        final String pid1 = createRestPoster("Interstellar");
+//        final String pid2 = createRestPoster("Black Holes");
+//
+//        ListeningExecutorService service = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(10));
+//
+//
+//        ListenableFuture<Boolean> explosion = service.submit(new Callable<Boolean>() {
+//            public Boolean call() {
+//
+//                Boolean val = true;
+//                return val;
+//            }
+//        });
+//        Futures.addCallback(explosion, new FutureCallback<Boolean>() {
+//
+//
+//            // we want this handler to run immediately after we push the big red button!
+//            public void onSuccess(Boolean explosion) {
+//
+//                try {
+//                    createUser("GALAXIES", Lists.asList("Dr.Banner", new String[]{"P.Parker", "MJ"}), pid1);
+//                    createUser("SUPERNOVAS", Lists.asList("Octavian", new String[]{"Caliguia", "Otho"}), pid2);
+//                } catch (GeneralSecurityException e) {
+//                    e.printStackTrace();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                } catch (ExecutionException e) {
+//                    e.printStackTrace();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//
+//
+//            }
+//
+//            public void onFailure(Throwable thrown) {
+//                // battleArchNemesis(); // escaped the explosion!
+//            }
+//        });
 
 
         // createUser("PULSARS", Lists.asList("Peyton Key", new String[]{"M. Preston", "Sam Snyder"}), UUID.randomUUID().toString());
@@ -154,56 +153,153 @@ public class MongoDBTest {
 
     }
 
+
+    //-- create BIG TEST DATA
     @Test
-    public void testObjectId() throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
-        // ObjectId o = new ObjectId("5516f60ce1b8325873000178");
+    public void createBIGTest() throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
 
-        //System.out.println("print " + o.toStringBabble() + " " + o.toStringMongod());
+        String[] names = {"Brock", "Gale", "Gustavo", "Hank", "Hector", "Holly", "Jane", "Jesse", "Lydia", "Marie", "Mike", "Pete", "Saul", "Skyler", "Todd", "Walter"};
+        String[] classes = {"Ben", "Mike"};
 
-        RESTHelper.getInstance().getAllCollections();
+        ArrayList<String> imageItems = Lists.newArrayList();
 
-        List<Poster> allPosters = PosterDataModelHelper.getInstance().allPosters;
+        imageItems.add(createPosterItemImage(random(1, 4)));
+        imageItems.add(createPosterItemImage(random(1, 4)));
+        imageItems.add(createPosterItemImage(random(1, 4)));
 
-        for (Poster p : allPosters) {
-            System.out.println("Poster " + p.toPrettyString() + "\n\nOBJECT _id" + p.get_id().get("$oid"));
+        int NUM_GROUPS = 6;
+        int NUM_POSTERS_PER_GROUP = 2;
+
+        for (int y = 0; y < 2; y++) {
+            String CLASS_NAME = classes[y];
+            //first posteritems
+
+            RandomNameGenerator randGroupName = new RandomNameGenerator(random(0, 100));
+
+            for (int i = 0; i < NUM_GROUPS; i++) {
+
+                System.out.println("START GROUP " + i);
+                //create 6 posters per group
+
+                ArrayList<String> posterUuids = Lists.newArrayList();
+
+                for (int j = 0; j < NUM_POSTERS_PER_GROUP; j++) {
+
+                    ArrayList<String> posterItems = Lists.newArrayList();
+                    posterItems.addAll(imageItems);
+                    posterItems.add(createPosterItemText(1, SentenceGenerator.getInstance().makeText(random(1, 4))));
+                    posterItems.add(createPosterItemText(2, SentenceGenerator.getInstance().makeText(random(1, 4))));
+                    posterItems.add(createPosterItemText(3, SentenceGenerator.getInstance().makeText(random(1, 4))));
+
+                    posterUuids.add(createPoster(SentenceGenerator.getInstance().makeHeadline(), posterItems));
+                }
+
+
+                ArrayList<String> studentNames = Lists.newArrayList(names[random(0, names.length - 1)],
+                                                                    names[random(0, names.length - 1)],
+                                                                    names[random(0, names.length - 1)]);
+
+                String group_name = randGroupName.next();
+                createUser(CharMatcher.anyOf("_").replaceFrom(group_name, ' '), studentNames, CLASS_NAME, posterUuids);
+
+                System.out.println("DONE WITH GROUP " + i);
+            }
         }
 
-        allPosters.get(0).getPosterItems().remove(0);
 
-        RESTHelper.getInstance()
-                  .postCollection(allPosters.get(0), RESTHelper.PosterUrl.updateDeletePoster(
-                          allPosters.get(0).get_id().get("$oid").toString(),
-                          RESTHelper.PosterUrl.REQUEST_TYPE.UPDATE), Poster.class);
-
+        System.out.println("DONE WITH TEST MOFO!!!");
     }
 
-    public Poster getPoster(String posterName) throws IOException {
-        Poster poster = new PosterBuilder().setHeight(2876)
-                                           .setWidth(1584)
-                                           .setName(posterName)
-                                           .setUuid(UUID.randomUUID().toString())
-                                           .createPoster();
 
-        for (PosterItem posterItem : getPosterItems()) {
-            poster.addPosterItems(posterItem.getUuid());
-        }
-
-        return poster;
-    }
-
-    private String createUser(String userName, List<String> nameTags,
-                              String posterId) throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
+    private String createUser(String userName, List<String> nameTags, String className,
+                              List<String> uuidPosterId) throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
 
         String id = UUID.randomUUID().toString();
 
         User user = new UserBuilder().setName(userName).setUuid(id).createUser();
-        user.nameTags = nameTags;
-        user.addPoster(posterId);
+        user.setClassname(className);
+        user.setNameTags(nameTags);
+        user.setUuid(id);
+        user.addAllPosters(uuidPosterId);
 
         RESTHelper.getInstance()
                   .postCollection(user, RESTHelper.PosterUrl.addUser(), User.class);
         return id;
     }
+
+    private String createPoster(
+            String posterName,
+            List<String> posterItemUuids) throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
+
+        String id = UUID.randomUUID().toString();
+
+        Poster poster = new PosterBuilder().setHeight(2876)
+                                           .setWidth(1584)
+                                           .setName(posterName)
+                                           .setUuid(id)
+                                           .createPoster();
+
+        poster.addAllPosterItems(posterItemUuids);
+
+        RESTHelper.getInstance()
+                  .postCollection(poster, RESTHelper.PosterUrl.addPoster(), Poster.class);
+
+        return id;
+    }
+
+    private String createPosterItemImage(
+            int i) throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
+        javaxt.io.Image image = new javaxt.io.Image(Resources.getResource(i + ".jpg").getPath());
+
+
+        String uuid = UUID.randomUUID().toString();
+
+        PosterItem pi = new PosterItemBuilder().setName("posteritem-img-" + i)
+                                               .setUuid(uuid)
+                                               .setWidth(400)
+                                               .setHeight(500)
+                                               .setX(random(0, 500))
+                                               .setY(random(0, 500))
+                                               .setColor("#34567")
+                                               .setRotation(0)
+                                               .setContent("image")
+                                               .setType("img").setImageBytes(
+                        Base64.encodeBase64String(image.getByteArray()))
+                                               .createPosterItem();
+        RESTHelper.getInstance()
+                  .postCollection(pi, RESTHelper.PosterUrl.addPosterItem(), PosterItem.class);
+        return uuid;
+    }
+
+    private String createPosterItemText(int i,
+                                        String text) throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
+
+
+        String uuid = UUID.randomUUID().toString();
+
+        PosterItem pi = new PosterItemBuilder().setName("posteritem-txt-" + i)
+                                               .setUuid(uuid)
+                                               .setWidth(random(0, 450))
+                                               .setHeight(random(0, 450))
+                                               .setX(random(0, 500))
+                                               .setY(random(0, 500))
+                                               .setColor("#34567")
+                                               .setRotation(0)
+                                               .setType("txt")
+                                               .setContent(text)
+                                               .createPosterItem();
+        RESTHelper.getInstance()
+                  .postCollection(pi, RESTHelper.PosterUrl.addPosterItem(), PosterItem.class);
+
+        return uuid;
+    }
+
+    private void createPosterItem(
+            PosterItem pi) throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
+        RESTHelper.getInstance()
+                  .postCollection(pi, RESTHelper.PosterUrl.addPosterItem(), PosterItem.class);
+    }
+
 
     private String createRestPoster(
             String posterName) throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
@@ -227,31 +323,6 @@ public class MongoDBTest {
                   .postCollection(poster, RESTHelper.PosterUrl.addPoster(), Poster.class);
 
         return id;
-    }
-
-    private void createPosterItem() throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
-        javaxt.io.Image image = new javaxt.io.Image(Resources.getResource("1.jpg").getPath());
-
-
-        PosterItem pi = new PosterItemBuilder().setName("posteritem-test")
-                                               .setUuid(A41B9E1B8325873000044)
-                                               .setWidth(400)
-                                               .setHeight(500)
-                                               .setX(150)
-                                               .setY(600)
-                                               .setColor("#34567")
-                                               .setRotation(0)
-                                               .setType("jpg").setImageBytes(
-                        Base64.encodeBase64String(image.getByteArray()))
-                                               .createPosterItem();
-        RESTHelper.getInstance()
-                  .postCollection(pi, RESTHelper.PosterUrl.addPosterItem(), PosterItem.class);
-    }
-
-    private void createPosterItem(
-            PosterItem pi) throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
-        RESTHelper.getInstance()
-                  .postCollection(pi, RESTHelper.PosterUrl.addPosterItem(), PosterItem.class);
     }
 
     private void deletePoster() throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
@@ -324,6 +395,43 @@ public class MongoDBTest {
                   .postCollection(null, RESTHelper.PosterUrl.updateDeletePosterItem("550a469ae1b8325873000046",
                                                                                     RESTHelper.PosterUrl.REQUEST_TYPE.DELETE),
                                   PosterItem.class);
+    }
+
+    @Ignore
+    public void testObjectId() throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
+        // ObjectId o = new ObjectId("5516f60ce1b8325873000178");
+
+        //System.out.println("print " + o.toStringBabble() + " " + o.toStringMongod());
+
+        RESTHelper.getInstance().getAllCollections();
+
+        List<Poster> allPosters = PosterDataModel.helper().allPosters;
+
+        for (Poster p : allPosters) {
+            System.out.println("Poster " + p.toPrettyString() + "\n\nOBJECT _id" + p.get_id().get("$oid"));
+        }
+
+        allPosters.get(0).getPosterItems().remove(0);
+
+        RESTHelper.getInstance()
+                  .postCollection(allPosters.get(0), RESTHelper.PosterUrl.updateDeletePoster(
+                          allPosters.get(0).get_id().get("$oid").toString(),
+                          RESTHelper.PosterUrl.REQUEST_TYPE.UPDATE), Poster.class);
+
+    }
+
+    public Poster getPoster(String posterName) throws IOException {
+        Poster poster = new PosterBuilder().setHeight(2876)
+                                           .setWidth(1584)
+                                           .setName(posterName)
+                                           .setUuid(UUID.randomUUID().toString())
+                                           .createPoster();
+
+        for (PosterItem posterItem : getPosterItems()) {
+            poster.addPosterItems(posterItem.getUuid());
+        }
+
+        return poster;
     }
 
 

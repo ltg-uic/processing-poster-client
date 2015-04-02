@@ -150,4 +150,8 @@ public class Poster extends GenericJson {
     public void setColor(String color) {
         this.color = color;
     }
+
+    public void addAllPosterItems(List<String> posterItems) {
+        this.posterItems.addAll(posterItems);
+    }
 }

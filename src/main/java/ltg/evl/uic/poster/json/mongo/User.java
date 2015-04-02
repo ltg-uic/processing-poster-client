@@ -13,19 +13,22 @@ import java.util.Map;
 public class User extends GenericJson {
 
     @Key
-    public Map _id;
+    private Map _id;
 
     @Key
-    public String uuid;
+    private String uuid;
 
     @Key
-    public String name;
+    private String name;
 
     @Key
-    public List<String> nameTags = new ArrayList<>();
+    private List<String> nameTags = new ArrayList<>();
 
     @Key
-    public List<String> posters = new ArrayList<>();
+    private List<String> posters = new ArrayList<>();
+
+    @Key
+    private String classname;
 
 
     public User() {
@@ -133,5 +136,17 @@ public class User extends GenericJson {
 
     public void setNameTags(List<String> nameTags) {
         this.nameTags = nameTags;
+    }
+
+    public String getClassname() {
+        return classname;
+    }
+
+    public void setClassname(String classname) {
+        this.classname = classname;
+    }
+
+    public void addAllPosters(List<String> uuidPosterIds) {
+        posters.addAll(uuidPosterIds);
     }
 }

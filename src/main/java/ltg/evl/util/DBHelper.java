@@ -48,7 +48,7 @@ public class DBHelper {
 //
 //    }
 //
-//    public static DBHelper getInstance() {
+//    public static DBHelper helper() {
 //        return StaticHolder.INSTANCE;
 //    }
 //
@@ -67,7 +67,7 @@ public class DBHelper {
 //    }
 //
 //    public void updatePosterItems(FluentIterable<PosterItem> posterItems) {
-//        DBHelper.getInstance().dbClient().updateUsingFields(currentUser.getPosters().get(0),"posterItems");
+//        DBHelper.helper().dbClient().updateUsingFields(currentUser.getPosters().get(0),"posterItems");
 //    }
 //
 //    public void addDBListener(DBListener dbListener) {
@@ -87,7 +87,7 @@ public class DBHelper {
 //    }
 //
 ////    public User getUser(String username) {
-////        Query<User> u = DBHelper.getInstance().dbClient().createQueryFor(User.class).f("name").eq(username);
+////        Query<User> u = DBHelper.helper().dbClient().createQueryFor(User.class).f("name").eq(username);
 ////        List<User> users = u.asList();
 ////        if (!users.isEmpty()) {
 ////            return users.get(0);
