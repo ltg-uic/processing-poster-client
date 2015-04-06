@@ -9,7 +9,6 @@ public class DeleteButtonBuilder {
     private int y;
     private int width;
     private int height;
-    private String name;
 
     public DeleteButtonBuilder setImage(PImage image) {
         this.image = image;
@@ -42,7 +41,7 @@ public class DeleteButtonBuilder {
     }
 
     public DeleteButtonBuilder setName(String name) {
-        this.name = name;
+        String name1 = name;
         return this;
     }
 

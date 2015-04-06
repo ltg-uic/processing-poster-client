@@ -4,7 +4,6 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import ltg.commons.SimpleMQTTClient;
-import ltg.evl.uic.poster.PosterItemToTextZone;
 import ltg.evl.uic.poster.json.mongo.*;
 import ltg.evl.uic.poster.widgets.DialogZoneController;
 import ltg.evl.uic.poster.widgets.PictureZone;
@@ -12,6 +11,7 @@ import ltg.evl.uic.poster.widgets.TextBoxZone;
 import ltg.evl.uic.poster.widgets.UserButton;
 import ltg.evl.util.RESTHelper;
 import ltg.evl.util.collections.PosterItemToPictureZone;
+import ltg.evl.util.collections.PosterItemToTextZone;
 import org.apache.log4j.Logger;
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -96,7 +96,7 @@ public class PosterTest extends PApplet {
                     loadPosterItems(Lists.newArrayList(newPosterItem), false);
                 } else if (objectEvent.getEventType().equals(ObjectEvent.OBJ_TYPES.INIT_ALL)) {
 
-                    DialogZoneController.getInstance().showUserPage();
+                    DialogZoneController.getInstance().showClassPage();
                     //DialogZoneController.helper().translateUserPage(300, 300);
                     //loadPosterForUser(allUsers.get(0));                   }
 

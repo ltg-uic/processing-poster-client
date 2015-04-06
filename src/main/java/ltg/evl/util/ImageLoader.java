@@ -33,4 +33,24 @@ public class ImageLoader {
         return image;
     }
 
+    public static PImage toPImage(javaxt.io.Image newImage) {
+
+
+        Image awtImage = Toolkit.getDefaultToolkit().createImage(newImage.getByteArray());
+
+        PApplet p = new PApplet();
+
+        MediaTracker tracker = new MediaTracker(SMT.getApplet());
+        tracker.addImage(awtImage, 0);
+        try {
+            tracker.waitForAll();
+        } catch (InterruptedException e) {
+            //e.printStackTrace();  // non-fatal, right?
+        }
+
+        PImage image = new PImage(awtImage);
+        image.parent = SMT.getApplet();
+        return image;
+    }
+
 }

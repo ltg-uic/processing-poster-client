@@ -5,8 +5,6 @@ import processing.core.PFont;
 import vialab.SMT.Touch;
 import vialab.SMT.Zone;
 
-import java.util.Random;
-
 public class UserButton extends Zone {
 
     public boolean pressed = false;
@@ -19,6 +17,8 @@ public class UserButton extends Zone {
     protected int fontSize;
     protected int currentColor;
     protected int borderWeight = 1;
+    private int savedWidth;
+    private int savedHeight;
     private LoadUserListener loadUserListerner;
 
     public UserButton(String name, int buttonStartX, int buttonStartY, int buttonWidth, int buttonHeight, String text,
@@ -38,14 +38,15 @@ public class UserButton extends Zone {
 
     public UserButton(String uuid, String text, int width, int height) {
         super(uuid, width, height);
-
-        this.font = ZoneHelper.getInstance().controlButtonFont;
+        this.savedWidth = width;
+        this.savedHeight = height;
+        this.font = ZoneHelper.helveticaNeue18Font;
         this.text = text;
         this.fontSize = font.getSize();
+        //this.fontSize = 18;
 
-        int num = ZoneHelper.getInstance().colors.length;
-        Random random = new Random();
-        int n = random.nextInt(num);
+        int num = ZoneHelper.getInstance().colors.length - 1;
+        int n = ZoneHelper.random(0, num);
 
 
         this.unpressedButtonColor = ZoneHelper.getInstance().colors[n];

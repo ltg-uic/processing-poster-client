@@ -8,6 +8,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.*;
 import ltg.evl.uic.poster.listeners.LoginDialogEvent;
 import ltg.evl.util.RESTHelper;
+import org.apache.commons.lang.StringUtils;
 import vialab.SMT.Zone;
 
 import java.io.IOException;
@@ -108,6 +109,22 @@ public class PosterDataModel {
         }
     }
 
+    public void loadClass(final String classname) {
+        ImmutableList<User> imAllUsers = ImmutableList.copyOf(PosterDataModel.helper().allUsers);
+
+        Predicate<User> predicateClass = new Predicate<User>() {
+            @Override
+            public boolean apply(User input) {
+                return StringUtils.lowerCase(input.getClassname()).equals(classname);
+            }
+        };
+
+        Collection<User> resultClass = Collections2.filter(imAllUsers, predicateClass);
+
+        this.postObject(new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.CLASS_NAME, classname));
+
+    }
+
     public Collection<Poster> getAllPostersForCurrentUser() {
         return getAllPostersForUser(this.currentUser);
     }
@@ -136,8 +153,8 @@ public class PosterDataModel {
             @Override
             public boolean apply(Poster poster) {
 
-                for (String posterUuid : poster.getPosterItems()) {
-                    if (posterUuid.equals(posterUuid)) {
+                for (String aPosterUuid : poster.getPosterItems()) {
+                    if (aPosterUuid.equals(aPosterUuid)) {
                         return true;
                     }
                 }

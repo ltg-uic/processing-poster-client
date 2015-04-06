@@ -21,7 +21,7 @@ public class PosterPageZone extends Zone {
 
         for (String uuid : uuidIdToPosterName.keySet()) {
             String userName = uuidIdToPosterName.get(uuid);
-            PosterButton posterButton = new PosterButton(uuid, userName, 175, 175);
+            PosterButton posterButton = new PosterButton(uuid, userName, 350, 175);
             posterButton.addLoadPosterListener(this.loadPosterListener);
             add(posterButton);
         }

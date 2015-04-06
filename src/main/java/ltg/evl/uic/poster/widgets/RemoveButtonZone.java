@@ -25,7 +25,7 @@ public class RemoveButtonZone extends ButtonZone {
         stroke(166, 9, 22, 255);
         strokeWeight(borderWeight);
         fill(238, 43, 41, 255);
-        rect(borderWeight, borderWeight, width - 2 * borderWeight, height - 2 * borderWeight);
+        rect(borderWeight, borderWeight, getWidth() - 2 * borderWeight, getHeight() - 2 * borderWeight);
 
         if (text != null) {
             if (font != null) {
@@ -34,7 +34,7 @@ public class RemoveButtonZone extends ButtonZone {
             textAlign(CENTER, CENTER);
             textSize(fontSize);
             fill(255);
-            text(text, width / 2 - borderWeight, height / 2 - borderWeight);
+            text(text, getWidth() / 2 - borderWeight, getHeight() / 2 - borderWeight);
         }
     }
 

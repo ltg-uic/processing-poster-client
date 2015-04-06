@@ -11,19 +11,22 @@ import vialab.SMT.SMT;
 import vialab.SMT.Touch;
 import vialab.SMT.Zone;
 
-public class PictureZone extends ImageZone implements DeleteButtonListener {
+public class PictureZone extends ImageZone implements DeleteButtonListener, ScaleButtonListener {
 
 
+    public static int padding = 6;
+    int paddingOffset = (2 * padding);
     private Ani widthAni;
     private Ani heightAni;
-
     private int animationWidth = 0;
     private int animationHeight = 0;
     private int initialX = 0;
     private int initialY = 0;
     private DeleteButton deleteButton;
+    private ScaleButton scaleButton;
     private boolean isDrawingOutline;
-    private int outline = ZoneHelper.getInstance().blueOutline;
+    private int selectedOutline = ZoneHelper.getInstance().blueOutline;
+    private int unselectedOutline = ZoneHelper.getInstance().greyOutline;
     private DeleteButtonListener deleteButtonListener;
 
     public PictureZone(PImage image, String uuid, int x, int y, int width, int height) {
@@ -55,19 +58,27 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
 
         if (zone instanceof DeleteButton) {
             deleteButton = (DeleteButton) zone;
+        } else if (zone instanceof ScaleButton) {
+            scaleButton = (ScaleButton) zone;
         }
 
         return super.add(zone);
     }
 
-    public void addListener(DeleteButtonListener deleteButtonListener) {
-        this.deleteButtonListener = deleteButtonListener;
+    public void addDeleteListener(DeleteButtonListener deleteButtonListener) {
+        deleteButtonListener = deleteButtonListener;
     }
 
     @Override
     public void deleteZone(Zone zone) {
         PosterDataModel.helper().removePosterItem(this.getName());
     }
+
+    @Override
+    public void scaleZone(Zone zone) {
+
+    }
+
     @Override
     public String toString() {
 
@@ -88,13 +99,23 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
 
     @Override
     public void drawImpl() {
+        fill(255, 255, 255);
         if (isDrawingOutline) {
-            stroke(outline);
-            strokeWeight(4);
+            stroke(selectedOutline);
+            strokeWeight(2);
             smooth();
-            rect(0, 0, this.getWidth() + 1, this.getHeight() + 1);
+            rect(0, 0, this.getWidth(), this.getHeight(), 5);
+        } else {
+            stroke(unselectedOutline);
+            strokeWeight(2);
+            smooth();
+            rect(0, 0, this.getWidth(), this.getHeight(), 5);
         }
-        image(this.getZoneImage(), 0, 0, this.getWidth(), this.getHeight());
+
+
+        //fill(255,255,255);
+        //rect(padding, padding, this.getWidth()-paddingOffset, this.getHeight()-paddingOffset);
+        image(this.getZoneImage(), padding, padding, this.getWidth() - paddingOffset, this.getHeight() - paddingOffset);
 
     }
 
@@ -107,13 +128,19 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
     @Override
     public void touchDown(Touch touch) {
         this.isDrawingOutline = true;
+        deleteButton.setVisible(false);
         deleteButton.setDrawingOutline(isDrawingOutline);
+        scaleButton.setVisible(false);
+        scaleButton.setDrawingOutline(isDrawingOutline);
     }
 
     @Override
     public void touchUp(Touch touch) {
         this.isDrawingOutline = false;
+        deleteButton.setVisible(true);
         deleteButton.setDrawingOutline(isDrawingOutline);
+        scaleButton.setVisible(true);
+        scaleButton.setDrawingOutline(isDrawingOutline);
     }
 
     public int getAnimationHeight() {

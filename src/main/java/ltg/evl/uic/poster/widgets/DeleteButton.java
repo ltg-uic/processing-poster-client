@@ -18,7 +18,7 @@ public class DeleteButton extends PictureZone implements DeleteButtonListener {
         super(image, UUID, x, y, width, height);
     }
 
-    public void addListener(DeleteButtonListener deleteButtonListener) {
+    public void addDeleteListener(DeleteButtonListener deleteButtonListener) {
         this.deleteButtonListener = deleteButtonListener;
     }
 

@@ -26,7 +26,7 @@ public class LoginDialogEvent {
         this.uuid = uuid;
     }
 
-    public enum EVENT_TYPES {USER, POST_ITEM, POSTER}
+    public enum EVENT_TYPES {USER, POST_ITEM, CLASS_NAME, POSTER}
 
 
 }

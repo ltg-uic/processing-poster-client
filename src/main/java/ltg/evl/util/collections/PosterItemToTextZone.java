@@ -1,4 +1,4 @@
-package ltg.evl.uic.poster;
+package ltg.evl.util.collections;
 
 import com.google.common.base.Function;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
