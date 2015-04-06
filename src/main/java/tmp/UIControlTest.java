@@ -5,6 +5,7 @@ import ltg.commons.SimpleMQTTClient;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
 import ltg.evl.uic.poster.json.mongo.PosterItemBuilder;
 import ltg.evl.uic.poster.widgets.*;
+import ltg.evl.util.MQTTPipe;
 import org.apache.log4j.Logger;
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -53,7 +54,7 @@ public class UIControlTest extends PApplet {
 
     public void doInit() {
         helveticaFont = loadFont(Resources.getResource("Roboto-Light-48.vlw").getPath());
-
+        MQTTPipe.getInstance();
     }
 
     public void setup() {
@@ -119,6 +120,20 @@ public class UIControlTest extends PApplet {
 
         SMT.add(buttonZone);
 
+        ButtonZone mqttZone = new ButtonZone("b", 400, 400, 50, 50) {
+
+            @Override
+            public void touchUp(Touch touch) {
+                MQTTPipe.getInstance().publishMessage("HELLLOO POSTER");
+            }
+        };
+
+        SMT.add(mqttZone);
+
+
+        VideoZone videoZone = new VideoZone("vid", 200, 200, 400, 400);
+
+        SMT.add(videoZone);
     }
 
 

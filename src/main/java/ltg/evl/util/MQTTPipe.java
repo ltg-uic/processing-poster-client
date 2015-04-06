@@ -4,6 +4,7 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonObjectParser;
 import com.google.api.client.json.gson.GsonFactory;
 import ltg.commons.MessageListener;
+import ltg.commons.SimpleMQTTClient;
 import ltg.evl.uic.poster.json.mongo.PosterMessage;
 
 import java.io.*;
@@ -19,25 +20,45 @@ public class MQTTPipe implements MessageListener {
 
     private static MQTTPipe ourInstance = new MQTTPipe();
     private static Logger logger;
-    private final String BASE_CHANNEL_OUT;
-    private final String BASE_CLIENT_ID;
-    private final String BASE_ADDRESS;
-    private final String BASE_CHANNEL_IN;
     GsonFactory JSON_FACTORY = new GsonFactory();
-    private PosterMQTTClient posterMQTTClient = null;
+    private String BASE_CHANNEL_OUT;
+    private String BASE_CLIENT_ID;
+    private String BASE_ADDRESS;
+    private String BASE_CHANNEL_IN;
+    private SimpleMQTTClient posterMQTTClient = null;
 
 
     private MQTTPipe() {
-        enableLogging();
 
-        BASE_ADDRESS = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.host");
-        BASE_CLIENT_ID = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.client._id");
-        BASE_CHANNEL_IN = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.channel.in");
-        BASE_CHANNEL_OUT = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.channel.out");
+        Runnable myRunnable = new Runnable() {
+
+            public void run() {
+                enableLogging();
+
+                BASE_ADDRESS = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.host");
+                BASE_CLIENT_ID = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.client._id");
+                BASE_CHANNEL_IN = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.channel.in");
+                BASE_CHANNEL_OUT = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.channel.out");
 
 
-        posterMQTTClient = new PosterMQTTClient(BASE_ADDRESS, BASE_CLIENT_ID);
-        posterMQTTClient.subscribe(BASE_CHANNEL_IN, this);
+                logger.log(Level.INFO, "BASE_ADDRESS: " + BASE_ADDRESS);
+                logger.log(Level.INFO, "BASE_CLIENT_ID: " + BASE_CLIENT_ID);
+                logger.log(Level.INFO, "BASE_CHANNEL_OUT: " + BASE_CHANNEL_OUT);
+                logger.log(Level.INFO, "BASE_CHANNEL_IN: " + BASE_CHANNEL_IN);
+
+                posterMQTTClient = new SimpleMQTTClient(BASE_ADDRESS, BASE_CLIENT_ID);
+                posterMQTTClient.subscribe(BASE_CHANNEL_IN, MQTTPipe.this);
+                System.out.println("Runnable running");
+            }
+        };
+
+
+        Thread thread = new Thread(myRunnable);
+        thread.setName("MQTT START THREAD");
+        thread.start();
+
+
+
     }
 
     public static MQTTPipe getInstance() {
@@ -90,7 +111,7 @@ public class MQTTPipe implements MessageListener {
 
     public void publishMessage(String message) {
 
-        logger.fine("PUBLISHING " + message + " on: " + BASE_CHANNEL_OUT);
+        logger.log(Level.INFO, "PUBLISHING " + message + " on: " + BASE_CHANNEL_OUT);
 
         posterMQTTClient.publish(BASE_CHANNEL_OUT, message);
     }

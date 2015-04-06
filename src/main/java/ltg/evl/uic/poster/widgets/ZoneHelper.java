@@ -155,7 +155,7 @@ public class ZoneHelper {
 
     public DeleteButton getDeleteButton(Zone zone) {
 
-        double buttonSize = SMT.getApplet().getHeight() * .04;
+        double buttonSize = SMT.getApplet().getHeight() * .03;
         double adjustedButtonSize = (buttonSize / 2.0);
         int x = (int) (zone.getWidth() - adjustedButtonSize) - 2;
         int y = (int) (2 - adjustedButtonSize);
@@ -175,7 +175,7 @@ public class ZoneHelper {
 
     public ScaleButton getScaleButton(Zone zone) {
 
-        double buttonSize = SMT.getApplet().getHeight() * .04;
+        double buttonSize = SMT.getApplet().getHeight() * .03;
         double adjustedButtonSize = (buttonSize / 2.0);
         int x = (int) (zone.getWidth() - adjustedButtonSize) - 2;
         int y = (int) (zone.getHeight() - adjustedButtonSize) - 2;

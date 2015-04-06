@@ -4,7 +4,6 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
 import com.google.common.io.Resources;
-import ltg.commons.SimpleMQTTClient;
 import ltg.evl.uic.poster.json.mongo.*;
 import ltg.evl.uic.poster.listeners.LoadUserListener;
 import ltg.evl.uic.poster.listeners.LoginDialogEvent;
@@ -40,24 +39,18 @@ public class PosterMain extends PApplet implements LoadUserListener, SaveUserLis
 
     public static final int DIVISOR = 10000;
     protected static org.apache.log4j.Logger logger;
-    private static SimpleMQTTClient sc;
 
 
     public static void main(String args[]) {
         logger = Logger.getLogger(PosterMain.class.getName());
         logger.setLevel(Level.ALL);
+        MQTTPipe.getInstance();
 
         PApplet.main(new String[]{"ltg.evl.uic.poster.PosterMain"});
     }
 
     public void doInit() {
-        System.out.println("Setup started");
-        //StyleHelper.helper().setGraphicsContext(this);
-
-        logger.debug("POSTER MQTT CLIENT STARTED");
-
-        MQTTPipe.getInstance();
-
+        //MQTTPipe.getInstance();
     }
 
     @Subscribe
@@ -87,7 +80,8 @@ public class PosterMain extends PApplet implements LoadUserListener, SaveUserLis
 
         //helveticaFont = createFont("HelveticaNeue-Bold", 23);
 
-        thread("doInit");
+
+        //thread("doInit");
 
         int w = displayWidth - 100;
         int h = displayHeight - 100;
