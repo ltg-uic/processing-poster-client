@@ -163,12 +163,17 @@ public class MongoDBTest {
 
         ArrayList<String> imageItems = Lists.newArrayList();
 
-        imageItems.add(createPosterItemImage(random(1, 4)));
-        imageItems.add(createPosterItemImage(random(1, 4)));
-        imageItems.add(createPosterItemImage(random(1, 4)));
+//        imageItems.add(createPosterItemImage(random(1, 4)));
+//        imageItems.add(createPosterItemImage(random(1, 4)));
+//        imageItems.add(createPosterItemImage(random(1, 4)));
 
-        int NUM_GROUPS = 6;
-        int NUM_POSTERS_PER_GROUP = 2;
+
+        imageItems.add(createPosterItemImage(0));
+        imageItems.add(createPosterItemImage(1));
+        imageItems.add(createPosterItemImage(2));
+
+        int NUM_GROUPS = 1;
+        int NUM_POSTERS_PER_GROUP = 1;
 
         for (int y = 0; y < 2; y++) {
             String CLASS_NAME = classes[y];
@@ -249,8 +254,9 @@ public class MongoDBTest {
 
     private String createPosterItemImage(
             int i) throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
-        javaxt.io.Image image = new javaxt.io.Image(Resources.getResource(i + ".jpg").getPath());
+        //javaxt.io.Image image = new javaxt.io.Image(Resources.getResource(i + ".jpg").getPath());
 
+        String[] links = {"http://i.kinja-img.com/gawker-media/image/upload/s--CEy---op--/c_fit,fl_progressive,q_80,w_636/18pagzhyr0jixjpg.jpg", "http://4.bp.blogspot.com/-JYPN0tF1Ly0/T7zvkxdvVKI/AAAAAAAAEyc/bU8_C-JiDD8/s640/Face,+Faces,+anomoly,+anomolies,+Mars,+Rover,+Spirit,+photo,+alien,+aliens,+base,+building,+structure,+UFO,+UFOs,+sighting,+sightings,+news,+May,+2012,+paranormalScreen+Shot+2012-05-23+at+1.43.15+PM.png", "http://mars.nasa.gov/mer/gallery/press/opportunity/20130122a/PIA16703_Sol3137B_Matijevic_Pan_L257atc.jpg"};
 
         String uuid = UUID.randomUUID().toString();
 
@@ -262,9 +268,9 @@ public class MongoDBTest {
                                                .setY(random(0, 500))
                                                .setColor("#34567")
                                                .setRotation(0)
-                                               .setContent("image")
-                                               .setType("img").setImageBytes(
-                        Base64.encodeBase64String(image.getByteArray()))
+                                               .setContent(links[i])
+                .setType("img")
+                        //.setImageBytes(Base64.encodeBase64String(image.getByteArray()))
                                                .createPosterItem();
         RESTHelper.getInstance()
                   .postCollection(pi, RESTHelper.PosterUrl.addPosterItem(), PosterItem.class);

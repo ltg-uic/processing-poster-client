@@ -123,7 +123,7 @@ public class RESTHelper {
     }
 
     public void postCollection(GenericJson jsonObject, PosterUrl url,
-                               Class<?> someClass) throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
+                               final Class<?> someClass) throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
 
         ExecutorService pool = Executors.newCachedThreadPool();
 
@@ -145,21 +145,74 @@ public class RESTHelper {
         if (url.request_type.equals(PosterUrl.REQUEST_TYPE.ADD)) {
             request = requestFactory.buildPostRequest(url, new JsonHttpContent(new JacksonFactory(), jsonObject));
             Future<HttpResponse> httpUserResponseFuture = request.executeAsync(pool);
-            HttpResponse response = httpUserResponseFuture.get();
-            parseResponseObject(response, someClass, PosterUrl.REQUEST_TYPE.ADD);
+
+            ListenableFuture<HttpResponse> addFuture = JdkFutureAdapters.listenInPoolThread(
+                    httpUserResponseFuture);
+
+            Futures.addCallback(addFuture, new FutureCallback<HttpResponse>() {
+                public void onSuccess(HttpResponse addFuture) {
+                    try {
+                        logger.log(Level.INFO, "POSTED ADD: " + someClass.getName());
+                        parseResponseObject(addFuture, someClass, PosterUrl.REQUEST_TYPE.ADD);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                public void onFailure(Throwable thrown) {
+                    handleHttpFailure(thrown);
+                }
+            });
+            // HttpResponse response = httpUserResponseFuture.get();
+
         } else if (url.request_type.equals(PosterUrl.REQUEST_TYPE.DELETE)) {
             request = requestFactory.buildDeleteRequest(url);
-            Future<HttpResponse> httpUserResponseFuture = request.executeAsync(pool);
-            HttpResponse response = httpUserResponseFuture.get();
-            parseResponseObject(response, someClass, PosterUrl.REQUEST_TYPE.DELETE);
+            Future<HttpResponse> deleteResponseFuture = request.executeAsync(pool);
+
+
+            ListenableFuture<HttpResponse> deleteFuture = JdkFutureAdapters.listenInPoolThread(
+                    deleteResponseFuture);
+
+            Futures.addCallback(deleteFuture, new FutureCallback<HttpResponse>() {
+                public void onSuccess(HttpResponse deleteFutureResponse) {
+                    try {
+                        logger.log(Level.INFO, "POSTED DELETE: " + someClass.getName());
+                        parseResponseObject(deleteFutureResponse, someClass, PosterUrl.REQUEST_TYPE.DELETE);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                public void onFailure(Throwable thrown) {
+                    handleHttpFailure(thrown);
+                }
+            });
+
+            // HttpResponse response = deleteResponseFuture.get();
+
         } else if (url.request_type.equals(PosterUrl.REQUEST_TYPE.UPDATE)) {
             request = requestFactory.buildPutRequest(url, new JsonHttpContent(new JacksonFactory(), jsonObject));
-            Future<HttpResponse> httpUserResponseFuture = request.executeAsync(pool);
-            HttpResponse response = httpUserResponseFuture.get();
-            parseResponseObject(response, someClass, PosterUrl.REQUEST_TYPE.UPDATE);
+            Future<HttpResponse> updateResponseFuture = request.executeAsync(pool);
+
+            ListenableFuture<HttpResponse> updateFuture = JdkFutureAdapters.listenInPoolThread(
+                    updateResponseFuture);
+
+            Futures.addCallback(updateFuture, new FutureCallback<HttpResponse>() {
+                public void onSuccess(HttpResponse updateFutureResponse) {
+                    try {
+                        logger.log(Level.INFO, "POSTED UPDATE: " + someClass.getName());
+                        parseResponseObject(updateFutureResponse, someClass, PosterUrl.REQUEST_TYPE.UPDATE);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                public void onFailure(Throwable thrown) {
+                    handleHttpFailure(thrown);
+                }
+            });
+            // HttpResponse response = updateResponseFuture.get();
         }
-
-
     }
 
     public void deletePosterItem(
@@ -191,30 +244,50 @@ public class RESTHelper {
                 });
 
         //user
-
-        logger.log(Level.INFO, "STARTING USER COLLECTIONS FETCH");
         PosterUrl url = new PosterUrl(PosterServices.getInstance().getConfig().getString("poster.base.url") + "/user");
         HttpRequest userRequest = requestFactory.buildGetRequest(url);
-
         Future<HttpResponse> httpUserResponseFuture = userRequest.executeAsync(pool);
+        ListenableFuture<HttpResponse> userFuture = JdkFutureAdapters.listenInPoolThread(
+                httpUserResponseFuture);
 
-        HttpResponse userResponse = httpUserResponseFuture.get();
+        Futures.addCallback(userFuture, new FutureCallback<HttpResponse>() {
+            public void onSuccess(HttpResponse userResponse) {
+                try {
+                    logger.log(Level.INFO, "STARTING USER COLLECTIONS FETCH");
+                    parseResponseArray(userResponse, User.class);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
-        parseResponseArray(userResponse, User.class);
+            public void onFailure(Throwable thrown) {
+                handleHttpFailure(thrown);
+            }
+        });
 
-
-        //poster
-
-        logger.log(Level.INFO, "STARTING POSTER COLLECTIONS FETCH");
+        // HttpResponse userResponse = httpUserResponseFuture.get();
+        // poster
         url = new PosterUrl(PosterServices.getInstance().getConfig().getString("poster.base.url") + "/poster");
-
         HttpRequest posterRequest = requestFactory.buildGetRequest(url);
-
         Future<HttpResponse> httpPosterResponseFuture = posterRequest.executeAsync(pool);
 
-        HttpResponse posterReponse = httpPosterResponseFuture.get();
+        ListenableFuture<HttpResponse> posterFuture = JdkFutureAdapters.listenInPoolThread(
+                httpPosterResponseFuture);
 
-        parseResponseArray(posterReponse, Poster.class);
+        Futures.addCallback(posterFuture, new FutureCallback<HttpResponse>() {
+            public void onSuccess(HttpResponse posterReponse) {
+                try {
+                    logger.log(Level.INFO, "STARTING POSTER COLLECTIONS FETCH");
+                    parseResponseArray(posterReponse, Poster.class);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailure(Throwable thrown) {
+                handleHttpFailure(thrown);
+            }
+        });
 
         //posterItem
 
@@ -225,10 +298,27 @@ public class RESTHelper {
 
         Future<HttpResponse> httpPosterItemResponseFuture = posterItemRequest.executeAsync(pool);
 
-        HttpResponse posterItemReponse = httpPosterItemResponseFuture.get();
+        ListenableFuture<HttpResponse> posteItemFuture = JdkFutureAdapters.listenInPoolThread(
+                httpPosterItemResponseFuture);
 
-        parseResponseArray(posterItemReponse, PosterItem.class);
+        Futures.addCallback(posteItemFuture, new FutureCallback<HttpResponse>() {
+            public void onSuccess(HttpResponse posterItemFuture) {
+                try {
+                    logger.log(Level.INFO, "STARTING POSTER ITEM COLLECTIONS FETCH");
+                    parseResponseArray(posterItemFuture, PosterItem.class);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
+            public void onFailure(Throwable thrown) {
+                handleHttpFailure(thrown);
+            }
+        });
+    }
+
+    private void handleHttpFailure(Throwable thrown) {
+        thrown.printStackTrace();
     }
 
     private void parseResponseArray(HttpResponse response, Class<?> someClass) throws IOException {

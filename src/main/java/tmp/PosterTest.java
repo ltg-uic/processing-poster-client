@@ -1,17 +1,13 @@
 package tmp;
 
-import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import ltg.commons.SimpleMQTTClient;
 import ltg.evl.uic.poster.json.mongo.*;
 import ltg.evl.uic.poster.widgets.DialogZoneController;
 import ltg.evl.uic.poster.widgets.PictureZone;
-import ltg.evl.uic.poster.widgets.TextBoxZone;
 import ltg.evl.uic.poster.widgets.UserButton;
 import ltg.evl.util.RESTHelper;
-import ltg.evl.util.collections.PosterItemToPictureZone;
-import ltg.evl.util.collections.PosterItemToTextZone;
 import org.apache.log4j.Logger;
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -21,7 +17,6 @@ import vialab.SMT.TouchSource;
 import vialab.SMT.Zone;
 
 import java.util.Collection;
-import java.util.List;
 
 
 public class PosterTest extends PApplet {
@@ -163,48 +158,48 @@ public class PosterTest extends PApplet {
     }
 
     public void loadPosterItems(Collection<PosterItem> posterItems, boolean shouldRemove) {
-
-        if (shouldRemove)
-            removeAlZones();
-
-        List<PosterItem> textItems = Lists.newArrayList();
-        List<PosterItem> pictureItems = Lists.newArrayList();
-
-        for (PosterItem posterItem : posterItems) {
-            if (posterItem.getType().equals(PosterItem.TEXT)) {
-                textItems.add(posterItem);
-            } else {
-                pictureItems.add(posterItem);
-            }
-        }
-
-        FluentIterable<PictureZone> pictureZones = FluentIterable.from(pictureItems)
-                                                                 .transform(new PosterItemToPictureZone());
-
-        FluentIterable<TextBoxZone> textZones = FluentIterable.from(textItems)
-                                                              .transform(new PosterItemToTextZone());
-
-
-        for (PictureZone pictureZone : pictureZones) {
-            if (pictureZone != null) {
-
-                boolean hasAdded = SMT.add(pictureZone);
-                if (hasAdded) {
-                    // topBarZone.stopTimer();
-                    pictureZone.startAnimation(true);
-                }
-            }
-        }
-
-        for (TextBoxZone textZone : textZones) {
-            if (textZone != null) {
-                boolean hasAdded = SMT.add(textZone);
+//
+//        if (shouldRemove)
+//            removeAlZones();
+//
+//        List<PosterItem> textItems = Lists.newArrayList();
+//        List<PosterItem> pictureItems = Lists.newArrayList();
+//
+//        for (PosterItem posterItem : posterItems) {
+//            if (posterItem.getType().equals(PosterItem.TEXT)) {
+//                textItems.add(posterItem);
+//            } else {
+//                pictureItems.add(posterItem);
+//            }
+//        }
+//
+//        FluentIterable<Callable<PictureZone>> pictureZones = FluentIterable.from(pictureItems)
+//                                                                 .transform(new PosterItemToPictureZone());
+//
+//        FluentIterable<TextBoxZone> textZones = FluentIterable.from(textItems)
+//                                                              .transform(new PosterItemToTextZone());
+//
+//
+//        for (PictureZone pictureZone : pictureZones) {
+//            if (pictureZone != null) {
+//
+//                boolean hasAdded = SMT.add(pictureZone);
 //                if (hasAdded) {
 //                    // topBarZone.stopTimer();
 //                    pictureZone.startAnimation(true);
 //                }
-            }
-        }
+//            }
+//        }
+//
+//        for (TextBoxZone textZone : textZones) {
+//            if (textZone != null) {
+//                boolean hasAdded = SMT.add(textZone);
+////                if (hasAdded) {
+////                    // topBarZone.stopTimer();
+////                    pictureZone.startAnimation(true);
+////                }
+//            }
+//        }
 
     }
 

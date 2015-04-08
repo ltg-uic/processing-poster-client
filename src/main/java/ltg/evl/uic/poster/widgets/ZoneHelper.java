@@ -48,7 +48,9 @@ public class ZoneHelper {
             .color(189, 189, 189), SMT.getApplet().color(120, 144, 156)};
 
     private ZoneHelper() {
-        helveticaNeue18Font = SMT.getApplet().loadFont(Resources.getResource("HelveticaNeue-18.vlw").getPath());
+        //fuck you processing
+        helveticaNeue18Font = SMT.getApplet().loadFont(
+                Resources.getResource("HelveticaNeue-18.vlw").getPath().replaceAll("%20", " "));
         deleteImage = SMT.getApplet().loadImage("delete_button_transparent.png");
         scaleImage = SMT.getApplet().loadImage("scale_button_transparent.png");
         blueOutline = SMT.getApplet().color(29, 128, 240);

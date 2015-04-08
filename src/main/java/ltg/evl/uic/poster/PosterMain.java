@@ -4,6 +4,7 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
 import com.google.common.io.Resources;
+import com.google.common.util.concurrent.*;
 import ltg.evl.uic.poster.json.mongo.*;
 import ltg.evl.uic.poster.listeners.LoadUserListener;
 import ltg.evl.uic.poster.listeners.LoginDialogEvent;
@@ -28,7 +29,9 @@ import java.security.GeneralSecurityException;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -150,22 +153,27 @@ public class PosterMain extends PApplet implements LoadUserListener, SaveUserLis
 //            }
 //        }
 
-        FluentIterable<PictureZone> pictureZones = FluentIterable.from(posterItems)
+        FluentIterable<Callable<PictureZone>> callableFutures = FluentIterable.from(posterItems)
                                                                  .transform(new PosterItemToPictureZone());
 
-//        FluentIterable<TextBoxZone> textZones = FluentIterable.from(textItems)
-//                                                              .transform(new PosterItemToTextZone());
 
+        ListeningExecutorService service = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(10));
 
-        for (PictureZone pictureZone : pictureZones) {
-            if (pictureZone != null) {
+        for (Callable<PictureZone> callablePictureZone : callableFutures) {
 
-                boolean hasAdded = SMT.add(pictureZone);
-                if (hasAdded) {
-                    // topBarZone.stopTimer();
-                    pictureZone.startAnimation(true);
+            ListenableFuture<PictureZone> pictureZone = service.submit(callablePictureZone);
+            Futures.addCallback(pictureZone, new FutureCallback<PictureZone>() {
+                @Override
+                public void onSuccess(PictureZone result) {
+                    boolean hasAdded = SMT.add(result);
                 }
-            }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    logger.log(Level.ERROR, "PICTUREZONES FAILED CALLBACK");
+                }
+            });
+
         }
 
 //        for (TextBoxZone textZone : textZones) {

@@ -1,6 +1,5 @@
 package tmp;
 
-import com.google.common.io.Resources;
 import ltg.commons.SimpleMQTTClient;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
 import ltg.evl.uic.poster.json.mongo.PosterItemBuilder;
@@ -53,7 +52,7 @@ public class UIControlTest extends PApplet {
 
 
     public void doInit() {
-        helveticaFont = loadFont(Resources.getResource("Roboto-Light-48.vlw").getPath());
+//        helveticaFont = loadFont(Resources.getResource("Roboto-Light-48.vlw").getPath());
         MQTTPipe.getInstance();
     }
 
