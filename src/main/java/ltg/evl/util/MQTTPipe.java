@@ -14,7 +14,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 /**
- * Created by aperritano on 3/23/15.
+ * Publishes and Subscribes to MQTT Messages
  */
 public class MQTTPipe implements MessageListener {
 
@@ -34,7 +34,6 @@ public class MQTTPipe implements MessageListener {
 
             public void run() {
                 enableLogging();
-
                 BASE_ADDRESS = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.host");
                 BASE_CLIENT_ID = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.client._id");
                 BASE_CHANNEL_IN = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.channel.in");
@@ -48,7 +47,6 @@ public class MQTTPipe implements MessageListener {
 
                 posterMQTTClient = new SimpleMQTTClient(BASE_ADDRESS, BASE_CLIENT_ID);
                 posterMQTTClient.subscribe(BASE_CHANNEL_IN, MQTTPipe.this);
-                System.out.println("Runnable running");
             }
         };
 
@@ -90,7 +88,7 @@ public class MQTTPipe implements MessageListener {
 
     @Override
     public void processMessage(String rawMessage) {
-        logger.log(Level.INFO, "WE HAVE MESSAGE" + rawMessage);
+        logger.log(Level.INFO, "WE HAVE A MESSAGE" + rawMessage);
 
 
         try {
@@ -99,7 +97,7 @@ public class MQTTPipe implements MessageListener {
             Reader reader = new InputStreamReader(inputStream);
             PosterMessage pm = jsonObjectParser.parseAndClose(reader, PosterMessage.class);
 
-            logger.fine("HEY PM: " + pm);
+            logger.fine("Processing Message: " + pm);
 
             RESTHelper.getInstance().mqttMessageForward(pm);
         } catch (IOException e) {
