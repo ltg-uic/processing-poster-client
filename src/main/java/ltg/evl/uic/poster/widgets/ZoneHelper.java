@@ -24,14 +24,12 @@ public class ZoneHelper {
 
     public static PImage deleteImage;
     public static PFont helveticaNeue18Font;
-    public static Font helveticaNeue18JavaFont = new Font("HelveticaNeue", Font.BOLD, 20);
-    private static ZoneHelper ourInstance = new ZoneHelper();
-    private final PImage scaleImage;
-    public int greyOutline;
-    public int blueOutline;
-    public int redOutline;
-    public int whiteOutline;
-    public int[] colors = {SMT.getApplet().color(126, 87, 194), SMT.getApplet().color(92, 107, 192), SMT.getApplet()
+    public static PFont helveticaNeue48Font;
+    public static Font helveticaNeue20JavaFont = new Font("HelveticaNeue", Font.BOLD, 20);
+    public static PImage scaleImage;
+    public static PFont helveticaNeue48BoldFont;
+    public static int[] colors = {SMT.getApplet().color(126, 87, 194), SMT.getApplet()
+                                                                          .color(92, 107, 192), SMT.getApplet()
                                                                                                         .color(66, 165,
                                                                                                                245), SMT
             .getApplet()
@@ -45,18 +43,25 @@ public class ZoneHelper {
             .getApplet()
             .color(212, 167, 38), SMT
             .getApplet()
-            .color(189, 189, 189), SMT.getApplet().color(120, 144, 156)};
+            .color(189, 189, 189), SMT.getApplet().color(122, 186, 58)};
+    public static int greenColor = SMT.getApplet().color(122, 186, 58);
+    public static int blueOutline = SMT.getApplet().color(29, 128, 240);
+    public static int redOutline = SMT.getApplet().color(238, 43, 41);
+    public static int whiteOutline = SMT.getApplet().color(255, 255, 255);
+    public static int greyOutline = SMT.getApplet().color(224, 224, 224);
+    private static ZoneHelper ourInstance = new ZoneHelper();
 
     private ZoneHelper() {
         //fuck you processing
         helveticaNeue18Font = SMT.getApplet().loadFont(
                 Resources.getResource("HelveticaNeue-18.vlw").getPath().replaceAll("%20", " "));
+        helveticaNeue48Font = SMT.getApplet().loadFont(
+                Resources.getResource("HelveticaNeue-48.vlw").getPath().replaceAll("%20", " "));
+        helveticaNeue48BoldFont = SMT.getApplet().loadFont(
+                Resources.getResource("HelveticaNeue-Bold-48.vlw").getPath().replaceAll("%20", " "));
         deleteImage = SMT.getApplet().loadImage("delete_button_transparent.png");
         scaleImage = SMT.getApplet().loadImage("scale_button_transparent.png");
-        blueOutline = SMT.getApplet().color(29, 128, 240);
-        redOutline = SMT.getApplet().color(238, 43, 41);
-        whiteOutline = SMT.getApplet().color(255, 255, 255);
-        greyOutline = SMT.getApplet().color(224, 224, 224);
+
     }
 
     public static ZoneHelper getInstance() {
@@ -162,8 +167,8 @@ public class ZoneHelper {
         int x = (int) (zone.getWidth() - adjustedButtonSize) - 2;
         int y = (int) (2 - adjustedButtonSize);
 
-        System.out.println(
-                "delete button: " + buttonSize + " adjust button size: " + adjustedButtonSize + " x: " + x + " y: " + y);
+//        System.out.println(
+//                "delete button: " + buttonSize + " adjust button size: " + adjustedButtonSize + " x: " + x + " y: " + y);
 
         DeleteButton deleteButton = new DeleteButtonBuilder().setName(DeleteButton.DELETE_NAME)
                                                              .setImage(deleteImage)
@@ -182,8 +187,8 @@ public class ZoneHelper {
         int x = (int) (zone.getWidth() - adjustedButtonSize) - 2;
         int y = (int) (zone.getHeight() - adjustedButtonSize) - 2;
 
-        System.out.println(
-                "SCALE BUTTON: " + buttonSize + " ADJUST Size" + adjustedButtonSize + " x: " + x + " y: " + y);
+//        System.out.println(
+//                "SCALE BUTTON: " + buttonSize + " ADJUST Size" + adjustedButtonSize + " x: " + x + " y: " + y);
 
         ScaleButton scaleButton = new ScaleButtonBuilder().setUUID(ScaleButton.SCALE_NAME)
                                                           .setImage(scaleImage)

@@ -1,6 +1,9 @@
 package ltg.evl.uic.poster.widgets;
 
+import com.google.common.base.Optional;
+import ltg.evl.uic.poster.json.mongo.User;
 import ltg.evl.uic.poster.listeners.LoadUserListener;
+import org.apache.commons.lang.WordUtils;
 import processing.core.PFont;
 import vialab.SMT.Touch;
 import vialab.SMT.Zone;
@@ -10,7 +13,7 @@ public class UserButton extends Zone {
     public boolean pressed = false;
     protected int pressedButtonColor;
     protected int unpressedButtonColor;
-    protected int outline = ZoneHelper.getInstance().greyOutline;
+    protected int outline = ZoneHelper.greyOutline;
     protected PFont font;
     protected String text;
     protected int textColor;
@@ -20,6 +23,7 @@ public class UserButton extends Zone {
     private int savedWidth;
     private int savedHeight;
     private LoadUserListener loadUserListerner;
+    private User user;
 
     public UserButton(String name, int buttonStartX, int buttonStartY, int buttonWidth, int buttonHeight, String text,
                       int pressedButtonColor, int unpressedButtonColor, PFont font) {
@@ -28,36 +32,63 @@ public class UserButton extends Zone {
         this.font = font;
         this.text = text;
         this.fontSize = font.getSize();
-        this.pressedButtonColor = pressedButtonColor;
-        this.unpressedButtonColor = unpressedButtonColor;
-        this.currentColor = unpressedButtonColor;
+        //this.initButton();
+    }
 
+    public UserButton(String uuid, int width, int height) {
+        super(uuid, width, height);
+        this.savedWidth = width;
+        this.savedHeight = height;
 
-        this.textColor = color(255);
+        this.font = ZoneHelper.helveticaNeue18Font;
+        //this.text = user.getName();
+
+        this.fontSize = 18;
+        //this.initButton();
     }
 
     public UserButton(String uuid, String text, int width, int height) {
         super(uuid, width, height);
-        this.savedWidth = width;
-        this.savedHeight = height;
-        this.font = ZoneHelper.helveticaNeue18Font;
         this.text = text;
-        this.fontSize = font.getSize();
-        //this.fontSize = 18;
+        this.font = ZoneHelper.helveticaNeue18Font;
+        //this.text = user.getName();
 
-        int num = ZoneHelper.getInstance().colors.length - 1;
-        int n = ZoneHelper.random(0, num);
+        this.fontSize = 18;
+    }
 
+    protected void initButton() {
 
-        this.unpressedButtonColor = ZoneHelper.getInstance().colors[n];
-        this.pressedButtonColor = ZoneHelper.getInstance().greyOutline;
+        if (Optional.fromNullable(user).isPresent()) {
+            this.unpressedButtonColor = Optional.of(user.getColor()).or(ZoneHelper.whiteOutline);
+            this.text = WordUtils.capitalize(user.getName());
+        } else {
+            this.unpressedButtonColor = ZoneHelper.whiteOutline;
+        }
+
+        this.pressedButtonColor = ZoneHelper.greyOutline;
         this.currentColor = unpressedButtonColor;
-
+        this.outline = ZoneHelper.greyOutline;
         this.textColor = color(255);
-
 
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setUnpressedButtonColor(int color) {
+        this.unpressedButtonColor = color;
+    }
+
+    public void setPressedButtonColor(int color) {
+        this.pressedButtonColor = color;
+        this.currentColor = color;
+
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
 
     @Override
     public void touch() {
@@ -70,10 +101,8 @@ public class UserButton extends Zone {
 
     @Override
     public void draw() {
-        smooth(4);
         stroke(outline);
         strokeWeight(1);
-
         fill(currentColor);
         smooth(4);
         ellipse(getWidth() / 2, getHeight() / 2, getWidth(), getHeight());
@@ -86,6 +115,7 @@ public class UserButton extends Zone {
             textAlign(CENTER, CENTER);
             textSize(fontSize);
             fill(textColor);
+            smooth(4);
             text(text, getWidth() / 2 - borderWeight, getHeight() / 2 - borderWeight);
         }
     }
@@ -99,6 +129,8 @@ public class UserButton extends Zone {
     @Override
     public void touchUp(Touch touch) {
         this.currentColor = unpressedButtonColor;
-        this.loadUserListerner.loadUser(getName());
+        this.loadUserListerner.loadUser(this.user);
     }
+
+
 }

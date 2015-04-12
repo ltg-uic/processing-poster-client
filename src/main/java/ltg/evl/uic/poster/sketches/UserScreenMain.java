@@ -1,6 +1,5 @@
 package ltg.evl.uic.poster.sketches;
 
-import ltg.evl.uic.poster.listeners.LoadUserListener;
 import ltg.evl.uic.poster.listeners.SaveUserListerner;
 import ltg.evl.uic.poster.widgets.ControlButtonZone;
 import ltg.evl.uic.poster.widgets.ControlButtonZoneBuilder;
@@ -21,7 +20,7 @@ import java.util.ArrayList;
 /**
  * Created by aperritano on 9/24/14.
  */
-public class UserScreenMain extends PApplet implements LoadUserListener, SaveUserListerner {
+public class UserScreenMain extends PApplet implements SaveUserListerner {
 
 
     protected static Logger logger;
@@ -139,17 +138,6 @@ public class UserScreenMain extends PApplet implements LoadUserListener, SaveUse
 
     }
 
-
-    @Override
-    public void loadUser(final String userName) {
-        Thread later = new Thread() {
-            @Override
-            public void run() {
-                loadUserLayout(userName);
-            }
-        };
-        later.start();
-    }
 
     public void loadUserLayout(String userName) {
 

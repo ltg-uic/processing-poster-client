@@ -1,6 +1,5 @@
 package ltg.evl.uic.poster.json.mongo;
 
-import com.fasterxml.jackson.jr.ob.JSON;
 import com.google.api.client.json.GenericJson;
 import com.google.api.client.util.Key;
 
@@ -37,17 +36,6 @@ public class Poster extends GenericJson {
         this.uuid = uuid;
     }
 
-    public static Poster toObj(String json) {
-        try {
-            Poster bean = JSON.std.beanFrom(Poster.class, json);
-            return bean;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-
-    }
-
     @Override
     public String toString() {
         try {
@@ -57,21 +45,6 @@ public class Poster extends GenericJson {
         }
         return null;
     }
-
-    //    @Override
-//    public String toString() {
-//
-//        return Objects.toStringHelper(this)
-//                      .omitNullValues()
-//                      .add("_id", _id)
-//                      .add("uuid", uuid)
-//                      .add("name", getName())
-//                      .add("height", getHeight())
-//                      .add("width", getWidth())
-//                      .add("Color", getColor())
-//                      .toString();
-//
-//    }
 
     public Map get_id() {
         return _id;
@@ -119,20 +92,6 @@ public class Poster extends GenericJson {
     public void addPosterItems(String posterItem) {
         posterItems.add(posterItem);
 
-    }
-
-
-    public String toJSON() {
-
-        String json = null;
-        try {
-            json = JSON.std.asString(this);
-            return json;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 
     public String getUuid() {

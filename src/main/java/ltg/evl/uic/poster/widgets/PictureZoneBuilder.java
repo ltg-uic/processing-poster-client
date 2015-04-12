@@ -11,6 +11,8 @@ public class PictureZoneBuilder {
     private int width;
     private int height;
     private PosterItem posterItem;
+    private String type;
+    private String zoneName;
 
     public PictureZoneBuilder setImage(PImage image) {
         this.image = image;
@@ -47,10 +49,20 @@ public class PictureZoneBuilder {
         return this;
     }
 
+    public PictureZoneBuilder setType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    public PictureZoneBuilder setZoneName(String zoneName) {
+        this.zoneName = zoneName;
+        return this;
+    }
+
     public PictureZone createPictureZone() {
-        PictureZone pictureZone = new PictureZone(image, uuid, x, y, width, height);
+        PictureZone pictureZone = new PictureZone(image, uuid, x, y, width, height, type, zoneName);
         pictureZone.add(ZoneHelper.getInstance().getDeleteButton(pictureZone));
-        pictureZone.add(ZoneHelper.getInstance().getScaleButton(pictureZone));
+        //pictureZone.add(ZoneHelper.getInstance().getScaleButton(pictureZone));
         return pictureZone;
     }
 
@@ -58,7 +70,7 @@ public class PictureZoneBuilder {
         PictureZone pictureZone = new PictureZone(posterItem);
 
         pictureZone.add(ZoneHelper.getInstance().getDeleteButton(pictureZone));
-        pictureZone.add(ZoneHelper.getInstance().getScaleButton(pictureZone));
+        //  pictureZone.add(ZoneHelper.getInstance().getScaleButton(pictureZone));
         return pictureZone;
     }
 

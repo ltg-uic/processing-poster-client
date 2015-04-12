@@ -1,14 +1,21 @@
 package ltg.evl.uic.poster.json.mongo;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.*;
 import ltg.evl.uic.poster.listeners.LoginDialogEvent;
+import ltg.evl.uic.poster.widgets.DeleteButton;
+import ltg.evl.uic.poster.widgets.PictureZone;
+import ltg.evl.uic.poster.widgets.ScaleButton;
 import ltg.evl.util.RESTHelper;
+import ltg.evl.util.collections.PictureZoneToPosterItem;
 import org.apache.commons.lang.StringUtils;
+import vialab.SMT.SMT;
 import vialab.SMT.Zone;
 
 import java.io.IOException;
@@ -75,8 +82,9 @@ public class PosterDataModel {
      * Loading Users in main screen
      *
      * @param userUuid
+     * @param buttonColor
      */
-    public void loadUser(String userUuid) {
+    public void loadUser(String userUuid, int buttonColor) {
         ImmutableList<User> imAllUsers = ImmutableList.copyOf(PosterDataModel.helper().allUsers);
 
         if (!imAllUsers.isEmpty()) {
@@ -84,13 +92,29 @@ public class PosterDataModel {
                 if (user.getUuid().equals(userUuid)) {
                     this.currentUser = user;
                     this.postObject(
-                            new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.USER, userUuid));
+                            new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.USER, userUuid, buttonColor));
                 }
             }
         }
     }
+
+    public void logout() {
+        this.postObject(
+                new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.LOGOUT));
+    }
+
+
+    public void loadUser(User user) {
+        if (Optional.fromNullable(user).isPresent()) {
+            this.currentUser = user;
+            this.postObject(new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.USER, user));
+        }
+
+
+    }
     //endregion
 
+    //region load poster
     /**
      * Loading Posters in the main screen
      *
@@ -103,7 +127,7 @@ public class PosterDataModel {
             for (Poster poster : imAllPosters) {
                 if (poster.getUuid().equals(posterUuid)) {
                     this.currentPoster = poster;
-                    this.postObject(new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.POSTER, posterUuid));
+                    this.postObject(new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.POSTER, posterUuid, 0));
                 }
             }
         }
@@ -121,7 +145,53 @@ public class PosterDataModel {
 
         Collection<User> resultClass = Collections2.filter(imAllUsers, predicateClass);
 
-        this.postObject(new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.CLASS_NAME, classname));
+        this.postObject(new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.CLASS_NAME, classname, 0));
+
+    }
+    //endregion loading
+
+    public void savePosterItemsForCurrentUser() {
+        final List<PictureZone> pictureZoneList = Lists.newArrayList();
+        ImmutableList<Zone> zones = ImmutableList.copyOf(SMT.getZones());
+        for (Zone zone : zones) {
+            Optional<Zone> zoneOptional = Optional.fromNullable(zone);
+            if (zoneOptional.isPresent()) {
+                if (zone instanceof PictureZone && !(zone instanceof DeleteButton) && !(zone instanceof ScaleButton)) {
+                    pictureZoneList.add((PictureZone) zone);
+                }
+            }
+        }
+
+        if (!pictureZoneList.isEmpty()) {
+
+
+            FluentIterable<PosterItem> posterItems = FluentIterable.from(pictureZoneList).transform(
+                    new PictureZoneToPosterItem());
+
+
+            try {
+                RESTHelper.getInstance().updatePosterItems(posterItems);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (GeneralSecurityException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    }
+
+    public void updatePosterItem(
+            PosterItem posterItem) throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
+        RESTHelper.getInstance()
+                  .postCollection(posterItem, RESTHelper.PosterUrl.updateDeletePosterItem(
+                                          posterItem.get_id().get("$oid").toString(),
+                                          RESTHelper.PosterUrl.REQUEST_TYPE.UPDATE),
+                                  PosterItem.class, false);
 
     }
 
@@ -225,57 +295,40 @@ public class PosterDataModel {
         return null;
     }
 
-    public void saveZoneState(Zone zone) {
-        Iterator<PosterItem> it = allPosterItems.iterator();
-        while (it.hasNext()) {
-            PosterItem pi = it.next();
-            if (pi.getUuid().equals(zone.getName())) {
-                pi.setX(zone.getX());
-                pi.setY(zone.getY());
-                pi.setWidth(zone.getWidth());
-                pi.setHeight(zone.getHeight());
-                //don't forget rotation
-                //save posteritem to db
-                updatePosterItemState(pi);
-            }
-        }
-
-    }
-
     public void updatePosterItemState(final PosterItem posterItem) {
 
-        logger.log(Level.INFO, "UPDATING POSTER_ITEM");
-
-
-        ListeningExecutorService service = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(10));
-
-        ListenableFuture<PosterItem> updatedPosterItemFuture = service.submit(new Callable<PosterItem>() {
-            public PosterItem call() throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
-                RESTHelper.getInstance()
-                          .postCollection(posterItem, RESTHelper.PosterUrl.updateDeletePosterItem(
-                                  String.valueOf(posterItem.get_id().get("$oid")),
-                                  RESTHelper.PosterUrl.REQUEST_TYPE.UPDATE), PosterItem.class);
-
-
-                return posterItem;
-            }
-        });
-
-        Futures.addCallback(updatedPosterItemFuture, new FutureCallback<PosterItem>() {
-            public void onSuccess(PosterItem updateDatedPosterItem) {
-
-
-                logger.log(Level.SEVERE, "UPDATE POSTERITEM " + updateDatedPosterItem.getUuid() + " SUCCESS!");
-//                PosterDataModel.helper()
-//                                     .sendEvent(
-//                                             new ObjectEvent(ObjectEvent.OBJ_TYPES.DELETE_POSTER_ITEM, posterItemUuid));
-            }
-
-            public void onFailure(Throwable thrown) {
-                logger.log(Level.SEVERE, "DELETING POSTERITEM " + posterItem.getUuid() + " FAILED!");
-                thrown.printStackTrace();
-            }
-        });
+//        logger.log(Level.INFO, "UPDATING POSTER_ITEM");
+//
+//
+//        ListeningExecutorService service = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(10));
+//
+//        ListenableFuture<PosterItem> updatedPosterItemFuture = service.submit(new Callable<PosterItem>() {
+//            public PosterItem call() throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
+//                RESTHelper.getInstance()
+//                          .postCollection(posterItem, RESTHelper.PosterUrl.updateDeletePosterItem(
+//                                  String.valueOf(posterItem.get_id().get("$oid")),
+//                                  RESTHelper.PosterUrl.REQUEST_TYPE.UPDATE), PosterItem.class);
+//
+//
+//                return posterItem;
+//            }
+//        });
+//
+//        Futures.addCallback(updatedPosterItemFuture, new FutureCallback<PosterItem>() {
+//            public void onSuccess(PosterItem updateDatedPosterItem) {
+//
+//
+//                logger.log(Level.SEVERE, "UPDATE POSTERITEM " + updateDatedPosterItem.getUuid() + " SUCCESS!");
+////                PosterDataModel.helper()
+////                                     .sendEvent(
+////                                             new ObjectEvent(ObjectEvent.OBJ_TYPES.DELETE_POSTER_ITEM, posterItemUuid));
+//            }
+//
+//            public void onFailure(Throwable thrown) {
+//                logger.log(Level.SEVERE, "DELETING POSTERITEM " + posterItem.getUuid() + " FAILED!");
+//                thrown.printStackTrace();
+//            }
+//        });
 
 
 
@@ -299,13 +352,13 @@ public class PosterDataModel {
                 RESTHelper.getInstance()
                           .postCollection(null, RESTHelper.PosterUrl.updateDeletePosterItem(
                                   String.valueOf(foundPosterItem.get_id().get("$oid")),
-                                  RESTHelper.PosterUrl.REQUEST_TYPE.DELETE), PosterItem.class);
+                                  RESTHelper.PosterUrl.REQUEST_TYPE.DELETE), PosterItem.class, true);
 
                 RESTHelper.getInstance()
                           .postCollection(foundPoster, RESTHelper.PosterUrl.updateDeletePoster(
                                                   String.valueOf(foundPoster.get_id().get("$oid")),
                                                   RESTHelper.PosterUrl.REQUEST_TYPE.UPDATE),
-                                          Poster.class);
+                                          Poster.class, true);
 
 
                 return foundPoster;
@@ -326,9 +379,8 @@ public class PosterDataModel {
 
 
                 logger.log(Level.SEVERE, "DELETING POSTERITEM " + posterItemUuid + " SUCCESS!");
-                PosterDataModel.helper()
-                               .sendEvent(
-                                       new ObjectEvent(ObjectEvent.OBJ_TYPES.DELETE_POSTER_ITEM, posterItemUuid));
+                PosterDataModel.this.postObject(
+                        new ObjectEvent(ObjectEvent.OBJ_TYPES.DELETE_POSTER_ITEM, posterItemUuid));
             }
 
             public void onFailure(Throwable thrown) {
@@ -362,16 +414,9 @@ public class PosterDataModel {
         }
     }
 
-    public void registerObject(Object obj) {
-        eventBus.register(obj);
-    }
 
-    public void postObject(Object obj) {
-        eventBus.post(obj);
-    }
-
-    public void addObjectSubscriber(ObjectSubscriber objectSubscriber) {
-        eventBus.register(objectSubscriber);
+    public void registerForObjectEvent(Object objectListener) {
+        eventBus.register(objectListener);
     }
 
     public void updateAllUserCollection(List<User> users) {
@@ -384,10 +429,6 @@ public class PosterDataModel {
 
     public void updateAllPosterCollection(List<Poster> posters) {
         allPosters.addAll(posters);
-    }
-
-    public void sendEvent(ObjectEvent objectEvent) {
-        eventBus.post(objectEvent);
     }
 
     public void updateUserCollection(User user) {
@@ -413,4 +454,23 @@ public class PosterDataModel {
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
     }
+
+
+    public void resetData() {
+        allUsers = Lists.newArrayList();
+        allPosterItems = Lists.newArrayList();
+        allPosters = Lists.newArrayList();
+    }
+
+    //region Event Bus
+    public void registerObject(Object obj) {
+        eventBus.register(obj);
+    }
+
+    public void postObject(Object obj) {
+        eventBus.post(obj);
+    }
+    //end region
+
+
 }

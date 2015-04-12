@@ -1,6 +1,7 @@
 package ltg.evl.uic.poster.widgets;
 
 import ltg.evl.uic.poster.listeners.LoadPosterListener;
+import org.apache.commons.lang.WordUtils;
 import vialab.SMT.SMT;
 import vialab.SMT.Zone;
 
@@ -10,7 +11,7 @@ import java.util.Map;
 public class PosterPageZone extends Zone {
 
     private LoadPosterListener loadPosterListener;
-    private int greyColor = ZoneHelper.getInstance().greyOutline;
+    private int greyColor = ZoneHelper.greyOutline;
 
     public PosterPageZone(String name, int x, int y, int width, int height, LoadPosterListener loadPosterListener) {
         super(name, x, y, width, height);
@@ -20,8 +21,9 @@ public class PosterPageZone extends Zone {
     public void addPosters(Map<String, String> uuidIdToPosterName) {
 
         for (String uuid : uuidIdToPosterName.keySet()) {
-            String userName = uuidIdToPosterName.get(uuid);
-            PosterButton posterButton = new PosterButton(uuid, userName, 350, 175);
+            String posterTitle = uuidIdToPosterName.get(uuid);
+            PosterButton posterButton = new PosterButton(uuid, WordUtils.capitalize(posterTitle), 350, 175,
+                                                         ZoneHelper.blueOutline);
             posterButton.addLoadPosterListener(this.loadPosterListener);
             add(posterButton);
         }

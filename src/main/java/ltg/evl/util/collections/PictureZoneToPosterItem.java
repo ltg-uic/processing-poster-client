@@ -1,32 +1,49 @@
 package ltg.evl.util.collections;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
+import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
 import ltg.evl.uic.poster.widgets.PictureZone;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
-/**
- * Created by aperritano on 2/20/15.
- */
+import java.util.concurrent.Executors;
+
 public class PictureZoneToPosterItem implements Function<PictureZone, PosterItem> {
+    final static Logger logger = Logger.getLogger(PictureZoneToPosterItem.class);
+    ListeningExecutorService service = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(10));
+
     @Override
-    public PosterItem apply(PictureZone pictureZone) {
-//        String uuid = pictureZone.getUUID();
-//        for (PosterItem posterItem : RESTHelper.helper().users.get(0).getPosters().get(0).getPosterItems()) {
-//            if (posterItem.get_id().toString().equals(uuid)) {
-//                posterItem.setWidth(pictureZone.getWidth());
-//                posterItem.setHeight(pictureZone.getHeight());
-//                posterItem.setY(pictureZone.getY());
-//                posterItem.setX(pictureZone.getX());
-//                //DBHelper.helper().dbClient().store(posterItem);
-//               // System.out.println("POSTERITEM UPDATED: " + posterItem.toString());
-//
-//                pictureZone.startAnimation(false);
-//
-//                return posterItem;
-//            }
-//        }
+    public PosterItem apply(final PictureZone pictureZone) {
 
 
-        return null;
+        Optional<PictureZone> pictureZoneOptional = Optional.fromNullable(pictureZone);
+
+        PosterItem modPosteritem = null;
+        if (pictureZoneOptional.isPresent()) {
+
+
+            Optional<PosterItem> posterItemOptional = Optional.fromNullable(
+                    PosterDataModel.helper().findPosterItemWithPosterItemUuid(pictureZone.getName()));
+
+            if (posterItemOptional.isPresent()) {
+                modPosteritem = posterItemOptional.get();
+
+                logger.log(Level.INFO, "MOD PosterItem: " + modPosteritem);
+
+                modPosteritem.setHeight(pictureZone.getHeight());
+                modPosteritem.setWidth(pictureZone.getWidth());
+                modPosteritem.setY(pictureZone.getY());
+                modPosteritem.setX(pictureZone.getX());
+
+
+            }
+
+            return modPosteritem;
+        }
+        return modPosteritem;
     }
 }

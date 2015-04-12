@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
 import ltg.evl.uic.poster.json.mongo.*;
 import ltg.evl.util.RESTHelper;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -73,8 +72,8 @@ public class MongoDBTest {
                                                    .setY(y)
                                                    .setColor("#34567")
                                                    .setRotation(0)
-                                                   .setType("jpg").setImageBytes(
-                            Base64.encodeBase64String(image.getByteArray()))
+//                                                   .setType("jpg").setImageBytes(
+//                            Base64.encodeBase64String(image.getByteArray()))
                                                    .createPosterItem();
 
 
@@ -90,7 +89,7 @@ public class MongoDBTest {
 
         // testUser();
         //RESTHelper.helper().testPullUser();
-        //RESTHelper.helper().getAllCollections();
+        //RESTHelper.helper().getAllCollectionRequests();
 
 
         // createPosterItem();
@@ -141,7 +140,8 @@ public class MongoDBTest {
 //        });
 
 
-        // createUser("PULSARS", Lists.asList("Peyton Key", new String[]{"M. Preston", "Sam Snyder"}), UUID.randomUUID().toString());
+        List<String> strings = Lists.newArrayList(UUID.randomUUID().toString());
+        createUser("PULSARS", Lists.asList("Peyton Key", new String[]{"M. Preston", "Sam Snyder"}), "ben", strings, 0);
         // updatePoster();
         // deleteUser();
 
@@ -163,19 +163,19 @@ public class MongoDBTest {
 
         ArrayList<String> imageItems = Lists.newArrayList();
 
-//        imageItems.add(createPosterItemImage(random(1, 4)));
-//        imageItems.add(createPosterItemImage(random(1, 4)));
-//        imageItems.add(createPosterItemImage(random(1, 4)));
+//        imageItems.add(createPosterItemImage(random(1, 3)));
+//        imageItems.add(createPosterItemImage(random(1, 3)));
+//        imageItems.add(createPosterItemImage(random(1, 3)));
 
 
-        imageItems.add(createPosterItemImage(0));
-        imageItems.add(createPosterItemImage(1));
-        imageItems.add(createPosterItemImage(2));
+//        imageItems.add(createPosterItemImage(0));
+//        imageItems.add(createPosterItemImage(2));
+//        imageItems.add(createPosterItemImage(2));
 
         int NUM_GROUPS = 1;
         int NUM_POSTERS_PER_GROUP = 1;
 
-        for (int y = 0; y < 2; y++) {
+        for (int y = 0; y < 1; y++) {
             String CLASS_NAME = classes[y];
             //first posteritems
 
@@ -193,8 +193,8 @@ public class MongoDBTest {
                     ArrayList<String> posterItems = Lists.newArrayList();
                     posterItems.addAll(imageItems);
                     posterItems.add(createPosterItemText(1, SentenceGenerator.getInstance().makeText(random(1, 4))));
-                    posterItems.add(createPosterItemText(2, SentenceGenerator.getInstance().makeText(random(1, 4))));
-                    posterItems.add(createPosterItemText(3, SentenceGenerator.getInstance().makeText(random(1, 4))));
+//                    posterItems.add(createPosterItemText(2, SentenceGenerator.getInstance().makeText(random(1, 4))));
+//                    posterItems.add(createPosterItemText(3, SentenceGenerator.getInstance().makeText(random(1, 4))));
 
                     posterUuids.add(createPoster(SentenceGenerator.getInstance().makeHeadline(), posterItems));
                 }
@@ -205,7 +205,8 @@ public class MongoDBTest {
                                                                     names[random(0, names.length - 1)]);
 
                 String group_name = randGroupName.next();
-                createUser(CharMatcher.anyOf("_").replaceFrom(group_name, ' '), studentNames, CLASS_NAME, posterUuids);
+                createUser(CharMatcher.anyOf("_").replaceFrom(group_name, ' '), studentNames, CLASS_NAME, posterUuids,
+                           0);
 
                 System.out.println("DONE WITH GROUP " + i);
             }
@@ -217,18 +218,17 @@ public class MongoDBTest {
 
 
     private String createUser(String userName, List<String> nameTags, String className,
-                              List<String> uuidPosterId) throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
+                              List<String> uuidPosterId,
+                              int color) throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
 
         String id = UUID.randomUUID().toString();
 
-        User user = new UserBuilder().setName(userName).setUuid(id).createUser();
-        user.setClassname(className);
-        user.setNameTags(nameTags);
-        user.setUuid(id);
-        user.addAllPosters(uuidPosterId);
+        User user = new UserBuilder().setName(userName).setUuid(id).setClassname(className).setColor(0).setPosters(
+                uuidPosterId).createUser();
+
 
         RESTHelper.getInstance()
-                  .postCollection(user, RESTHelper.PosterUrl.addUser(), User.class);
+                  .postCollection(user, RESTHelper.PosterUrl.addUser(), User.class, true);
         return id;
     }
 
@@ -247,7 +247,7 @@ public class MongoDBTest {
         poster.addAllPosterItems(posterItemUuids);
 
         RESTHelper.getInstance()
-                  .postCollection(poster, RESTHelper.PosterUrl.addPoster(), Poster.class);
+                  .postCollection(poster, RESTHelper.PosterUrl.addPoster(), Poster.class, true);
 
         return id;
     }
@@ -256,7 +256,7 @@ public class MongoDBTest {
             int i) throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
         //javaxt.io.Image image = new javaxt.io.Image(Resources.getResource(i + ".jpg").getPath());
 
-        String[] links = {"http://i.kinja-img.com/gawker-media/image/upload/s--CEy---op--/c_fit,fl_progressive,q_80,w_636/18pagzhyr0jixjpg.jpg", "http://4.bp.blogspot.com/-JYPN0tF1Ly0/T7zvkxdvVKI/AAAAAAAAEyc/bU8_C-JiDD8/s640/Face,+Faces,+anomoly,+anomolies,+Mars,+Rover,+Spirit,+photo,+alien,+aliens,+base,+building,+structure,+UFO,+UFOs,+sighting,+sightings,+news,+May,+2012,+paranormalScreen+Shot+2012-05-23+at+1.43.15+PM.png", "http://mars.nasa.gov/mer/gallery/press/opportunity/20130122a/PIA16703_Sol3137B_Matijevic_Pan_L257atc.jpg"};
+        String[] links = {"http://s2.hubimg.com/u/4051951_f260.jpg", "http://www.smashingapps.com/wp-content/uploads/2010/01/space-artworks-wallpapers/space_artworks_7.jpg", "http://demortalz.com/wp-content/uploads/2013/07/real_space_photography_pictures_of_solar_system_1.jpg", "http://www.spacetoday.org/images/Hubble/HubbleBeauty/CircinusGalaxyBlackHole.jpg"};
 
         String uuid = UUID.randomUUID().toString();
 
@@ -273,7 +273,7 @@ public class MongoDBTest {
                         //.setImageBytes(Base64.encodeBase64String(image.getByteArray()))
                                                .createPosterItem();
         RESTHelper.getInstance()
-                  .postCollection(pi, RESTHelper.PosterUrl.addPosterItem(), PosterItem.class);
+                  .postCollection(pi, RESTHelper.PosterUrl.addPosterItem(), PosterItem.class, true);
         return uuid;
     }
 
@@ -295,7 +295,7 @@ public class MongoDBTest {
                                                .setContent(text)
                                                .createPosterItem();
         RESTHelper.getInstance()
-                  .postCollection(pi, RESTHelper.PosterUrl.addPosterItem(), PosterItem.class);
+                  .postCollection(pi, RESTHelper.PosterUrl.addPosterItem(), PosterItem.class, true);
 
         return uuid;
     }
@@ -303,7 +303,7 @@ public class MongoDBTest {
     private void createPosterItem(
             PosterItem pi) throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
         RESTHelper.getInstance()
-                  .postCollection(pi, RESTHelper.PosterUrl.addPosterItem(), PosterItem.class);
+                  .postCollection(pi, RESTHelper.PosterUrl.addPosterItem(), PosterItem.class, true);
     }
 
 
@@ -326,7 +326,7 @@ public class MongoDBTest {
         }
 
         RESTHelper.getInstance()
-                  .postCollection(poster, RESTHelper.PosterUrl.addPoster(), Poster.class);
+                  .postCollection(poster, RESTHelper.PosterUrl.addPoster(), Poster.class, true);
 
         return id;
     }
@@ -335,14 +335,14 @@ public class MongoDBTest {
         RESTHelper.getInstance()
                   .postCollection(null, RESTHelper.PosterUrl.updateDeletePoster(A41B9E1B8325873000044,
                                                                                 RESTHelper.PosterUrl.REQUEST_TYPE.DELETE),
-                                  Poster.class);
+                                  Poster.class, true);
     }
 
     private void deleteUser() throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
         RESTHelper.getInstance()
                   .postCollection(null, RESTHelper.PosterUrl.updateDeleteUser(A41B9E1B8325873000044,
                                                                               RESTHelper.PosterUrl.REQUEST_TYPE.DELETE),
-                                  User.class);
+                                  User.class, true);
     }
 
     @Ignore
@@ -361,7 +361,7 @@ public class MongoDBTest {
         RESTHelper.getInstance()
                   .postCollection(poster, RESTHelper.PosterUrl.updateDeletePoster("660a41b9e1b8325873000044",
                                                                                   RESTHelper.PosterUrl.REQUEST_TYPE.UPDATE),
-                                  Poster.class);
+                                  Poster.class, true);
     }
 
     private void updatePosterItem() throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
@@ -376,14 +376,14 @@ public class MongoDBTest {
                                                .setY(600)
                                                .setColor("#345dfdfd67")
                                                .setRotation(0)
-                                               .setType("jpg").setImageBytes(
-                        Base64.encodeBase64String(image.getByteArray()))
+//                                               .setType("jpg").setImageBytes(
+//                        Base64.encodeBase64String(image.getByteArray()))
                                                .createPosterItem();
 
         RESTHelper.getInstance()
                   .postCollection(pi, RESTHelper.PosterUrl.updateDeletePosterItem("550a49dee1b8325873000049",
                                                                                   RESTHelper.PosterUrl.REQUEST_TYPE.UPDATE),
-                                  PosterItem.class);
+                                  PosterItem.class, true);
     }
 
     private void updateUser() throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
@@ -393,14 +393,14 @@ public class MongoDBTest {
         RESTHelper.getInstance()
                   .postCollection(user, RESTHelper.PosterUrl.updateDeleteUser("550a4834e1b8325873000047",
                                                                               RESTHelper.PosterUrl.REQUEST_TYPE.UPDATE),
-                                  User.class);
+                                  User.class, true);
     }
 
     private void deletePosterItem() throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
         RESTHelper.getInstance()
                   .postCollection(null, RESTHelper.PosterUrl.updateDeletePosterItem("550a469ae1b8325873000046",
                                                                                     RESTHelper.PosterUrl.REQUEST_TYPE.DELETE),
-                                  PosterItem.class);
+                                  PosterItem.class, true);
     }
 
     @Ignore
@@ -409,7 +409,7 @@ public class MongoDBTest {
 
         //System.out.println("print " + o.toStringBabble() + " " + o.toStringMongod());
 
-        RESTHelper.getInstance().getAllCollections();
+        RESTHelper.getInstance().getAllCollectionRequests();
 
         List<Poster> allPosters = PosterDataModel.helper().allPosters;
 
@@ -422,7 +422,7 @@ public class MongoDBTest {
         RESTHelper.getInstance()
                   .postCollection(allPosters.get(0), RESTHelper.PosterUrl.updateDeletePoster(
                           allPosters.get(0).get_id().get("$oid").toString(),
-                          RESTHelper.PosterUrl.REQUEST_TYPE.UPDATE), Poster.class);
+                          RESTHelper.PosterUrl.REQUEST_TYPE.UPDATE), Poster.class, true);
 
     }
 

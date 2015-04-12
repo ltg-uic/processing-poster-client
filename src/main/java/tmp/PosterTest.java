@@ -135,7 +135,7 @@ public class PosterTest extends PApplet {
 
         logger.debug("POSTER MODELER STARTED");
         // PosterDataModel.helper().addUserSubscriber(userSubscriber);
-        PosterDataModel.helper().addObjectSubscriber(objectSubscriber);
+        PosterDataModel.helper().registerForObjectEvent(objectSubscriber);
 
         logger.debug("POSTER MODELER INIT ALL COLLECTIONS");
         RESTHelper.getInstance().initAllCollections();

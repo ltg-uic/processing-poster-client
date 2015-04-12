@@ -1,7 +1,6 @@
 package ltg.evl.uic.poster.widgets;
 
 import com.google.common.collect.ImmutableMap;
-import de.looksgood.ani.Ani;
 import ltg.evl.uic.poster.json.mongo.User;
 import ltg.evl.uic.poster.listeners.LoadClassListener;
 import vialab.SMT.SMT;
@@ -12,8 +11,8 @@ import java.util.Collection;
 
 public class ClassPage extends Zone {
 
-    private Ani ani;
-    private int greyColor = ZoneHelper.getInstance().greyOutline;
+    //private Ani ani;
+    private int greyColor = ZoneHelper.greyOutline;
     private LoadClassListener loadClassListener;
 
     public ClassPage(String classpage_id, int x, int y, int c_width, int c_height,
@@ -39,6 +38,7 @@ public class ClassPage extends Zone {
         for (String className : classMap.keySet()) {
             Collection<User> u = classMap.get(className);
             ClassButton classButton = new ClassButton(className, className, 175, 175);
+            classButton.initButton();
             classButton.addLoadClassListener(this.loadClassListener);
             add(classButton);
         }

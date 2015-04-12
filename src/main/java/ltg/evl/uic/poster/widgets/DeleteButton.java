@@ -9,13 +9,13 @@ public class DeleteButton extends PictureZone implements DeleteButtonListener {
     public static String DELETE_NAME = "deleteButton";
     private DeleteButtonListener deleteButtonListener;
     private boolean isDrawingOutline;
-    private int redColor = ZoneHelper.getInstance().redOutline;
-    private int whiteOutline = ZoneHelper.getInstance().whiteOutline;
+    private int redColor = ZoneHelper.redOutline;
+    private int whiteOutline = ZoneHelper.whiteOutline;
     private int outlineColor = redColor;
 
 
     public DeleteButton(PImage image, String UUID, int x, int y, int width, int height) {
-        super(image, UUID, x, y, width, height);
+        super(image, UUID, x, y, width, height, "img", "deleteZone");
     }
 
     public void addDeleteListener(DeleteButtonListener deleteButtonListener) {
@@ -36,14 +36,12 @@ public class DeleteButton extends PictureZone implements DeleteButtonListener {
     @Override
     public void touchDown(Touch touch) {
         outlineColor = whiteOutline;
-        System.out.println("Delete Touched Down");
 
     }
 
     @Override
     public void touchUp(Touch touch) {
         outlineColor = redColor;
-        System.out.println("Delete Touched up");
         deleteButtonListener.deleteZone(this);
     }
 

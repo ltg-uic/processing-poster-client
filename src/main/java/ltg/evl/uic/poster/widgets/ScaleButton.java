@@ -9,14 +9,14 @@ public class ScaleButton extends PictureZone implements ScaleButtonListener {
     public static String SCALE_NAME = "scaleButton";
     private ScaleButtonListener scaleButtonListener;
     private boolean isDrawingOutline;
-    private int redColor = ZoneHelper.getInstance().redOutline;
-    private int whiteOutline = ZoneHelper.getInstance().whiteOutline;
-    private int greyOutline = ZoneHelper.getInstance().greyOutline;
+    private int redColor = ZoneHelper.redOutline;
+    private int whiteOutline = ZoneHelper.whiteOutline;
+    private int greyOutline = ZoneHelper.greyOutline;
 
     private int outlineColor = whiteOutline;
 
     public ScaleButton(PImage image, String UUID, int x, int y, int width, int height) {
-        super(image, UUID, x, y, width, height);
+        super(image, UUID, x, y, width, height, "img", "scaleZone");
     }
 
     public void addScaleListener(ScaleButtonListener scaleButtonListener) {

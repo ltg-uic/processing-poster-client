@@ -1,6 +1,5 @@
 package ltg.evl.uic.poster.json.mongo;
 
-import com.fasterxml.jackson.jr.ob.JSON;
 import com.google.api.client.json.GenericJson;
 import com.google.api.client.util.Key;
 
@@ -9,10 +8,8 @@ import java.util.Map;
 
 public class PosterItem extends GenericJson {
 
-
-
-    public static String IMAGE = "img";
-    public static String TEXT = "txt";
+    public static final String IMAGE = "img";
+    public static final String TEXT = "txt";
     @Key
     private Map _id;
     @Key
@@ -52,17 +49,6 @@ public class PosterItem extends GenericJson {
         this.type = type;
         this.imageBytes = imageBytes;
         this.content = content;
-    }
-
-    public static PosterItem toObj(String json) {
-        try {
-            PosterItem bean = JSON.std.beanFrom(PosterItem.class, json);
-            return bean;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-
     }
 
     public String getContent() {
@@ -147,25 +133,6 @@ public class PosterItem extends GenericJson {
         return null;
     }
 
-    //    public String toString() {
-//
-//        return Objects.toStringHelper(this)
-//                      .omitNullValues()
-//                      .add("_id", _id)
-//                      .add("uuid", uuid)
-//                      .add("x", getX())
-//                      .add("y", getY())
-//                      .add("rotation", getRotation())
-//                      .add("name", getName())
-//                      .add("type", getType())
-//                      .add("height", getHeight())
-//                      .add("width", getWidth())
-//                      .add("Color", getColor())
-//                      .add("content", getContent())
-//                      .toString();
-//
-//    }
-
     public String getColor() {
         return color;
     }
@@ -180,19 +147,6 @@ public class PosterItem extends GenericJson {
 
     public void setRotation(int rotation) {
         this.rotation = rotation;
-    }
-
-    public String toJSON() {
-
-        String json = null;
-        try {
-            json = JSON.std.asString(this);
-            return json;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 
     public String getUuid() {

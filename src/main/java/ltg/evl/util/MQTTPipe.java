@@ -20,7 +20,7 @@ public class MQTTPipe implements MessageListener {
 
     private static MQTTPipe ourInstance = new MQTTPipe();
     private static Logger logger;
-    GsonFactory JSON_FACTORY = new GsonFactory();
+    private GsonFactory JSON_FACTORY = new GsonFactory();
     private String BASE_CHANNEL_OUT;
     private String BASE_CLIENT_ID;
     private String BASE_ADDRESS;

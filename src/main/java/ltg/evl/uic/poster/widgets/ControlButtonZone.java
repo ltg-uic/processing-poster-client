@@ -81,7 +81,7 @@ public class ControlButtonZone extends Zone {
 
             } else {
                 for (LoadUserListener loadUserListerner : loadUserListerners) {
-                    loadUserListerner.loadUser("DrBanner");
+                    loadUserListerner.loadUser("DrBanner", this.buttonColor);
                 }
             }
         }

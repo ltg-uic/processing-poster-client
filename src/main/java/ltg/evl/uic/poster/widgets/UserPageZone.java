@@ -1,6 +1,6 @@
 package ltg.evl.uic.poster.widgets;
 
-import de.looksgood.ani.Ani;
+import ltg.evl.uic.poster.json.mongo.User;
 import ltg.evl.uic.poster.listeners.LoadUserListener;
 import vialab.SMT.SMT;
 import vialab.SMT.Zone;
@@ -12,24 +12,23 @@ import java.util.Map;
  */
 public class UserPageZone extends Zone {
 
-    private int greyColor = ZoneHelper.getInstance().greyOutline;
+    private int greyColor = ZoneHelper.greyOutline;
     private LoadUserListener loadUserListerner;
 
     public UserPageZone(String name, int x, int y, int width, int height, LoadUserListener loadUserListerner) {
         super(name, x, y, width, height);
         this.loadUserListerner = loadUserListerner;
-
-        // you have to call always Ani.init() first!
-        Ani.init(SMT.getApplet());
-        // set the default easing
-        Ani.setDefaultEasing(Ani.QUART_IN_OUT);
     }
 
-    public void addUsers(Map<String, String> uuidIdToUserName) {
+    public void addUsers(Map<String, User> uuidIdToUser) {
 
-        for (String uuid : uuidIdToUserName.keySet()) {
-            String userName = uuidIdToUserName.get(uuid);
-            UserButton userButton = new UserButton(uuid, userName, 175, 175);
+        int i = 0;
+        for (String uuid : uuidIdToUser.keySet()) {
+            User user = uuidIdToUser.get(uuid);
+            user.setColor(ZoneHelper.colors[i]);
+            UserButton userButton = new UserButton(uuid, 175, 175);
+            userButton.setUser(user);
+            userButton.initButton();
             userButton.addLoadUserListener(this.loadUserListerner);
             add(userButton);
         }
@@ -45,12 +44,12 @@ public class UserPageZone extends Zone {
 //        heightAni = new Ani(this, 1.5f, "height", animationHeight, Ani.EXPO_IN_OUT, "onStart:itsStarted");
 //        widthAni.start();
 //        heightAni.start();
-
-        //Ani x1 = Ani.to(this, 1.0f, "x", 500f);
-        Ani y1 = Ani.to(this, 1.0f, "y", 200f);
-
-        //x1.start();
-        y1.start();
+//
+//        //Ani x1 = Ani.to(this, 1.0f, "x", 500f);
+//        Ani y1 = Ani.to(this, 1.0f, "y", 200f);
+//
+//        //x1.start();
+//        y1.start();
 
     }
 

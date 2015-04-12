@@ -15,6 +15,42 @@ public class ClassButton extends UserButton {
         super(uuid, text, width, height);
     }
 
+
+    @Override
+    protected void initButton() {
+        this.currentColor = ZoneHelper.blueOutline;
+        this.textColor = color(255);
+        this.pressedButtonColor = ZoneHelper.greyOutline;
+
+
+        this.outline = ZoneHelper.greyOutline;
+        this.textColor = color(255);
+
+    }
+
+
+    @Override
+    public void draw() {
+        smooth();
+        stroke(outline);
+        strokeWeight(1);
+
+        fill(currentColor);
+        smooth();
+        ellipse(getWidth() / 2, getHeight() / 2, getWidth(), getHeight());
+
+
+        if (text != null) {
+            if (font != null) {
+                textFont(font, fontSize);
+            }
+            textAlign(CENTER, CENTER);
+            textSize(fontSize);
+            fill(textColor);
+            text(text, getWidth() / 2 - borderWeight, getHeight() / 2 - borderWeight);
+        }
+    }
+
     @Override
     public void touch() {
         rst(false, false, false);

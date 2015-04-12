@@ -14,7 +14,7 @@ import java.io.ByteArrayInputStream;
 public class ImageLoader {
 
     public static PImage toPImage(String imageString) {
-        byte[] bytes = Base64.decodeBase64(imageString);
+        byte[] bytes = Base64.decodeBase64(imageString.getBytes());
         byte[] imgBytes = PApplet.loadBytes(new ByteArrayInputStream(bytes));
         Image awtImage = Toolkit.getDefaultToolkit().createImage(imgBytes);
 

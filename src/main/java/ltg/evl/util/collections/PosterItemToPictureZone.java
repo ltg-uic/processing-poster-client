@@ -1,22 +1,35 @@
 package ltg.evl.util.collections;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
 import ltg.evl.uic.poster.widgets.PictureZone;
 import ltg.evl.uic.poster.widgets.PictureZoneBuilder;
 import ltg.evl.uic.poster.widgets.ZoneHelper;
 import ltg.evl.util.ImageLoader;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import processing.core.PImage;
 
 import java.awt.*;
 import java.util.concurrent.Callable;
 
+import static ltg.evl.uic.poster.json.mongo.PosterItem.IMAGE;
+import static ltg.evl.uic.poster.json.mongo.PosterItem.TEXT;
+
 /**
  * Created by aperritano on 2/20/15.
  */
 public class PosterItemToPictureZone implements Function<PosterItem, Callable<PictureZone>> {
+
+    final static Logger logger = Logger.getLogger(PosterItemToPictureZone.class);
+
     @Override
     public Callable<PictureZone> apply(final PosterItem posterItem) {
+
+
+        logger.log(Level.INFO, "New PosterItem: " + posterItem);
+
 
         Callable<PictureZone> callable = new Callable<PictureZone>() {
 
@@ -25,43 +38,38 @@ public class PosterItemToPictureZone implements Function<PosterItem, Callable<Pi
                 PictureZone pictureZone = null;
 
                 PImage pImage = null;
-                if (posterItem.getType().equals(PosterItem.TEXT)) {
 
-                    // Font helveticaNeue = new Font("HelveticaNeue", Font.PLAIN, 16);
-
-
-                    javaxt.io.Image jxt2 = new javaxt.io.Image(ZoneHelper.renderTextToImage(
-                            ZoneHelper.helveticaNeue18JavaFont, new Color(0, 0, 0), posterItem.getContent(),
-                            600));
-
-                    pImage = new PImage(jxt2.getBufferedImage());
-
-                    pictureZone = new PictureZoneBuilder().setImage(pImage)
-                                                          .setUuid(posterItem.getUuid().toString())
-                                                          .setX(posterItem.getX())
-                                                          .setY(posterItem.getY())
-                                                          .setWidth(jxt2.getWidth())
-                                                          .setHeight(jxt2.getHeight())
-                                                          .createPictureZone();
+                if (Optional.fromNullable(posterItem).isPresent()) {
+                    switch (posterItem.getType()) {
+                        case IMAGE:
+                            final javaxt.io.Image jxtImage = new javaxt.http.Request(
+                                    posterItem.getContent()).getResponse()
+                                                            .getImage();
 
 
-                } else {
+                            pImage = ImageLoader.toPImage(jxtImage);
 
-                    final javaxt.io.Image jxtImage = new javaxt.http.Request(posterItem.getContent()).getResponse()
-                                                                                                     .getImage();
+                            break;
+                        case TEXT:
+                            javaxt.io.Image jxt2 = new javaxt.io.Image(ZoneHelper.renderTextToImage(
+                                    ZoneHelper.helveticaNeue20JavaFont, new Color(0, 0, 0), posterItem.getContent(),
+                                    600));
 
+                            pImage = new PImage(jxt2.getBufferedImage());
 
-                    pImage = ImageLoader.toPImage(jxtImage);
-
-                    pictureZone = new PictureZoneBuilder().setImage(pImage)
-                                                          .setUuid(posterItem.getUuid().toString())
-                                                          .setX(posterItem.getX())
-                                                          .setY(posterItem.getY())
-                                                          .setWidth(posterItem.getWidth())
-                                                          .setHeight(posterItem.getHeight())
-                                                          .createPictureZone();
+                            break;
+                    }
                 }
 
+                pictureZone = new PictureZoneBuilder().setImage(pImage)
+                                                      .setUuid(posterItem.getUuid())
+                                                      .setX(posterItem.getX())
+                                                      .setY(posterItem.getY())
+                                                      .setWidth(pImage.width)
+                                                      .setHeight(pImage.height)
+                                                      .setZoneName(posterItem.getName())
+                                                      .setType(posterItem.getType())
+                                                      .createPictureZone();
 
                 return pictureZone;
             }

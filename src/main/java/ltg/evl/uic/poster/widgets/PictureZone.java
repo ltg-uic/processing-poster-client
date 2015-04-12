@@ -1,7 +1,7 @@
 package ltg.evl.uic.poster.widgets;
 
 import com.google.common.base.Objects;
-import de.looksgood.ani.Ani;
+import com.google.common.base.Optional;
 import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
 import ltg.evl.util.ImageLoader;
@@ -16,8 +16,9 @@ public class PictureZone extends ImageZone implements DeleteButtonListener, Scal
 
     public static int padding = 6;
     int paddingOffset = (2 * padding);
-    private Ani widthAni;
-    private Ani heightAni;
+    private String zoneName;
+    //    private Ani widthAni;
+//    private Ani heightAni;
     private int animationWidth = 0;
     private int animationHeight = 0;
     private int initialX = 0;
@@ -25,19 +26,19 @@ public class PictureZone extends ImageZone implements DeleteButtonListener, Scal
     private DeleteButton deleteButton;
     private ScaleButton scaleButton;
     private boolean isDrawingOutline;
-    private int selectedOutline = ZoneHelper.getInstance().blueOutline;
-    private int unselectedOutline = ZoneHelper.getInstance().greyOutline;
+    private int selectedOutline = ZoneHelper.blueOutline;
+    private int unselectedOutline = ZoneHelper.greyOutline;
     private DeleteButtonListener deleteButtonListener;
+    private String type;
 
-    public PictureZone(PImage image, String uuid, int x, int y, int width, int height) {
+    public PictureZone(PImage image, String uuid, int x, int y, int width, int height, String type, String zoneName) {
         super(uuid, image, x, y, width, height);
-
         this.initialX = x;
         this.initialY = y;
         this.setAnimationHeight(height);
         this.setAnimationWidth(width);
-
-
+        this.type = type;
+        this.zoneName = zoneName;
 //        Ani.init(this.applet);
     }
 
@@ -49,6 +50,8 @@ public class PictureZone extends ImageZone implements DeleteButtonListener, Scal
         this.setAnimationWidth(posterItem.getWidth());
         this.initialX = posterItem.getX();
         this.initialY = posterItem.getY();
+        this.type = posterItem.getType();
+        this.zoneName = posterItem.getName();
         // Ani.init() must be called always first!
         // Ani.init(this.applet);
     }
@@ -128,19 +131,28 @@ public class PictureZone extends ImageZone implements DeleteButtonListener, Scal
     @Override
     public void touchDown(Touch touch) {
         this.isDrawingOutline = true;
-        deleteButton.setVisible(false);
-        deleteButton.setDrawingOutline(isDrawingOutline);
-        scaleButton.setVisible(false);
-        scaleButton.setDrawingOutline(isDrawingOutline);
+
+        if (Optional.fromNullable(deleteButton).isPresent()) {
+            deleteButton.setVisible(false);
+            deleteButton.setDrawingOutline(isDrawingOutline);
+        }
+//        scaleButton.setVisible(false);
+//        scaleButton.setDrawingOutline(isDrawingOutline);
     }
 
     @Override
     public void touchUp(Touch touch) {
         this.isDrawingOutline = false;
-        deleteButton.setVisible(true);
-        deleteButton.setDrawingOutline(isDrawingOutline);
-        scaleButton.setVisible(true);
-        scaleButton.setDrawingOutline(isDrawingOutline);
+
+        if (Optional.fromNullable(deleteButton).isPresent()) {
+            deleteButton.setVisible(true);
+            deleteButton.setDrawingOutline(isDrawingOutline);
+        } else if (Optional.fromNullable(scaleButton).isPresent()) {
+            scaleButton.setVisible(true);
+            scaleButton.setDrawingOutline(isDrawingOutline);
+        }
+
+
     }
 
     public int getAnimationHeight() {
@@ -168,4 +180,19 @@ public class PictureZone extends ImageZone implements DeleteButtonListener, Scal
     }
 
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getZoneName() {
+        return zoneName;
+    }
+
+    public void setZoneName(String zoneName) {
+        this.zoneName = zoneName;
+    }
 }

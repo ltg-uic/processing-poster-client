@@ -1,6 +1,5 @@
 package ltg.evl.uic.poster.json.mongo;
 
-import com.fasterxml.jackson.jr.ob.JSON;
 import com.google.api.client.json.GenericJson;
 import com.google.api.client.util.Key;
 
@@ -30,8 +29,20 @@ public class User extends GenericJson {
     @Key
     private String classname;
 
+    @Key
+    private int color;
 
     public User() {
+
+    }
+
+    public User(String name, String uuid, String classname, List<String> nameTags, int color, List<String> posters) {
+        this.name = name;
+        this.uuid = uuid;
+        this.classname = classname;
+        this.nameTags = nameTags;
+        this.color = color;
+        this.posters = posters;
     }
 
     public User(String name) {
@@ -42,28 +53,6 @@ public class User extends GenericJson {
         this.name = name;
         this.uuid = uuid;
         this.nameTags = nameTags;
-    }
-
-    public static User toObj(String json) {
-        try {
-            User bean = JSON.std.beanFrom(User.class, json);
-            return bean;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-
-    }
-
-    public static User[] toArray(String json) {
-        try {
-            User[] bean = JSON.std.arrayOfFrom(User.class, json);
-            return bean;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-
     }
 
     public String getUuid() {
@@ -117,19 +106,6 @@ public class User extends GenericJson {
         return null;
     }
 
-    public String toJSON() {
-
-        String json = null;
-        try {
-            json = JSON.std.asString(this);
-            return json;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
     public List<String> getNameTags() {
         return nameTags;
     }
@@ -148,5 +124,13 @@ public class User extends GenericJson {
 
     public void addAllPosters(List<String> uuidPosterIds) {
         posters.addAll(uuidPosterIds);
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 }

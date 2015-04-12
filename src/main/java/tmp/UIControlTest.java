@@ -30,6 +30,8 @@ public class UIControlTest extends PApplet {
     private UserButton editButton;
     private UserButton presentButton;
     private NewTextButton newTextButton;
+    private LogoutButton newZone;
+    private EditColorZone colorZone;
 
     public static void main(String args[]) {
 
@@ -67,14 +69,15 @@ public class UIControlTest extends PApplet {
         SMT.setTouchDraw(TouchDraw.NONE);
 
 
-        PosterButton posterButton = new PosterButton("Hey", "The fox jumped of the the big advance", 200, 200, 250, 75);
+        PosterButton posterButton = new PosterButton("Hey", "The fox jumped of the the big advance", 200, 200, 250, 75,
+                                                     ZoneHelper.blueOutline);
         // SMT.add(posterButton);
 
 
         //SMT.add(buttonZone);
 
 
-        ButtonZone buttonZone = new ButtonZone("b", 400, 400, 100, 100) {
+        ButtonZone buttonZone = new ButtonZone("b", "Group 1", ZoneHelper.helveticaNeue18Font) {
 
             @Override
             public void touchUp(Touch touch) {
@@ -83,7 +86,7 @@ public class UIControlTest extends PApplet {
 
 
                 javaxt.io.Image jxt2 = new javaxt.io.Image(ZoneHelper.renderTextToImage(
-                        ZoneHelper.helveticaNeue18JavaFont, new Color(0, 0, 0), text,
+                        ZoneHelper.helveticaNeue20JavaFont, new Color(0, 0, 0), text,
                         600));
 
                 //jxt2.saveAs("/Users/aperritano/dev/research/poster/processing-poster-client/src/main/java/tmp/NEW_TEXT.png");
@@ -117,7 +120,9 @@ public class UIControlTest extends PApplet {
             }
         };
 
-        SMT.add(buttonZone);
+        buttonZone.setHeight(50);
+        buttonZone.setWidth(200);
+        //SMT.add(buttonZone);
 
         ButtonZone mqttZone = new ButtonZone("b", 400, 400, 50, 50) {
 
@@ -130,9 +135,19 @@ public class UIControlTest extends PApplet {
         SMT.add(mqttZone);
 
 
-        VideoZone videoZone = new VideoZone("vid", 200, 200, 400, 400);
+        colorZone = new EditColorZone("lol", 40, 40, 50);
 
-        SMT.add(videoZone);
+        newZone = new LogoutButton("b", "Group 1", colorZone.getWidth() + (colorZone.getX() / 2) + 5,
+                                   (colorZone.getY() / 2) - 5, 100, 50, ZoneHelper.redOutline);
+
+
+        //ideoZone videoZone = new VideoZone("vid", 200, 200, 400, 400);
+
+
+        SMT.add(colorZone);
+
+        SMT.add(newZone);
+        newZone.toString();
     }
 
 
@@ -140,6 +155,7 @@ public class UIControlTest extends PApplet {
         background(255);
         fill(0);
         text(round(frameRate) + "fps, # of zones: " + SMT.getZones().length, width / 2, 10);
+        text("color zone: " + colorZone.toString() + " newZone " + newZone.toString(), 250, 20);
     }
 
 
