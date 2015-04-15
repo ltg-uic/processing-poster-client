@@ -23,7 +23,7 @@
     </build>
 
     <dependencies>
-    
+
         <dependency>
             <groupId>org.processing</groupId>
             <artifactId>core</artifactId>
@@ -37,9 +37,9 @@
         </dependency>
 
         <!--<dependency>-->
-            <!--<groupId>org.slf4j</groupId>-->
-            <!--<artifactId>slf4j-nop</artifactId>-->
-            <!--<version>1.7.2</version>-->
+        <!--<groupId>org.slf4j</groupId>-->
+        <!--<artifactId>slf4j-nop</artifactId>-->
+        <!--<version>1.7.2</version>-->
         <!--</dependency>-->
 
         <dependency>
@@ -57,7 +57,7 @@
         <dependency>
             <groupId>ltg</groupId>
             <artifactId>simple-java-mqtt-client</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </dependency>
 
         <dependency>

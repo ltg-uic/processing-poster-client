@@ -22,6 +22,7 @@ import java.util.Random;
  */
 public class ZoneHelper {
 
+    public static final int ROUND_CORNER = 10;
     public static PImage deleteImage;
     public static PFont helveticaNeue18Font;
     public static PFont helveticaNeue48Font;
@@ -30,8 +31,8 @@ public class ZoneHelper {
     public static PFont helveticaNeue48BoldFont;
     public static int[] colors = {SMT.getApplet().color(126, 87, 194), SMT.getApplet()
                                                                           .color(92, 107, 192), SMT.getApplet()
-                                                                                                        .color(66, 165,
-                                                                                                               245), SMT
+                                                                                                   .color(66, 165,
+                                                                                                          245), SMT
             .getApplet()
             .color(41, 182, 246), SMT.getApplet().color(38, 198, 218), SMT.getApplet()
                                                                           .color(38, 166, 154), SMT.getApplet()
@@ -160,7 +161,7 @@ public class ZoneHelper {
         return randomNum;
     }
 
-    public DeleteButton getDeleteButton(Zone zone) {
+    public void addDeleteButton(Zone zone) {
 
         double buttonSize = SMT.getApplet().getHeight() * .03;
         double adjustedButtonSize = (buttonSize / 2.0);
@@ -177,7 +178,8 @@ public class ZoneHelper {
                                                              .setWidth((int) buttonSize)
                                                              .setHeight((int) buttonSize).createDeleteButton();
         deleteButton.addDeleteListener((DeleteButtonListener) zone);
-        return deleteButton;
+        deleteButton.setVisible(false);
+        zone.add(deleteButton);
     }
 
     public ScaleButton getScaleButton(Zone zone) {
@@ -199,7 +201,6 @@ public class ZoneHelper {
         scaleButton.addDeleteListener((DeleteButtonListener) zone);
         return scaleButton;
     }
-
 
 
 }

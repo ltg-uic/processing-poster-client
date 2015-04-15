@@ -1,5 +1,6 @@
 package tmp;
 
+import de.looksgood.ani.Ani;
 import ltg.commons.SimpleMQTTClient;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
 import ltg.evl.uic.poster.json.mongo.PosterItemBuilder;
@@ -9,6 +10,7 @@ import org.apache.log4j.Logger;
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PImage;
+import processing.core.PVector;
 import vialab.SMT.*;
 
 import java.awt.*;
@@ -32,6 +34,10 @@ public class UIControlTest extends PApplet {
     private NewTextButton newTextButton;
     private LogoutButton newZone;
     private EditColorZone colorZone;
+    private PVector target1;
+    private PVector point1;
+    private PVector target2;
+    private PVector point2;
 
     public static void main(String args[]) {
 
@@ -61,7 +67,7 @@ public class UIControlTest extends PApplet {
     public void setup() {
 
         thread("doInit");
-        int screen_width = 1200;
+        final int screen_width = 1200;
         int screen_height = 800;
         size(screen_width, screen_height, SMT.RENDERER);
         SMT.init(this, TouchSource.AUTOMATIC);
@@ -124,18 +130,19 @@ public class UIControlTest extends PApplet {
         buttonZone.setWidth(200);
         //SMT.add(buttonZone);
 
-        ButtonZone mqttZone = new ButtonZone("b", 400, 400, 50, 50) {
 
+        Ani.init(this);
+
+        point1 = new PVector(50, 50);
+
+
+        colorZone = new EditColorZone("lol", 40, 40, 50) {
             @Override
-            public void touchUp(Touch touch) {
-                MQTTPipe.getInstance().publishMessage("HELLLOO POSTER");
+            public void draw() {
+                fill(130);
+                rect(point1.x, point1.y, this.getWidth(), this.getHeight());
             }
         };
-
-        SMT.add(mqttZone);
-
-
-        colorZone = new EditColorZone("lol", 40, 40, 50);
 
         newZone = new LogoutButton("b", "Group 1", colorZone.getWidth() + (colorZone.getX() / 2) + 5,
                                    (colorZone.getY() / 2) - 5, 100, 50, ZoneHelper.redOutline);
@@ -146,8 +153,71 @@ public class UIControlTest extends PApplet {
 
         SMT.add(colorZone);
 
-        SMT.add(newZone);
-        newZone.toString();
+
+        ButtonZone mqttZone = new ButtonZone("b", 400, 400, 50, 50) {
+
+
+            @Override
+            public void touchUp(Touch touch) {
+
+
+                PresentationZone z = new PresentationZone("bg", 0, 0, screen_width, screen_width) {
+
+                };
+
+                String text = "The friendly lawyer is now managing a bowl. A fierce duck leased a treehouse. The fierce table spoke to the stable building.";
+
+
+                javaxt.io.Image jxt2 = new javaxt.io.Image(ZoneHelper.renderTextToImage(
+                        ZoneHelper.helveticaNeue20JavaFont, new Color(0, 0, 0), text,
+                        600));
+
+                //jxt2.saveAs("/Users/aperritano/dev/research/poster/processing-poster-client/src/main/java/tmp/NEW_TEXT.png");
+
+                PImage pImage = loadImage("0.jpg");
+
+
+                PosterItem pi = new PosterItemBuilder().setY(200)
+                                                       .setX(200)
+                                                       .setHeight(pImage.height)
+                                                       .setWidth(pImage.width)
+                                                       .setName("test")
+                                                       .setContent(text)
+                                                       .createPosterItem();
+
+                PictureZone pz = new PictureZoneBuilder().setX(pi.getX())
+                                                         .setY(pi.getY())
+                                                         .setUuid("fuck you")
+                                                         .setWidth(pi.getWidth())
+                                                         .setHeight(pi.getHeight())
+                                                         .setImage(pImage)
+                                                         .createPictureZone();
+
+
+//                  SMT.add(z);
+//
+//                  z.add(pz);
+//                  pz.startAni(0f, 1f);
+
+
+//                target1 = new PVector(colorZone.getX() + 250, colorZone.getY() + 250);
+//
+//                Ani.to(point1, 1.0f, "x", target1.x);
+//                Ani.to(point1, 1.0f, "y", target1.y);
+
+
+                // MQTTPipe.getInstance().publishMessage("HELLLOO POSTER");
+            }
+        };
+        //  SMT.add(mqttZone);
+
+        PresentationZone presentationZone = new PresentationZone("s", 0, 0, SMT.getApplet().getWidth(),
+                                                                 SMT.getApplet().getHeight());
+
+        SMT.add(presentationZone);
+        presentationZone.showDialog("Do you want to logout?", 200);
+        // SMT.add(newZone);
+        //newZone.toString();
     }
 
 

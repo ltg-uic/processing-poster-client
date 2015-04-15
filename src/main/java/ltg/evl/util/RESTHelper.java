@@ -52,7 +52,6 @@ public class RESTHelper {
     }
 
 
-
     public static void enableLogging() {
         logger = Logger.getLogger(HttpTransport.class.getName());
         logger.setLevel(Level.ALL);
@@ -112,16 +111,10 @@ public class RESTHelper {
         }
 
 
-        ListenableFuture<List<HttpResponse>> lfResults = Futures.successfulAsList(listOfFutures);
+        ListenableFuture<List<HttpResponse>> successfullQueries = Futures.successfulAsList(listOfFutures);
 
-//        List<HttpResponse> httpResponses = lfResults.get();
-//
-//        if( !httpResponses.isEmpty() ){
-//            initAllCollections();
-//        }
 
-//        ListenableFuture<List<HttpResponse>> successfulQueries = Futures.successfulAsList(listOfFutures);
-        Futures.addCallback(lfResults, new FutureCallback<List<HttpResponse>>() {
+        Futures.addCallback(successfullQueries, new FutureCallback<List<HttpResponse>>() {
             // we want this handler to run immediately after we push the big red button!
             public void onSuccess(List<HttpResponse> listOfReponses) {
                 initAllCollections();
@@ -131,10 +124,6 @@ public class RESTHelper {
                 thrown.printStackTrace();
             }
         });
-//
-//
-////
-//        logger.log(Level.SEVERE, lfResults.isDone() + " done");
     }
 
 
@@ -162,7 +151,6 @@ public class RESTHelper {
 
 
                 });
-
 
 
         HttpRequest request = null;
@@ -208,20 +196,22 @@ public class RESTHelper {
                     listenableFuture = JdkFutureAdapters.listenInPoolThread(
                             jdkFuture);
 
-                    Futures.addCallback(listenableFuture, new FutureCallback<HttpResponse>() {
-                        public void onSuccess(HttpResponse addFutureResponse) {
-                            try {
-                                logger.log(Level.INFO, "POSTED ADD: " + someClass.getName());
-                                parseResponseObject(addFutureResponse, someClass, PosterUrl.REQUEST_TYPE.ADD);
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                    if (doCallable) {
+                        Futures.addCallback(listenableFuture, new FutureCallback<HttpResponse>() {
+                            public void onSuccess(HttpResponse addFutureResponse) {
+                                try {
+                                    logger.log(Level.INFO, "POSTED ADD: " + someClass.getName());
+                                    parseResponseObject(addFutureResponse, someClass, PosterUrl.REQUEST_TYPE.ADD);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }
 
-                        public void onFailure(Throwable thrown) {
-                            handleHttpFailure(thrown);
-                        }
-                    });
+                            public void onFailure(Throwable thrown) {
+                                handleHttpFailure(thrown);
+                            }
+                        });
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -235,20 +225,22 @@ public class RESTHelper {
                     listenableFuture = JdkFutureAdapters.listenInPoolThread(
                             jdkFuture);
 
-                    Futures.addCallback(listenableFuture, new FutureCallback<HttpResponse>() {
-                        public void onSuccess(HttpResponse deleteFutureResponse) {
-                            try {
-                                logger.log(Level.INFO, "POSTED DELETE: " + someClass.getName());
-                                parseResponseObject(deleteFutureResponse, someClass, PosterUrl.REQUEST_TYPE.DELETE);
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                    if (doCallable) {
+                        Futures.addCallback(listenableFuture, new FutureCallback<HttpResponse>() {
+                            public void onSuccess(HttpResponse deleteFutureResponse) {
+                                try {
+                                    logger.log(Level.INFO, "POSTED DELETE: " + someClass.getName());
+                                    parseResponseObject(deleteFutureResponse, someClass, PosterUrl.REQUEST_TYPE.DELETE);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }
 
-                        public void onFailure(Throwable thrown) {
-                            handleHttpFailure(thrown);
-                        }
-                    });
+                            public void onFailure(Throwable thrown) {
+                                handleHttpFailure(thrown);
+                            }
+                        });
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -557,7 +549,7 @@ public class RESTHelper {
         String posterItemUUID = parseResponseObject(posterItemReponse, PosterItem.class, PosterUrl.REQUEST_TYPE.ADD);
 
         PosterDataModel.helper()
-                             .addPosterItemUUIDWithPosterId(posterItemUUID, posterMessage.getPosterUuid());
+                       .addPosterItemUUIDWithPosterId(posterItemUUID, posterMessage.getPosterUuid());
 
     }
 
@@ -659,6 +651,7 @@ public class RESTHelper {
 
         public enum REQUEST_TYPE {UPDATE, ADD, DELETE, GET}
     }
+
 }
 
 

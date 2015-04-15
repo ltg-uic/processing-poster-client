@@ -1,7 +1,6 @@
 package tmp;
 
 import com.google.common.base.Objects;
-import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.widgets.UserButton;
 import ltg.evl.uic.poster.widgets.ZoneHelper;
 import vialab.SMT.Touch;
@@ -49,9 +48,12 @@ public class LogoutButton extends UserButton {
     @Override
     public void touchUp(Touch touch) {
         this.currentColor = unpressedButtonColor;
-        PosterDataModel.helper().logout();
+        this.logoutAction();
     }
 
+    public void logoutAction() {
+
+    }
 
     @Override
     public void draw() {

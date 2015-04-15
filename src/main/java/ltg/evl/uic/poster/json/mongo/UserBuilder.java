@@ -41,6 +41,7 @@ public class UserBuilder {
         this.color = color;
         return this;
     }
+
     public User createUser() {
         return new User(name, uuid, classname, nameTags, color, posters);
     }

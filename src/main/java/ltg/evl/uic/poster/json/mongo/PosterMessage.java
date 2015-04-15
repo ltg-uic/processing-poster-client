@@ -23,6 +23,9 @@ public class PosterMessage extends GenericJson {
     private String posterUuid;
     @Key
     private String posterItemId;
+    @Key
+    private String contentType;
+
     private GenericJson contentObject;
 
     public String getContent() {
@@ -79,5 +82,13 @@ public class PosterMessage extends GenericJson {
 
     public void setUserUuid(String userUuid) {
         this.userUuid = userUuid;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 }

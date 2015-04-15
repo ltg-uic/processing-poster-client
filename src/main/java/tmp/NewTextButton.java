@@ -3,8 +3,6 @@ package tmp;
 import processing.core.PImage;
 import vialab.SMT.ImageZone;
 
-import java.util.ResourceBundle;
-
 /**
  * Created by aperritano on 8/11/14.
  */

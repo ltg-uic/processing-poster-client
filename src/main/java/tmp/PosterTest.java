@@ -33,7 +33,7 @@ public class PosterTest extends PApplet {
     int yellowButtonColor = color(244, 208, 63);
     private UserButton editButton;
     private UserButton presentButton;
-    private NewTextButton newTextButton ;
+    private NewTextButton newTextButton;
 
     public static void main(String args[]) {
 
@@ -55,7 +55,6 @@ public class PosterTest extends PApplet {
     }
 
 
-
     public void setup() {
 
         int screen_width = 1200;
@@ -63,7 +62,7 @@ public class PosterTest extends PApplet {
         size(screen_width, screen_height, SMT.RENDERER);
         SMT.init(this, TouchSource.AUTOMATIC);
         SMT.debug = true;
-        SMT.setTouchDraw( TouchDraw.NONE);
+        SMT.setTouchDraw(TouchDraw.NONE);
         PFont controlButtonFont = createFont("HelveticaNeue-Bold", 15);
 
 

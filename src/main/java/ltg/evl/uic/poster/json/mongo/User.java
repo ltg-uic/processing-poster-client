@@ -2,6 +2,7 @@ package ltg.evl.uic.poster.json.mongo;
 
 import com.google.api.client.json.GenericJson;
 import com.google.api.client.util.Key;
+import ltg.evl.util.ModelHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,6 +33,9 @@ public class User extends GenericJson {
     @Key
     private int color;
 
+    @Key
+    private long lastEdited;
+
     public User() {
 
     }
@@ -43,16 +47,19 @@ public class User extends GenericJson {
         this.nameTags = nameTags;
         this.color = color;
         this.posters = posters;
+        this.lastEdited = ModelHelper.getTimestampMilli();
     }
 
     public User(String name) {
         this.name = name;
+        this.lastEdited = ModelHelper.getTimestampMilli();
     }
 
     public User(String name, String uuid, List<String> nameTags) {
         this.name = name;
         this.uuid = uuid;
         this.nameTags = nameTags;
+        this.lastEdited = ModelHelper.getTimestampMilli();
     }
 
     public String getUuid() {
@@ -132,5 +139,13 @@ public class User extends GenericJson {
 
     public void setColor(int color) {
         this.color = color;
+    }
+
+    public long getLastEdited() {
+        return lastEdited;
+    }
+
+    public void setLastEdited(long lastEdited) {
+        this.lastEdited = lastEdited;
     }
 }

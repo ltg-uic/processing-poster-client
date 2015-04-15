@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import de.looksgood.ani.Ani;
 import ltg.evl.uic.poster.json.mongo.Poster;
 import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.json.mongo.User;
@@ -11,6 +12,7 @@ import ltg.evl.uic.poster.listeners.LoadClassListener;
 import ltg.evl.uic.poster.listeners.LoadPosterListener;
 import ltg.evl.uic.poster.listeners.LoadUserListener;
 import org.apache.commons.lang.StringUtils;
+import processing.core.PVector;
 import vialab.SMT.SMT;
 import vialab.SMT.Zone;
 
@@ -24,6 +26,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
     public static String userpage_id = "UserPage";
     public static String posterpage_id = "PosterPage";
     public static String classpage_id = "ClassPage";
+    public static String presentation_id = "BackgroundPage";
     private static DialogZoneController ourInstance = new DialogZoneController();
     int c_width = 800;
     int c_height = 450;
@@ -32,6 +35,10 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
     private ClassPage classPage;
     private UserPageZone userPage;
     private PosterPageZone posterPage;
+    private Ani ani;
+    private float aniSpeed = 1.0f;
+    private PresentationZone presentationZone = new PresentationZone(presentation_id, 0, 0, SMT.getApplet().getWidth(),
+                                                                     SMT.getApplet().getHeight());
 
     private DialogZoneController() {
     }
@@ -45,15 +52,21 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
     }
 
     public void hideUserPage() {
-        Zone zone = SMT.get(userpage_id);
-        SMT.remove(zone.getChildren());
+//        Zone zone = SMT.get(userpage_id);
+//        SMT.remove(zone.getChildren());
         SMT.remove(userpage_id);
     }
 
     public void hidePosterPage() {
-        Zone zone = SMT.get(posterpage_id);
-        SMT.remove(zone.getChildren());
+//        Zone zone = SMT.get(posterpage_id);
+//        SMT.remove(zone.getChildren());
         SMT.remove(posterpage_id);
+    }
+
+    public void hideBackgroundPage() {
+//        Zone zone = SMT.get(presentation_id);
+//        SMT.remove(zone.getChildren());
+        SMT.remove(presentation_id);
     }
 
     public void hideClassPage() {
@@ -64,7 +77,12 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
 
     public void showClassPage() {
 
-        classPage = new ClassPage(classpage_id, x, y, c_width, c_height, this);
+        Zone foundZone = SMT.get(presentation_id);
+        if (foundZone == null) {
+            if (SMT.add(presentationZone)) {
+                presentationZone.fade(2.0f, 0f, 255, false);
+            }
+        }
 
         ImmutableList<User> imAllUsers = ImmutableList.copyOf(PosterDataModel.helper().allUsers);
 
@@ -114,21 +132,22 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
             int x2 = (SMT.getApplet().getWidth() / 2) - (total_width / 2);
             int y2 = (SMT.getApplet().getHeight() / 2) - (total_height / 2);
 
+            classPage = new ClassPage(classpage_id, x2, SMT.getApplet().getHeight(), c_width, c_height, this);
             classPage.setWidth(total_width);
             classPage.setHeight(total_height);
-            classPage.setX(x2);
-            classPage.setY(y2);
             classPage.addClasses(classMap);
 
 
-            SMT.add(classPage);
+            if (SMT.add(classPage)) {
+                classPage.startAni(new PVector(x2, y2), aniSpeed, 0f);
+            }
 
         }
     }
 
     public void showUserPage(String classname) {
 
-        userPage = new UserPageZone(userpage_id, x, y, c_width, c_height, this);
+        userPage = new UserPageZone(userpage_id, x, SMT.getApplet().getHeight(), c_width, c_height, this);
 
         ImmutableList<User> imAllUsers = ImmutableList.copyOf(PosterDataModel.helper().allUsers);
 
@@ -144,16 +163,16 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
         int num_per_col = 4;
         int reminder = size % num_per_col;
 
-        int rows = ((size - reminder) / 4) + reminder;
+        int rows = reminder;
 
         int total_width = (num_per_col * 25) + (num_per_col * 175) + 25;
         int total_height = (rows * 25) + (rows * 175) + 25;
         userPage.setWidth(total_width);
         userPage.setHeight(total_height);
         userPage.addUsers(userMap);
-
-
-        SMT.add(userPage);
+        if (SMT.add(userPage)) {
+            userPage.startAni(new PVector(x, y), aniSpeed, 0f);
+        }
     }
 
     public void showPosterPage() {
@@ -168,7 +187,6 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
 
     private void createPosterLayout(Collection<Poster> allPostersForUser) {
 
-        posterPage = new PosterPageZone(posterpage_id, x, y, c_width, c_height, this);
 
         ImmutableMap.Builder<String, String> builder = new ImmutableMap.Builder<String, String>();
         for (Poster poster : allPostersForUser) {
@@ -178,7 +196,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
         ImmutableMap<String, String> posterMap = builder.build();
         int size = posterMap.keySet().size();
 
-        int buttonWidth = 350;
+        int buttonWidth = 275;
         int buttonHeight = 175;
 
         int num_per_col = 2;
@@ -188,18 +206,25 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
 
         int total_width = (num_per_col * 25) + (num_per_col * buttonWidth) + 25;
         int total_height = (rows * 25) + (rows * buttonHeight) + 25;
+
+        int x2 = (SMT.getApplet().getWidth() / 2) - (total_width / 2);
+        int y2 = (SMT.getApplet().getHeight() / 2) - (total_height / 2);
+        posterPage = new PosterPageZone(posterpage_id, x2, SMT.getApplet().getHeight(), c_width, c_height, this);
+
         posterPage.setWidth(total_width);
         posterPage.setHeight(total_height);
-        posterPage.addPosters(posterMap);
+        posterPage.addPosters(posterMap, buttonWidth, buttonHeight);
 
-        SMT.add(posterPage);
+
+        if (SMT.add(posterPage)) {
+            posterPage.startAni(new PVector(x2, y2), aniSpeed, 0f);
+        }
 
     }
 
     @Override
     public void loadUser(String userUuid, int buttonColor) {
         PosterDataModel.helper().loadUser(userUuid, buttonColor);
-
     }
 
     @Override
@@ -210,11 +235,20 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
     @Override
     public void loadPoster(String posterUuid) {
         PosterDataModel.helper().loadPoster(posterUuid);
+        presentationZone.fade(1.0f, 0f, 0, true);
     }
 
 
     @Override
     public void loadClass(String classname) {
         PosterDataModel.helper().loadClass(classname);
+    }
+
+    public Ani getAni() {
+        return ani;
+    }
+
+    public void setAni(Ani ani) {
+        this.ani = ani;
     }
 }

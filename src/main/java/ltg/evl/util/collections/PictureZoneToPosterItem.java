@@ -7,6 +7,7 @@ import com.google.common.util.concurrent.MoreExecutors;
 import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
 import ltg.evl.uic.poster.widgets.PictureZone;
+import ltg.evl.util.ModelHelper;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -38,8 +39,7 @@ public class PictureZoneToPosterItem implements Function<PictureZone, PosterItem
                 modPosteritem.setWidth(pictureZone.getWidth());
                 modPosteritem.setY(pictureZone.getY());
                 modPosteritem.setX(pictureZone.getX());
-
-
+                modPosteritem.setLastEdited(ModelHelper.getTimestampMilli());
             }
 
             return modPosteritem;

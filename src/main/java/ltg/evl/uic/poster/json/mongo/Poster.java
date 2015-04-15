@@ -2,6 +2,8 @@ package ltg.evl.uic.poster.json.mongo;
 
 import com.google.api.client.json.GenericJson;
 import com.google.api.client.util.Key;
+import com.google.common.base.Optional;
+import ltg.evl.util.ModelHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,9 +26,13 @@ public class Poster extends GenericJson {
     private String uuid;
 
     @Key
+    private long lastEdited;
+
+    @Key
     private List<String> posterItems = new ArrayList<>();
 
     public Poster() {
+
     }
 
     public Poster(String uuid, int height, int width, String name) {
@@ -34,6 +40,21 @@ public class Poster extends GenericJson {
         this.width = width;
         this.name = name;
         this.uuid = uuid;
+        this.lastEdited = ModelHelper.getTimestampMilli();
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (Optional.fromNullable(o).isPresent()) {
+            Poster poster = (Poster) o;
+
+            if (this.uuid != null && poster.getUuid() != null) {
+                return this.uuid.equals(poster.getUuid());
+            }
+        }
+
+        return false;
     }
 
     @Override
@@ -91,7 +112,6 @@ public class Poster extends GenericJson {
 
     public void addPosterItems(String posterItem) {
         posterItems.add(posterItem);
-
     }
 
     public String getUuid() {
@@ -112,5 +132,13 @@ public class Poster extends GenericJson {
 
     public void addAllPosterItems(List<String> posterItems) {
         this.posterItems.addAll(posterItems);
+    }
+
+    public long getLastEdited() {
+        return lastEdited;
+    }
+
+    public void setLastEdited(long lastEdited) {
+        this.lastEdited = lastEdited;
     }
 }

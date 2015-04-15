@@ -48,14 +48,16 @@ public class TextBoxZoneBuilder {
 
     public TextBoxZone createTextBoxZone() {
         TextBoxZone textBoxZone = new TextBoxZone(uuid, textString, x, y, width, height);
-        textBoxZone.add(ZoneHelper.getInstance().getDeleteButton(textBoxZone));
+//        textBoxZone.add(ZoneHelper.getInstance().addDeleteButton(textBoxZone,
+//                                                                 0));
         return textBoxZone;
     }
 
     public TextBoxZone createTextZoneWithPosterItem() {
         TextBoxZone textBoxZone = new TextBoxZone(posterItem);
 
-        textBoxZone.add(ZoneHelper.getInstance().getDeleteButton(textBoxZone));
+//        textBoxZone.add(ZoneHelper.getInstance().addDeleteButton(textBoxZone,
+//                                                                 0));
         return textBoxZone;
     }
 }

@@ -31,6 +31,8 @@ public class MongoDBTest {
 
     @BeforeClass
     public static void setUpClass() {
+
+
     }
 
     public static int random(int min, int max) {
@@ -71,10 +73,10 @@ public class MongoDBTest {
                                                    .setX(x)
                                                    .setY(y)
                                                    .setColor("#34567")
-                                                   .setRotation(0)
+                    .setRotation(0)
 //                                                   .setType("jpg").setImageBytes(
 //                            Base64.encodeBase64String(image.getByteArray()))
-                                                   .createPosterItem();
+                    .createPosterItem();
 
 
             pis.add(pi);
@@ -161,21 +163,18 @@ public class MongoDBTest {
         String[] names = {"Brock", "Gale", "Gustavo", "Hank", "Hector", "Holly", "Jane", "Jesse", "Lydia", "Marie", "Mike", "Pete", "Saul", "Skyler", "Todd", "Walter"};
         String[] classes = {"Ben", "Mike"};
 
-        ArrayList<String> imageItems = Lists.newArrayList();
 
-//        imageItems.add(createPosterItemImage(random(1, 3)));
-//        imageItems.add(createPosterItemImage(random(1, 3)));
-//        imageItems.add(createPosterItemImage(random(1, 3)));
+
 
 
 //        imageItems.add(createPosterItemImage(0));
 //        imageItems.add(createPosterItemImage(2));
 //        imageItems.add(createPosterItemImage(2));
 
-        int NUM_GROUPS = 1;
-        int NUM_POSTERS_PER_GROUP = 1;
+        int NUM_GROUPS = 2;
+        int NUM_POSTERS_PER_GROUP = 2;
 
-        for (int y = 0; y < 1; y++) {
+        for (int y = 0; y < 2; y++) {
             String CLASS_NAME = classes[y];
             //first posteritems
 
@@ -191,10 +190,15 @@ public class MongoDBTest {
                 for (int j = 0; j < NUM_POSTERS_PER_GROUP; j++) {
 
                     ArrayList<String> posterItems = Lists.newArrayList();
+                    ArrayList<String> imageItems = Lists.newArrayList();
+
+                    imageItems.add(createPosterItemImage(random(1, 3)));
+                    imageItems.add(createPosterItemImage(random(1, 3)));
+                    imageItems.add(createPosterItemImage(random(1, 3)));
                     posterItems.addAll(imageItems);
                     posterItems.add(createPosterItemText(1, SentenceGenerator.getInstance().makeText(random(1, 4))));
-//                    posterItems.add(createPosterItemText(2, SentenceGenerator.getInstance().makeText(random(1, 4))));
-//                    posterItems.add(createPosterItemText(3, SentenceGenerator.getInstance().makeText(random(1, 4))));
+                    posterItems.add(createPosterItemText(2, SentenceGenerator.getInstance().makeText(random(1, 4))));
+                    posterItems.add(createPosterItemText(3, SentenceGenerator.getInstance().makeText(random(1, 4))));
 
                     posterUuids.add(createPoster(SentenceGenerator.getInstance().makeHeadline(), posterItems));
                 }
@@ -228,7 +232,7 @@ public class MongoDBTest {
 
 
         RESTHelper.getInstance()
-                  .postCollection(user, RESTHelper.PosterUrl.addUser(), User.class, true);
+                  .postCollection(user, RESTHelper.PosterUrl.addUser(), User.class, true).get();
         return id;
     }
 
@@ -247,7 +251,7 @@ public class MongoDBTest {
         poster.addAllPosterItems(posterItemUuids);
 
         RESTHelper.getInstance()
-                  .postCollection(poster, RESTHelper.PosterUrl.addPoster(), Poster.class, true);
+                  .postCollection(poster, RESTHelper.PosterUrl.addPoster(), Poster.class, true).get();
 
         return id;
     }
@@ -262,18 +266,18 @@ public class MongoDBTest {
 
         PosterItem pi = new PosterItemBuilder().setName("posteritem-img-" + i)
                                                .setUuid(uuid)
-                                               .setWidth(400)
-                                               .setHeight(500)
-                                               .setX(random(0, 500))
-                                               .setY(random(0, 500))
+                                               .setWidth(300)
+                                               .setHeight(250)
+                                               .setX(random(0, 200))
+                                               .setY(random(0, 200))
                                                .setColor("#34567")
                                                .setRotation(0)
                                                .setContent(links[i])
                 .setType("img")
                         //.setImageBytes(Base64.encodeBase64String(image.getByteArray()))
-                                               .createPosterItem();
+                .createPosterItem();
         RESTHelper.getInstance()
-                  .postCollection(pi, RESTHelper.PosterUrl.addPosterItem(), PosterItem.class, true);
+                  .postCollection(pi, RESTHelper.PosterUrl.addPosterItem(), PosterItem.class, true).get();
         return uuid;
     }
 
@@ -375,10 +379,10 @@ public class MongoDBTest {
                                                .setX(150)
                                                .setY(600)
                                                .setColor("#345dfdfd67")
-                                               .setRotation(0)
+                .setRotation(0)
 //                                               .setType("jpg").setImageBytes(
 //                        Base64.encodeBase64String(image.getByteArray()))
-                                               .createPosterItem();
+                .createPosterItem();
 
         RESTHelper.getInstance()
                   .postCollection(pi, RESTHelper.PosterUrl.updateDeletePosterItem("550a49dee1b8325873000049",
@@ -439,8 +443,6 @@ public class MongoDBTest {
 
         return poster;
     }
-
-
 
 
 }

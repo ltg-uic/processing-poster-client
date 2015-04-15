@@ -56,7 +56,6 @@ public class MQTTPipe implements MessageListener {
         thread.start();
 
 
-
     }
 
     public static MQTTPipe getInstance() {

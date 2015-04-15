@@ -1,10 +1,11 @@
 package ltg.evl.uic.poster.widgets;
 
 import processing.core.PImage;
+import vialab.SMT.ImageZone;
 import vialab.SMT.Touch;
 import vialab.SMT.Zone;
 
-public class DeleteButton extends PictureZone implements DeleteButtonListener {
+public class DeleteButton extends ImageZone implements DeleteButtonListener {
 
     public static String DELETE_NAME = "deleteButton";
     private DeleteButtonListener deleteButtonListener;
@@ -14,8 +15,8 @@ public class DeleteButton extends PictureZone implements DeleteButtonListener {
     private int outlineColor = redColor;
 
 
-    public DeleteButton(PImage image, String UUID, int x, int y, int width, int height) {
-        super(image, UUID, x, y, width, height, "img", "deleteZone");
+    public DeleteButton(PImage image, String uuid, int x, int y, int width, int height) {
+        super(uuid, image, x, y, width, height);
     }
 
     public void addDeleteListener(DeleteButtonListener deleteButtonListener) {
@@ -26,12 +27,6 @@ public class DeleteButton extends PictureZone implements DeleteButtonListener {
     public void touch() {
         rst(false, false, false);
     }
-
-//    @Override
-//    public void press(Touch touch) {
-//        outlineColor = redColor;
-//        super.press(touch);
-//    }
 
     @Override
     public void touchDown(Touch touch) {

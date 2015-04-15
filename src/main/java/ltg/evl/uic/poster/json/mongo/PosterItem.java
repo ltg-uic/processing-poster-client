@@ -2,6 +2,7 @@ package ltg.evl.uic.poster.json.mongo;
 
 import com.google.api.client.json.GenericJson;
 import com.google.api.client.util.Key;
+import ltg.evl.util.ModelHelper;
 
 import java.io.IOException;
 import java.util.Map;
@@ -34,6 +35,8 @@ public class PosterItem extends GenericJson {
     private String color;
     @Key
     private String content;
+    @Key
+    private long lastEdited;
 
     public PosterItem() {
     }
@@ -49,6 +52,7 @@ public class PosterItem extends GenericJson {
         this.type = type;
         this.imageBytes = imageBytes;
         this.content = content;
+        this.lastEdited = ModelHelper.getTimestampMilli();
     }
 
     public String getContent() {
@@ -155,5 +159,13 @@ public class PosterItem extends GenericJson {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public long getLastEdited() {
+        return lastEdited;
+    }
+
+    public void setLastEdited(long lastEdited) {
+        this.lastEdited = lastEdited;
     }
 }

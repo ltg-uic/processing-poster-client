@@ -1,11 +1,9 @@
 package ltg.evl.uic.poster.json.mongo;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
+import com.google.common.collect.*;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.*;
 import ltg.evl.uic.poster.listeners.LoginDialogEvent;
@@ -20,6 +18,7 @@ import vialab.SMT.Zone;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -115,6 +114,7 @@ public class PosterDataModel {
     //endregion
 
     //region load poster
+
     /**
      * Loading Posters in the main screen
      *
@@ -206,7 +206,7 @@ public class PosterDataModel {
             public boolean apply(Poster poster) {
                 String posterUuid = poster.getUuid();
                 return user.getPosters().contains(posterUuid);
-                }
+            }
         };
 
         Collection<Poster> result = Collections2.filter(imPosters, filterPosters);
@@ -282,14 +282,25 @@ public class PosterDataModel {
         Predicate<PosterItem> filterPosterItem = new Predicate<PosterItem>() {
             @Override
             public boolean apply(PosterItem posterItem) {
-                return posterItem.getUuid().equals(posterItemUuid);
+
+                if (Optional.fromNullable(posterItemUuid).isPresent()) {
+                    if (Optional.fromNullable(posterItem.getUuid()).isPresent()) {
+                        return posterItem.getUuid().equals(posterItemUuid);
+                    }
+                    return false;
+                }
+
+                return false;
             }
         };
 
-        Collection<PosterItem> result = Collections2.filter(imPosterItems, filterPosterItem);
+        if (!imPosterItems.isEmpty()) {
 
-        if (!result.isEmpty()) {
-            return result.iterator().next();
+            Collection<PosterItem> result = Collections2.filter(imPosterItems, filterPosterItem);
+
+            if (!result.isEmpty()) {
+                return result.iterator().next();
+            }
         }
 
         return null;
@@ -329,8 +340,6 @@ public class PosterDataModel {
 //                thrown.printStackTrace();
 //            }
 //        });
-
-
 
 
     }
@@ -399,19 +408,30 @@ public class PosterDataModel {
     }
 
     public void updatePosterItemCollection(PosterItem posterItem) {
+        if (Optional.fromNullable(posterItem).isPresent()) {
 
-//        ce.setPosterItems(Lists.newArrayList(posterItem));
-        allPosterItems.add(posterItem);
-        // eventBus.post(new ObjectEvent(ObjectEvent.OBJ_TYPES.POST_ITEM, posterItem));
-        //eventBus.post(ce);
+            ArrayList<PosterItem> one = Lists.newArrayList(posterItem);
+            ImmutableList<PosterItem> two = ImmutableList.copyOf(allPosterItems);
+            allPosterItems = Lists.newArrayList(Iterables.concat(one, two));
+            eventBus.post(new ObjectEvent(ObjectEvent.OBJ_TYPES.POST_ITEM, posterItem));
+        }
     }
 
-    public void addPosterItemUUIDWithPosterId(String posterItemUuuid, String posterId) {
-        for (Poster poster : allPosters) {
-            if (poster.getUuid().equals(posterId)) {
-                poster.addPosterItems(posterItemUuuid);
+    public void addPosterItemUUIDWithPosterId(final String posterItemUuuid, final String posterId) {
+
+        ImmutableList<Poster> posterImmutableList = ImmutableList.copyOf(allPosters);
+
+        List<Poster> allPosters = FluentIterable.from(posterImmutableList).transform(new Function<Poster, Poster>() {
+            @Override
+            public Poster apply(Poster poster) {
+
+                if (poster.getUuid().equals(posterId)) {
+                    poster.addPosterItems(posterItemUuuid);
+                }
+
+                return poster;
             }
-        }
+        }).toList();
     }
 
 

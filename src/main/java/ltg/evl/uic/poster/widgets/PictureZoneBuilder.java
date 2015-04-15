@@ -60,8 +60,10 @@ public class PictureZoneBuilder {
     }
 
     public PictureZone createPictureZone() {
+
+
         PictureZone pictureZone = new PictureZone(image, uuid, x, y, width, height, type, zoneName);
-        pictureZone.add(ZoneHelper.getInstance().getDeleteButton(pictureZone));
+        ZoneHelper.getInstance().addDeleteButton(pictureZone);
         //pictureZone.add(ZoneHelper.getInstance().getScaleButton(pictureZone));
         return pictureZone;
     }
@@ -69,8 +71,8 @@ public class PictureZoneBuilder {
     public PictureZone createPictureZoneWithPosterItem() {
         PictureZone pictureZone = new PictureZone(posterItem);
 
-        pictureZone.add(ZoneHelper.getInstance().getDeleteButton(pictureZone));
-        //  pictureZone.add(ZoneHelper.getInstance().getScaleButton(pictureZone));
+        ZoneHelper.getInstance().addDeleteButton(pictureZone);
+
         return pictureZone;
     }
 

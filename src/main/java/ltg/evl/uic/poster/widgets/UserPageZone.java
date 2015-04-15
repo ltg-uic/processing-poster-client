@@ -1,7 +1,9 @@
 package ltg.evl.uic.poster.widgets;
 
+import de.looksgood.ani.Ani;
 import ltg.evl.uic.poster.json.mongo.User;
 import ltg.evl.uic.poster.listeners.LoadUserListener;
+import processing.core.PVector;
 import vialab.SMT.SMT;
 import vialab.SMT.Zone;
 
@@ -12,11 +14,14 @@ import java.util.Map;
  */
 public class UserPageZone extends Zone {
 
+    PVector point = new PVector(0, 0);
     private int greyColor = ZoneHelper.greyOutline;
     private LoadUserListener loadUserListerner;
 
     public UserPageZone(String name, int x, int y, int width, int height, LoadUserListener loadUserListerner) {
         super(name, x, y, width, height);
+        point.x = x;
+        point.y = y;
         this.loadUserListerner = loadUserListerner;
     }
 
@@ -37,29 +42,25 @@ public class UserPageZone extends Zone {
 
     }
 
-    public void translate(int x, int y) {
-
-        // define a Ani with callbacks, specify the method name after the keywords: onStart, onEnd, onDelayEnd and onUpdate
-//        widthAni = new Ani(this, 1.5f, "width", animationWidth, Ani.EXPO_IN_OUT, "onStart:itsStarted");
-//        heightAni = new Ani(this, 1.5f, "height", animationHeight, Ani.EXPO_IN_OUT, "onStart:itsStarted");
-//        widthAni.start();
-//        heightAni.start();
-//
-//        //Ani x1 = Ani.to(this, 1.0f, "x", 500f);
-//        Ani y1 = Ani.to(this, 1.0f, "y", 200f);
-//
-//        //x1.start();
-//        y1.start();
-
-    }
 
     @Override
     public void draw() {
+        setX(point.x);
+        setY(point.y);
         //background(255);
         fill(255);
         stroke(greyColor);
         strokeWeight(2);
-        rect(0, 0, this.getWidth(), this.getHeight());
+        rect(0, 0, this.getWidth(), this.getHeight(), ZoneHelper.ROUND_CORNER);
+    }
+
+    public void startAni(PVector target, float speed, float delay) {
+        Ani.to(point, speed, delay, "x", target.x, Ani.EXPO_OUT, "done");
+        Ani.to(point, speed, delay, "y", target.y, Ani.EXPO_OUT, "done");
+    }
+
+    public void done() {
+        System.out.println("done");
     }
 
     @Override

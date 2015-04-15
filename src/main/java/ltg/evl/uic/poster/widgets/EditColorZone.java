@@ -1,17 +1,41 @@
 package ltg.evl.uic.poster.widgets;
 
 import com.google.common.base.Objects;
+import ltg.evl.uic.poster.listeners.EditListener;
+import vialab.SMT.Touch;
 import vialab.SMT.Zone;
 
 public class EditColorZone extends Zone {
 
     private final int outline;
     private int color;
+    private boolean isEditing;
+    private EditListener editListener;
 
     public EditColorZone(String name, int x, int y, int width) {
         super(name, x, y, width, width);
         this.outline = ZoneHelper.greyOutline;
         this.isEditing(false);
+    }
+
+    @Override
+    public void touch() {
+        rst(false, false, false);
+    }
+
+    public void addEditListener(EditListener editListener) {
+        this.editListener = editListener;
+    }
+
+    @Override
+    public void touchDown(Touch touch) {
+        this.isEditing = !isEditing;
+        toggleColor();
+    }
+
+    @Override
+    public void touchUp(Touch touch) {
+        this.editListener.editModeChanged(isEditing);
     }
 
     @Override
@@ -24,7 +48,16 @@ public class EditColorZone extends Zone {
     }
 
     public void isEditing(boolean isEditing) {
-        if (isEditing) {
+        this.isEditing = isEditing;
+        this.toggleColor();
+    }
+
+    public boolean getIsEditing() {
+        return this.isEditing;
+    }
+
+    protected void toggleColor() {
+        if (this.isEditing) {
             this.color = ZoneHelper.greenColor;
         } else {
             this.color = ZoneHelper.blueOutline;
