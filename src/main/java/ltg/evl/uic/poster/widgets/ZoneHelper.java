@@ -23,6 +23,9 @@ import java.util.Random;
 public class ZoneHelper {
 
     public static final int ROUND_CORNER = 10;
+    public static final String WHICH_CLASS_ARE_YOU_IN = "Select a Class";
+    public static final String WHICH_GROUP_ARE_YOU_IN = "Select a Group";
+    public static final String SELECT_A_POSTER = "Select a Poster";
     public static PImage deleteImage;
     public static PFont helveticaNeue18Font;
     public static PFont helveticaNeue48Font;
@@ -159,6 +162,29 @@ public class ZoneHelper {
         int randomNum = rand.nextInt((max - min) + 1) + min;
 
         return randomNum;
+    }
+
+    public static Dimension getScaledDimension(Dimension imgSize, Dimension boundary) {
+
+        float width_ratio = new Float(boundary.width).floatValue() / new Float(imgSize.width).floatValue();
+        float height_ratio = new Float(boundary.height).floatValue() / new Float(imgSize.height).floatValue();
+        float new_width;
+        float new_height;
+
+        float scale = Math.min(width_ratio, height_ratio);
+
+        new_width = scale * new Float(imgSize.width).floatValue();
+        new_height = scale * new Float(imgSize.height).floatValue();
+
+        if ((imgSize.getHeight() >= new_height) || (imgSize.getWidth() >= new_width)) {
+            return imgSize;
+        }
+
+        return new Dimension((int) new_width, (int) new_height);
+    }
+
+    public int randomColor() {
+        return colors[random(0, colors.length - 1)];
     }
 
     public void addDeleteButton(Zone zone) {

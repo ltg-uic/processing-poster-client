@@ -2,20 +2,34 @@ package ltg.evl.uic.poster.widgets;
 
 import de.looksgood.ani.Ani;
 import processing.core.PFont;
+import processing.core.PImage;
+import processing.core.PVector;
+import vialab.SMT.ImageZone;
 import vialab.SMT.SMT;
 import vialab.SMT.Touch;
 import vialab.SMT.Zone;
 
+import java.awt.*;
+
 
 public class PresentationZone extends Zone {
 
-    private final PFont font;
+    private PFont font;
     private int WIDTH = 120;
     private int bgAlpha;
     private boolean shouldDelete;
 
     public PresentationZone(String name, int x, int y, int width, int height) {
         super(name, x, y, width, height);
+        this.initZone();
+    }
+
+    public PresentationZone(String name) {
+        super(name, 0, 0, SMT.getApplet().getWidth(), SMT.getApplet().getHeight());
+        this.initZone();
+    }
+
+    protected void initZone() {
         this.bgAlpha = 255;
         this.font = ZoneHelper.helveticaNeue18Font;
     }
@@ -27,7 +41,11 @@ public class PresentationZone extends Zone {
 
     @Override
     public void touch() {
-        this.delete();
+        doTouchAction();
+    }
+
+    public void doTouchAction() {
+        delete();
     }
 
     @Override
@@ -36,8 +54,68 @@ public class PresentationZone extends Zone {
         rect(0, 0, this.getWidth(), this.getHeight());
     }
 
+    public void presentImageZone(PImage pImage) {
+
+        Dimension scaledDimension = ZoneHelper.getScaledDimension(new Dimension(pImage.width, pImage.height),
+                                                                  new Dimension(this.getWidth(), this.getHeight()));
+
+        int x2 = (int) (PresentationZone.this.getHalfSize().getWidth() - (scaledDimension.getWidth() / 2));
+        int y2 = (int) (PresentationZone.this.getHalfSize().getHeight() - (scaledDimension.getHeight() / 2));
+
+        pImage.resize((int) scaledDimension.getWidth(), (int) scaledDimension.getHeight());
+
+        final PVector targetPoint = new PVector(x2, y2);
+
+        ImageZone imageZone = new ImageZone(pImage, x2, this.getHeight(), (int) scaledDimension.getWidth(),
+                                            (int) scaledDimension.getHeight()) {
+
+            int initY = PresentationZone.this.getHeight();
+
+            @Override
+            public void touch() {
+                rst(false, false, false);
+            }
+
+            @Override
+            public void draw() {
+                stroke(0);
+                strokeWeight(2);
+                fill(255);
+                rect(0, 0, this.getWidth(), this.getHeight(), 10);
+
+                super.draw();
+            }
+
+            @Override
+            public void touchUp(Touch touch) {
+                SMT.remove(PresentationZone.this);
+            }
+
+            public ImageZone doScaleAni(float speed, float delay, int alpha) {
+                Ani diameterAni = new Ani(this, speed, delay, "initY", targetPoint.y, Ani.EXPO_IN_OUT,
+                                          "onUpdate:update");
+                diameterAni.start();
+                return this;
+            }
+
+            public void update() {
+                setY(initY);
+                System.out.println("Y" + initY);
+            }
+
+
+        }.doScaleAni(.5f, 0f, 255);
+
+
+        if (this.add(imageZone)) {
+
+        }
+
+
+    }
+
     public void showDialog(final String text, int alpha) {
-        bgAlpha = alpha;
+        this.fade(3f, 0, alpha, false);
         int num_per_col = 2;
         int reminder = 2 % num_per_col;
 
@@ -115,14 +193,17 @@ public class PresentationZone extends Zone {
 
     public void fade(float speed, float delay, int alpha, boolean shouldDelete) {
         this.shouldDelete = shouldDelete;
-        this.bgAlpha = alpha;
-        Ani.to(this, speed, delay, "bgAlpha", bgAlpha, Ani.LINEAR, "onEnd:done");
+
+        // this.bgAlpha = alpha;
+        Ani.to(this, speed, delay, "bgAlpha", alpha, Ani.LINEAR, "onEnd:done");
     }
 
     public void done() {
         System.out.println("Fade done");
         if (shouldDelete) {
+
             SMT.remove(this);
+
         }
     }
 
@@ -131,5 +212,9 @@ public class PresentationZone extends Zone {
             this.remove(zone);
         }
         SMT.remove(this);
+    }
+
+    public void setBgAlpha(int bgAlpha) {
+        this.bgAlpha = bgAlpha;
     }
 }

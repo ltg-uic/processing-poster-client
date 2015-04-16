@@ -68,7 +68,7 @@ public class UIControlTest extends PApplet {
 
         thread("doInit");
         final int screen_width = 1200;
-        int screen_height = 800;
+        final int screen_height = 800;
         size(screen_width, screen_height, SMT.RENDERER);
         SMT.init(this, TouchSource.AUTOMATIC);
         SMT.debug = true;
@@ -161,7 +161,7 @@ public class UIControlTest extends PApplet {
             public void touchUp(Touch touch) {
 
 
-                PresentationZone z = new PresentationZone("bg", 0, 0, screen_width, screen_width) {
+                PresentationZone z = new PresentationZone("bg", 0, 0, screen_width, screen_height) {
 
                 };
 
@@ -194,10 +194,12 @@ public class UIControlTest extends PApplet {
                                                          .createPictureZone();
 
 
-//                  SMT.add(z);
+                SMT.add(z);
+
+                z.add(pz);
+                //pz.startAni(0f, 1f);
+                z.presentImageZone(pImage);
 //
-//                  z.add(pz);
-//                  pz.startAni(0f, 1f);
 
 
 //                target1 = new PVector(colorZone.getX() + 250, colorZone.getY() + 250);
@@ -206,16 +208,16 @@ public class UIControlTest extends PApplet {
 //                Ani.to(point1, 1.0f, "y", target1.y);
 
 
-                // MQTTPipe.getInstance().publishMessage("HELLLOO POSTER");
+                // MQTTPipe.dialog().publishMessage("HELLLOO POSTER");
             }
         };
-        //  SMT.add(mqttZone);
+        SMT.add(mqttZone);
 
-        PresentationZone presentationZone = new PresentationZone("s", 0, 0, SMT.getApplet().getWidth(),
-                                                                 SMT.getApplet().getHeight());
-
-        SMT.add(presentationZone);
-        presentationZone.showDialog("Do you want to logout?", 200);
+//        PresentationZone presentationZone = new PresentationZone("s", 0, 0, SMT.getApplet().getWidth(),
+//                                                                 SMT.getApplet().getHeight());
+//
+//        SMT.add(presentationZone);
+//        presentationZone.showDialog("Do you want to logout?", 200);
         // SMT.add(newZone);
         //newZone.toString();
     }
