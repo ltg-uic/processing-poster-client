@@ -1,5 +1,6 @@
-package ltg.evl.uic.poster.widgets;
+package ltg.evl.uic.poster.widgets.buttons;
 
+import ltg.evl.uic.poster.widgets.ZoneHelper;
 import vialab.SMT.Touch;
 
 /**
@@ -16,12 +17,13 @@ public class YesButton extends UserButton {
 
 
     @Override
-    protected void initButton() {
+    public void initButton() {
         this.unpressedButtonColor = this.currentColor;
         this.textColor = color(255);
         this.pressedButtonColor = ZoneHelper.greyOutline;
 
-
+        this.font = ZoneHelper.helveticaNeue18Font;
+        this.fontSize = 18;
         this.outline = ZoneHelper.greyOutline;
         this.textColor = color(255);
 
@@ -34,7 +36,7 @@ public class YesButton extends UserButton {
         strokeWeight(1);
 
         fill(currentColor);
-        smooth();
+        smooth(4);
         ellipse(getWidth() / 2, getHeight() / 2, getWidth(), getHeight());
 
 
@@ -45,7 +47,8 @@ public class YesButton extends UserButton {
             textAlign(CENTER, CENTER);
             textSize(fontSize);
             fill(textColor);
-            text(text, getWidth() / 2 - borderWeight, getHeight() / 2 - borderWeight);
+            smooth(4);
+            text(text, getWidth() / 2, getHeight() / 2);
         }
     }
 

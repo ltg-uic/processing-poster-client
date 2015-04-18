@@ -5,6 +5,8 @@ import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
 import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
+import ltg.evl.uic.poster.widgets.buttons.DeleteButton;
+import ltg.evl.uic.poster.widgets.buttons.DeleteButtonListener;
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PImage;
@@ -27,7 +29,7 @@ public class TextBoxZone extends Zone implements DeleteButtonListener {
     private boolean hasLoadedText = false;
     private DeleteButton deleteButton;
     private boolean isDrawingOutline;
-    private int outline = ZoneHelper.getInstance().blueOutline;
+    private int outline = ZoneHelper.blueOutline;
     private DeleteButtonListener deleteButtonListener;
     private StringList lines;
     private int textHeight;

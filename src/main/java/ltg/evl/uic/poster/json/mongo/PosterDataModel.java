@@ -7,9 +7,9 @@ import com.google.common.collect.*;
 import com.google.common.eventbus.EventBus;
 import com.google.common.util.concurrent.*;
 import ltg.evl.uic.poster.listeners.LoginDialogEvent;
-import ltg.evl.uic.poster.widgets.DeleteButton;
 import ltg.evl.uic.poster.widgets.PictureZone;
-import ltg.evl.uic.poster.widgets.ScaleButton;
+import ltg.evl.uic.poster.widgets.buttons.DeleteButton;
+import ltg.evl.uic.poster.widgets.buttons.ScaleButton;
 import ltg.evl.util.RESTHelper;
 import ltg.evl.util.collections.PictureZoneToPosterItem;
 import org.apache.commons.lang.StringUtils;
@@ -43,8 +43,11 @@ public class PosterDataModel {
     public List<Poster> allPosters = Lists.newArrayList();
     private User currentUser;
     private Poster currentPoster;
+    private String currentClassName;
+    private Collection<User> currentClassUsers;
 
     private Boolean hasNotFinishedFetchingAll = true;
+    private Collection<Poster> currentUserPosters;
 
     private PosterDataModel() {
         eventBus = new EventBus();
@@ -106,6 +109,7 @@ public class PosterDataModel {
     public void loadUser(User user) {
         if (Optional.fromNullable(user).isPresent()) {
             this.currentUser = user;
+            fetchAllPostersForCurrentUser();
             this.postObject(new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.USER, user));
         }
 
@@ -144,9 +148,53 @@ public class PosterDataModel {
         };
 
         Collection<User> resultClass = Collections2.filter(imAllUsers, predicateClass);
-
+        setCurrentClassName(classname);
         this.postObject(new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.CLASS_NAME, classname, 0));
 
+    }
+
+    public void fetchAllUsersForCurrentClass(String className) {
+
+        setCurrentClassName(className);
+        Optional<String> classNameOptional = Optional.fromNullable(getCurrentClassName());
+
+        if (classNameOptional.isPresent()) {
+            final String cname = StringUtils.lowerCase(classNameOptional.get());
+
+            final ImmutableList<User> imAllUsers = ImmutableList.copyOf(PosterDataModel.helper().allUsers);
+
+            final Predicate<User> predicateClass = new Predicate<User>() {
+                @Override
+                public boolean apply(User input) {
+
+                    String userClassName = StringUtils.lowerCase(input.getClassname());
+
+                    return userClassName.equals(cname);
+                }
+            };
+
+            ListeningExecutorService service = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(10));
+            ListenableFuture<Collection<User>> explosion = service.submit(new Callable<Collection<User>>() {
+                public Collection<User> call() {
+                    Collection<User> resultClass = Collections2.filter(imAllUsers, predicateClass);
+                    return resultClass;
+                }
+            });
+
+            Futures.addCallback(explosion, new FutureCallback<Collection<User>>() {
+
+
+                @Override
+                public void onSuccess(Collection<User> result) {
+                    currentClassUsers = result;
+                    postObject(new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.CLASS_NAME, cname, 0));
+                }
+
+                public void onFailure(Throwable thrown) {
+                    thrown.printStackTrace();
+                }
+            });
+        }
     }
     //endregion loading
 
@@ -195,8 +243,8 @@ public class PosterDataModel {
 
     }
 
-    public Collection<Poster> getAllPostersForCurrentUser() {
-        return getAllPostersForUser(this.currentUser);
+    public void fetchAllPostersForCurrentUser() {
+        this.currentUserPosters = getAllPostersForUser(this.currentUser);
     }
 
     public Collection<Poster> getAllPostersForUser(final User user) {
@@ -244,13 +292,12 @@ public class PosterDataModel {
         return null;
     }
 
-    public Collection<PosterItem> getAllPostersItemsForPoster(String posterUuid) {
+    public Collection<PosterItem> getAllPostersItemsForPoster(final String posterUuid) {
 
         ImmutableList<Poster> imPosters = ImmutableList.copyOf(allPosters);
         Predicate<Poster> filterPosters = new Predicate<Poster>() {
             @Override
             public boolean apply(Poster poster) {
-                String posterUuid = poster.getUuid();
                 return poster.getUuid().equals(posterUuid);
             }
         };
@@ -315,7 +362,7 @@ public class PosterDataModel {
 //
 //        ListenableFuture<PosterItem> updatedPosterItemFuture = service.submit(new Callable<PosterItem>() {
 //            public PosterItem call() throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
-//                RESTHelper.getInstance()
+//                RESTHelper.dialog()
 //                          .postCollection(posterItem, RESTHelper.PosterUrl.updateDeletePosterItem(
 //                                  String.valueOf(posterItem.get_id().get("$oid")),
 //                                  RESTHelper.PosterUrl.REQUEST_TYPE.UPDATE), PosterItem.class);
@@ -489,6 +536,30 @@ public class PosterDataModel {
 
     public void postObject(Object obj) {
         eventBus.post(obj);
+    }
+
+    public String getCurrentClassName() {
+        return currentClassName;
+    }
+
+    public void setCurrentClassName(String currentClassName) {
+        this.currentClassName = currentClassName;
+    }
+
+    public Collection<User> getCurrentClassUsers() {
+        return currentClassUsers;
+    }
+
+    public void setCurrentClassUsers(Collection<User> currentClassUsers) {
+        this.currentClassUsers = currentClassUsers;
+    }
+
+    public Collection<Poster> getCurrentUserPosters() {
+        return currentUserPosters;
+    }
+
+    public void setCurrentUserPosters(Collection<Poster> currentUserPosters) {
+        this.currentUserPosters = currentUserPosters;
     }
     //end region
 

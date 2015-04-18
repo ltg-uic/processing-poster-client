@@ -161,7 +161,7 @@ public class MongoDBTest {
     public void createBIGTest() throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
 
         String[] names = {"Brock", "Gale", "Gustavo", "Hank", "Hector", "Holly", "Jane", "Jesse", "Lydia", "Marie", "Mike", "Pete", "Saul", "Skyler", "Todd", "Walter"};
-        String[] classes = {"Ben", "Mike"};
+        String[] classes = {"Ben", "Mike", "Test"};
 
 
 
@@ -171,10 +171,10 @@ public class MongoDBTest {
 //        imageItems.add(createPosterItemImage(2));
 //        imageItems.add(createPosterItemImage(2));
 
-        int NUM_GROUPS = 2;
+        int NUM_GROUPS = 1;
         int NUM_POSTERS_PER_GROUP = 2;
 
-        for (int y = 0; y < 2; y++) {
+        for (int y = 0; y < 3; y++) {
             String CLASS_NAME = classes[y];
             //first posteritems
 
@@ -196,9 +196,9 @@ public class MongoDBTest {
                     imageItems.add(createPosterItemImage(random(1, 3)));
                     imageItems.add(createPosterItemImage(random(1, 3)));
                     posterItems.addAll(imageItems);
-                    posterItems.add(createPosterItemText(1, SentenceGenerator.getInstance().makeText(random(1, 4))));
-                    posterItems.add(createPosterItemText(2, SentenceGenerator.getInstance().makeText(random(1, 4))));
-                    posterItems.add(createPosterItemText(3, SentenceGenerator.getInstance().makeText(random(1, 4))));
+                    posterItems.add(createPosterItemText(1, SentenceGenerator.getInstance().makeText(random(1, 10))));
+                    posterItems.add(createPosterItemText(2, SentenceGenerator.getInstance().makeText(random(1, 10))));
+                    posterItems.add(createPosterItemText(3, SentenceGenerator.getInstance().makeText(random(1, 10))));
 
                     posterUuids.add(createPoster(SentenceGenerator.getInstance().makeHeadline(), posterItems));
                 }
@@ -227,7 +227,12 @@ public class MongoDBTest {
 
         String id = UUID.randomUUID().toString();
 
-        User user = new UserBuilder().setName(userName).setUuid(id).setClassname(className).setColor(0).setPosters(
+        User user = new UserBuilder().setName(userName)
+                                     .setNameTags(nameTags)
+                                     .setUuid(id)
+                                     .setClassname(className)
+                                     .setColor(0)
+                                     .setPosters(
                 uuidPosterId).createUser();
 
 

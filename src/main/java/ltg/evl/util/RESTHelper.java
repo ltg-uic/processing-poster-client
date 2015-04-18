@@ -470,49 +470,75 @@ public class RESTHelper {
 
     }
 
-    public void mqttMessageForward(final PosterMessage posterMessage) {
-        if (posterMessage == null) {
-            logger.log(Level.SEVERE, "MESSAGE IS NULL");
-        } else {
-            if (posterMessage.getType().equals(PosterMessage.POSTER)) {
-            } else if (posterMessage.getType().equals(PosterMessage.POSTER_ITEM)) {
+    public void mqttMessageForward(final PosterMessage message) {
+
+        Optional<PosterMessage> posterMessageOptional = Optional.fromNullable(message);
+
+        if (posterMessageOptional.isPresent()) {
+
+            final PosterMessage posterMessage = posterMessageOptional.get();
 
 
-                ListeningExecutorService service = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(10));
-                ListenableFuture<Void> doRESTCALL = service.submit(new Callable<Void>() {
-                    public Void call() {
-                        try {
-                            fetchPosterItem(posterMessage);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (GeneralSecurityException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        return null;
+            Optional<User> userOptional = Optional.fromNullable(PosterDataModel.helper().getCurrentUser());
+
+            if (userOptional.isPresent()) {
+                if (userOptional.get().getUuid().equals(posterMessage.getUserUuid())) {
+
+                    logger.log(Level.INFO,
+                               "We CARE about his user uuid: " + posterMessage.getUserUuid() + " bacause user uuid is there: " + userOptional
+                                       .get()
+                                       .getUuid());
+
+
+                    if (posterMessage.getType().equals(PosterMessage.POSTER)) {
+                    } else if (posterMessage.getType().equals(PosterMessage.POSTER_ITEM)) {
+
+
+                        ListeningExecutorService service = MoreExecutors.listeningDecorator(
+                                Executors.newFixedThreadPool(10));
+                        ListenableFuture<Void> doRESTCALL = service.submit(new Callable<Void>() {
+                            public Void call() {
+                                try {
+                                    fetchPosterItem(posterMessage);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                } catch (GeneralSecurityException e) {
+                                    e.printStackTrace();
+                                } catch (ExecutionException e) {
+                                    e.printStackTrace();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                return null;
+                            }
+                        });
+                        Futures.addCallback(doRESTCALL, new FutureCallback<Void>() {
+                            // we want this handler to run immediately after we push the big red button!
+                            public void onSuccess(Void nothing) {
+                                logger.log(Level.INFO, "DONE! FETCH POSTER ITEM");
+                                //update poster with new _id
+                            }
+
+                            public void onFailure(Throwable thrown) {
+                                logger.log(Level.INFO, "REST FAILED!");
+
+                                thrown.printStackTrace();
+                            }
+                        });
+
+
+                        //PosterDataModel.helper().updatePosterItemCollection((PosterItem) posterMessage);
+                    } else if (posterMessage.getType().equals(PosterMessage.USER)) {
+
                     }
-                });
-                Futures.addCallback(doRESTCALL, new FutureCallback<Void>() {
-                    // we want this handler to run immediately after we push the big red button!
-                    public void onSuccess(Void nothing) {
-                        logger.log(Level.INFO, "DONE! FETCH POSTER ITEM");
-                        //update poster with new _id
-                    }
-
-                    public void onFailure(Throwable thrown) {
-                        logger.log(Level.INFO, "REST FAILED!");
-
-                        thrown.printStackTrace();
-                    }
-                });
-
-
-                //PosterDataModel.helper().updatePosterItemCollection((PosterItem) posterMessage);
-            } else if (posterMessage.getType().equals(PosterMessage.USER)) {
-
+                } else {
+                    logger.log(Level.INFO,
+                               "We don't care about his user uuid: " + posterMessage.getUserUuid() + " bacause user uuid is there: " + userOptional
+                                       .get()
+                                       .getUuid());
+                }
+            } else {
+                logger.log(Level.SEVERE, "MESSAGE IS NULL");
             }
         }
     }

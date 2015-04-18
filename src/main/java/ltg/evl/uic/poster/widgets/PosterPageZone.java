@@ -1,14 +1,15 @@
 package ltg.evl.uic.poster.widgets;
 
-import de.looksgood.ani.Ani;
+import ltg.evl.uic.poster.json.mongo.Poster;
 import ltg.evl.uic.poster.listeners.LoadPosterListener;
+import ltg.evl.util.de.looksgood.ani.Ani;
 import org.apache.commons.lang.WordUtils;
 import processing.core.PFont;
 import processing.core.PVector;
 import vialab.SMT.SMT;
 import vialab.SMT.Zone;
 
-import java.util.Map;
+import java.util.Collection;
 
 
 public class PosterPageZone extends Zone {
@@ -27,7 +28,8 @@ public class PosterPageZone extends Zone {
         this.font = ZoneHelper.helveticaNeue18Font;
     }
 
-    public void addPosters(Map<String, String> uuidIdToPosterName, int buttonWidth, int buttonHeight) {
+    public void addPosters(Collection<Poster> posters) {
+
 
         Zone body = new Zone("bodyp", 0, heading_height, this.getWidth(), getHeight()) {
             @Override
@@ -38,17 +40,24 @@ public class PosterPageZone extends Zone {
                 fill(255);
                 rect(3, 0, getWidth() - 6, getHeight() - 3, ZoneHelper.ROUND_CORNER);
             }
+
+            @Override
+            public void touch() {
+                super.touch();
+            }
         };
-        for (String uuid : uuidIdToPosterName.keySet()) {
-            String posterTitle = uuidIdToPosterName.get(uuid);
-            PosterButton posterButton = new PosterButton(uuid, WordUtils.capitalize(posterTitle), buttonWidth,
-                                                         buttonHeight,
+        for (Poster poster : posters) {
+
+            PosterButton posterButton = new PosterButton(poster.getUuid(), WordUtils.capitalize(poster.getName()),
+                                                         ZoneHelper.POSTER_BUTTON_WIDTH,
+                                                         ZoneHelper.POSTER_BUTTON_HEIGHT,
                                                          ZoneHelper.blueOutline);
             posterButton.addLoadPosterListener(this.loadPosterListener);
             body.add(posterButton);
         }
 
-        SMT.grid(25, 25, body.getWidth(), 25, 25, body.getChildren());
+        SMT.grid(ZoneHelper.GRID_SPACER, 0, body.getWidth(), ZoneHelper.GRID_SPACER, ZoneHelper.GRID_SPACER,
+                 body.getChildren());
         this.add(body);
     }
 

@@ -1,6 +1,7 @@
 package ltg.evl.uic.poster.widgets;
 
-import de.looksgood.ani.Ani;
+import ltg.evl.uic.poster.widgets.buttons.YesButton;
+import ltg.evl.util.de.looksgood.ani.Ani;
 import processing.core.PFont;
 import processing.core.PImage;
 import processing.core.PVector;
@@ -115,7 +116,7 @@ public class PresentationZone extends Zone {
     }
 
     public void showDialog(final String text, int alpha) {
-        this.fade(3f, 0, alpha, false);
+
         int num_per_col = 2;
         int reminder = 2 % num_per_col;
 
@@ -183,27 +184,28 @@ public class PresentationZone extends Zone {
 
         heading.add(frame);
         this.add(heading);
-
+        this.fade(3f, 0, alpha, false);
     }
 
     public void doYesAction() {
-        SMT.remove(this);
+
     }
 
 
     public void fade(float speed, float delay, int alpha, boolean shouldDelete) {
         this.shouldDelete = shouldDelete;
 
-        // this.bgAlpha = alpha;
-        Ani.to(this, speed, delay, "bgAlpha", alpha, Ani.LINEAR, "onEnd:done");
+
+        Ani diameterAni = new Ani(this, speed, delay, "bgAlpha", alpha, Ani.LINEAR, "onEnd:done");
+        diameterAni.start();
     }
 
     public void done() {
-        System.out.println("Fade done");
         if (shouldDelete) {
-
-            SMT.remove(this);
-
+            System.out.println("PresentationZone.done DELETE");
+            SMT.remove(this.getName());
+        } else {
+            System.out.println("PresentationZone.done NO DELETE");
         }
     }
 

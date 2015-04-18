@@ -1,8 +1,10 @@
-package ltg.evl.uic.poster.widgets;
+package ltg.evl.uic.poster.widgets.buttons;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import ltg.evl.uic.poster.json.mongo.User;
 import ltg.evl.uic.poster.listeners.LoadUserListener;
+import ltg.evl.uic.poster.widgets.ZoneHelper;
 import org.apache.commons.lang.WordUtils;
 import processing.core.PFont;
 import vialab.SMT.Touch;
@@ -19,11 +21,12 @@ public class UserButton extends Zone {
     protected int textColor;
     protected int fontSize;
     protected int currentColor;
-    protected int borderWeight = 1;
+    protected int borderWeight = 5;
     private int savedWidth;
     private int savedHeight;
     private LoadUserListener loadUserListerner;
     private User user;
+    private String nameTags;
 
     public UserButton(String name, int buttonStartX, int buttonStartY, int buttonWidth, int buttonHeight, String text,
                       int pressedButtonColor, int unpressedButtonColor, PFont font) {
@@ -56,11 +59,16 @@ public class UserButton extends Zone {
         this.fontSize = 18;
     }
 
-    protected void initButton() {
+    public void initButton() {
 
         if (Optional.fromNullable(user).isPresent()) {
             this.unpressedButtonColor = Optional.of(user.getColor()).or(ZoneHelper.whiteOutline);
             this.text = WordUtils.capitalize(user.getName());
+            if (Optional.fromNullable(user.getNameTags()).isPresent()) {
+                this.nameTags = WordUtils.capitalize(Joiner.on(",").join(user.getNameTags()));
+            } else {
+                this.nameTags = "";
+            }
         } else {
             this.unpressedButtonColor = ZoneHelper.whiteOutline;
         }
@@ -105,7 +113,7 @@ public class UserButton extends Zone {
         strokeWeight(1);
         fill(currentColor);
         smooth(4);
-        ellipse(getWidth() / 2, getHeight() / 2, getWidth(), getHeight());
+        rect(0, 0, getWidth(), getHeight(), ZoneHelper.ROUND_CORNER);
 
 
         if (text != null) {
@@ -116,10 +124,21 @@ public class UserButton extends Zone {
             textSize(fontSize);
             fill(textColor);
             smooth(4);
-            text(text, getWidth() / 2 - borderWeight, getHeight() / 2 - borderWeight);
+            float hght = textAscent();
+            int x1 = getWidth() / 2;
+            int y1 = (int) (getHeight() / 2 - (hght / 2));
+            text(text, x1, y1);
+            if (this.nameTags != null) {
+                textAlign(CENTER, CENTER);
+                textSize(fontSize - 4);
+                fill(textColor);
+                smooth(4);
+                float h = textAscent();
+                text(nameTags, x1, y1 + (h * 2));
+            }
+
         }
     }
-
 
     @Override
     public void touchDown(Touch touch) {

@@ -6,7 +6,7 @@ import ltg.commons.SimpleMQTTClient;
 import ltg.evl.uic.poster.json.mongo.*;
 import ltg.evl.uic.poster.widgets.DialogZoneController;
 import ltg.evl.uic.poster.widgets.PictureZone;
-import ltg.evl.uic.poster.widgets.UserButton;
+import ltg.evl.uic.poster.widgets.buttons.UserButton;
 import ltg.evl.util.RESTHelper;
 import org.apache.log4j.Logger;
 import processing.core.PApplet;
@@ -90,7 +90,7 @@ public class PosterTest extends PApplet {
                     loadPosterItems(Lists.newArrayList(newPosterItem), false);
                 } else if (objectEvent.getEventType().equals(ObjectEvent.OBJ_TYPES.INIT_ALL)) {
 
-                    DialogZoneController.getInstance().showClassPage();
+                    DialogZoneController.dialog().showClassPage();
                     //DialogZoneController.helper().translateUserPage(300, 300);
                     //loadPosterForUser(allUsers.get(0));                   }
 
@@ -120,7 +120,7 @@ public class PosterTest extends PApplet {
                 if (!imAllUsers.isEmpty()) {
                     for (User user : imAllUsers) {
                         if (user.getUuid().equals(userUuid)) {
-                            DialogZoneController.getInstance().hideUserPage();
+                            DialogZoneController.dialog().hideUserPage();
                             loadPosterForUser(user);
                         }
                     }
@@ -130,7 +130,7 @@ public class PosterTest extends PApplet {
         };
 
 
-        DialogZoneController.getInstance().registerForLoginEvent(ule);
+        DialogZoneController.dialog().registerForLoginEvent(ule);
 
         logger.debug("POSTER MODELER STARTED");
         // PosterDataModel.helper().addUserSubscriber(userSubscriber);

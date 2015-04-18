@@ -1,4 +1,4 @@
-package ltg.evl.uic.poster.widgets;
+package ltg.evl.uic.poster.widgets.buttons;
 
 import vialab.SMT.Zone;
 

@@ -40,38 +40,43 @@ public class PosterItemToPictureZone implements Function<PosterItem, Callable<Pi
                 PImage pImage = null;
 
                 if (Optional.fromNullable(posterItem).isPresent()) {
-                    switch (posterItem.getType()) {
-                        case IMAGE:
-                            final javaxt.io.Image jxtImage = new javaxt.http.Request(
-                                    posterItem.getContent()).getResponse()
-                                                            .getImage();
+                    if (Optional.fromNullable(posterItem.getType()).isPresent()) {
+                        switch (posterItem.getType()) {
+                            case IMAGE:
+                                final javaxt.io.Image jxtImage = new javaxt.http.Request(
+                                        posterItem.getContent()).getResponse()
+                                                                .getImage();
 
 
-                            pImage = ImageLoader.toPImage(jxtImage);
+                                pImage = ImageLoader.toPImage(jxtImage);
 
-                            break;
-                        case TEXT:
-                            javaxt.io.Image jxt2 = new javaxt.io.Image(ZoneHelper.renderTextToImage(
-                                    ZoneHelper.helveticaNeue20JavaFont, new Color(0, 0, 0), posterItem.getContent(),
-                                    600));
+                                break;
+                            case TEXT:
+                                javaxt.io.Image jxt2 = new javaxt.io.Image(ZoneHelper.renderTextToImage(
+                                        ZoneHelper.helveticaNeue20JavaFont, new Color(0, 0, 0), posterItem.getContent(),
+                                        600));
 
-                            pImage = new PImage(jxt2.getBufferedImage());
+                                pImage = new PImage(jxt2.getBufferedImage());
 
-                            break;
+                                break;
+                        }
+
+                        pictureZone = new PictureZoneBuilder().setImage(pImage)
+                                                              .setUuid(posterItem.getUuid())
+                                                              .setX(posterItem.getX())
+                                                              .setY(posterItem.getY())
+                                                              .setWidth(pImage.width)
+                                                              .setHeight(pImage.height)
+                                                              .setZoneName(posterItem.getName())
+                                                              .setType(posterItem.getType())
+                                                              .createPictureZone();
+
+                        return pictureZone;
                     }
                 }
 
-                pictureZone = new PictureZoneBuilder().setImage(pImage)
-                                                      .setUuid(posterItem.getUuid())
-                                                      .setX(posterItem.getX())
-                                                      .setY(posterItem.getY())
-                                                      .setWidth(pImage.width)
-                                                      .setHeight(pImage.height)
-                                                      .setZoneName(posterItem.getName())
-                                                      .setType(posterItem.getType())
-                                                      .createPictureZone();
+                return null;
 
-                return pictureZone;
             }
         };
         return callable;

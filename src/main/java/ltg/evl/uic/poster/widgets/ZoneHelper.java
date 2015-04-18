@@ -1,6 +1,7 @@
 package ltg.evl.uic.poster.widgets;
 
 import com.google.common.io.Resources;
+import ltg.evl.uic.poster.widgets.buttons.*;
 import processing.core.PFont;
 import processing.core.PImage;
 import vialab.SMT.SMT;
@@ -26,6 +27,18 @@ public class ZoneHelper {
     public static final String WHICH_CLASS_ARE_YOU_IN = "Select a Class";
     public static final String WHICH_GROUP_ARE_YOU_IN = "Select a Group";
     public static final String SELECT_A_POSTER = "Select a Poster";
+    public static final int GRID_SPACER = 15;
+    public static final int CLASS_BUTTON_SIZE = 150;
+    public static final int BUTTON_WIDTH = 200;
+    public static final int BUTTON_HEIGHT = 100;
+    public static final int LOGOUT_BUTTON_HEIGHT = 75;
+    public static final int LOGOUT_BUTTON_WIDTH = 150;
+    public static final int POSTER_BUTTON_WIDTH = 300;
+    public static final int POSTER_BUTTON_HEIGHT = 125;
+    public static final String LOGOUT = "Logout";
+    public static final String REMOVE = "Remove";
+    public static final String EDIT = "Editing";
+    public static final String PRESENT = "Presenting";
     public static PImage deleteImage;
     public static PFont helveticaNeue18Font;
     public static PFont helveticaNeue48Font;
@@ -53,6 +66,8 @@ public class ZoneHelper {
     public static int redOutline = SMT.getApplet().color(238, 43, 41);
     public static int whiteOutline = SMT.getApplet().color(255, 255, 255);
     public static int greyOutline = SMT.getApplet().color(224, 224, 224);
+    public static int darkGreenColor = SMT.getApplet().color(67, 160, 71);
+    public static int orangeColor = SMT.getApplet().color(251, 140, 0);
     private static ZoneHelper ourInstance = new ZoneHelper();
 
     private ZoneHelper() {
@@ -162,6 +177,45 @@ public class ZoneHelper {
         int randomNum = rand.nextInt((max - min) + 1) + min;
 
         return randomNum;
+    }
+
+
+    public static Dimension calcGrid(int rows, int cols, int spacer, int zoneWidth, int zoneHeight) {
+        int x = spacer;
+        int y = spacer;
+
+        //cols
+        for (int i = 0; i < cols; i++) {
+            x = x + zoneWidth + spacer;
+        }
+
+        for (int i = 0; i < rows; i++) {
+            y = y + zoneHeight + spacer;
+        }
+
+        return new Dimension(x, y);
+    }
+
+    public static Dimension grid(int x, int y, int width, int xSpace, int ySpace, int zoneWidth, int zoneHeight,
+                                 int numElements) {
+        int currentX = x;
+        int currentY = y;
+
+        int rowHeight = 0;
+
+        for (int i = 0; i < zoneHeight; i++) {
+            if (currentX + zoneWidth > x + width) {
+                currentX = x;
+                currentY += rowHeight + ySpace;
+                rowHeight = 0;
+            }
+
+            currentX += zoneWidth + xSpace;
+            rowHeight = Math.max(rowHeight, zoneHeight);
+        }
+
+
+        return new Dimension(currentX, currentY);
     }
 
     public static Dimension getScaledDimension(Dimension imgSize, Dimension boundary) {

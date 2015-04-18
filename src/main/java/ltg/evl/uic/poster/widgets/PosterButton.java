@@ -1,6 +1,7 @@
 package ltg.evl.uic.poster.widgets;
 
 import ltg.evl.uic.poster.listeners.LoadPosterListener;
+import ltg.evl.uic.poster.widgets.buttons.UserButton;
 import vialab.SMT.Touch;
 
 /**
@@ -8,6 +9,7 @@ import vialab.SMT.Touch;
  */
 public class PosterButton extends UserButton {
 
+    public static final int SPACING = 4;
     private LoadPosterListener loadPosterListener;
 
     public PosterButton(String uuid, String text, int width, int height, int color) {
@@ -27,7 +29,7 @@ public class PosterButton extends UserButton {
     protected void initText() {
         this.textColor = color(255);
 //        this.font = SMT.getApplet().loadFont(Resources.getResource("Roboto-Light-48.vlw").getPath());
-//        this.fontSize = 20;
+        this.fontSize = 16;
 //        textFont(font, fontSize);
     }
 
@@ -69,7 +71,7 @@ public class PosterButton extends UserButton {
             textSize(fontSize);
             fill(textColor);
             smooth(4);
-            text(text, 0, 0, getWidth() - 2, getHeight() - 2);
+            text(text, 0, 0, getWidth() - SPACING, getHeight() - SPACING);
         }
     }
 

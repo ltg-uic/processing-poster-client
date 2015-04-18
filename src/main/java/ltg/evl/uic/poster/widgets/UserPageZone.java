@@ -1,36 +1,36 @@
 package ltg.evl.uic.poster.widgets;
 
-import de.looksgood.ani.Ani;
+import com.google.common.collect.ImmutableList;
 import ltg.evl.uic.poster.json.mongo.User;
 import ltg.evl.uic.poster.listeners.LoadUserListener;
+import ltg.evl.uic.poster.widgets.buttons.UserButton;
+import ltg.evl.util.de.looksgood.ani.Ani;
 import processing.core.PFont;
 import processing.core.PVector;
 import vialab.SMT.SMT;
 import vialab.SMT.Zone;
-
-import java.util.Map;
 
 /**
  * Created by aperritano on 3/30/15.
  */
 public class UserPageZone extends Zone {
 
-    private final PFont font;
     PVector point = new PVector(0, 0);
     int heading_height = 50;
+    private PFont font;
+    private int initY;
     private int greyColor = ZoneHelper.greyOutline;
     private LoadUserListener loadUserListerner;
 
     public UserPageZone(String name, int x, int y, int width, int height, LoadUserListener loadUserListerner) {
         super(name, x, y, width, height);
-        point.x = x;
-        point.y = y;
+        this.initY = SMT.getApplet().getHeight();
         this.loadUserListerner = loadUserListerner;
         this.font = ZoneHelper.helveticaNeue18Font;
     }
 
 
-    public void addUsers(Map<String, User> uuidIdToUser) {
+    public void addUsers(ImmutableList<User> users) {
 
         Zone body = new Zone("bodyu", 0, heading_height, this.getWidth(), getHeight()) {
             @Override
@@ -41,27 +41,32 @@ public class UserPageZone extends Zone {
                 fill(255);
                 rect(3, 0, getWidth() - 6, getHeight() - 3, ZoneHelper.ROUND_CORNER);
             }
+
+            @Override
+            public void touch() {
+                super.touch();
+            }
         };
-        for (String uuid : uuidIdToUser.keySet()) {
-            User user = uuidIdToUser.get(uuid);
+
+        for (User user : users) {
+
+
             user.setColor(ZoneHelper.getInstance().randomColor());
-            UserButton userButton = new UserButton(uuid, 175, 175);
+            UserButton userButton = new UserButton(user.getUuid(), ZoneHelper.BUTTON_WIDTH, ZoneHelper.BUTTON_HEIGHT);
             userButton.setUser(user);
             userButton.initButton();
             userButton.addLoadUserListener(this.loadUserListerner);
             body.add(userButton);
         }
 
-        SMT.grid(25, 25, body.getWidth(), 25, 25, body.getChildren());
+        SMT.grid(ZoneHelper.GRID_SPACER, 0, body.getWidth(), ZoneHelper.GRID_SPACER, ZoneHelper.GRID_SPACER,
+                 body.getChildren());
 
         this.add(body);
     }
 
-
     @Override
     public void draw() {
-        setX(point.x);
-        setY(point.y);
 
         stroke(97, 97, 97);
         strokeWeight(3);
@@ -80,13 +85,14 @@ public class UserPageZone extends Zone {
         text(ZoneHelper.WHICH_GROUP_ARE_YOU_IN, getWidth() / 2 - 2, heading_height / 2);
     }
 
-    public void startAni(PVector target, float speed, float delay) {
-        Ani.to(point, speed, delay, "x", target.x, Ani.EXPO_OUT, "done");
-        Ani.to(point, speed, delay, "y", target.y, Ani.EXPO_OUT, "done");
+    public void startAni(PVector targetPoint, float speed, float delay) {
+        Ani diameterAni = new Ani(this, speed, delay, "initY", targetPoint.y, Ani.EXPO_IN_OUT,
+                                  "onUpdate:update");
+        diameterAni.start();
     }
 
-    public void done() {
-        System.out.println("done");
+    public void update() {
+        setY(initY);
     }
 
     @Override

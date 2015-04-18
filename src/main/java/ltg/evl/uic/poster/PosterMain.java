@@ -1,25 +1,30 @@
 package ltg.evl.uic.poster;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.google.common.util.concurrent.*;
-import de.looksgood.ani.Ani;
 import ltg.evl.uic.poster.json.mongo.ObjectEvent;
 import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
-import ltg.evl.uic.poster.listeners.EditListener;
 import ltg.evl.uic.poster.listeners.LoginDialogEvent;
-import ltg.evl.uic.poster.widgets.*;
+import ltg.evl.uic.poster.widgets.DialogZoneController;
+import ltg.evl.uic.poster.widgets.PictureZone;
+import ltg.evl.uic.poster.widgets.PresentationZone;
+import ltg.evl.uic.poster.widgets.ZoneHelper;
+import ltg.evl.uic.poster.widgets.buttons.EditModeButton;
+import ltg.evl.uic.poster.widgets.buttons.LogoutButton;
+import ltg.evl.uic.poster.widgets.buttons.RemoveModeButton;
 import ltg.evl.util.MQTTPipe;
 import ltg.evl.util.RESTHelper;
 import ltg.evl.util.collections.PosterItemToPictureZone;
+import ltg.evl.util.de.looksgood.ani.Ani;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import processing.core.PApplet;
-import tmp.LogoutButton;
 import vialab.SMT.SMT;
 import vialab.SMT.TouchSource;
 import vialab.SMT.Zone;
@@ -27,6 +32,8 @@ import vialab.SMT.Zone;
 import java.util.Collection;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
+
+import static org.apache.commons.lang.WordUtils.capitalize;
 
 
 /**
@@ -36,16 +43,10 @@ public class PosterMain extends PApplet {
 
 
     protected static org.apache.log4j.Logger logger;
-    private EditColorZone colorZone;
-    private LogoutButton logoutZone;
-    private boolean isEditing = true;
-
-
     public static void main(String args[]) {
         logger = Logger.getLogger(PosterMain.class.getName());
         logger.setLevel(Level.ALL);
         MQTTPipe.getInstance();
-
         PApplet.main(new String[]{"ltg.evl.uic.poster.PosterMain"});
     }
 
@@ -56,35 +57,26 @@ public class PosterMain extends PApplet {
             if (Optional.fromNullable(event.getEventType()).isPresent()) {
                 switch (event.getEventType()) {
                     case USER:
-                        //logger.log(Level.INFO, "user event with user uuid: " + event.getUuid());
-
-
-                        DialogZoneController.getInstance().hideUserPage();
-                        DialogZoneController.getInstance().showPosterPage();
+                        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
+                        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.POSTER_PAGE);
                         break;
                     case POST_ITEM:
                         break;
                     case CLASS_NAME:
-                        //logger.log(Level.INFO, "class name: " + event.getUuid());
-                        DialogZoneController.getInstance().hideClassPage();
-                        DialogZoneController.getInstance().showUserPage(event.getUuid());
-                        //DialogZoneController.getInstance().doUserPageAni();
+                        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
+                        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.USER_PAGE);
                         break;
                     case POSTER:
                         //logger.log(Level.INFO, "poster event with poster uuid: " + event.getUuid());
-                        DialogZoneController.getInstance().hidePosterPage();
-                        loadPosterItems(PosterDataModel.helper().getAllPostersItemsForPoster(event.getUuid()), true);
-                        logoutZone.setUser(PosterDataModel.helper().getCurrentUser());
-                        logoutZone.initButton();
-                        colorZone.isEditing(false);
-                        colorZone.setVisible(true);
-                        logoutZone.setVisible(true);
+                        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
+                        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NO_PRES);
+                        loadPosterItemsForCurrentUserAndPoster(
+                                PosterDataModel.helper().getAllPostersItemsForPoster(event.getUuid()), true);
+                        setupControlButtons();
                         break;
                     case LOGOUT:
-                        //when we logout we save all the all the posteritems, remove them from the canvas and then show dialog
-                        colorZone.isEditing(false);
-                        logoutZone.setVisible(false);
                         PosterDataModel.helper().savePosterItemsForCurrentUser();
+                        removeAlZones();
                         break;
                 }
             }
@@ -104,7 +96,7 @@ public class PosterMain extends PApplet {
                     break;
                 case POST_ITEM:
                     PosterItem newPosterItem = (PosterItem) event.getGenericJson();
-                    loadPosterItems(Lists.newArrayList(newPosterItem), false);
+                    loadPosterItemsForCurrentUserAndPoster(Lists.newArrayList(newPosterItem), false);
                     break;
                 case POSTER:
                     break;
@@ -113,28 +105,33 @@ public class PosterMain extends PApplet {
                     SMT.remove(posterItemId);
                     break;
                 case INIT_ALL:
-                    removeAlZones();
-                    DialogZoneController.getInstance().showClassPage();
+                    setupInit();
+                    DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
+                    DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.PRES);
+                    DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.CLASS_PAGE);
                     break;
             }
         }
+    }
+
+
+    void setupInit() {
+        removeAlZones();
     }
 
     @Override
     public void setup() {
 
         Ani.init(this);
-        int w = displayWidth - 100;
-        int h = displayHeight - 100;
-
-        int bar_h = (int) (h * .07);
+        Ani.autostart();
+        int w = displayWidth;
+        int h = displayHeight;
 
         size(w, h, SMT.RENDERER);
         SMT.init(this, TouchSource.AUTOMATIC);
 
-        setupControlButtons();
 
-        final DialogZoneController dialogZoneController = DialogZoneController.getInstance();
+        final DialogZoneController dialogZoneController = DialogZoneController.dialog();
 
         dialogZoneController.registerForLoginEvent(this);
 
@@ -150,7 +147,7 @@ public class PosterMain extends PApplet {
     }
 
 
-    public void loadPosterItems(Collection<PosterItem> posterItems, boolean shouldRemove) {
+    public void loadPosterItemsForCurrentUserAndPoster(Collection<PosterItem> posterItems, boolean shouldRemove) {
 
         if (Optional.fromNullable(posterItems).isPresent()) {
 
@@ -168,9 +165,10 @@ public class PosterMain extends PApplet {
                 Futures.addCallback(pictureZoneFuture, new FutureCallback<PictureZone>() {
                     @Override
                     public void onSuccess(PictureZone result) {
-
-                        if (SMT.add(result)) {
-                            result.startAni(1.0f, 0f);
+                        if (result != null) {
+                            if (SMT.add(result)) {
+                                result.startAni(0.5f, 0f);
+                            }
                         }
 
                     }
@@ -178,86 +176,117 @@ public class PosterMain extends PApplet {
                     @Override
                     public void onFailure(Throwable t) {
                         t.printStackTrace();
-                        logger.log(Level.ERROR, "PICTUREZONES FAILED CALLBACK");
+                        logger.log(Level.ERROR, "PICTURE ZONE FAILED CALLBACK");
 
                     }
                 });
-
-//                try {
-//                    PictureZone pictureZone = pictureZoneFuture.get();
-//                    if (SMT.add(pictureZone)) {
-//                        pictureZone.startAni(1.0f, 0f);
-//                    }
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                } catch (ExecutionException e) {
-//                    e.printStackTrace();
-//                }
-
-
-//                Futures.addCallback(pictureZoneFuture, new FutureCallback<PictureZone>() {
-//                    @Override
-//                    public void onSuccess(PictureZone result) {
-//                        result.setIsEditing(true);
-//                        if (SMT.add(result)) {
-//                            result.startAni(1.0f, 0f);
-//                        }
-//
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Throwable t) {
-//                        logger.log(Level.ERROR, "PICTUREZONES FAILED CALLBACK");
-//                    }
-//                });
 
             }
         }
     }
 
-    ////removeSMT.remove(zone.getName());
-
-
     private void setupControlButtons() {
-        colorZone = new EditColorZone("lol", 40, 40, 50);
-        colorZone.isEditing(false);
-        colorZone.setVisible(true);
-        colorZone.addEditListener(new EditListener() {
-            @Override
-            public void editModeChanged(boolean isEditing) {
-                toggleModes(isEditing);
-            }
-        });
-        logoutZone = new LogoutButton("b", "Group 1", colorZone.getWidth() + (colorZone.getX() / 2) + 5,
-                                      (colorZone.getY() / 2) - 5, 200, 50, ZoneHelper.redOutline) {
+        LogoutButton logoutZone = new LogoutButton("logoutZone", "", ZoneHelper.LOGOUT_BUTTON_WIDTH,
+                                                   ZoneHelper.LOGOUT_BUTTON_HEIGHT) {
             @Override
             public void logoutAction() {
-                PresentationZone presentationZone = new PresentationZone("s", 0, 0, SMT.getApplet().getWidth(),
-                                                                         SMT.getApplet().getHeight()) {
+                final PresentationZone presentationZone = new PresentationZone("s", 0, 0,
+                                                                               SMT.getApplet().getWidth(),
+                                                                               SMT.getApplet().getHeight()) {
                     @Override
                     public void doYesAction() {
                         PosterDataModel.helper().logout();
+                        SMT.remove(this);
+
                     }
+
+
                 };
 
 
                 presentationZone.showDialog("Do you want to logout?", 200);
                 SMT.add(presentationZone);
             }
+
+            @Override
+            public String getNameTags() {
+                if (Optional.fromNullable(PosterDataModel.helper().getCurrentUser()).isPresent()) {
+                    return capitalize(Joiner.on(",").join(
+                            PosterDataModel.helper().getCurrentUser().getNameTags()));
+                }
+                return "Tony, Jim, Tom";
+            }
+
+            @Override
+            public String getUsername() {
+                if (Optional.fromNullable(PosterDataModel.helper().getCurrentUser()).isPresent()) {
+                    String uname = PosterDataModel.helper().getCurrentUser().getName();
+                    return capitalize(uname);
+                }
+                return "Delicious Carrot";
+            }
         };
-        logoutZone.setVisible(false);
-        SMT.add(colorZone, logoutZone);
+        logoutZone.initButton();
+        logoutZone.setVisible(true);
+
+
+        RemoveModeButton removeModeButton = new RemoveModeButton("Group", ZoneHelper.LOGOUT_BUTTON_WIDTH,
+                                                                 ZoneHelper.LOGOUT_BUTTON_HEIGHT) {
+            @Override
+            public void removeAction() {
+                boolean shouldDelete = false;
+                boolean foundFlag = false;
+                Zone[] zones = SMT.getZones();
+                for (Zone zone : zones) {
+                    if (zone != null && (zone instanceof PictureZone)) {
+                        PictureZone pictureZone = (PictureZone) zone;
+
+                        if (pictureZone.isEditing()) {
+                            if (foundFlag == false) {
+                                shouldDelete = !pictureZone.isDeleteMode();
+                                foundFlag = true;
+                            }
+
+                            pictureZone.setIsDeleteMode(shouldDelete);
+                        }
+
+                    }
+                }
+
+            }
+
+        };
+        removeModeButton.initButton();
+        removeModeButton.setVisible(true);
+
+
+        EditModeButton editModeButton = new EditModeButton("Edit", ZoneHelper.LOGOUT_BUTTON_WIDTH,
+                                                           ZoneHelper.LOGOUT_BUTTON_HEIGHT) {
+            @Override
+            public void editAction() {
+                toggleIsEdit(true);
+            }
+
+            @Override
+            public void presentAction() {
+                toggleIsEdit(false);
+            }
+        };
+        editModeButton.initButton();
+        editModeButton.setVisible(true);
+        DialogZoneController.dialog().createControlPage(logoutZone, removeModeButton, editModeButton);
+
 
 
     }
 
-    protected void toggleModes(boolean isEditing) {
+    protected void toggleIsEdit(boolean isEditing) {
         Zone[] activeZones = SMT.getRootZone().getChildren();
 
 
         if (activeZones.length >= 1) {
             for (Zone zone : activeZones) {
-                if (zone instanceof PictureZone && !(zone instanceof DeleteButton)) {
+                if (zone != null & zone instanceof PictureZone) {
                     PictureZone pz = (PictureZone) zone;
                     pz.setIsEditing(isEditing);
                 }
@@ -267,11 +296,17 @@ public class PosterMain extends PApplet {
 
     @Override
     public void draw() {
-        if (isEditing) {
-            background(200, 200, 200, 200);
-        }
+        background(255);
         fill(0);
         text(round(frameRate) + "fps, # of zones: " + SMT.getZones().length, width / 2, 10);
+    }
+
+    public void hideAlZones() {
+        for (Zone zone : SMT.getZones()) {
+            if (zone instanceof PictureZone) {
+                zone.setVisible(false);
+            }
+        }
     }
 
     public void removeAlZones() {

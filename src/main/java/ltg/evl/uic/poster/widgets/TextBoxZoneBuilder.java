@@ -48,7 +48,7 @@ public class TextBoxZoneBuilder {
 
     public TextBoxZone createTextBoxZone() {
         TextBoxZone textBoxZone = new TextBoxZone(uuid, textString, x, y, width, height);
-//        textBoxZone.add(ZoneHelper.getInstance().addDeleteButton(textBoxZone,
+//        textBoxZone.add(ZoneHelper.dialog().addDeleteButton(textBoxZone,
 //                                                                 0));
         return textBoxZone;
     }
@@ -56,7 +56,7 @@ public class TextBoxZoneBuilder {
     public TextBoxZone createTextZoneWithPosterItem() {
         TextBoxZone textBoxZone = new TextBoxZone(posterItem);
 
-//        textBoxZone.add(ZoneHelper.getInstance().addDeleteButton(textBoxZone,
+//        textBoxZone.add(ZoneHelper.dialog().addDeleteButton(textBoxZone,
 //                                                                 0));
         return textBoxZone;
     }

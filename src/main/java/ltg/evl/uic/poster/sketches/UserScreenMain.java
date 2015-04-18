@@ -4,7 +4,6 @@ import ltg.evl.uic.poster.listeners.SaveUserListerner;
 import ltg.evl.uic.poster.widgets.ControlButtonZone;
 import ltg.evl.uic.poster.widgets.ControlButtonZoneBuilder;
 import ltg.evl.uic.poster.widgets.PictureZone;
-import ltg.evl.uic.poster.widgets.TopBarZone;
 import ltg.evl.util.DownloadHelper;
 import ltg.evl.util.StyleHelper;
 import org.apache.log4j.Level;
@@ -65,9 +64,7 @@ public class UserScreenMain extends PApplet implements SaveUserListerner {
 
         int bar_h = (int) (h * .07);
 
-        TopBarZone topBarZone = new TopBarZone(0, 0, w, bar_h, color(44, 153, 241, 255));
 
-        SMT.add(topBarZone);
 
         //setupControlButtons();
 

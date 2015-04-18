@@ -1,5 +1,6 @@
-package ltg.evl.uic.poster.widgets;
+package ltg.evl.uic.poster.widgets.buttons;
 
+import ltg.evl.uic.poster.widgets.ZoneHelper;
 import processing.core.PImage;
 import vialab.SMT.ImageZone;
 import vialab.SMT.Touch;
