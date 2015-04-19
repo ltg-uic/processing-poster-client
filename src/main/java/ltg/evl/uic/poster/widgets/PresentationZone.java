@@ -184,7 +184,7 @@ public class PresentationZone extends Zone {
 
         heading.add(frame);
         this.add(heading);
-        this.fade(3f, 0, alpha, false);
+        this.fade(3f, 0, alpha, true);
     }
 
     public void doYesAction() {

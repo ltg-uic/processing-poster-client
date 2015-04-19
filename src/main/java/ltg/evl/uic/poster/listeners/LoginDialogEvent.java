@@ -15,6 +15,11 @@ public class LoginDialogEvent {
         this.buttonColor = buttonColor;
     }
 
+    public LoginDialogEvent(EVENT_TYPES eventType, String uuid) {
+        this.eventType = eventType;
+        this.uuid = uuid;
+    }
+
     public LoginDialogEvent(EVENT_TYPES eventType, User user) {
         this.uuid = user.getUuid();
         this.eventType = eventType;
@@ -54,7 +59,7 @@ public class LoginDialogEvent {
         this.user = user;
     }
 
-    public enum EVENT_TYPES {USER, POST_ITEM, CLASS_NAME, POSTER, LOGOUT}
+    public enum EVENT_TYPES {USER, POST_ITEM, CLASS_NAME, POSTER, LOGOUT, LOGOUT_DONE}
 
 
 }

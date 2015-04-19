@@ -161,7 +161,7 @@ public class MongoDBTest {
     public void createBIGTest() throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
 
         String[] names = {"Brock", "Gale", "Gustavo", "Hank", "Hector", "Holly", "Jane", "Jesse", "Lydia", "Marie", "Mike", "Pete", "Saul", "Skyler", "Todd", "Walter"};
-        String[] classes = {"Ben", "Mike", "Test"};
+        String[] classes = {"Test", "Ben", "Mike"};
 
 
 
@@ -174,7 +174,7 @@ public class MongoDBTest {
         int NUM_GROUPS = 1;
         int NUM_POSTERS_PER_GROUP = 2;
 
-        for (int y = 0; y < 3; y++) {
+        for (int y = 0; y < 2; y++) {
             String CLASS_NAME = classes[y];
             //first posteritems
 

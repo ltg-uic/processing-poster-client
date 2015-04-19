@@ -17,7 +17,6 @@ import ltg.evl.uic.poster.json.mongo.*;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.*;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -39,11 +38,10 @@ public class RESTHelper {
     public List<PosterItem> currentPosterItems = null;
 
 
-    //Singleton constructor
+    //region setup
     private RESTHelper() {
         BASE_URL = PosterServices.getInstance().getConfig().getString("poster.base.url");
         enableLogging();
-        //initAllCollections();
     }
 
 
@@ -75,19 +73,53 @@ public class RESTHelper {
         });
     }
 
-    public static int random(int min, int max) {
+    //endregion setup
 
-        // NOTE: Usually this should be a field rather than a method
-        // variable so that it is not re-seeded every call.
-        Random rand = new Random();
 
-        // nextInt is normally exclusive of the top value,
-        // so add 1 to make it inclusive
-        int randomNum = rand.nextInt((max - min) + 1) + min;
+    public void initAllCollections() {
+        PosterDataModel.helper().resetData();
 
-        return randomNum;
+        try {
+            List<ListenableFuture<HttpResponse>> allRequests = getAllCollectionRequests();
+
+            ListenableFuture<List<HttpResponse>> successfulRequests = Futures.successfulAsList(allRequests);
+
+            Futures.addCallback(successfulRequests, new FutureCallback<List<HttpResponse>>() {
+                // we want this handler to run immediately after we push the big red button!
+
+                @Override
+                public void onSuccess(List<HttpResponse> result) {
+                    logger.log(Level.INFO, "STARTING ALL REST DONE START INIT");
+                    PosterDataModel.helper().initializationDone();
+                }
+
+                public void onFailure(Throwable thrown) {
+                    logger.log(Level.INFO, "REST FAILED!");
+                    thrown.printStackTrace();
+                }
+            });
+            //
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
+    public void deletePosterItem(
+            final String uuid) throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
+
+        final ImmutableList<Poster> imPosters = ImmutableList.copyOf(PosterDataModel.helper().allPosters);
+
+        final ImmutableList<PosterItem> imPosterItems = ImmutableList.copyOf(
+                PosterDataModel.helper().allPosterItems);
+
+
+    }
     public void updatePosterItems(
             FluentIterable<PosterItem> posterItems) throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
         List<ListenableFuture<HttpResponse>> listOfFutures = Lists.newArrayList();
@@ -117,7 +149,7 @@ public class RESTHelper {
         Futures.addCallback(successfullQueries, new FutureCallback<List<HttpResponse>>() {
             // we want this handler to run immediately after we push the big red button!
             public void onSuccess(List<HttpResponse> listOfReponses) {
-                initAllCollections();
+
             }
 
             public void onFailure(Throwable thrown) {
@@ -126,6 +158,7 @@ public class RESTHelper {
         });
     }
 
+    //region http
 
     public ListenableFuture<HttpResponse> postCollection(GenericJson jsonObject, PosterUrl url,
                                                          final Class<?> someClass, boolean doCallable) {
@@ -254,55 +287,8 @@ public class RESTHelper {
         return listenableFuture;
     }
 
-    public void deletePosterItem(
-            final String uuid) throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
-
-        final ImmutableList<Poster> imPosters = ImmutableList.copyOf(PosterDataModel.helper().allPosters);
-
-        final ImmutableList<PosterItem> imPosterItems = ImmutableList.copyOf(
-                PosterDataModel.helper().allPosterItems);
 
 
-    }
-
-    public void initAllCollections() {
-        //enableLogging();
-
-        PosterDataModel.helper().resetData();
-
-        try {
-            List<ListenableFuture<HttpResponse>> allRequests = getAllCollectionRequests();
-
-            ListenableFuture<List<HttpResponse>> successfulRequests = Futures.successfulAsList(allRequests);
-
-            Futures.addCallback(successfulRequests, new FutureCallback<List<HttpResponse>>() {
-                // we want this handler to run immediately after we push the big red button!
-
-                @Override
-                public void onSuccess(List<HttpResponse> result) {
-                    logger.log(Level.INFO, "STARTING ALL REST DONE START INIT");
-                    PosterDataModel.helper().initializationDone();
-                }
-
-                public void onFailure(Throwable thrown) {
-                    logger.log(Level.INFO, "REST FAILED!");
-
-                    thrown.printStackTrace();
-                }
-            });
-            //
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-
-    }
 
     public List<ListenableFuture<HttpResponse>> getAllCollectionRequests() throws IOException, GeneralSecurityException, ExecutionException, InterruptedException {
 
@@ -337,7 +323,7 @@ public class RESTHelper {
             public void onSuccess(HttpResponse userResponse) {
                 try {
                     logger.log(Level.INFO, "RECIEVED USER COLLECTIONS RESPONSE");
-                    parseResponseArray(userResponse, User.class);
+                    parseAllResponse(userResponse, User.class);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -365,7 +351,7 @@ public class RESTHelper {
             public void onSuccess(HttpResponse posterReponse) {
                 try {
                     logger.log(Level.INFO, "RECEIVED POSTER COLLECTIONS RESPONSE");
-                    parseResponseArray(posterReponse, Poster.class);
+                    parseAllResponse(posterReponse, Poster.class);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -395,7 +381,7 @@ public class RESTHelper {
             public void onSuccess(HttpResponse posterItemFuture) {
                 try {
                     logger.log(Level.INFO, "RECEIVED POSTER ITEM COLLECTIONS RESPONSE");
-                    parseResponseArray(posterItemFuture, PosterItem.class);
+                    parseAllResponse(posterItemFuture, PosterItem.class);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -417,7 +403,7 @@ public class RESTHelper {
         thrown.printStackTrace();
     }
 
-    private void parseResponseArray(HttpResponse response, Class<?> someClass) throws IOException {
+    private void parseAllResponse(HttpResponse response, Class<?> someClass) throws IOException {
 
 
         if (someClass.equals(User.class)) {
@@ -468,79 +454,6 @@ public class RESTHelper {
             }
         }
 
-    }
-
-    public void mqttMessageForward(final PosterMessage message) {
-
-        Optional<PosterMessage> posterMessageOptional = Optional.fromNullable(message);
-
-        if (posterMessageOptional.isPresent()) {
-
-            final PosterMessage posterMessage = posterMessageOptional.get();
-
-
-            Optional<User> userOptional = Optional.fromNullable(PosterDataModel.helper().getCurrentUser());
-
-            if (userOptional.isPresent()) {
-                if (userOptional.get().getUuid().equals(posterMessage.getUserUuid())) {
-
-                    logger.log(Level.INFO,
-                               "We CARE about his user uuid: " + posterMessage.getUserUuid() + " bacause user uuid is there: " + userOptional
-                                       .get()
-                                       .getUuid());
-
-
-                    if (posterMessage.getType().equals(PosterMessage.POSTER)) {
-                    } else if (posterMessage.getType().equals(PosterMessage.POSTER_ITEM)) {
-
-
-                        ListeningExecutorService service = MoreExecutors.listeningDecorator(
-                                Executors.newFixedThreadPool(10));
-                        ListenableFuture<Void> doRESTCALL = service.submit(new Callable<Void>() {
-                            public Void call() {
-                                try {
-                                    fetchPosterItem(posterMessage);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } catch (GeneralSecurityException e) {
-                                    e.printStackTrace();
-                                } catch (ExecutionException e) {
-                                    e.printStackTrace();
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                return null;
-                            }
-                        });
-                        Futures.addCallback(doRESTCALL, new FutureCallback<Void>() {
-                            // we want this handler to run immediately after we push the big red button!
-                            public void onSuccess(Void nothing) {
-                                logger.log(Level.INFO, "DONE! FETCH POSTER ITEM");
-                                //update poster with new _id
-                            }
-
-                            public void onFailure(Throwable thrown) {
-                                logger.log(Level.INFO, "REST FAILED!");
-
-                                thrown.printStackTrace();
-                            }
-                        });
-
-
-                        //PosterDataModel.helper().updatePosterItemCollection((PosterItem) posterMessage);
-                    } else if (posterMessage.getType().equals(PosterMessage.USER)) {
-
-                    }
-                } else {
-                    logger.log(Level.INFO,
-                               "We don't care about his user uuid: " + posterMessage.getUserUuid() + " bacause user uuid is there: " + userOptional
-                                       .get()
-                                       .getUuid());
-                }
-            } else {
-                logger.log(Level.SEVERE, "MESSAGE IS NULL");
-            }
-        }
     }
 
     public void fetchPosterItem(
@@ -615,6 +528,82 @@ public class RESTHelper {
         return "";
     }
 
+    //region mqtt
+    public void mqttMessageForward(final PosterMessage message) {
+
+        Optional<PosterMessage> posterMessageOptional = Optional.fromNullable(message);
+
+        if (posterMessageOptional.isPresent()) {
+
+            final PosterMessage posterMessage = posterMessageOptional.get();
+
+
+            Optional<User> userOptional = Optional.fromNullable(PosterDataModel.helper().getCurrentUser());
+
+            if (userOptional.isPresent()) {
+                if (userOptional.get().getUuid().equals(posterMessage.getUserUuid())) {
+
+                    logger.log(Level.INFO,
+                               "We CARE about his user uuid: " + posterMessage.getUserUuid() + " bacause user uuid is there: " + userOptional
+                                       .get()
+                                       .getUuid());
+
+
+                    if (posterMessage.getType().equals(PosterMessage.POSTER)) {
+                    } else if (posterMessage.getType().equals(PosterMessage.POSTER_ITEM)) {
+
+
+                        ListeningExecutorService service = MoreExecutors.listeningDecorator(
+                                Executors.newFixedThreadPool(10));
+                        ListenableFuture<Void> doRESTCALL = service.submit(new Callable<Void>() {
+                            public Void call() {
+                                try {
+                                    fetchPosterItem(posterMessage);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                } catch (GeneralSecurityException e) {
+                                    e.printStackTrace();
+                                } catch (ExecutionException e) {
+                                    e.printStackTrace();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                return null;
+                            }
+                        });
+                        Futures.addCallback(doRESTCALL, new FutureCallback<Void>() {
+                            // we want this handler to run immediately after we push the big red button!
+                            public void onSuccess(Void nothing) {
+                                logger.log(Level.INFO, "DONE! FETCH POSTER ITEM");
+                                //update poster with new _id
+                            }
+
+                            public void onFailure(Throwable thrown) {
+                                logger.log(Level.INFO, "REST FAILED!");
+
+                                thrown.printStackTrace();
+                            }
+                        });
+
+
+                        //PosterDataModel.helper().updatePosterItemCollection((PosterItem) posterMessage);
+                    } else if (posterMessage.getType().equals(PosterMessage.USER)) {
+
+                    }
+                } else {
+                    logger.log(Level.INFO,
+                               "We don't care about his user uuid: " + posterMessage.getUserUuid() + " bacause user uuid is there: " + userOptional
+                                       .get()
+                                       .getUuid());
+                }
+            } else {
+                logger.log(Level.SEVERE, "MESSAGE IS NULL");
+            }
+        }
+    }
+
+    //endregion http
+
     public static class PosterUrl extends GenericUrl {
 
         public REQUEST_TYPE request_type;
@@ -677,6 +666,8 @@ public class RESTHelper {
 
         public enum REQUEST_TYPE {UPDATE, ADD, DELETE, GET}
     }
+
+    //endregion mqtt
 
 }
 

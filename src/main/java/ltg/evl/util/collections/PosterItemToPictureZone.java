@@ -1,18 +1,15 @@
 package ltg.evl.util.collections;
 
+import com.google.api.client.repackaged.com.google.common.base.Strings;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
 import ltg.evl.uic.poster.widgets.PictureZone;
 import ltg.evl.uic.poster.widgets.PictureZoneBuilder;
-import ltg.evl.uic.poster.widgets.ZoneHelper;
 import ltg.evl.util.ImageLoader;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import processing.core.PImage;
-
-import java.awt.*;
-import java.util.concurrent.Callable;
 
 import static ltg.evl.uic.poster.json.mongo.PosterItem.IMAGE;
 import static ltg.evl.uic.poster.json.mongo.PosterItem.TEXT;
@@ -20,65 +17,68 @@ import static ltg.evl.uic.poster.json.mongo.PosterItem.TEXT;
 /**
  * Created by aperritano on 2/20/15.
  */
-public class PosterItemToPictureZone implements Function<PosterItem, Callable<PictureZone>> {
+public class PosterItemToPictureZone implements Function<PosterItem, PictureZone> {
 
     final static Logger logger = Logger.getLogger(PosterItemToPictureZone.class);
 
     @Override
-    public Callable<PictureZone> apply(final PosterItem posterItem) {
-
-
+    public PictureZone apply(final PosterItem posterItem) {
         logger.log(Level.INFO, "New PosterItem: " + posterItem);
 
+        PictureZone pictureZone = null;
 
-        Callable<PictureZone> callable = new Callable<PictureZone>() {
+        PImage pImage = null;
 
-            @Override
-            public PictureZone call() throws Exception {
-                PictureZone pictureZone = null;
+        if (Optional.fromNullable(posterItem).isPresent()) {
+            if (!Strings.isNullOrEmpty(posterItem.getType())) {
 
-                PImage pImage = null;
-
-                if (Optional.fromNullable(posterItem).isPresent()) {
-                    if (Optional.fromNullable(posterItem.getType()).isPresent()) {
-                        switch (posterItem.getType()) {
-                            case IMAGE:
-                                final javaxt.io.Image jxtImage = new javaxt.http.Request(
-                                        posterItem.getContent()).getResponse()
-                                                                .getImage();
-
-
-                                pImage = ImageLoader.toPImage(jxtImage);
-
-                                break;
-                            case TEXT:
-                                javaxt.io.Image jxt2 = new javaxt.io.Image(ZoneHelper.renderTextToImage(
-                                        ZoneHelper.helveticaNeue20JavaFont, new Color(0, 0, 0), posterItem.getContent(),
-                                        600));
-
-                                pImage = new PImage(jxt2.getBufferedImage());
-
-                                break;
-                        }
-
-                        pictureZone = new PictureZoneBuilder().setImage(pImage)
-                                                              .setUuid(posterItem.getUuid())
-                                                              .setX(posterItem.getX())
-                                                              .setY(posterItem.getY())
-                                                              .setWidth(pImage.width)
-                                                              .setHeight(pImage.height)
-                                                              .setZoneName(posterItem.getName())
-                                                              .setType(posterItem.getType())
-                                                              .createPictureZone();
-
-                        return pictureZone;
-                    }
+                if (Strings.isNullOrEmpty(posterItem.getContent())) {
+                    return null;
                 }
 
-                return null;
+                switch (posterItem.getType()) {
 
+
+                    case IMAGE:
+
+
+                        pImage = ImageLoader.downloadImage(posterItem.getContent());
+
+                        break;
+                    case TEXT:
+
+
+                        pImage = ImageLoader.textToImage(posterItem.getContent());
+
+                        break;
+                }
+
+                int width = 0;
+                int height = 0;
+                if (posterItem.getHeight() <= 0 || posterItem.getWidth() <= 0) {
+                    width = pImage.width;
+                    height = pImage.height;
+                } else {
+                    width = posterItem.getWidth();
+                    height = posterItem.getHeight();
+                }
+
+
+                pictureZone = new PictureZoneBuilder().setImage(pImage)
+                                                      .setUuid(Strings.nullToEmpty(posterItem.getUuid()))
+                                                      .setX(posterItem.getX())
+                                                      .setY(posterItem.getY())
+                                                      .setWidth(width)
+                                                      .setHeight(height)
+                                                      .setZoneName(
+                                                              Strings.nullToEmpty(posterItem.getName()))
+                                                      .setType(posterItem.getType())
+                                                      .createPictureZone();
+                return pictureZone;
             }
-        };
-        return callable;
+        }
+        return null;
     }
+
+
 }

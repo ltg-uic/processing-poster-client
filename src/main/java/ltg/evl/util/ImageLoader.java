@@ -1,5 +1,6 @@
 package ltg.evl.util;
 
+import ltg.evl.uic.poster.widgets.ZoneHelper;
 import org.apache.commons.codec.binary.Base64;
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -33,6 +34,14 @@ public class ImageLoader {
         return image;
     }
 
+    public static PImage textToImage(String text) {
+        javaxt.io.Image jxt2 = new javaxt.io.Image(ZoneHelper.renderTextToImage(
+                ZoneHelper.helveticaNeue20JavaFont, new Color(0, 0, 0), text,
+                600));
+
+        PImage pImage = new PImage(jxt2.getBufferedImage());
+        return pImage;
+    }
     public static PImage toPImage(javaxt.io.Image newImage) {
 
 
@@ -53,4 +62,12 @@ public class ImageLoader {
         return image;
     }
 
+
+    public static PImage downloadImage(String url) {
+        javaxt.io.Image jxtImage = new javaxt.http.Request(
+                url).getResponse()
+                    .getImage();
+
+        return toPImage(jxtImage);
+    }
 }

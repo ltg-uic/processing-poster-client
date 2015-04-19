@@ -3,13 +3,13 @@ package ltg.evl.uic.poster;
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
-import com.google.common.util.concurrent.*;
 import ltg.evl.uic.poster.json.mongo.ObjectEvent;
 import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
+import ltg.evl.uic.poster.listeners.LoginCollectionListener;
 import ltg.evl.uic.poster.listeners.LoginDialogEvent;
 import ltg.evl.uic.poster.widgets.DialogZoneController;
 import ltg.evl.uic.poster.widgets.PictureZone;
@@ -30,8 +30,6 @@ import vialab.SMT.TouchSource;
 import vialab.SMT.Zone;
 
 import java.util.Collection;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
 
 import static org.apache.commons.lang.WordUtils.capitalize;
 
@@ -39,7 +37,7 @@ import static org.apache.commons.lang.WordUtils.capitalize;
 /**
  * Created by aperritano on 9/24/14.
  */
-public class PosterMain extends PApplet {
+public class PosterMain extends PApplet implements LoginCollectionListener {
 
 
     protected static org.apache.log4j.Logger logger;
@@ -50,44 +48,41 @@ public class PosterMain extends PApplet {
         PApplet.main(new String[]{"ltg.evl.uic.poster.PosterMain"});
     }
 
-    @Subscribe
-    @AllowConcurrentEvents
-    public void handleLoginDialogEvent(LoginDialogEvent event) {
-        try {
-            if (Optional.fromNullable(event.getEventType()).isPresent()) {
-                switch (event.getEventType()) {
-                    case USER:
-                        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
-                        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.POSTER_PAGE);
-                        break;
-                    case POST_ITEM:
-                        break;
-                    case CLASS_NAME:
-                        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
-                        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.USER_PAGE);
-                        break;
-                    case POSTER:
-                        //logger.log(Level.INFO, "poster event with poster uuid: " + event.getUuid());
-                        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
-                        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NO_PRES);
-                        loadPosterItemsForCurrentUserAndPoster(
-                                PosterDataModel.helper().getAllPostersItemsForPoster(event.getUuid()), true);
-                        setupControlButtons();
-                        break;
-                    case LOGOUT:
-                        PosterDataModel.helper().savePosterItemsForCurrentUser();
-                        removeAlZones();
-                        break;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+    @Override
+    public void initializationDone() {
+        //DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
+        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.PRES);
+        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.CLASS_PAGE);
     }
 
+    @Override
+    public void logoutDoneEvent() {
+        removeAlZones();
+        PosterDataModel.helper().startInitialization();
+    }
+
+    @Override
+    public void loadUserEvent(LoginDialogEvent loginDialogEvent) {
+        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
+        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.POSTER_PAGE);
+    }
+
+    @Override
+    public void loadPosterEvent(LoginDialogEvent loginDialogEvent) {
+        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
+        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NO_PRES);
+        loadPosterItemsForCurrentUserAndPoster(
+                PosterDataModel.helper().getAllPostersItemsForPoster(loginDialogEvent.getUuid()), true);
+    }
+
+    @Override
+    public void loadClassEvent(LoginDialogEvent loginDialogEvent) {
+        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
+        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.USER_PAGE);
+    }
+
+
     @Subscribe
-    @AllowConcurrentEvents
     public void handleObjectEvent(ObjectEvent event) {
 
         if (Optional.fromNullable(event.getEventType()).isPresent()) {
@@ -105,10 +100,7 @@ public class PosterMain extends PApplet {
                     SMT.remove(posterItemId);
                     break;
                 case INIT_ALL:
-                    setupInit();
-                    DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
-                    DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.PRES);
-                    DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.CLASS_PAGE);
+
                     break;
             }
         }
@@ -130,6 +122,11 @@ public class PosterMain extends PApplet {
         size(w, h, SMT.RENDERER);
         SMT.init(this, TouchSource.AUTOMATIC);
 
+        setupControlButtons();
+
+
+        PosterDataModel.helper().addLoginCollectionListener(this);
+
 
         final DialogZoneController dialogZoneController = DialogZoneController.dialog();
 
@@ -142,7 +139,6 @@ public class PosterMain extends PApplet {
         logger.debug("POSTER MODELER INIT ALL COLLECTIONS");
         RESTHelper.getInstance().initAllCollections();
 
-
         MQTTPipe.getInstance();
     }
 
@@ -154,34 +150,31 @@ public class PosterMain extends PApplet {
             if (shouldRemove) {
                 removeAlZones();
             }
-            FluentIterable<Callable<PictureZone>> callableFutures = FluentIterable.from(posterItems)
-                                                                                  .transform(
-                                                                                          new PosterItemToPictureZone());
-            ListeningExecutorService service = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool());
-            for (Callable<PictureZone> callablePictureZone : callableFutures) {
+            FluentIterable<PictureZone> pictureZones = FluentIterable.from(posterItems)
+                                                                     .transform(
+                                                                             new PosterItemToPictureZone());
 
-                ListenableFuture<PictureZone> pictureZoneFuture = service.submit(callablePictureZone);
 
-                Futures.addCallback(pictureZoneFuture, new FutureCallback<PictureZone>() {
-                    @Override
-                    public void onSuccess(PictureZone result) {
-                        if (result != null) {
-                            if (SMT.add(result)) {
-                                result.startAni(0.5f, 0f);
+            Optional<FluentIterable<PictureZone>> fluentIterableOptional = Optional.fromNullable(pictureZones);
+
+            if (Optional.fromNullable(pictureZones).isPresent()) {
+
+                ImmutableList<PictureZone> list = fluentIterableOptional.get().toList();
+
+
+                if (!list.isEmpty()) {
+                    for (PictureZone pz : list) {
+                        if (pz != null) {
+                            if (SMT.add(pz)) {
+                                pz.startAni(0.5f, 0f);
                             }
                         }
-
                     }
-
-                    @Override
-                    public void onFailure(Throwable t) {
-                        t.printStackTrace();
-                        logger.log(Level.ERROR, "PICTURE ZONE FAILED CALLBACK");
-
-                    }
-                });
-
+                }
             }
+
+
+
         }
     }
 
@@ -214,7 +207,7 @@ public class PosterMain extends PApplet {
                     return capitalize(Joiner.on(",").join(
                             PosterDataModel.helper().getCurrentUser().getNameTags()));
                 }
-                return "Tony, Jim, Tom";
+                return "";
             }
 
             @Override
@@ -223,7 +216,7 @@ public class PosterMain extends PApplet {
                     String uname = PosterDataModel.helper().getCurrentUser().getName();
                     return capitalize(uname);
                 }
-                return "Delicious Carrot";
+                return "";
             }
         };
         logoutZone.initButton();
@@ -311,8 +304,10 @@ public class PosterMain extends PApplet {
 
     public void removeAlZones() {
         for (Zone zone : SMT.getZones()) {
-            if (zone instanceof PictureZone) {
-                SMT.remove(zone);
+            if (zone != null) {
+                if (zone instanceof PictureZone) {
+                    SMT.remove(zone);
+                }
             }
         }
     }
