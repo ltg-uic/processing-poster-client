@@ -5,7 +5,6 @@ import com.google.common.base.Optional;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.common.eventbus.Subscribe;
 import ltg.evl.uic.poster.json.mongo.ObjectEvent;
 import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
@@ -41,6 +40,8 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
 
 
     protected static org.apache.log4j.Logger logger;
+    private boolean lastIsEditToggle = true;
+
     public static void main(String args[]) {
         logger = Logger.getLogger(PosterMain.class.getName());
         logger.setLevel(Level.ALL);
@@ -48,9 +49,9 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
         PApplet.main(new String[]{"ltg.evl.uic.poster.PosterMain"});
     }
 
+    //region LoginCollectionListener
     @Override
     public void initializationDone() {
-        //DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
         DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.PRES);
         DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.CLASS_PAGE);
     }
@@ -81,35 +82,19 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
         DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.USER_PAGE);
     }
 
-
-    @Subscribe
-    public void handleObjectEvent(ObjectEvent event) {
-
-        if (Optional.fromNullable(event.getEventType()).isPresent()) {
-            switch (event.getEventType()) {
-                case USER:
-                    break;
-                case POST_ITEM:
-                    PosterItem newPosterItem = (PosterItem) event.getGenericJson();
-                    loadPosterItemsForCurrentUserAndPoster(Lists.newArrayList(newPosterItem), false);
-                    break;
-                case POSTER:
-                    break;
-                case DELETE_POSTER_ITEM:
-                    String posterItemId = event.getItemId();
-                    SMT.remove(posterItemId);
-                    break;
-                case INIT_ALL:
-
-                    break;
-            }
-        }
+    @Override
+    public void updatePosterItem(ObjectEvent objectEvent) {
+        PosterItem newPosterItem = (PosterItem) objectEvent.getGenericJson();
+        loadPosterItemsForCurrentUserAndPoster(Lists.newArrayList(newPosterItem), false);
     }
 
-
-    void setupInit() {
-        removeAlZones();
+    @Override
+    public void deletePosterItem(ObjectEvent objectEvent) {
+        String posterItemId = objectEvent.getItemId();
+        SMT.remove(posterItemId);
     }
+
+    //endregion LoginCollectionListener
 
     @Override
     public void setup() {
@@ -130,13 +115,7 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
 
         final DialogZoneController dialogZoneController = DialogZoneController.dialog();
 
-        dialogZoneController.registerForLoginEvent(this);
 
-        logger.debug("POSTER MODELER STARTED");
-
-        PosterDataModel.helper().registerForObjectEvent(this);
-
-        logger.debug("POSTER MODELER INIT ALL COLLECTIONS");
         RESTHelper.getInstance().initAllCollections();
 
         MQTTPipe.getInstance();
@@ -166,6 +145,8 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
                     for (PictureZone pz : list) {
                         if (pz != null) {
                             if (SMT.add(pz)) {
+                                pz.applyScaleRotation();
+                                pz.setIsEditing(lastIsEditToggle);
                                 pz.startAni(0.5f, 0f);
                             }
                         }
@@ -274,6 +255,7 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
     }
 
     protected void toggleIsEdit(boolean isEditing) {
+        lastIsEditToggle = isEditing;
         Zone[] activeZones = SMT.getRootZone().getChildren();
 
 

@@ -1,13 +1,14 @@
 package ltg.evl.uic.poster.widgets;
 
-import com.google.common.base.Objects;
+import com.google.common.base.Joiner;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Optional;
+import com.google.common.base.Splitter;
 import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
 import ltg.evl.uic.poster.widgets.buttons.DeleteButton;
 import ltg.evl.uic.poster.widgets.buttons.DeleteButtonBuilder;
 import ltg.evl.uic.poster.widgets.buttons.DeleteButtonListener;
-import ltg.evl.uic.poster.widgets.buttons.ScaleButtonListener;
 import ltg.evl.util.ImageLoader;
 import ltg.evl.util.de.looksgood.ani.Ani;
 import processing.core.PImage;
@@ -17,7 +18,9 @@ import vialab.SMT.SMT;
 import vialab.SMT.Touch;
 import vialab.SMT.Zone;
 
-public class PictureZone extends ImageZone implements DeleteButtonListener, ScaleButtonListener {
+import java.util.List;
+
+public class PictureZone extends ImageZone implements DeleteButtonListener {
 
 
     public static int padding = 6;
@@ -37,9 +40,16 @@ public class PictureZone extends ImageZone implements DeleteButtonListener, Scal
     private String type;
     private boolean isAnimating;
     private boolean isDeleteMode;
+    private String zoneRotation;
+    private String zoneScale;
 
-    public PictureZone(PImage image, String uuid, int x, int y, int width, int height, String type, String zoneName) {
+    public PictureZone(PImage image, String uuid, int x, int y, int width, int height, String type, String zoneName,
+                       String rotation, String scale) {
         super(uuid, image, x, SMT.getApplet().getHeight(), width, height);
+
+
+        this.setZoneScale(rotation);
+        this.setZoneScale(scale);
 
         this.initialX = x;
         this.initialY = SMT.getApplet().getHeight() + offScreenPadding;
@@ -59,6 +69,8 @@ public class PictureZone extends ImageZone implements DeleteButtonListener, Scal
         super(posterItem.getUuid(), ImageLoader.toPImage(posterItem.getImageBytes()), posterItem.getX(),
               posterItem.getY(), posterItem.getWidth(),
               posterItem.getHeight());
+        this.setZoneRotation(posterItem.getRotation());
+        this.setZoneScale(posterItem.getScale());
         this.initialX = posterItem.getX();
         this.initialY = SMT.getApplet().getHeight() + offScreenPadding;
         this.type = posterItem.getType();
@@ -68,22 +80,50 @@ public class PictureZone extends ImageZone implements DeleteButtonListener, Scal
         this.isDeleteMode = false;
     }
 
+    private void convertScale(String scale) {
+        if (scale != null) {
+            this.setZoneScale(scale);
+            List<String> strings = Splitter.on(',').splitToList(scale);
+            this.scale(new Float(strings.get(0)), new Float(strings.get(1)), new Float(strings.get(2)));
+        }
+    }
 
+    protected void convertRotation(String rotation) {
+        if (rotation != null) {
+            this.setZoneRotation(rotation);
+            List<String> strings = Splitter.on(',').splitToList(rotation);
+            this.rotate(new Float(strings.get(0)), new Float(strings.get(1)), new Float(strings.get(2)),
+                        new Float(strings.get(3)));
+        }
+    }
+
+    @Override
+    public void scale(float x, float y, float z) {
+        setZoneScale(Joiner.on(",").join(x, y, z));
+        super.scale(x, y, z);
+    }
+
+    @Override
+    public void rotate(float angle, float x, float y, float z) {
+        setZoneRotation(Joiner.on(",").join(angle, x, y, z));
+        super.rotate(angle, x, y, z);
+    }
+
+    @Override
+    protected void rotateImpl(float angle, float v0, float v1, float v2) {
+        super.rotateImpl(angle, v0, v1, v2);
+    }
+
+    public void applyScaleRotation() {
+        convertRotation(getZoneRotation());
+        convertScale(getZoneScale());
+    }
 
     public void startAni(float speed, float delay) {
         isAnimating = true;
-        this.setIsEditing(true);
+        //this.setIsEditing(true);
         Ani diameterAni = new Ani(this, speed, delay, "initialY", target.y, Ani.EXPO_IN_OUT, "onEnd:done");
         diameterAni.start();
-    }
-
-
-    public void setIsEditing(boolean isEditing) {
-        this.isEditing = isEditing;
-    }
-
-    public boolean isDeleteMode() {
-        return isDeleteMode;
     }
 
     public void setIsDeleteMode(boolean isDeleteMode) {
@@ -200,9 +240,6 @@ public class PictureZone extends ImageZone implements DeleteButtonListener, Scal
         }
     }
 
-    public void addDeleteListener(DeleteButtonListener deleteButtonListener) {
-        deleteButtonListener = deleteButtonListener;
-    }
 
 
     @Override
@@ -216,6 +253,28 @@ public class PictureZone extends ImageZone implements DeleteButtonListener, Scal
                                          .setUuid(this.getName() + "-p")
                                          .createPictureZone();
         return z;
+    }
+
+    //region getset
+    public void addDeleteListener(DeleteButtonListener deleteButtonListener) {
+        deleteButtonListener = deleteButtonListener;
+    }
+
+
+    public void setIsEditing(boolean isEditing) {
+        this.isEditing = isEditing;
+        if (!isEditing) {
+            this.setIsDeleteMode(false);
+        }
+    }
+
+    public boolean isDeleteMode() {
+        return isDeleteMode;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).toString();
     }
 
     public String getType() {
@@ -238,28 +297,23 @@ public class PictureZone extends ImageZone implements DeleteButtonListener, Scal
         return isEditing;
     }
 
-    @Override
-    public String toString() {
-
-        return Objects.toStringHelper(this)
-                      .omitNullValues()
-                      .add("UUID", getName())
-                      .add("x", getX())
-                      .add("y", getY())
-                      .add("initialX", initialX)
-                      .add("initialY", initialY)
-                      .add("height", getHeight())
-                      .add("width", getWidth())
-                      .toString();
-
+    public String getZoneRotation() {
+        return zoneRotation;
     }
 
-    @Override
-    public void scaleZone(Zone zone) {
+    public void setZoneRotation(String zoneRotation) {
+        this.zoneRotation = zoneRotation;
+    }
 
+    public String getZoneScale() {
+        return zoneScale;
+    }
+
+    public void setZoneScale(String zoneScale) {
+        this.zoneScale = zoneScale;
     }
 
 
-    //endregion
+    //endregion getset
 
 }

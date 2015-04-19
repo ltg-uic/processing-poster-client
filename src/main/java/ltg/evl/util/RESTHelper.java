@@ -261,12 +261,13 @@ public class RESTHelper {
                     if (doCallable) {
                         Futures.addCallback(listenableFuture, new FutureCallback<HttpResponse>() {
                             public void onSuccess(HttpResponse deleteFutureResponse) {
-                                try {
-                                    logger.log(Level.INFO, "POSTED DELETE: " + someClass.getName());
-                                    parseResponseObject(deleteFutureResponse, someClass, PosterUrl.REQUEST_TYPE.DELETE);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                                logger.log(Level.INFO, "POSTED DELETE: " + someClass.getName());
+//                                try {
+//
+//                                    parseResponseObject(deleteFutureResponse, someClass, PosterUrl.REQUEST_TYPE.DELETE);
+//                                } catch (IOException e) {
+//                                    e.printStackTrace();
+//                                }
                             }
 
                             public void onFailure(Throwable thrown) {

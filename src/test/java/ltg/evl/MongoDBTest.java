@@ -161,7 +161,8 @@ public class MongoDBTest {
     public void createBIGTest() throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
 
         String[] names = {"Brock", "Gale", "Gustavo", "Hank", "Hector", "Holly", "Jane", "Jesse", "Lydia", "Marie", "Mike", "Pete", "Saul", "Skyler", "Todd", "Walter"};
-        String[] classes = {"Test", "Ben", "Mike"};
+//        String[] classes = {"Test", "Ben", "Mike"};
+        String[] classes = {"Mike"};
 
 
 
@@ -171,10 +172,10 @@ public class MongoDBTest {
 //        imageItems.add(createPosterItemImage(2));
 //        imageItems.add(createPosterItemImage(2));
 
-        int NUM_GROUPS = 1;
+        int NUM_GROUPS = 4;
         int NUM_POSTERS_PER_GROUP = 2;
 
-        for (int y = 0; y < 2; y++) {
+        for (int y = 0; y <= classes.length - 1; y++) {
             String CLASS_NAME = classes[y];
             //first posteritems
 
@@ -263,7 +264,6 @@ public class MongoDBTest {
 
     private String createPosterItemImage(
             int i) throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
-        //javaxt.io.Image image = new javaxt.io.Image(Resources.getResource(i + ".jpg").getPath());
 
         String[] links = {"http://s2.hubimg.com/u/4051951_f260.jpg", "http://www.smashingapps.com/wp-content/uploads/2010/01/space-artworks-wallpapers/space_artworks_7.jpg", "http://demortalz.com/wp-content/uploads/2013/07/real_space_photography_pictures_of_solar_system_1.jpg", "http://www.spacetoday.org/images/Hubble/HubbleBeauty/CircinusGalaxyBlackHole.jpg"};
 
@@ -279,7 +279,6 @@ public class MongoDBTest {
                                                .setRotation(0)
                                                .setContent(links[i])
                 .setType("img")
-                        //.setImageBytes(Base64.encodeBase64String(image.getByteArray()))
                 .createPosterItem();
         RESTHelper.getInstance()
                   .postCollection(pi, RESTHelper.PosterUrl.addPosterItem(), PosterItem.class, true).get();

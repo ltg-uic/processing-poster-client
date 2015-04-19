@@ -55,23 +55,25 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
 
                 int width = 0;
                 int height = 0;
-                if (posterItem.getHeight() <= 0 || posterItem.getWidth() <= 0) {
-                    width = pImage.width;
-                    height = pImage.height;
-                } else {
-                    width = posterItem.getWidth();
-                    height = posterItem.getHeight();
-                }
+                //              if (posterItem.getHeight() <= 0 || posterItem.getWidth() <= 0) {
+                //    width = pImage.width;
+                //  height = pImage.height;
+                //            }
+//                } else {
+//                    width = posterItem.getWidth();
+//                    height = posterItem.getHeight();
+//                }
 
 
                 pictureZone = new PictureZoneBuilder().setImage(pImage)
                                                       .setUuid(Strings.nullToEmpty(posterItem.getUuid()))
                                                       .setX(posterItem.getX())
                                                       .setY(posterItem.getY())
-                                                      .setWidth(width)
-                                                      .setHeight(height)
-                                                      .setZoneName(
-                                                              Strings.nullToEmpty(posterItem.getName()))
+                                                      .setWidth(posterItem.getWidth())
+                                                      .setHeight(posterItem.getHeight())
+                                                      .setRotation(posterItem.getRotation())
+                                                      .setScale(posterItem.getScale())
+                                                      .setZoneName(Strings.nullToEmpty(posterItem.getName()))
                                                       .setType(posterItem.getType())
                                                       .createPictureZone();
                 return pictureZone;

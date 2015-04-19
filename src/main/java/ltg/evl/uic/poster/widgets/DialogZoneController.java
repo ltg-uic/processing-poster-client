@@ -79,10 +79,6 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
         }
     }
 
-    public void registerForLoginEvent(Object obj) {
-        PosterDataModel.helper().registerObject(obj);
-    }
-
     public void removeZone(String id) {
         for (Zone zone : SMT.getZones()) {
             if (zone.getName().equals(id)) {
@@ -156,7 +152,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
             }
         };
 
-        Collection<User> resultMike = Collections2.filter(imAllUsers, predicateBen);
+        Collection<User> resultMike = Collections2.filter(imAllUsers, predicateMike);
 
         Predicate<User> predicateTest = new Predicate<User>() {
             @Override
@@ -187,6 +183,11 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
 
             int cols = size;
             int reminder = size % cols;
+
+            if (reminder == 0) {
+                reminder = 1;
+            }
+
 
             int rows = ((size - reminder) / 2) + reminder;
 

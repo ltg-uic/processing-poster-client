@@ -5,9 +5,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.*;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.SubscriberExceptionContext;
-import com.google.common.eventbus.SubscriberExceptionHandler;
 import com.google.common.util.concurrent.*;
 import ltg.evl.uic.poster.listeners.LoginCollectionListener;
 import ltg.evl.uic.poster.listeners.LoginDialogEvent;
@@ -38,7 +35,7 @@ public class PosterDataModel {
 
     private static PosterDataModel ourInstance = new PosterDataModel();
     private static Logger logger;
-    public final EventBus eventBus;
+    //public final EventBus eventBus;
     public List<User> allUsers = Lists.newArrayList();
     public List<PosterItem> allPosterItems = Lists.newArrayList();
     public List<Poster> allPosters = Lists.newArrayList();
@@ -50,13 +47,6 @@ public class PosterDataModel {
     private LoginCollectionListener loginCollectionListener;
 
     private PosterDataModel() {
-        eventBus = new EventBus(new SubscriberExceptionHandler() {
-            @Override
-            public void handleException(Throwable exception, SubscriberExceptionContext context) {
-                logger.log(Level.SEVERE, "EVENT BUS EXCEPTION" + context.toString());
-                exception.printStackTrace();
-            }
-        });
         logger = Logger.getLogger(PosterDataModel.class.getName());
         logger.setLevel(Level.ALL);
         logger.addHandler(new Handler() {
@@ -406,13 +396,13 @@ public class PosterDataModel {
                 RESTHelper.getInstance()
                           .postCollection(null, RESTHelper.PosterUrl.updateDeletePosterItem(
                                   String.valueOf(foundPosterItem.get_id().get("$oid")),
-                                  RESTHelper.PosterUrl.REQUEST_TYPE.DELETE), PosterItem.class, true);
+                                  RESTHelper.PosterUrl.REQUEST_TYPE.DELETE), PosterItem.class, false);
 
                 RESTHelper.getInstance()
                           .postCollection(foundPoster, RESTHelper.PosterUrl.updateDeletePoster(
                                                   String.valueOf(foundPoster.get_id().get("$oid")),
                                                   RESTHelper.PosterUrl.REQUEST_TYPE.UPDATE),
-                                          Poster.class, true);
+                                          Poster.class, false);
 
                 return foundPoster;
             }
@@ -421,23 +411,17 @@ public class PosterDataModel {
         Futures.addCallback(deleteFuture, new FutureCallback<Poster>() {
             public void onSuccess(Poster poster) {
                 logger.log(Level.SEVERE, "DELETED POSTERITEM " + posterItemUuid + " SUCCESS!");
-                PosterDataModel.this.postObject(
+                loginCollectionListener.deletePosterItem(
                         new ObjectEvent(ObjectEvent.OBJ_TYPES.DELETE_POSTER_ITEM, posterItemUuid));
             }
 
             public void onFailure(Throwable thrown) {
                 logger.log(Level.SEVERE, "DELETED POSTERITEM " + posterItemUuid + " FAILED!");
-                PosterDataModel.this.postObject(
-                        new ObjectEvent(ObjectEvent.OBJ_TYPES.DELETE_POSTER_ITEM, posterItemUuid));
+                //loginCollectionListener.(new ObjectEvent(ObjectEvent.OBJ_TYPES.DELETE_POSTER_ITEM, posterItemUuid));
                 thrown.printStackTrace();
             }
         });
     }
-
-    public void removeZone(Zone zone) {
-        eventBus.post(new ObjectEvent(ObjectEvent.OBJ_TYPES.DELETE_POSTER_ITEM, zone.getName()));
-    }
-
 
     public void updatePosterItemCollection(PosterItem posterItem) {
         if (Optional.fromNullable(posterItem).isPresent()) {
@@ -445,7 +429,10 @@ public class PosterDataModel {
             ArrayList<PosterItem> one = Lists.newArrayList(posterItem);
             ImmutableList<PosterItem> two = ImmutableList.copyOf(allPosterItems);
             allPosterItems = Lists.newArrayList(Iterables.concat(one, two));
-            eventBus.post(new ObjectEvent(ObjectEvent.OBJ_TYPES.POST_ITEM, posterItem));
+            if (this.loginCollectionListener != null) {
+                this.loginCollectionListener.updatePosterItem(
+                        new ObjectEvent(ObjectEvent.OBJ_TYPES.POST_ITEM, posterItem));
+            }
         }
     }
 
@@ -464,11 +451,6 @@ public class PosterDataModel {
                 return poster;
             }
         }).toList();
-    }
-
-
-    public void registerForObjectEvent(Object objectListener) {
-        eventBus.register(objectListener);
     }
 
     public void updateAllUserCollection(List<User> users) {
@@ -504,15 +486,6 @@ public class PosterDataModel {
         currentPoster = null;
         currentUser = null;
         currentClassName = null;
-    }
-
-
-    public void registerObject(Object obj) {
-        eventBus.register(obj);
-    }
-
-    public void postObject(Object obj) {
-        eventBus.post(obj);
     }
 
 

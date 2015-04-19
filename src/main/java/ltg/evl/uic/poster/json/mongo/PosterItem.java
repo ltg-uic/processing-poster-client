@@ -24,7 +24,9 @@ public class PosterItem extends GenericJson {
     @Key
     private int height;
     @Key
-    private int rotation;
+    private String rotation;
+    @Key
+    private String scale;
     @Key
     private String name;
     @Key
@@ -145,11 +147,11 @@ public class PosterItem extends GenericJson {
         this.color = color;
     }
 
-    public int getRotation() {
+    public String getRotation() {
         return rotation;
     }
 
-    public void setRotation(int rotation) {
+    public void setRotation(String rotation) {
         this.rotation = rotation;
     }
 
@@ -167,5 +169,13 @@ public class PosterItem extends GenericJson {
 
     public void setLastEdited(long lastEdited) {
         this.lastEdited = lastEdited;
+    }
+
+    public String getScale() {
+        return scale;
+    }
+
+    public void setScale(String scale) {
+        this.scale = scale;
     }
 }

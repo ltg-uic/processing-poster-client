@@ -13,6 +13,8 @@ public class PictureZoneBuilder {
     private PosterItem posterItem;
     private String type;
     private String zoneName;
+    private String rotation;
+    private String scale;
 
     public PictureZoneBuilder setImage(PImage image) {
         this.image = image;
@@ -59,10 +61,16 @@ public class PictureZoneBuilder {
         return this;
     }
 
+    public PictureZoneBuilder setRotation(String rotation) {
+        this.rotation = rotation;
+        return this;
+    }
+
+
     public PictureZone createPictureZone() {
 
 
-        PictureZone pictureZone = new PictureZone(image, uuid, x, y, width, height, type, zoneName);
+        PictureZone pictureZone = new PictureZone(image, uuid, x, y, width, height, type, zoneName, rotation, scale);
         // ZoneHelper.getInstance().addDeleteButton(pictureZone);
         //pictureZone.add(ZoneHelper.dialog().getScaleButton(pictureZone));
         return pictureZone;
@@ -76,4 +84,8 @@ public class PictureZoneBuilder {
         return pictureZone;
     }
 
+    public PictureZoneBuilder setScale(String scale) {
+        this.scale = scale;
+        return this;
+    }
 }

@@ -1,7 +1,9 @@
 package ltg.evl.uic.poster.widgets;
 
 import com.google.common.io.Resources;
-import ltg.evl.uic.poster.widgets.buttons.*;
+import ltg.evl.uic.poster.widgets.buttons.DeleteButton;
+import ltg.evl.uic.poster.widgets.buttons.DeleteButtonBuilder;
+import ltg.evl.uic.poster.widgets.buttons.DeleteButtonListener;
 import processing.core.PFont;
 import processing.core.PImage;
 import vialab.SMT.SMT;
@@ -261,26 +263,5 @@ public class ZoneHelper {
         deleteButton.setVisible(false);
         zone.add(deleteButton);
     }
-
-    public ScaleButton getScaleButton(Zone zone) {
-
-        double buttonSize = SMT.getApplet().getHeight() * .03;
-        double adjustedButtonSize = (buttonSize / 2.0);
-        int x = (int) (zone.getWidth() - adjustedButtonSize) - 2;
-        int y = (int) (zone.getHeight() - adjustedButtonSize) - 2;
-
-//        System.out.println(
-//                "SCALE BUTTON: " + buttonSize + " ADJUST Size" + adjustedButtonSize + " x: " + x + " y: " + y);
-
-        ScaleButton scaleButton = new ScaleButtonBuilder().setUUID(ScaleButton.SCALE_NAME)
-                                                          .setImage(scaleImage)
-                                                          .setX(x)
-                                                          .setY(y)
-                                                          .setWidth((int) buttonSize)
-                                                          .setHeight((int) buttonSize).createScaleButton();
-        scaleButton.addDeleteListener((DeleteButtonListener) zone);
-        return scaleButton;
-    }
-
 
 }

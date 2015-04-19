@@ -130,11 +130,11 @@ public class PosterTest extends PApplet {
         };
 
 
-        DialogZoneController.dialog().registerForLoginEvent(ule);
+        //DialogZoneController.dialog().registerForLoginEvent(ule);
 
         logger.debug("POSTER MODELER STARTED");
         // PosterDataModel.helper().addUserSubscriber(userSubscriber);
-        PosterDataModel.helper().registerForObjectEvent(objectSubscriber);
+        //PosterDataModel.helper().registerForObjectEvent(objectSubscriber);
 
         logger.debug("POSTER MODELER INIT ALL COLLECTIONS");
         RESTHelper.getInstance().initAllCollections();
