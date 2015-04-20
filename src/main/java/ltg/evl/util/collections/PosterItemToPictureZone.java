@@ -11,6 +11,8 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import processing.core.PImage;
 
+import java.util.concurrent.ExecutionException;
+
 import static ltg.evl.uic.poster.json.mongo.PosterItem.IMAGE;
 import static ltg.evl.uic.poster.json.mongo.PosterItem.TEXT;
 
@@ -41,7 +43,15 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
 
 
                         if (posterItem.getContent() != null)
-                            pImage = ImageLoader.downloadImage(posterItem.getContent());
+
+
+                            try {
+                                pImage = ImageLoader.downloadImage(posterItem.getContent());
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
 
                         break;
                     case TEXT:
@@ -50,11 +60,14 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                         if (posterItem.getContent() != null)
                             pImage = ImageLoader.textToImage(posterItem.getContent());
 
+
                         break;
                 }
 
                 int width = 0;
                 int height = 0;
+
+
                 //              if (posterItem.getHeight() <= 0 || posterItem.getWidth() <= 0) {
                 //    width = pImage.width;
                 //  height = pImage.height;
@@ -78,6 +91,12 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                                                       .createPictureZone();
                 if (pImage != null) {
                     pictureZone.setZoneImage(pImage);
+
+                    if (posterItem.getType().equals(TEXT)) {
+                        pictureZone.setWidth(pImage.width);
+                        pictureZone.setHeight(pImage.height);
+                    }
+
                 }
                 return pictureZone;
             }

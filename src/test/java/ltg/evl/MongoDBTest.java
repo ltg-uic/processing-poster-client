@@ -234,7 +234,7 @@ public class MongoDBTest {
                                      .setClassname(className)
                                      .setColor(0)
                                      .setPosters(
-                uuidPosterId).createUser();
+                                             uuidPosterId).createUser();
 
 
         RESTHelper.getInstance()
@@ -265,7 +265,7 @@ public class MongoDBTest {
     private String createPosterItemImage(
             int i) throws GeneralSecurityException, IOException, ExecutionException, InterruptedException {
 
-        String[] links = {"http://s2.hubimg.com/u/4051951_f260.jpg", "http://www.smashingapps.com/wp-content/uploads/2010/01/space-artworks-wallpapers/space_artworks_7.jpg", "http://demortalz.com/wp-content/uploads/2013/07/real_space_photography_pictures_of_solar_system_1.jpg", "http://www.spacetoday.org/images/Hubble/HubbleBeauty/CircinusGalaxyBlackHole.jpg"};
+        String[] links = {"http://static.giantbomb.com/uploads/original/0/4024/490497-n300_irac.jpg", "https://pbs.twimg.com/media/BcvmxibIYAAH8a3.jpg", "http://nmp.jpl.nasa.gov/ds1/img/ds1encounter1.gif", "http://i.ytimg.com/vi/TDxwDQ6UjAM/hqdefault.jpg"};
 
         String uuid = UUID.randomUUID().toString();
 
@@ -293,8 +293,8 @@ public class MongoDBTest {
 
         PosterItem pi = new PosterItemBuilder().setName("posteritem-txt-" + i)
                                                .setUuid(uuid)
-                                               .setWidth(random(0, 450))
-                                               .setHeight(random(0, 450))
+                                               .setWidth(random(475, 500))
+                                               .setHeight(random(475, 500))
                                                .setX(random(0, 500))
                                                .setY(random(0, 500))
                                                .setColor("#34567")
