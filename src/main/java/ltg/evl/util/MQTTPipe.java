@@ -30,9 +30,7 @@ public class MQTTPipe implements MessageListener {
 
     private MQTTPipe() {
 
-        Runnable myRunnable = new Runnable() {
 
-            public void run() {
                 enableLogging();
                 BASE_ADDRESS = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.host");
                 BASE_CLIENT_ID = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.client._id");
@@ -47,13 +45,7 @@ public class MQTTPipe implements MessageListener {
 
                 posterMQTTClient = new SimpleMQTTClient(BASE_ADDRESS, BASE_CLIENT_ID);
                 posterMQTTClient.subscribe(BASE_CHANNEL_IN, MQTTPipe.this);
-            }
-        };
 
-
-        Thread thread = new Thread(myRunnable);
-        thread.setName("MQTT START THREAD");
-        thread.start();
 
 
     }

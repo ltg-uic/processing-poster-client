@@ -117,8 +117,6 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
 
 
         RESTHelper.getInstance().initAllCollections();
-
-        MQTTPipe.getInstance();
     }
 
 

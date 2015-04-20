@@ -189,8 +189,8 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
             }
 
 
-            int rows = ((size - reminder) / 2) + reminder;
-
+            //int rows = ((size - reminder) / 2) + reminder;
+            int rows = 1;
             Dimension dimension = ZoneHelper.calcGrid(rows, cols, ZoneHelper.GRID_SPACER, ZoneHelper.CLASS_BUTTON_SIZE,
                                                       ZoneHelper.CLASS_BUTTON_SIZE);
 
