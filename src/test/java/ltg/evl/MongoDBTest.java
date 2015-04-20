@@ -271,8 +271,8 @@ public class MongoDBTest {
 
         PosterItem pi = new PosterItemBuilder().setName("posteritem-img-" + i)
                                                .setUuid(uuid)
-                                               .setWidth(300)
-                                               .setHeight(250)
+                                               .setWidth(0)
+                                               .setHeight(0)
                                                .setX(random(0, 200))
                                                .setY(random(0, 200))
                                                .setColor("#34567")
@@ -293,8 +293,8 @@ public class MongoDBTest {
 
         PosterItem pi = new PosterItemBuilder().setName("posteritem-txt-" + i)
                                                .setUuid(uuid)
-                                               .setWidth(random(475, 500))
-                                               .setHeight(random(475, 500))
+                                               .setWidth(0)
+                                               .setHeight(0)
                                                .setX(random(0, 500))
                                                .setY(random(0, 500))
                                                .setColor("#34567")

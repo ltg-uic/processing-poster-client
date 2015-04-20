@@ -64,21 +64,18 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                         break;
                 }
 
-                int width = 0;
-                int height = 0;
+
+                if (posterItem.getHeight() == 0 && posterItem.getWidth() == 0) {
+                    if (pImage != null) {
+                        posterItem.setWidth(pImage.width);
+                        posterItem.setHeight(pImage.height);
+                    }
+
+                }
+            }
 
 
-                //              if (posterItem.getHeight() <= 0 || posterItem.getWidth() <= 0) {
-                //    width = pImage.width;
-                //  height = pImage.height;
-                //            }
-//                } else {
-//                    width = posterItem.getWidth();
-//                    height = posterItem.getHeight();
-//                }
-
-
-                pictureZone = new PictureZoneBuilder()
+            pictureZone = new PictureZoneBuilder().setImage(pImage)
                                                       .setUuid(Strings.nullToEmpty(posterItem.getUuid()))
                                                       .setX(posterItem.getX())
                                                       .setY(posterItem.getY())
@@ -89,17 +86,9 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                                                       .setZoneName(Strings.nullToEmpty(posterItem.getName()))
                                                       .setType(posterItem.getType())
                                                       .createPictureZone();
-                if (pImage != null) {
-                    pictureZone.setZoneImage(pImage);
 
-                    if (posterItem.getType().equals(TEXT)) {
-                        pictureZone.setWidth(pImage.width);
-                        pictureZone.setHeight(pImage.height);
-                    }
-
-                }
                 return pictureZone;
-            }
+
         }
         return null;
     }
