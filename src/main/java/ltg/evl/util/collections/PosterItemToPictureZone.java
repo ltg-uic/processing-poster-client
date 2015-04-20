@@ -32,9 +32,7 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
         if (Optional.fromNullable(posterItem).isPresent()) {
             if (!Strings.isNullOrEmpty(posterItem.getType())) {
 
-                if (Strings.isNullOrEmpty(posterItem.getContent())) {
-                    return null;
-                }
+
 
                 switch (posterItem.getType()) {
 
@@ -42,13 +40,15 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                     case IMAGE:
 
 
-                        pImage = ImageLoader.downloadImage(posterItem.getContent());
+                        if (posterItem.getContent() != null)
+                            pImage = ImageLoader.downloadImage(posterItem.getContent());
 
                         break;
                     case TEXT:
 
 
-                        pImage = ImageLoader.textToImage(posterItem.getContent());
+                        if (posterItem.getContent() != null)
+                            pImage = ImageLoader.textToImage(posterItem.getContent());
 
                         break;
                 }
@@ -65,7 +65,7 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
 //                }
 
 
-                pictureZone = new PictureZoneBuilder().setImage(pImage)
+                pictureZone = new PictureZoneBuilder()
                                                       .setUuid(Strings.nullToEmpty(posterItem.getUuid()))
                                                       .setX(posterItem.getX())
                                                       .setY(posterItem.getY())
@@ -76,6 +76,9 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                                                       .setZoneName(Strings.nullToEmpty(posterItem.getName()))
                                                       .setType(posterItem.getType())
                                                       .createPictureZone();
+                if (pImage != null) {
+                    pictureZone.setZoneImage(pImage);
+                }
                 return pictureZone;
             }
         }
