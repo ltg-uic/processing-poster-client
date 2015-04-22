@@ -33,6 +33,7 @@ import processing.core.PApplet;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 /**
  * The Class AniCore encapsulates the core features for Ani and AniSequence, it's not recommended to use this class standalone!.
@@ -127,7 +128,7 @@ public class AniCore implements AniConstants {
 
         // set begin value to field value
         boolean setBeginSuccess = setBegin();
-        if (setBeginSuccess && theAutostart == AUTOSTART) {
+        if (setBeginSuccess && theAutostart.equals(AUTOSTART)) {
             start();
         }
     }
@@ -420,7 +421,7 @@ public class AniCore implements AniConstants {
             if (time >= durationTotal) {
                 if (isRepeating) {
                     if (repeatCount == 1 || repeatNumber <= repeatCount - 1 || repeatCount == -1) {
-                        if (playMode == YOYO) reverse();
+                        if (Objects.equals(playMode, YOYO)) reverse();
                         start();
                         repeatNumber++;
                     } else {
@@ -461,13 +462,13 @@ public class AniCore implements AniConstants {
     }
 
     private float getTime() {
-        return (timeMode == SECONDS) ? ((papplet.millis() - beginTime) / 1000)
+        return (Objects.equals(timeMode, SECONDS)) ? ((papplet.millis() - beginTime) / 1000)
                 : (papplet.frameCount - beginTime);
     }
 
     private void setTime(float theTime) {
         time = theTime;
-        beginTime = (timeMode == SECONDS) ? (papplet.millis() - time * 1000)
+        beginTime = (Objects.equals(timeMode, SECONDS)) ? (papplet.millis() - time * 1000)
                 : (papplet.frameCount - time);
     }
 
@@ -535,9 +536,9 @@ public class AniCore implements AniConstants {
         end = beginTemp;
         change = end - begin;
 
-        if (playDirection == FORWARD) {
+        if (Objects.equals(playDirection, FORWARD)) {
             playDirection = BACKWARD;
-        } else if (playDirection == BACKWARD) {
+        } else if (Objects.equals(playDirection, BACKWARD)) {
             playDirection = FORWARD;
         }
     }
@@ -595,13 +596,13 @@ public class AniCore implements AniConstants {
     public void setPlayMode(String thePlayMode) {
         String oldPlayDirection = playDirection;
 
-        if (thePlayMode == FORWARD) {
-            if (oldPlayDirection == BACKWARD) reverse();
+        if (Objects.equals(thePlayMode, FORWARD)) {
+            if (Objects.equals(oldPlayDirection, BACKWARD)) reverse();
             playMode = playDirection = FORWARD;
-        } else if (thePlayMode == BACKWARD) {
-            if (oldPlayDirection == FORWARD) reverse();
+        } else if (Objects.equals(thePlayMode, BACKWARD)) {
+            if (Objects.equals(oldPlayDirection, FORWARD)) reverse();
             playMode = playDirection = BACKWARD;
-        } else if (thePlayMode == YOYO) {
+        } else if (Objects.equals(thePlayMode, YOYO)) {
             playMode = YOYO;
         }
     }

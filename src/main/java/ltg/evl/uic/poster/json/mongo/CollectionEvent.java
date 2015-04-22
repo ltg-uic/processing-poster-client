@@ -2,9 +2,7 @@ package ltg.evl.uic.poster.json.mongo;
 
 import java.util.List;
 
-/**
- * Created by aperritano on 3/18/15.
- */
+
 public class CollectionEvent {
 
     private final EVENT_TYPES eventType;

@@ -72,7 +72,7 @@ public class SentenceGenerator {
      * @return the generated sentence.
      */
     public String makeSentence(boolean isHeadline) {
-        List<String> words = new ArrayList<String>();
+        List<String> words = new ArrayList<>();
         generateSentence(words, isHeadline);
         words.set(0, String.valueOf(Character.toUpperCase(words.get(0).charAt(0))) + words.get(0).substring(1));
         return joinWords(words);
@@ -87,7 +87,7 @@ public class SentenceGenerator {
     public String makeText(int numSentences) {
         StringBuilder sb = new StringBuilder();
         while (numSentences-- > 0) {
-            sb.append(makeSentence(false) + ".");
+            sb.append(makeSentence(false)).append(".");
             if (numSentences > 0) {
                 sb.append(" ");
             }

@@ -46,6 +46,6 @@ public class PictureZoneToPosterItem implements Function<PictureZone, PosterItem
 
             return modPosteritem;
         }
-        return modPosteritem;
+        return null;
     }
 }

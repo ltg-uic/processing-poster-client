@@ -25,12 +25,10 @@ public class TextBoxZone extends Zone implements DeleteButtonListener {
     private PImage img;
     private PFont font;
     private String content;
-    private boolean isShowing;
     private boolean hasLoadedText = false;
     private DeleteButton deleteButton;
     private boolean isDrawingOutline;
     private int outline = ZoneHelper.blueOutline;
-    private DeleteButtonListener deleteButtonListener;
     private StringList lines;
     private int textHeight;
 
@@ -87,7 +85,6 @@ public class TextBoxZone extends Zone implements DeleteButtonListener {
     }
 
     public void addListener(DeleteButtonListener deleteButtonListener) {
-        this.deleteButtonListener = deleteButtonListener;
     }
 
     @Override
@@ -99,13 +96,13 @@ public class TextBoxZone extends Zone implements DeleteButtonListener {
     @Override
     public void touchDown(Touch touch) {
         this.isDrawingOutline = true;
-        deleteButton.setDrawingOutline(isDrawingOutline);
+        deleteButton.setDrawingOutline(true);
     }
 
     @Override
     public void touchUp(Touch touch) {
         this.isDrawingOutline = false;
-        deleteButton.setDrawingOutline(isDrawingOutline);
+        deleteButton.setDrawingOutline(false);
     }
 
     @Override
@@ -114,7 +111,6 @@ public class TextBoxZone extends Zone implements DeleteButtonListener {
     }
 
     public void show(boolean isShowing) {
-        this.isShowing = isShowing;
         if (!isShowing) {
             Zone[] children = getChildren();
             for (Zone zone : children) {
@@ -288,11 +284,11 @@ public class TextBoxZone extends Zone implements DeleteButtonListener {
 
         wordsArray = PApplet.split(string, " ");
 
-        for (int i = 0; i < wordsArray.length; i++) {
-            if (textWidth(tempString + wordsArray[i]) < specificWidth) {
-                tempString += wordsArray[i] + " ";
+        for (String aWordsArray : wordsArray) {
+            if (textWidth(tempString + aWordsArray) < specificWidth) {
+                tempString += aWordsArray + " ";
             } else {
-                tempString = wordsArray[i] + " ";
+                tempString = aWordsArray + " ";
                 numLines++;
             }
         }

@@ -1,8 +1,6 @@
 package ltg.evl.uic.poster.sketches;
 
 import ltg.evl.uic.poster.listeners.SaveUserListerner;
-import ltg.evl.uic.poster.widgets.ControlButtonZone;
-import ltg.evl.uic.poster.widgets.ControlButtonZoneBuilder;
 import ltg.evl.uic.poster.widgets.PictureZone;
 import ltg.evl.util.DownloadHelper;
 import ltg.evl.util.StyleHelper;
@@ -12,8 +10,6 @@ import processing.core.PApplet;
 import vialab.SMT.SMT;
 import vialab.SMT.TouchSource;
 import vialab.SMT.Zone;
-
-import java.util.ArrayList;
 
 
 /**
@@ -27,9 +23,6 @@ public class UserScreenMain extends PApplet implements SaveUserListerner {
     private static DownloadHelper downloadHelper;
 
     private static String backpackPath;
-
-    private int mainBackgroundColor;
-    private int defaultBarColor;
 
     public static void main(String args[]) {
         logger = Logger.getLogger(UserScreenMain.class.getName());
@@ -45,8 +38,7 @@ public class UserScreenMain extends PApplet implements SaveUserListerner {
     public void doInit() {
         System.out.println("Setup started");
         StyleHelper.helper().setGraphicsContext(this);
-        mainBackgroundColor = StyleHelper.helper().createColor("color.mainBackground");
-        defaultBarColor = StyleHelper.helper().createColor("color.keyboard.background");
+        // int defaultBarColor = StyleHelper.helper().createColor("color.keyboard.background");
     }
 
     @Override
@@ -62,7 +54,7 @@ public class UserScreenMain extends PApplet implements SaveUserListerner {
         size(w, h, SMT.RENDERER);
         SMT.init(this, TouchSource.AUTOMATIC);
 
-        int bar_h = (int) (h * .07);
+//        int bar_h = (int) (h * .07);
 
 
 
@@ -72,21 +64,21 @@ public class UserScreenMain extends PApplet implements SaveUserListerner {
     }
 
     private void setupControlButtons() {
-        ControlButtonZone saveButton = new ControlButtonZoneBuilder().setButtonText("SAVE")
-                                                                     .setName("save_button")
-                                                                     .setHeight(200)
-                                                                     .setWidth(200)
-                                                                     .setX(50)
-                                                                     .setY(50)
-                                                                     .createControlButtonZone();
-
-        ControlButtonZone loadButton = new ControlButtonZoneBuilder().setButtonText("LOAD")
-                                                                     .setName("load_button")
-                                                                     .setHeight(200)
-                                                                     .setWidth(200)
-                                                                     .setX(50)
-                                                                     .setY(300)
-                                                                     .createControlButtonZone();
+//        ControlButtonZone saveButton = new ControlButtonZoneBuilder().setButtonText("SAVE")
+//                                                                     .setName("save_button")
+//                                                                     .setHeight(200)
+//                                                                     .setWidth(200)
+//                                                                     .setX(50)
+//                                                                     .setY(50)
+//                                                                     .createControlButtonZone();
+//
+//        ControlButtonZone loadButton = new ControlButtonZoneBuilder().setButtonText("LOAD")
+//                                                                     .setName("load_button")
+//                                                                     .setHeight(200)
+//                                                                     .setWidth(200)
+//                                                                     .setX(50)
+//                                                                     .setY(300)
+//                                                                     .createControlButtonZone();
 
         // SMT.add(saveButton, loadButton);
 
@@ -189,7 +181,7 @@ public class UserScreenMain extends PApplet implements SaveUserListerner {
     private void saveUserLayout(String userName) {
         //     User user = DBHelper.helper().fetchUser(userName);
 
-        java.util.List<PictureZone> pictureZones = new ArrayList<>();
+        //java.util.List<PictureZone> pictureZones = new ArrayList<>();
 
 //        for (Zone zone : SMT.getZones()) {
 //            if (zone instanceof PictureZone) {

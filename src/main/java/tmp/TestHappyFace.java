@@ -33,7 +33,7 @@ public class TestHappyFace extends PApplet {
                 fill(220, 140, 160, 140);
                 stroke(240, 180);
                 strokeWeight(3);
-                rect(0, 0, this.width, this.height);
+                rect(0, 0, this.getWidth(), this.getHeight());
             }
 
 

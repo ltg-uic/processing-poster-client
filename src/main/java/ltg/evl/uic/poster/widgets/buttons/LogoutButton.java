@@ -25,7 +25,6 @@ public class LogoutButton extends Zone {
     protected int currentColor;
     int padding = 10;
     private User user;
-    private String nameTags;
 
     public LogoutButton(String uuid, String text, int width, int height) {
         super(uuid, width, height);
@@ -47,9 +46,9 @@ public class LogoutButton extends Zone {
             this.unpressedButtonColor = Optional.of(user.getColor()).or(ZoneHelper.blueOutline);
             this.text = WordUtils.capitalize(user.getName());
             if (Optional.fromNullable(user.getNameTags()).isPresent()) {
-                this.nameTags = WordUtils.capitalize(Joiner.on(",").join(user.getNameTags()));
+                this.setName(WordUtils.capitalize(Joiner.on(",").join(user.getNameTags())));
             } else {
-                this.nameTags = "";
+                this.setName("");
             }
         } else {
 

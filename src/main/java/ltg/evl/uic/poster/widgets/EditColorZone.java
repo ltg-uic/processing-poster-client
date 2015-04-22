@@ -1,6 +1,6 @@
 package ltg.evl.uic.poster.widgets;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import ltg.evl.uic.poster.listeners.EditListener;
 import vialab.SMT.Touch;
 import vialab.SMT.Zone;
@@ -12,6 +12,7 @@ public class EditColorZone extends Zone {
     private boolean isEditing;
     private EditListener editListener;
 
+    @SuppressWarnings("SuspiciousNameCombination")
     public EditColorZone(String name, int x, int y, int width) {
         super(name, x, y, width, width);
         this.outline = ZoneHelper.greyOutline;
@@ -66,8 +67,7 @@ public class EditColorZone extends Zone {
 
     @Override
     public String toString() {
-
-        return Objects.toStringHelper(this)
+        return MoreObjects.toStringHelper(this)
                       .omitNullValues()
                       .add("x", getX())
                       .add("y", getY())

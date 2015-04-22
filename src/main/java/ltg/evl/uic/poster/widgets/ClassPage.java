@@ -18,7 +18,6 @@ public class ClassPage extends Zone {
     private final PFont font;
     int heading_height = 50;
     //private Ani ani;
-    private int greyColor = ZoneHelper.greyOutline;
     private LoadClassListener loadClassListener;
     private int initY;
 
@@ -90,7 +89,6 @@ public class ClassPage extends Zone {
 
 
         for (String className : classMap.keySet()) {
-            Collection<User> u = classMap.get(className);
             ClassButton classButton = new ClassButton(className, className, ZoneHelper.CLASS_BUTTON_SIZE,
                                                       ZoneHelper.CLASS_BUTTON_SIZE);
             classButton.initButton();

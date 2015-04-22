@@ -27,7 +27,7 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
     public PictureZone apply(final PosterItem posterItem) {
         logger.log(Level.INFO, "New PosterItem: " + posterItem);
 
-        PictureZone pictureZone = null;
+        PictureZone pictureZone;
 
         PImage pImage = null;
 
@@ -47,9 +47,7 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
 
                             try {
                                 pImage = ImageLoader.downloadImage(posterItem.getContent());
-                            } catch (ExecutionException e) {
-                                e.printStackTrace();
-                            } catch (InterruptedException e) {
+                            } catch (ExecutionException | InterruptedException e) {
                                 e.printStackTrace();
                             }
 

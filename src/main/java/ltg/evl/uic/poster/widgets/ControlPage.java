@@ -6,9 +6,6 @@ import vialab.SMT.SMT;
 import vialab.SMT.Touch;
 import vialab.SMT.Zone;
 
-/**
- * Created by aperritano on 4/16/15.
- */
 public class ControlPage extends Zone {
 
     private int initX = 0;

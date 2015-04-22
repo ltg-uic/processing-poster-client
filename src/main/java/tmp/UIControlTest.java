@@ -23,12 +23,12 @@ import vialab.SMT.*;
 import static org.apache.commons.lang.WordUtils.capitalize;
 
 
+@SuppressWarnings("ALL")
 public class UIControlTest extends PApplet {
 
 
     public static PFont helveticaFont = null;
     private static SimpleMQTTClient sc;
-    private static Logger logger;
     int buttonWidth = 100;
     int buttonHeight = buttonWidth;
     int buttonStartX = 20;
@@ -42,13 +42,12 @@ public class UIControlTest extends PApplet {
     private LogoutButton newZone;
     private EditColorZone colorZone;
     private PVector target1;
-    private PVector point1;
     private PVector target2;
     private PVector point2;
 
     public static void main(String args[]) {
 
-        logger = Logger.getLogger(UIControlTest.class.getName());
+        Logger logger = Logger.getLogger(UIControlTest.class.getName());
         logger.setLevel(org.apache.log4j.Level.ALL);
 
 //        sc = new SimpleMQTTClient("ltg.evl.uic.edu", "test-bot");
@@ -142,7 +141,7 @@ public class UIControlTest extends PApplet {
 
         Ani.init(this);
 
-        point1 = new PVector(50, 50);
+//        PVector point1 = new PVector(50, 50);
 
 
         //ideoZone videoZone = new VideoZone("vid", 200, 200, 400, 400);

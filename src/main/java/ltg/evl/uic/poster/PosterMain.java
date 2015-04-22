@@ -112,10 +112,6 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
 
         PosterDataModel.helper().addLoginCollectionListener(this);
 
-
-        final DialogZoneController dialogZoneController = DialogZoneController.dialog();
-
-
         RESTHelper.getInstance().initAllCollections();
     }
 
@@ -214,7 +210,7 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
                         PictureZone pictureZone = (PictureZone) zone;
 
                         if (pictureZone.isEditing()) {
-                            if (foundFlag == false) {
+                            if (!foundFlag) {
                                 shouldDelete = !pictureZone.isDeleteMode();
                                 foundFlag = true;
                             }

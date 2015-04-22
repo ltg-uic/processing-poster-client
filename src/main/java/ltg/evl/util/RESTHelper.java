@@ -10,12 +10,12 @@ import com.google.api.client.json.jackson.JacksonFactory;
 import com.google.api.client.util.Lists;
 import com.google.common.base.Optional;
 import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.*;
 import ltg.evl.uic.poster.json.mongo.*;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.logging.Handler;
@@ -93,39 +93,21 @@ public class RESTHelper {
                     PosterDataModel.helper().initializationDone();
                 }
 
+                @Override
                 public void onFailure(Throwable thrown) {
                     logger.log(Level.INFO, "REST FAILED!");
                     thrown.printStackTrace();
                 }
             });
             //
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | GeneralSecurityException | InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
     }
 
-    public void deletePosterItem(
-            final String uuid) throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
-
-        final ImmutableList<Poster> imPosters = ImmutableList.copyOf(PosterDataModel.helper().allPosters);
-
-        final ImmutableList<PosterItem> imPosterItems = ImmutableList.copyOf(
-                PosterDataModel.helper().allPosterItems);
-
-
-    }
     public void updatePosterItems(
             FluentIterable<PosterItem> posterItems) throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
         List<ListenableFuture<HttpResponse>> listOfFutures = Lists.newArrayList();
-
-        ListeningExecutorService service = MoreExecutors.listeningDecorator(
-                Executors.newCachedThreadPool());
 
         if (!posterItems.isEmpty()) {
             for (PosterItem pi : posterItems) {
@@ -148,10 +130,13 @@ public class RESTHelper {
 
         Futures.addCallback(successfullQueries, new FutureCallback<List<HttpResponse>>() {
             // we want this handler to run immediately after we push the big red button!
+            @Override
             public void onSuccess(List<HttpResponse> listOfReponses) {
 
             }
 
+            @SuppressWarnings("NullableProblems")
+            @Override
             public void onFailure(Throwable thrown) {
                 thrown.printStackTrace();
             }
@@ -186,7 +171,7 @@ public class RESTHelper {
                 });
 
 
-        HttpRequest request = null;
+        HttpRequest request;
         ListenableFuture<HttpResponse> listenableFuture = null;
         Future<HttpResponse> jdkFuture;
         switch (url.request_type) {
@@ -200,6 +185,8 @@ public class RESTHelper {
 
                     if (doCallable) {
                         Futures.addCallback(listenableFuture, new FutureCallback<HttpResponse>() {
+
+                            @Override
                             public void onSuccess(HttpResponse updateFutureResponse) {
                                 try {
                                     logger.log(Level.INFO, "POSTED UPDATE: " + someClass.getName());
@@ -209,8 +196,9 @@ public class RESTHelper {
                                 }
                             }
 
-                            public void onFailure(Throwable thrown) {
-                                handleHttpFailure(thrown);
+                            @Override
+                            public void onFailure(Throwable throwable) {
+                                handleHttpFailure(throwable);
                             }
                         });
                     }
@@ -231,6 +219,7 @@ public class RESTHelper {
 
                     if (doCallable) {
                         Futures.addCallback(listenableFuture, new FutureCallback<HttpResponse>() {
+                            @Override
                             public void onSuccess(HttpResponse addFutureResponse) {
                                 try {
                                     logger.log(Level.INFO, "POSTED ADD: " + someClass.getName());
@@ -240,6 +229,7 @@ public class RESTHelper {
                                 }
                             }
 
+                            @Override
                             public void onFailure(Throwable thrown) {
                                 handleHttpFailure(thrown);
                             }
@@ -260,6 +250,7 @@ public class RESTHelper {
 
                     if (doCallable) {
                         Futures.addCallback(listenableFuture, new FutureCallback<HttpResponse>() {
+                            @Override
                             public void onSuccess(HttpResponse deleteFutureResponse) {
                                 logger.log(Level.INFO, "POSTED DELETE: " + someClass.getName());
 //                                try {
@@ -270,6 +261,7 @@ public class RESTHelper {
 //                                }
                             }
 
+                            @Override
                             public void onFailure(Throwable thrown) {
                                 handleHttpFailure(thrown);
                             }
@@ -321,6 +313,7 @@ public class RESTHelper {
                 httpUserResponseFuture);
 
         Futures.addCallback(userFuture, new FutureCallback<HttpResponse>() {
+            @Override
             public void onSuccess(HttpResponse userResponse) {
                 try {
                     logger.log(Level.INFO, "RECIEVED USER COLLECTIONS RESPONSE");
@@ -330,6 +323,7 @@ public class RESTHelper {
                 }
             }
 
+            @Override
             public void onFailure(Throwable thrown) {
                 logger.log(Level.SEVERE, "USER FETCH FAILED");
                 handleHttpFailure(thrown);
@@ -349,6 +343,7 @@ public class RESTHelper {
                 httpPosterResponseFuture);
 
         Futures.addCallback(posterFuture, new FutureCallback<HttpResponse>() {
+            @Override
             public void onSuccess(HttpResponse posterReponse) {
                 try {
                     logger.log(Level.INFO, "RECEIVED POSTER COLLECTIONS RESPONSE");
@@ -358,6 +353,7 @@ public class RESTHelper {
                 }
             }
 
+            @Override
             public void onFailure(Throwable thrown) {
                 logger.log(Level.SEVERE, "POSTER FETCH FAILED");
                 handleHttpFailure(thrown);
@@ -379,6 +375,7 @@ public class RESTHelper {
                 httpPosterItemResponseFuture);
 
         Futures.addCallback(posterItemFuture, new FutureCallback<HttpResponse>() {
+            @Override
             public void onSuccess(HttpResponse posterItemFuture) {
                 try {
                     logger.log(Level.INFO, "RECEIVED POSTER ITEM COLLECTIONS RESPONSE");
@@ -388,6 +385,7 @@ public class RESTHelper {
                 }
             }
 
+            @Override
             public void onFailure(Throwable thrown) {
                 logger.log(Level.SEVERE, "POSTERITEM FETCH FAILED");
 
@@ -416,9 +414,7 @@ public class RESTHelper {
 
                 PosterDataModel.helper().updateAllUserCollection(userList);
             } else {
-                for (User u : users) {
-                    userList.add(u);
-                }
+                Collections.addAll(userList, users);
                 PosterDataModel.helper().updateAllUserCollection(userList);
             }
 
@@ -433,9 +429,7 @@ public class RESTHelper {
                 PosterDataModel.helper().updateAllPosterCollection(posterList);
             } else {
 
-                for (Poster p : posters) {
-                    posterList.add(p);
-                }
+                Collections.addAll(posterList, posters);
                 PosterDataModel.helper().updateAllPosterCollection(posterList);
             }
 
@@ -448,9 +442,7 @@ public class RESTHelper {
                 PosterDataModel.helper().updateAllPosterItemsCollection(posterItemList);
             } else {
 
-                for (PosterItem pi : posterItems) {
-                    posterItemList.add(pi);
-                }
+                Collections.addAll(posterItemList, posterItems);
                 PosterDataModel.helper().updateAllPosterItemsCollection(posterItemList);
             }
         }
@@ -503,16 +495,14 @@ public class RESTHelper {
         if (someClass.equals(User.class)) {
             User user = response.parseAs(User.class);
 
-            if (user == null) {
-            } else {
+            if (user != null) {
                 PosterDataModel.helper().updateUserCollection(user);
                 return user.getUuid();
             }
         } else if (someClass.equals(Poster.class)) {
             Poster poster = response.parseAs(Poster.class);
 
-            if (poster == null) {
-            } else {
+            if (poster != null) {
                 PosterDataModel.helper().updatePosterCollection(poster);
                 return poster.getUuid();
             }
@@ -520,8 +510,7 @@ public class RESTHelper {
         } else if (someClass.equals(PosterItem.class)) {
             PosterItem posterItem = response.parseAs(PosterItem.class);
 
-            if (posterItem == null) {
-            } else {
+            if (posterItem != null) {
                 PosterDataModel.helper().updatePosterItemCollection(posterItem);
                 return posterItem.getUuid();
             }
@@ -550,9 +539,7 @@ public class RESTHelper {
                                        .getUuid());
 
 
-                    if (posterMessage.getType().equals(PosterMessage.POSTER)) {
-                    } else if (posterMessage.getType().equals(PosterMessage.POSTER_ITEM)) {
-
+                    if (posterMessage.getType().equals(PosterMessage.POSTER_ITEM)) {
 
                         ListeningExecutorService service = MoreExecutors.listeningDecorator(
                                 Executors.newFixedThreadPool(10));
@@ -574,22 +561,19 @@ public class RESTHelper {
                         });
                         Futures.addCallback(doRESTCALL, new FutureCallback<Void>() {
                             // we want this handler to run immediately after we push the big red button!
+                            @Override
                             public void onSuccess(Void nothing) {
                                 logger.log(Level.INFO, "DONE! FETCH POSTER ITEM");
                                 //update poster with new _id
                             }
 
+                            @Override
                             public void onFailure(Throwable thrown) {
                                 logger.log(Level.INFO, "REST FAILED!");
 
                                 thrown.printStackTrace();
                             }
                         });
-
-
-                        //PosterDataModel.helper().updatePosterItemCollection((PosterItem) posterMessage);
-                    } else if (posterMessage.getType().equals(PosterMessage.USER)) {
-
                     }
                 } else {
                     logger.log(Level.INFO,

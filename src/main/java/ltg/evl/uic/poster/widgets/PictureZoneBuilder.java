@@ -70,18 +70,11 @@ public class PictureZoneBuilder {
     public PictureZone createPictureZone() {
 
 
-        PictureZone pictureZone = new PictureZone(image, uuid, x, y, width, height, type, zoneName, rotation, scale);
-        // ZoneHelper.getInstance().addDeleteButton(pictureZone);
-        //pictureZone.add(ZoneHelper.dialog().getScaleButton(pictureZone));
-        return pictureZone;
+        return new PictureZone(image, uuid, x, y, width, height, type, zoneName, rotation, scale);
     }
 
     public PictureZone createPictureZoneWithPosterItem() {
-        PictureZone pictureZone = new PictureZone(posterItem);
-
-        // ZoneHelper.getInstance().addDeleteButton(pictureZone);
-
-        return pictureZone;
+        return new PictureZone(posterItem);
     }
 
     public PictureZoneBuilder setScale(String scale) {

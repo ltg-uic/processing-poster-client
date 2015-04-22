@@ -1,14 +1,11 @@
 package ltg.evl.uic.poster.widgets.buttons;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import ltg.evl.uic.poster.widgets.ZoneHelper;
 import processing.core.PFont;
 import vialab.SMT.Touch;
 import vialab.SMT.Zone;
 
-/**
- * Created by aperritano on 4/17/15.
- */
 public class EditModeButton extends Zone {
 
     public static final int SPACING = 4;
@@ -110,15 +107,13 @@ public class EditModeButton extends Zone {
 
     @Override
     public String toString() {
-
-        return Objects.toStringHelper(this)
+        return MoreObjects.toStringHelper(this)
                       .omitNullValues()
                       .add("x", getX())
                       .add("y", getY())
                       .add("width", getWidth())
                       .add("height", getHeight())
                       .toString();
-
     }
 
     public boolean isEditing() {

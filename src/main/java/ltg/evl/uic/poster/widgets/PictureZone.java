@@ -139,7 +139,7 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
 //        System.out.println(
 //                "delete button: " + buttonSize + " adjust button size: " + adjustedButtonSize + " x: " + x + " y: " + y);
 
-            deleteButton = new DeleteButtonBuilder().setName(DeleteButton.DELETE_NAME)
+            deleteButton = new DeleteButtonBuilder().setUUID(DeleteButton.DELETE_NAME)
                                                     .setImage(ZoneHelper.deleteImage)
                                                     .setX(x)
                                                     .setY(y)
@@ -193,10 +193,17 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
             }
 
 
+            if (this.getZoneImage() != null) {
+
+                image(this.getZoneImage(), padding, padding, this.getWidth() - paddingOffset,
+                      this.getHeight() - paddingOffset);
+            } else {
+                //TODO put text problem with img server.
+            }
             //fill(255,255,255);
             //rect(padding, padding, this.getWidth()-paddingOffset, this.getHeight()-paddingOffset);
-            image(this.getZoneImage(), padding, padding, this.getWidth() - paddingOffset,
-                  this.getHeight() - paddingOffset);
+
+
         } else {
             image(this.getZoneImage(), 0, 0, this.getWidth(),
                   this.getHeight());
@@ -228,7 +235,7 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
             presentationZone.setBgAlpha(0);
             //
             SMT.add(presentationZone);
-            presentationZone.fade(1f, 0f, 200, false);
+            presentationZone.fade(1f, 0f, 255, false);
             presentationZone.presentImageZone(this.getZoneImage());
         }
     }
@@ -244,7 +251,8 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
 
     @Override
     public Zone clone() {
-        Zone z = new PictureZoneBuilder().setZoneName(this.zoneName)
+        super.clone();
+        return new PictureZoneBuilder().setZoneName(this.zoneName)
                                          .setType(this.getType())
                                          .setY(this.getY())
                                          .setX(this.getX())
@@ -252,14 +260,9 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
                                          .setWidth(this.getWidth())
                                          .setUuid(this.getName() + "-p")
                                          .createPictureZone();
-        return z;
     }
 
     //region getset
-    public void addDeleteListener(DeleteButtonListener deleteButtonListener) {
-        deleteButtonListener = deleteButtonListener;
-    }
-
 
     public void setIsEditing(boolean isEditing) {
         this.isEditing = isEditing;

@@ -12,7 +12,6 @@ import vialab.SMT.Zone;
 
 public class UserButton extends Zone {
 
-    public boolean pressed = false;
     protected int pressedButtonColor;
     protected int unpressedButtonColor;
     protected int outline = ZoneHelper.greyOutline;
@@ -21,9 +20,6 @@ public class UserButton extends Zone {
     protected int textColor;
     protected int fontSize;
     protected int currentColor;
-    protected int borderWeight = 5;
-    private int savedWidth;
-    private int savedHeight;
     private LoadUserListener loadUserListerner;
     private User user;
     private String nameTags;
@@ -40,8 +36,6 @@ public class UserButton extends Zone {
 
     public UserButton(String uuid, int width, int height) {
         super(uuid, width, height);
-        this.savedWidth = width;
-        this.savedHeight = height;
 
         this.font = ZoneHelper.helveticaNeue18Font;
         //this.text = user.getName();

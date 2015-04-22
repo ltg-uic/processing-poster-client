@@ -22,9 +22,6 @@ public class MQTTPipe implements MessageListener {
     private static Logger logger;
     private GsonFactory JSON_FACTORY = new GsonFactory();
     private String BASE_CHANNEL_OUT;
-    private String BASE_CLIENT_ID;
-    private String BASE_ADDRESS;
-    private String BASE_CHANNEL_IN;
     private SimpleMQTTClient posterMQTTClient = null;
 
 
@@ -32,9 +29,9 @@ public class MQTTPipe implements MessageListener {
 
 
                 enableLogging();
-                BASE_ADDRESS = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.host");
-                BASE_CLIENT_ID = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.client._id");
-                BASE_CHANNEL_IN = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.channel.in");
+        String BASE_ADDRESS = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.host");
+        String BASE_CLIENT_ID = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.client._id");
+        String BASE_CHANNEL_IN = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.channel.in");
                 BASE_CHANNEL_OUT = PosterServices.getInstance().getConfig().getString("poster.base.mqtt.channel.out");
 
 

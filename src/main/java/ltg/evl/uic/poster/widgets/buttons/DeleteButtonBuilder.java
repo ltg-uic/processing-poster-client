@@ -40,11 +40,6 @@ public class DeleteButtonBuilder {
         return this;
     }
 
-    public DeleteButtonBuilder setName(String name) {
-        String name1 = name;
-        return this;
-    }
-
     public DeleteButton createDeleteButton() {
         return new DeleteButton(image, uuid, x, y, width, height);
     }

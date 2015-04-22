@@ -20,9 +20,6 @@ import vialab.SMT.Zone;
 import java.awt.*;
 import java.util.Collection;
 
-/**
- * Created by aperritano on 3/30/15.
- */
 public class DialogZoneController implements LoadUserListener, LoadPosterListener, LoadClassListener {
 
     public static String userpage_id = "UserPage";
@@ -35,11 +32,6 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
     int c_height = 450;
     int x = (SMT.getApplet().getWidth() / 2) - (c_width / 2);
     int y = (SMT.getApplet().getHeight() / 2) - (c_height / 2);
-    int heading_height = 50;
-    private ClassPage classPage;
-    private UserPageZone userPage;
-    private PosterPageZone posterPage;
-    private ControlPage controlPage;
     private Ani ani;
     private float aniSpeed = 1.0f;
     private PresentationZone presentationZone;
@@ -163,7 +155,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
 
         Collection<User> resultTest = Collections2.filter(imAllUsers, predicateTest);
 
-        ImmutableMap.Builder<String, Collection<User>> builder = new ImmutableMap.Builder<String, Collection<User>>();
+        ImmutableMap.Builder<String, Collection<User>> builder = new ImmutableMap.Builder<>();
 
         if (!resultBen.isEmpty())
             builder.put("Ben", resultBen);
@@ -181,17 +173,13 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
 
             int size = classMap.keySet().size();
 
-            int cols = size;
-            int reminder = size % cols;
 
-            if (reminder == 0) {
-                reminder = 1;
-            }
+
 
 
             //int rows = ((size - reminder) / 2) + reminder;
             int rows = 1;
-            Dimension dimension = ZoneHelper.calcGrid(rows, cols, ZoneHelper.GRID_SPACER, ZoneHelper.CLASS_BUTTON_SIZE,
+            Dimension dimension = ZoneHelper.calcGrid(rows, size, ZoneHelper.GRID_SPACER, ZoneHelper.CLASS_BUTTON_SIZE,
                                                       ZoneHelper.CLASS_BUTTON_SIZE);
 
             int total_width = (int) dimension.getWidth();
@@ -201,8 +189,8 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
             int x2 = (SMT.getApplet().getWidth() / 2) - (total_width / 2);
             int y2 = (SMT.getApplet().getHeight() / 2) - (total_height / 2);
 
-            classPage = new ClassPage(classpage_id, x2, SMT.getApplet().getHeight(), total_width,
-                                      total_height, this);
+            ClassPage classPage = new ClassPage(classpage_id, x2, SMT.getApplet().getHeight(), total_width,
+                                                total_height, this);
             classPage.addClasses(classMap);
 
 
@@ -229,8 +217,8 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
 
                 int cols = 10;
 
-                int reminder = 0;
-                int rows = 0;
+                int reminder;
+                int rows;
                 if (size < cols) {
                     cols = size;
                     reminder = 1;
@@ -250,8 +238,9 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
 
                 int x2 = (SMT.getApplet().getWidth() / 2) - (total_width / 2);
                 int y2 = (SMT.getApplet().getHeight() / 2) - (total_height / 2);
-                userPage = new UserPageZone(userpage_id, x2, SMT.getApplet().getHeight(), (int) dimension.getWidth(),
-                                            (int) dimension.getHeight(), this);
+                UserPageZone userPage = new UserPageZone(userpage_id, x2, SMT.getApplet().getHeight(),
+                                                         (int) dimension.getWidth(),
+                                                         (int) dimension.getHeight(), this);
 
                 userPage.addUsers(imAllClassUsers);
                 //userPage.setY(y2);
@@ -275,8 +264,8 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
                 int size = posters.size();
                 int cols = 10;
 
-                int reminder = 0;
-                int rows = 0;
+                int reminder;
+                int rows;
                 if (size < cols) {
                     cols = size;
                     reminder = 1;
@@ -296,8 +285,9 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
 
                 int x2 = (SMT.getApplet().getWidth() / 2) - (total_width / 2);
                 int y2 = (SMT.getApplet().getHeight() / 2) - (total_height / 2);
-                posterPage = new PosterPageZone(posterpage_id, x2, SMT.getApplet().getHeight(), total_width,
-                                                total_height, this);
+                PosterPageZone posterPage = new PosterPageZone(posterpage_id, x2, SMT.getApplet().getHeight(),
+                                                               total_width,
+                                                               total_height, this);
                 posterPage.addPosters(posters);
 
                 posterPage.setY(y2);
@@ -323,8 +313,8 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
         int x2 = 25;
         int y2 = 25;
 
-        controlPage = new ControlPage(controlpage_id, -total_width + 15, y2, total_width,
-                                      total_height);
+        ControlPage controlPage = new ControlPage(controlpage_id, -total_width + 15, y2, total_width,
+                                                  total_height);
 
 
         controlPage.addButtons(userButtons);

@@ -38,8 +38,9 @@ public class VideoZone extends Zone {
         rect(175, 0, 25, 175);
     }
 
-    protected void pressImpl(Touch touch) {
-
+    @Override
+    public void press(Touch touch) {
+        super.press(touch);
         rect(0, 0, 170, 175);
         PApplet.println("PRESSED");
     }

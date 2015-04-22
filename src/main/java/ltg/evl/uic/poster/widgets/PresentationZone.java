@@ -15,8 +15,8 @@ import java.awt.*;
 
 public class PresentationZone extends Zone {
 
+    private static final int DIALOG_WIDTH = 120;
     private PFont font;
-    private int WIDTH = 120;
     private int bgAlpha;
     private boolean shouldDelete;
 
@@ -79,12 +79,11 @@ public class PresentationZone extends Zone {
 
             @Override
             public void draw() {
+                super.draw();
                 stroke(0);
                 strokeWeight(2);
                 fill(255);
                 rect(0, 0, this.getWidth(), this.getHeight(), 10);
-
-                super.draw();
             }
 
             @Override
@@ -107,12 +106,7 @@ public class PresentationZone extends Zone {
 
         }.doScaleAni(.5f, 0f, 255);
 
-
-        if (this.add(imageZone)) {
-
-        }
-
-
+        this.add(imageZone);
     }
 
     public void showDialog(final String text, int alpha) {
@@ -122,14 +116,12 @@ public class PresentationZone extends Zone {
 
         int rows = ((2 - reminder) / 2) + reminder;
 
-        int total_width = (num_per_col * 25) + (num_per_col * WIDTH) + 25;
-        int total_height = (rows * 25) + (rows * WIDTH) + 25;
+        int total_width = (num_per_col * 25) + (num_per_col * DIALOG_WIDTH) + 25;
+        int total_height = (rows * 25) + (rows * DIALOG_WIDTH) + 25;
 
         int x2 = (this.getWidth() / 2) - (total_width / 2);
         int y2 = (this.getHeight() / 2) - (total_height / 2);
 
-        int c_width = 800;
-        int c_height = 450;
 
         final int heading_height = 50;
         Zone frame = new Zone("frame", 0, heading_height, total_width, total_height) {
@@ -159,7 +151,7 @@ public class PresentationZone extends Zone {
         };
 
 
-        YesButton yesButton = new YesButton("Yes", "Yes", WIDTH, WIDTH, ZoneHelper.redOutline, 20) {
+        YesButton yesButton = new YesButton("Yes", "Yes", DIALOG_WIDTH, DIALOG_WIDTH, ZoneHelper.redOutline, 20) {
             @Override
             public void touchUp(Touch touch) {
                 super.touchUp(touch);
@@ -169,7 +161,7 @@ public class PresentationZone extends Zone {
 
         yesButton.initButton();
 
-        YesButton noButton = new YesButton("No", "No", WIDTH, WIDTH, ZoneHelper.blueOutline, 20) {
+        YesButton noButton = new YesButton("No", "No", DIALOG_WIDTH, DIALOG_WIDTH, ZoneHelper.blueOutline, 20) {
             @Override
             public void touchUp(Touch touch) {
                 super.touchUp(touch);

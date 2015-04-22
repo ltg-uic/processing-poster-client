@@ -46,6 +46,10 @@ public class Poster extends GenericJson {
 
     @Override
     public boolean equals(Object o) {
+        if (!(o instanceof Poster)) {
+            return false;
+        }
+
         if (Optional.fromNullable(o).isPresent()) {
             Poster poster = (Poster) o;
 

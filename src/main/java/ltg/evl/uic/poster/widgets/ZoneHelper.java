@@ -90,7 +90,7 @@ public class ZoneHelper {
     }
 
     public static BufferedImage renderTextToImage(Font font, Color textColor, String text, int width) {
-        Hashtable map = new Hashtable();
+        Hashtable<TextAttribute, java.io.Serializable> map = new Hashtable<>();
 
         map.put(TextAttribute.FAMILY, font.getName());
         map.put(TextAttribute.SIZE, new Float(30.0));
@@ -176,9 +176,8 @@ public class ZoneHelper {
 
         // nextInt is normally exclusive of the top value,
         // so add 1 to make it inclusive
-        int randomNum = rand.nextInt((max - min) + 1) + min;
 
-        return randomNum;
+        return rand.nextInt((max - min) + 1) + min;
     }
 
 
@@ -253,7 +252,7 @@ public class ZoneHelper {
 //        System.out.println(
 //                "delete button: " + buttonSize + " adjust button size: " + adjustedButtonSize + " x: " + x + " y: " + y);
 
-        DeleteButton deleteButton = new DeleteButtonBuilder().setName(DeleteButton.DELETE_NAME)
+        DeleteButton deleteButton = new DeleteButtonBuilder().setUUID(DeleteButton.DELETE_NAME)
                                                              .setImage(deleteImage)
                                                              .setX(x)
                                                              .setY(y)

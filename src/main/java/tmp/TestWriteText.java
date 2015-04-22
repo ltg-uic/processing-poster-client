@@ -22,7 +22,7 @@ public class TestWriteText {
 
     private static final
     Hashtable<TextAttribute, Object> map =
-            new Hashtable<TextAttribute, Object>();
+            new Hashtable<>();
     // The LineBreakMeasurer used to line-break the paragraph.
     private static LineBreakMeasurer lineMeasurer;
     // index of the first character in the paragraph.
@@ -57,14 +57,13 @@ public class TestWriteText {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                              RenderingHints.VALUE_ANTIALIAS_ON);
 
-        Image jxt = null;
+        Image jxt;
 
         Font helveticaNeue = new Font("HelveticaNeue", Font.PLAIN, 16);
 
 
         // Set break width to width of Component.
-        float breakWidth = 250;
-        float drawPosY = 0;
+
 
 
         FontMetrics metrics = g2d.getFontMetrics(helveticaNeue);
@@ -95,7 +94,7 @@ public class TestWriteText {
     }
 
     public static BufferedImage renderTextToImage(Font font, Color textColor, String text, int width) {
-        Hashtable map = new Hashtable();
+        Hashtable<TextAttribute, Font> map = new Hashtable<>();
         map.put(TextAttribute.FONT, font);
         AttributedString attributedString = new AttributedString(text, map);
         AttributedCharacterIterator paragraph = attributedString.getIterator();
@@ -165,7 +164,6 @@ public class TestWriteText {
 
         ArrayList<String> lines = Lists.newArrayList();
         int offset = 0;
-        StringBuilder resultBuilder = new StringBuilder();
 
         while ((str.length() - offset) > wrapLength) {
             if (str.charAt(offset) == ' ') {

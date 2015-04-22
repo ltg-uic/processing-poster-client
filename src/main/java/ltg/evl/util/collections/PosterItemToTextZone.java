@@ -11,10 +11,6 @@ import ltg.evl.uic.poster.widgets.TextBoxZoneBuilder;
 public class PosterItemToTextZone implements Function<PosterItem, TextBoxZone> {
     @Override
     public TextBoxZone apply(PosterItem posterItem) {
-
-
-        TextBoxZone textZone = new TextBoxZoneBuilder().setPosterItem(posterItem).createTextZoneWithPosterItem();
-
-        return textZone;
+        return new TextBoxZoneBuilder().setPosterItem(posterItem).createTextZoneWithPosterItem();
     }
 }

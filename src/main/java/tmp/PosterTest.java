@@ -1,13 +1,12 @@
 package tmp;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import ltg.commons.SimpleMQTTClient;
-import ltg.evl.uic.poster.json.mongo.*;
-import ltg.evl.uic.poster.widgets.DialogZoneController;
+import ltg.evl.uic.poster.json.mongo.Poster;
+import ltg.evl.uic.poster.json.mongo.PosterDataModel;
+import ltg.evl.uic.poster.json.mongo.PosterItem;
+import ltg.evl.uic.poster.json.mongo.User;
 import ltg.evl.uic.poster.widgets.PictureZone;
 import ltg.evl.uic.poster.widgets.buttons.UserButton;
-import ltg.evl.util.RESTHelper;
 import org.apache.log4j.Logger;
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -19,6 +18,7 @@ import vialab.SMT.Zone;
 import java.util.Collection;
 
 
+@SuppressWarnings("SuspiciousNameCombination")
 public class PosterTest extends PApplet {
 
 
@@ -31,8 +31,6 @@ public class PosterTest extends PApplet {
     int whiteColor = color(255);
     int greenButtonColor = color(35, 147, 70);
     int yellowButtonColor = color(244, 208, 63);
-    private UserButton editButton;
-    private UserButton presentButton;
     private NewTextButton newTextButton;
 
     public static void main(String args[]) {
@@ -67,12 +65,13 @@ public class PosterTest extends PApplet {
 
 
         //create mode buttons
-        presentButton = new UserButton("PresentButton", buttonStartX, buttonStartY, buttonWidth, buttonHeight,
-                                       "PRESENT", greenButtonColor, yellowButtonColor, controlButtonFont);
-        editButton = new UserButton("EditButton", buttonStartX,
-                                    presentButton.getY() + presentButton.getHeight() + presentButton.getY(),
-                                    buttonWidth, buttonHeight, "EDIT", greenButtonColor, yellowButtonColor,
-                                    controlButtonFont);
+        UserButton presentButton = new UserButton("PresentButton", buttonStartX, buttonStartY, buttonWidth,
+                                                  buttonHeight,
+                                                  "PRESENT", greenButtonColor, yellowButtonColor, controlButtonFont);
+//        UserButton editButton = new UserButton("EditButton", buttonStartX,
+//                                               presentButton.getY() + presentButton.getHeight() + presentButton.getY(),
+//                                               buttonWidth, buttonHeight, "EDIT", greenButtonColor, yellowButtonColor,
+//                                               controlButtonFont);
         // newTextButton = new NewTextButton("TextButton", loadImage("document6.png"), buttonStartX, editButton.getY() + editButton.getHeight() + editButton.getY() + 5,buttonWidth/2, buttonHeight/2 );
 //
         // SMT.add(presentButton);
@@ -81,63 +80,63 @@ public class PosterTest extends PApplet {
 //        int x = (screen_width/2) - (c_width/2);
 //        int y = (screen_height/2) - (c_height/2);
 //
-        ObjectSubscriber objectSubscriber = new ObjectSubscriber() {
-            @Override
-            public void handleUpdatedObject(ObjectEvent objectEvent) {
-                super.handleUpdatedObject(objectEvent);
-                if (objectEvent.getEventType().equals(ObjectEvent.OBJ_TYPES.POST_ITEM)) {
-                    PosterItem newPosterItem = (PosterItem) objectEvent.getGenericJson();
-                    loadPosterItems(Lists.newArrayList(newPosterItem), false);
-                } else if (objectEvent.getEventType().equals(ObjectEvent.OBJ_TYPES.INIT_ALL)) {
+//        ObjectSubscriber objectSubscriber = new ObjectSubscriber() {
+//            @Override
+//            public void handleUpdatedObject(ObjectEvent objectEvent) {
+//                super.handleUpdatedObject(objectEvent);
+//                if (objectEvent.getEventType().equals(ObjectEvent.OBJ_TYPES.POST_ITEM)) {
+//                    PosterItem newPosterItem = (PosterItem) objectEvent.getGenericJson();
+//                    loadPosterItems(Lists.newArrayList(newPosterItem), false);
+//                } else if (objectEvent.getEventType().equals(ObjectEvent.OBJ_TYPES.INIT_ALL)) {
+//
+//                    DialogZoneController.dialog().showClassPage();
+//                    //DialogZoneController.helper().translateUserPage(300, 300);
+//                    //loadPosterForUser(allUsers.get(0));                   }
+//
+//                } else if (objectEvent.getEventType().equals(ObjectEvent.OBJ_TYPES.DELETE_POSTER_ITEM)) {
+//
+//                    String posterItemId = objectEvent.getItemId();
+////                    for(PosterItem pi : PosterDataModel.helper().allPosterItems) {
+////                        if(pi.getUuid().equals(posterItemId)) {
+////                            PosterDataModel.helper().allPosterItems.remove(pi);
+////                        }
+////                    }
+//
+//
+//                    SMT.remove(posterItemId);
+//
+//                }
+//
+//            }
+        //   };
 
-                    DialogZoneController.dialog().showClassPage();
-                    //DialogZoneController.helper().translateUserPage(300, 300);
-                    //loadPosterForUser(allUsers.get(0));                   }
-
-                } else if (objectEvent.getEventType().equals(ObjectEvent.OBJ_TYPES.DELETE_POSTER_ITEM)) {
-
-                    String posterItemId = objectEvent.getItemId();
-//                    for(PosterItem pi : PosterDataModel.helper().allPosterItems) {
-//                        if(pi.getUuid().equals(posterItemId)) {
-//                            PosterDataModel.helper().allPosterItems.remove(pi);
+//        UserLoadEvent ule = new UserLoadEvent() {
+//            @Override
+//            public void handleUserLoadEvent(String userUuid) {
+//                super.handleUserLoadEvent(userUuid);
+//                ImmutableList<User> imAllUsers = ImmutableList.copyOf(PosterDataModel.helper().allUsers);
+//
+//                if (!imAllUsers.isEmpty()) {
+//                    for (User user : imAllUsers) {
+//                        if (user.getUuid().equals(userUuid)) {
+//                            DialogZoneController.dialog().hideUserPage();
+//                            loadPosterForUser(user);
 //                        }
 //                    }
-
-
-                    SMT.remove(posterItemId);
-
-                }
-
-            }
-        };
-
-        UserLoadEvent ule = new UserLoadEvent() {
-            @Override
-            public void handleUserLoadEvent(String userUuid) {
-                super.handleUserLoadEvent(userUuid);
-                ImmutableList<User> imAllUsers = ImmutableList.copyOf(PosterDataModel.helper().allUsers);
-
-                if (!imAllUsers.isEmpty()) {
-                    for (User user : imAllUsers) {
-                        if (user.getUuid().equals(userUuid)) {
-                            DialogZoneController.dialog().hideUserPage();
-                            loadPosterForUser(user);
-                        }
-                    }
-                }
-
-            }
-        };
+//                }
+//
+//            }
+//        };
 
 
         //DialogZoneController.dialog().registerForLoginEvent(ule);
 
-        logger.debug("POSTER MODELER STARTED");
-        // PosterDataModel.helper().addUserSubscriber(userSubscriber);
-        //PosterDataModel.helper().registerForObjectEvent(objectSubscriber);
-
-        logger.debug("POSTER MODELER INIT ALL COLLECTIONS");
-        RESTHelper.getInstance().initAllCollections();
+//        logger.debug("POSTER MODELER STARTED");
+//        // PosterDataModel.helper().addUserSubscriber(userSubscriber);
+//        //PosterDataModel.helper().registerForObjectEvent(objectSubscriber);
+//
+//        logger.debug("POSTER MODELER INIT ALL COLLECTIONS");
+//        RESTHelper.getInstance().initAllCollections();
     }
 
     private void loadPosterForUser(User user) {
@@ -219,8 +218,8 @@ public class PosterTest extends PApplet {
 
     public void pressTextButton(NewTextButton zone) {
 
-        int x = new Float(random(10, 500)).intValue();
-        int y = new Float(random(10, 500)).intValue();
+//        int x = new Float(random(10, 500)).intValue();
+//        int y = new Float(random(10, 500)).intValue();
 
 
     }

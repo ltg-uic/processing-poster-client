@@ -704,7 +704,7 @@ public class Ani extends AniCore {
         String id = System.identityHashCode(theTarget) + "_" + theFieldName;
 
         // get old Ani and overwrite (this is behavior is ignored if defaultAddMode is set to NO_OVERWRITE
-        if (anisLookup.containsKey(id) && defaultOverwriteMode == OVERWRITE) {
+        if (anisLookup.containsKey(id) && defaultOverwriteMode.equals(OVERWRITE)) {
 
             Ani existingAni = anisLookup.get(id);
 

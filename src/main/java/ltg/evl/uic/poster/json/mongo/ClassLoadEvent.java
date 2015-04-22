@@ -6,9 +6,6 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * Created by aperritano on 3/30/15.
- */
 public class ClassLoadEvent {
 
 

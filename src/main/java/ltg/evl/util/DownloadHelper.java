@@ -2,16 +2,11 @@ package ltg.evl.util;
 
 
 import com.google.common.io.Resources;
-import javaxt.io.Directory;
 import javaxt.io.File;
 
 import java.util.ArrayList;
 import java.util.EventListener;
-import java.util.List;
 
-/**
- * Created by aperritano on 10/1/14.
- */
 public class DownloadHelper {
 
     private final String backpackPath;
@@ -19,7 +14,7 @@ public class DownloadHelper {
 
     public DownloadHelper(String backpackPath) {
         this.backpackPath = backpackPath;
-        startDirectoryWatch();
+        //startDirectoryWatch();
     }
 
 //    public static void saveImageIntoMongoDB(String fileName, String filePath) throws IOException {
@@ -57,63 +52,63 @@ public class DownloadHelper {
     public void writeJSONFile(Object obj) {
     }
 
-    public void startDirectoryWatch() {
-
-        Thread filePoll = new Thread() {
-
-            public void run() {
-
-                javaxt.io.Directory directory = new javaxt.io.Directory(backpackPath);
-                List<Directory.Event> events = null;
-                try {
-                    events = directory.getEvents();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                while (true) {
-
-                    javaxt.io.Directory.Event event;
-                    synchronized (events) {
-                        while (events.isEmpty()) {
-                            try {
-                                events.wait();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        event = events.remove(0);
-                    }
-
-                    if (event != null) {
-
-                        System.out.println(event.toString());
-
-                        //new file
-                        if (event.getEventID() == Directory.Event.MODIFY) {
-                            File newFile = new File(event.getFile());
-                            System.out.println("File content getType:" + newFile.getContentType());
-
-
-                            for (NewFileAddedEventListener listener : eventListeners) {
-                                listener.newFileAdded(new FileWatchEvent(newFile));
-                            }
-
-
-                        }
-                        //Compare files before/after the event
-                        if (event.getEventID() == Directory.Event.RENAME) {
-                            System.out.println(
-                                    event.getOriginalFile() + " vs " + event.getFile()
-                                              );
-                        }
-                    }
-
-                }
-
-            }
-        };
-        filePoll.start();//start the thread
-    }
+//    public void startDirectoryWatch() {
+//
+//        Thread filePoll = new Thread() {
+//
+//            public void run() {
+//
+//                javaxt.io.Directory directory = new javaxt.io.Directory(backpackPath);
+//                List<Directory.Event> events = null;
+//                try {
+//                    events = directory.getEvents();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                while (true) {
+//
+//                    javaxt.io.Directory.Event event;
+//                    synchronized (events) {
+//                        while (events.isEmpty()) {
+//                            try {
+//                                events.wait();
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                        event = events.remove(0);
+//                    }
+//
+//                    if (event != null) {
+//
+//                        System.out.println(event.toString());
+//
+//                        //new file
+//                        if (event.getEventID() == Directory.Event.MODIFY) {
+//                            File newFile = new File(event.getFile());
+//                            System.out.println("File content getType:" + newFile.getContentType());
+//
+//
+//                            for (NewFileAddedEventListener listener : eventListeners) {
+//                                listener.newFileAdded(new FileWatchEvent(newFile));
+//                            }
+//
+//
+//                        }
+//                        //Compare files before/after the event
+//                        if (event.getEventID() == Directory.Event.RENAME) {
+//                            System.out.println(
+//                                    event.getOriginalFile() + " vs " + event.getFile()
+//                                              );
+//                        }
+//                    }
+//
+//                }
+//
+//            }
+//        };
+//        filePoll.start();//start the thread
+//    }
 
     public void addFileWatchEventListener(NewFileAddedEventListener listener) {
         eventListeners.add(listener);

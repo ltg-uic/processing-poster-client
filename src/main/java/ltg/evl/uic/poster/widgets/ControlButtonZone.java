@@ -11,9 +11,6 @@ import vialab.SMT.event.TouchListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by aperritano on 2/15/15.
- */
 public class ControlButtonZone extends Zone {
 
     private PFont buttonFont;

@@ -94,6 +94,7 @@ public class PosterDataModel {
 
 
     //region Loading User
+
     /**
      * Loading Users in main screen
      *
@@ -162,7 +163,6 @@ public class PosterDataModel {
             }
         };
 
-        Collection<User> resultClass = Collections2.filter(imAllUsers, predicateClass);
         setCurrentClassName(classname);
 
         this.loginCollectionListener.loadClassEvent(
@@ -192,8 +192,7 @@ public class PosterDataModel {
             ListeningExecutorService service = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(10));
             ListenableFuture<Collection<User>> explosion = service.submit(new Callable<Collection<User>>() {
                 public Collection<User> call() {
-                    Collection<User> resultClass = Collections2.filter(imAllUsers, predicateClass);
-                    return resultClass;
+                    return Collections2.filter(imAllUsers, predicateClass);
                 }
             });
 
@@ -207,8 +206,9 @@ public class PosterDataModel {
                             new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.CLASS_NAME, cname));
                 }
 
-                public void onFailure(Throwable thrown) {
-                    thrown.printStackTrace();
+                @Override
+                public void onFailure(Throwable throwable) {
+                    throwable.printStackTrace();
                 }
             });
         }
@@ -241,13 +241,7 @@ public class PosterDataModel {
 
                 try {
                     RESTHelper.getInstance().updatePosterItems(posterItems);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (GeneralSecurityException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+                } catch (InterruptedException | IOException | ExecutionException | GeneralSecurityException e) {
                     e.printStackTrace();
                 }
 
@@ -282,22 +276,19 @@ public class PosterDataModel {
             }
         };
 
-        Collection<Poster> result = Collections2.filter(imPosters, filterPosters);
-        return result;
+        return Collections2.filter(imPosters, filterPosters);
     }
 
     public Poster findPosterWithPosterItemUuid(final String posterUuid) {
 
         ImmutableList<Poster> imPosters = ImmutableList.copyOf(allPosters);
-        ImmutableList<PosterItem> imPosterItems = ImmutableList.copyOf(allPosterItems);
-
 
         Predicate<Poster> filterPoster = new Predicate<Poster>() {
             @Override
             public boolean apply(Poster poster) {
 
                 for (String aPosterUuid : poster.getPosterItems()) {
-                    if (aPosterUuid.equals(aPosterUuid)) {
+                    if (aPosterUuid.equals(posterUuid)) {
                         return true;
                     }
                 }
@@ -342,10 +333,7 @@ public class PosterDataModel {
             }
         };
 
-        Collection<PosterItem> result = Collections2.filter(imPosterItems, filterPosterItem);
-
-
-        return result;
+        return Collections2.filter(imPosterItems, filterPosterItem);
     }
 
     public PosterItem findPosterItemWithPosterItemUuid(final String posterItemUuid) {
@@ -409,12 +397,15 @@ public class PosterDataModel {
         });
 
         Futures.addCallback(deleteFuture, new FutureCallback<Poster>() {
+
+            @Override
             public void onSuccess(Poster poster) {
                 logger.log(Level.SEVERE, "DELETED POSTERITEM " + posterItemUuid + " SUCCESS!");
                 loginCollectionListener.deletePosterItem(
                         new ObjectEvent(ObjectEvent.OBJ_TYPES.DELETE_POSTER_ITEM, posterItemUuid));
             }
 
+            @Override
             public void onFailure(Throwable thrown) {
                 logger.log(Level.SEVERE, "DELETED POSTERITEM " + posterItemUuid + " FAILED!");
                 //loginCollectionListener.(new ObjectEvent(ObjectEvent.OBJ_TYPES.DELETE_POSTER_ITEM, posterItemUuid));

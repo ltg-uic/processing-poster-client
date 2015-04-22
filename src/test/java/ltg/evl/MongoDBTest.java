@@ -29,6 +29,8 @@ public class MongoDBTest {
 
     Logger logger = Logger.getLogger(getClass().getName());
 
+    String savedPosterId;
+
     @BeforeClass
     public static void setUpClass() {
 
@@ -43,9 +45,8 @@ public class MongoDBTest {
 
         // nextInt is normally exclusive of the top value,
         // so add 1 to make it inclusive
-        int randomNum = rand.nextInt((max - min) + 1) + min;
 
-        return randomNum;
+        return rand.nextInt((max - min) + 1) + min;
     }
 
 
@@ -157,7 +158,7 @@ public class MongoDBTest {
 
 
     //-- create BIG TEST DATA
-    @Test
+    @Ignore
     public void createBIGTest() throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
 
         String[] names = {"Brock", "Gale", "Gustavo", "Hank", "Hector", "Holly", "Jane", "Jesse", "Lydia", "Marie", "Mike", "Pete", "Saul", "Skyler", "Todd", "Walter"};
@@ -172,8 +173,8 @@ public class MongoDBTest {
 //        imageItems.add(createPosterItemImage(2));
 //        imageItems.add(createPosterItemImage(2));
 
-        int NUM_GROUPS = 4;
-        int NUM_POSTERS_PER_GROUP = 2;
+        int NUM_GROUPS = 1;
+        int NUM_POSTERS_PER_GROUP = 1;
 
         for (int y = 0; y <= classes.length - 1; y++) {
             String CLASS_NAME = classes[y];
@@ -193,12 +194,12 @@ public class MongoDBTest {
                     ArrayList<String> posterItems = Lists.newArrayList();
                     ArrayList<String> imageItems = Lists.newArrayList();
 
-                    imageItems.add(createPosterItemImage(random(1, 3)));
-                    imageItems.add(createPosterItemImage(random(1, 3)));
-                    imageItems.add(createPosterItemImage(random(1, 3)));
-                    posterItems.addAll(imageItems);
-                    posterItems.add(createPosterItemText(1, SentenceGenerator.getInstance().makeText(random(1, 10))));
-                    posterItems.add(createPosterItemText(2, SentenceGenerator.getInstance().makeText(random(1, 10))));
+//                    imageItems.add(createPosterItemImage(random(1, 3)));
+//                    imageItems.add(createPosterItemImage(random(1, 3)));
+//                    imageItems.add(createPosterItemImage(random(1, 3)));
+//                    posterItems.addAll(imageItems);
+//                    posterItems.add(createPosterItemText(1, SentenceGenerator.getInstance().makeText(random(1, 10))));
+//                    posterItems.add(createPosterItemText(2, SentenceGenerator.getInstance().makeText(random(1, 10))));
                     posterItems.add(createPosterItemText(3, SentenceGenerator.getInstance().makeText(random(1, 10))));
 
                     posterUuids.add(createPoster(SentenceGenerator.getInstance().makeHeadline(), posterItems));
@@ -221,6 +222,11 @@ public class MongoDBTest {
         System.out.println("DONE WITH TEST MOFO!!!");
     }
 
+    @Test
+    public void testPatch() {
+
+
+    }
 
     private String createUser(String userName, List<String> nameTags, String className,
                               List<String> uuidPosterId,
