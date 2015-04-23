@@ -223,10 +223,21 @@ public class MongoDBTest {
     }
 
     @Test
-    public void testPatch() {
+    public void testPatch() throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
+
+        PosterItem posterItem = new PosterItem();
+        posterItem.setX(50);
+        posterItem.setY(100);
+        posterItem.setHeight(200);
+        posterItem.setWidth(100);
 
 
+        RESTHelper.getInstance()
+                  .postCollection(posterItem, RESTHelper.PosterUrl.patchPosterItem("5538081fe1b8325b25000bd3",
+                                                                                   RESTHelper.PosterUrl.REQUEST_TYPE.PATCH),
+                                  PosterItem.class, false).get();
     }
+
 
     private String createUser(String userName, List<String> nameTags, String className,
                               List<String> uuidPosterId,

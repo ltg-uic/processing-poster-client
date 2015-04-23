@@ -76,20 +76,23 @@ public class MQTTPipe implements MessageListener {
 
     @Override
     public void processMessage(String rawMessage) {
-        logger.log(Level.INFO, "WE HAVE A MESSAGE" + rawMessage);
+
+        if (rawMessage != null) {
+            logger.log(Level.INFO, "WE HAVE A MESSAGE" + rawMessage);
 
 
-        try {
-            JsonObjectParser jsonObjectParser = new JsonObjectParser(JSON_FACTORY);
-            InputStream inputStream = new ByteArrayInputStream(rawMessage.getBytes());
-            Reader reader = new InputStreamReader(inputStream);
-            PosterMessage pm = jsonObjectParser.parseAndClose(reader, PosterMessage.class);
+            try {
+                JsonObjectParser jsonObjectParser = new JsonObjectParser(JSON_FACTORY);
+                InputStream inputStream = new ByteArrayInputStream(rawMessage.getBytes());
+                Reader reader = new InputStreamReader(inputStream);
+                PosterMessage pm = jsonObjectParser.parseAndClose(reader, PosterMessage.class);
 
-            logger.fine("Processing Message: " + pm);
+                logger.fine("Processing Message: " + pm);
 
-            RESTHelper.getInstance().mqttMessageForward(pm);
-        } catch (IOException e) {
-            e.printStackTrace();
+                RESTHelper.getInstance().mqttMessageForward(pm);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
 

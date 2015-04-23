@@ -28,8 +28,6 @@ public class UserPageZone extends Zone {
         this.loadUserListerner = loadUserListerner;
         this.font = ZoneHelper.helveticaNeue18Font;
     }
-
-
     public void addUsers(ImmutableList<User> users) {
 
         Zone body = new Zone("bodyu", 0, heading_height, this.getWidth(), getHeight()) {

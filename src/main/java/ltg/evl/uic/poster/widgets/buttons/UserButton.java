@@ -54,7 +54,6 @@ public class UserButton extends Zone {
     }
 
     public void initButton() {
-
         if (Optional.fromNullable(user).isPresent()) {
             this.unpressedButtonColor = Optional.of(user.getColor()).or(ZoneHelper.whiteOutline);
             this.text = WordUtils.capitalize(user.getName());
@@ -66,12 +65,10 @@ public class UserButton extends Zone {
         } else {
             this.unpressedButtonColor = ZoneHelper.whiteOutline;
         }
-
         this.pressedButtonColor = ZoneHelper.greyOutline;
         this.currentColor = unpressedButtonColor;
         this.outline = ZoneHelper.greyOutline;
         this.textColor = color(255);
-
     }
 
     public void setUser(User user) {
@@ -85,7 +82,6 @@ public class UserButton extends Zone {
     public void setPressedButtonColor(int color) {
         this.pressedButtonColor = color;
         this.currentColor = color;
-
     }
 
     public void setText(String text) {

@@ -6,9 +6,11 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.*;
 import com.google.common.util.concurrent.*;
+import com.google.gson.GsonBuilder;
 import ltg.evl.uic.poster.listeners.LoginCollectionListener;
 import ltg.evl.uic.poster.listeners.LoginDialogEvent;
 import ltg.evl.uic.poster.widgets.PictureZone;
+import ltg.evl.util.MQTTPipe;
 import ltg.evl.util.RESTHelper;
 import ltg.evl.util.collections.PictureZoneToPosterItem;
 import org.apache.commons.lang.StringUtils;
@@ -35,7 +37,6 @@ public class PosterDataModel {
 
     private static PosterDataModel ourInstance = new PosterDataModel();
     private static Logger logger;
-    //public final EventBus eventBus;
     public List<User> allUsers = Lists.newArrayList();
     public List<PosterItem> allPosterItems = Lists.newArrayList();
     public List<Poster> allPosters = Lists.newArrayList();
@@ -122,8 +123,6 @@ public class PosterDataModel {
             fetchAllPostersForCurrentUser();
             this.loginCollectionListener.loadUserEvent(new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.USER, user));
         }
-
-
     }
     //endregion
 
@@ -299,8 +298,6 @@ public class PosterDataModel {
 
 
         Collection<Poster> result = Collections2.filter(imPosters, filterPoster);
-
-
         if (!result.isEmpty()) {
             return result.iterator().next();
         }
@@ -309,7 +306,6 @@ public class PosterDataModel {
     }
 
     public Collection<PosterItem> getAllPostersItemsForPoster(final String posterUuid) {
-
         ImmutableList<Poster> imPosters = ImmutableList.copyOf(allPosters);
         Predicate<Poster> filterPosters = new Predicate<Poster>() {
             @Override
@@ -317,15 +313,12 @@ public class PosterDataModel {
                 return poster.getUuid().equals(posterUuid);
             }
         };
-
         Collection<Poster> result = Collections2.filter(imPosters, filterPosters);
         return getAllPostersItemsForPoster(result.iterator().next());
     }
 
     public Collection<PosterItem> getAllPostersItemsForPoster(final Poster poster) {
-
         ImmutableList<PosterItem> imPosterItems = ImmutableList.copyOf(allPosterItems);
-
         Predicate<PosterItem> filterPosterItem = new Predicate<PosterItem>() {
             @Override
             public boolean apply(PosterItem posterItem) {
@@ -342,22 +335,18 @@ public class PosterDataModel {
         Predicate<PosterItem> filterPosterItem = new Predicate<PosterItem>() {
             @Override
             public boolean apply(PosterItem posterItem) {
-
                 if (Optional.fromNullable(posterItemUuid).isPresent()) {
                     if (Optional.fromNullable(posterItem.getUuid()).isPresent()) {
                         return posterItem.getUuid().equals(posterItemUuid);
                     }
                     return false;
                 }
-
                 return false;
             }
         };
 
         if (!imPosterItems.isEmpty()) {
-
             Collection<PosterItem> result = Collections2.filter(imPosterItems, filterPosterItem);
-
             if (!result.isEmpty()) {
                 return result.iterator().next();
             }
@@ -368,50 +357,64 @@ public class PosterDataModel {
 
     public void removePosterItem(final String posterItemUuid) {
 
-        logger.log(Level.INFO, "REMOVING POSTER_ITEM");
+        if (posterItemUuid != null) {
 
-        final Poster foundPoster = findPosterWithPosterItemUuid(posterItemUuid);
-        final PosterItem foundPosterItem = findPosterItemWithPosterItemUuid(posterItemUuid);
-
-        foundPoster.getPosterItems().remove(posterItemUuid);
-
-        ListeningExecutorService service = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool());
-
-        ListenableFuture<Poster> deleteFuture = service.submit(new Callable<Poster>() {
-            public Poster call() throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
+            logger.log(Level.INFO, "REMOVING POSTER_ITEM");
+            final Poster foundPoster = findPosterWithPosterItemUuid(posterItemUuid);
+            final PosterItem foundPosterItem = findPosterItemWithPosterItemUuid(posterItemUuid);
+            foundPoster.getPosterItems().remove(posterItemUuid);
+            ListeningExecutorService service = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool());
+            ListenableFuture<Poster> deleteFuture = service.submit(new Callable<Poster>() {
+                public Poster call() throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
 
 
-                RESTHelper.getInstance()
-                          .postCollection(null, RESTHelper.PosterUrl.updateDeletePosterItem(
-                                  String.valueOf(foundPosterItem.get_id().get("$oid")),
-                                  RESTHelper.PosterUrl.REQUEST_TYPE.DELETE), PosterItem.class, false);
+                    RESTHelper.getInstance()
+                              .postCollection(null, RESTHelper.PosterUrl.updateDeletePosterItem(
+                                      String.valueOf(foundPosterItem.get_id().get("$oid")),
+                                      RESTHelper.PosterUrl.REQUEST_TYPE.DELETE), PosterItem.class, false);
 
-                RESTHelper.getInstance()
-                          .postCollection(foundPoster, RESTHelper.PosterUrl.updateDeletePoster(
-                                                  String.valueOf(foundPoster.get_id().get("$oid")),
-                                                  RESTHelper.PosterUrl.REQUEST_TYPE.UPDATE),
-                                          Poster.class, false);
+                    RESTHelper.getInstance()
+                              .postCollection(foundPoster, RESTHelper.PosterUrl.updateDeletePoster(
+                                                      String.valueOf(foundPoster.get_id().get("$oid")),
+                                                      RESTHelper.PosterUrl.REQUEST_TYPE.UPDATE),
+                                              Poster.class, false);
 
-                return foundPoster;
-            }
-        });
+                    return foundPoster;
+                }
+            });
 
-        Futures.addCallback(deleteFuture, new FutureCallback<Poster>() {
+            Futures.addCallback(deleteFuture, new FutureCallback<Poster>() {
 
-            @Override
-            public void onSuccess(Poster poster) {
-                logger.log(Level.SEVERE, "DELETED POSTERITEM " + posterItemUuid + " SUCCESS!");
-                loginCollectionListener.deletePosterItem(
-                        new ObjectEvent(ObjectEvent.OBJ_TYPES.DELETE_POSTER_ITEM, posterItemUuid));
-            }
+                @Override
+                public void onSuccess(Poster poster) {
+                    logger.log(Level.SEVERE, "DELETED POSTERITEM " + posterItemUuid + " SUCCESS!");
+                    sendMQTTDeleteMessage(posterItemUuid);
+                    loginCollectionListener.deletePosterItem(
+                            new ObjectEvent(ObjectEvent.OBJ_TYPES.DELETE_POSTER_ITEM, posterItemUuid));
+                }
 
-            @Override
-            public void onFailure(Throwable thrown) {
-                logger.log(Level.SEVERE, "DELETED POSTERITEM " + posterItemUuid + " FAILED!");
-                //loginCollectionListener.(new ObjectEvent(ObjectEvent.OBJ_TYPES.DELETE_POSTER_ITEM, posterItemUuid));
-                thrown.printStackTrace();
-            }
-        });
+                @Override
+                public void onFailure(Throwable thrown) {
+                    logger.log(Level.SEVERE, "DELETED POSTERITEM " + posterItemUuid + " FAILED!");
+                    thrown.printStackTrace();
+                }
+            });
+        } else {
+            logger.log(Level.SEVERE, "TRYING TO REMOVE NULL POSTER_ITEM PosterDataModel.removePosterItem");
+        }
+    }
+
+    private void sendMQTTDeleteMessage(String posterItemUuid) {
+        if (posterItemUuid != null) {
+            PosterMessage posterMessage = new PosterMessage();
+            posterMessage.setPosterUuid(currentPoster.getUuid());
+            posterMessage.setPosterItemUuid(posterItemUuid);
+            posterMessage.setAction(PosterMessage.DELETE);
+            com.google.gson.Gson gson = new GsonBuilder().create();
+            MQTTPipe.getInstance().publishMessage(gson.toJson(posterMessage));
+        } else {
+            logger.log(Level.SEVERE, "PosterDataModel.sendMQTTDeleteMessage posterUuid Null");
+        }
     }
 
     public void updatePosterItemCollection(PosterItem posterItem) {

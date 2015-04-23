@@ -22,7 +22,11 @@ public class PosterMessage extends GenericJson {
     @Key
     private String posterUuid;
     @Key
+    private String posterItemUuid;
+
+    @Key
     private String posterItemId;
+
     @Key
     private String contentType;
 
@@ -60,12 +64,12 @@ public class PosterMessage extends GenericJson {
         this.type = type;
     }
 
-    public String getPosterItemId() {
-        return posterItemId;
+    public String getPosterItemUuid() {
+        return posterItemUuid;
     }
 
-    public void setPosterItemId(String posterItemId) {
-        this.posterItemId = posterItemId;
+    public void setPosterItemUuid(String posterItemUuid) {
+        this.posterItemUuid = posterItemUuid;
     }
 
     public String getPosterUuid() {
@@ -90,5 +94,13 @@ public class PosterMessage extends GenericJson {
 
     public void setContentType(String contentType) {
         this.contentType = contentType;
+    }
+
+    public String getPosterItemId() {
+        return posterItemId;
+    }
+
+    public void setPosterItemId(String posterItemId) {
+        this.posterItemId = posterItemId;
     }
 }

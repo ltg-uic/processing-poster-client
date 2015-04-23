@@ -74,7 +74,6 @@ public class ClassPage extends Zone {
         Zone body = new Zone("bodyc", 0, heading_height, this.getWidth(), getHeight()) {
             @Override
             public void draw() {
-
                 stroke(255);
                 strokeWeight(0);
                 fill(255);

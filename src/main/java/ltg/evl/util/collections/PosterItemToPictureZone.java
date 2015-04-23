@@ -6,10 +6,11 @@ import com.google.common.base.Optional;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
 import ltg.evl.uic.poster.widgets.PictureZone;
 import ltg.evl.uic.poster.widgets.PictureZoneBuilder;
+import ltg.evl.uic.poster.widgets.ZoneHelper;
 import ltg.evl.util.ImageLoader;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import processing.core.PImage;
+import vialab.SMT.SMT;
 
 import java.util.concurrent.ExecutionException;
 
@@ -25,40 +26,27 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
 
     @Override
     public PictureZone apply(final PosterItem posterItem) {
-        logger.log(Level.INFO, "New PosterItem: " + posterItem);
+        //logger.log(Level.INFO, "New PosterItem: " + posterItem);
 
         PictureZone pictureZone;
-
         PImage pImage = null;
 
         if (Optional.fromNullable(posterItem).isPresent()) {
             if (!Strings.isNullOrEmpty(posterItem.getType())) {
-
-
-
                 switch (posterItem.getType()) {
-
-
                     case IMAGE:
-
-
-                        if (posterItem.getContent() != null)
-
-
+                        if (posterItem.getContent() != null) {
                             try {
                                 pImage = ImageLoader.downloadImage(posterItem.getContent());
                             } catch (ExecutionException | InterruptedException e) {
                                 e.printStackTrace();
                             }
-
+                        }
                         break;
                     case TEXT:
-
-
-                        if (posterItem.getContent() != null)
+                        if (posterItem.getContent() != null) {
                             pImage = ImageLoader.textToImage(posterItem.getContent());
-
-
+                        }
                         break;
                 }
 
@@ -68,7 +56,11 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                         posterItem.setWidth(pImage.width);
                         posterItem.setHeight(pImage.height);
                     }
+                }
 
+                if (posterItem.getX() == 0 && posterItem.getY() == 0) {
+                    posterItem.setY(ZoneHelper.random(0, SMT.getApplet().getHeight() - 100));
+                    posterItem.setX(ZoneHelper.random(0, SMT.getApplet().getWidth()));
                 }
             }
 

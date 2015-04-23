@@ -127,10 +127,15 @@ public class PresentationZone extends Zone {
         Zone frame = new Zone("frame", 0, heading_height, total_width, total_height) {
             @Override
             public void draw() {
-                fill(255);
                 stroke(255);
-                strokeWeight(1);
-                rect(0, 0, this.getWidth() - 3, this.getHeight() - 3);
+                strokeWeight(0);
+                fill(255);
+                rect(3, 0, getWidth() - 6, getHeight() - 3, ZoneHelper.ROUND_CORNER);
+            }
+
+            @Override
+            public void touch() {
+                super.touch();
             }
         };
 
@@ -147,6 +152,11 @@ public class PresentationZone extends Zone {
                 textSize(20);
                 fill(0);
                 text(text, getWidth() / 2 - 2, heading_height / 2);
+            }
+
+            @Override
+            public void touch() {
+                super.touch();
             }
         };
 

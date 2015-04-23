@@ -114,9 +114,16 @@ public class RESTHelper {
                 Optional<PosterItem> posterItemOptional = Optional.fromNullable(pi);
 
                 if (posterItemOptional.isPresent()) {
-                    listOfFutures.add(postCollection(pi, RESTHelper.PosterUrl.updateDeletePosterItem(
+
+                    PosterItem posterItem = new PosterItem();
+                    posterItem.setHeight(pi.getHeight());
+                    posterItem.setWidth(pi.getWidth());
+                    posterItem.setY(pi.getY());
+                    posterItem.setX(pi.getX());
+
+                    listOfFutures.add(postCollection(posterItem, RESTHelper.PosterUrl.patchPosterItem(
                                                              pi.get_id().get("$oid").toString(),
-                                                             RESTHelper.PosterUrl.REQUEST_TYPE.UPDATE),
+                                                             PosterUrl.REQUEST_TYPE.PATCH),
                                                      PosterItem.class, false));
                 } else {
                     logger.log(Level.SEVERE, "UPDATE POSTER ITEM NULL");
@@ -132,7 +139,7 @@ public class RESTHelper {
             // we want this handler to run immediately after we push the big red button!
             @Override
             public void onSuccess(List<HttpResponse> listOfReponses) {
-
+                logger.log(Level.INFO, "PATCHING POSTER ITEM SUCCESS");
             }
 
             @SuppressWarnings("NullableProblems")
@@ -224,6 +231,39 @@ public class RESTHelper {
                                 try {
                                     logger.log(Level.INFO, "POSTED ADD: " + someClass.getName());
                                     parseResponseObject(addFutureResponse, someClass, PosterUrl.REQUEST_TYPE.ADD);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Throwable thrown) {
+                                handleHttpFailure(thrown);
+                            }
+                        });
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                break;
+            case PATCH:
+
+                try {
+                    request = requestFactory.buildPatchRequest(url,
+                                                               new JsonHttpContent(new JacksonFactory(), jsonObject));
+                    jdkFuture = request.executeAsync(service);
+                    listenableFuture = JdkFutureAdapters.listenInPoolThread(
+                            jdkFuture);
+
+                    if (doCallable) {
+                        Futures.addCallback(listenableFuture, new FutureCallback<HttpResponse>() {
+                            @Override
+                            public void onSuccess(HttpResponse addFutureResponse) {
+                                try {
+                                    logger.log(Level.INFO, "PATCHED patch: " + someClass.getName());
+                                    parseResponseObject(addFutureResponse, someClass, PosterUrl.REQUEST_TYPE.PATCH);
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -403,8 +443,6 @@ public class RESTHelper {
     }
 
     private void parseAllResponse(HttpResponse response, Class<?> someClass) throws IOException {
-
-
         if (someClass.equals(User.class)) {
             logger.log(Level.INFO, "PROCESSING USER RESPONSE");
             User[] users = response.parseAs(User[].class);
@@ -417,8 +455,6 @@ public class RESTHelper {
                 Collections.addAll(userList, users);
                 PosterDataModel.helper().updateAllUserCollection(userList);
             }
-
-
         } else if (someClass.equals(Poster.class)) {
             logger.log(Level.INFO, "PROCESSING POSTER RESPONSE");
             Poster[] posters = response.parseAs(Poster[].class);
@@ -542,7 +578,7 @@ public class RESTHelper {
                     if (posterMessage.getType().equals(PosterMessage.POSTER_ITEM)) {
 
                         ListeningExecutorService service = MoreExecutors.listeningDecorator(
-                                Executors.newFixedThreadPool(10));
+                                Executors.newCachedThreadPool());
                         ListenableFuture<Void> doRESTCALL = service.submit(new Callable<Void>() {
                             public Void call() {
                                 try {
@@ -618,6 +654,14 @@ public class RESTHelper {
             return posterUrl;
         }
 
+
+        public static PosterUrl patchPosterItem(String id, PosterUrl.REQUEST_TYPE request_type) {
+            PosterUrl posterUrl = new PosterUrl(
+                    BASE_URL + "/poster_item/" + id);
+            posterUrl.request_type = request_type;
+            return posterUrl;
+        }
+
         public static PosterUrl updateDeletePosterItem(String id, PosterUrl.REQUEST_TYPE request_type) {
             PosterUrl posterUrl = new PosterUrl(
                     BASE_URL + "/poster_item/" + id);
@@ -649,7 +693,7 @@ public class RESTHelper {
         }
 
 
-        public enum REQUEST_TYPE {UPDATE, ADD, DELETE, GET}
+        public enum REQUEST_TYPE {UPDATE, ADD, DELETE, GET, PATCH}
     }
 
     //endregion mqtt
