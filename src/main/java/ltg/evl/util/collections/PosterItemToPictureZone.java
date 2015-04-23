@@ -8,9 +8,9 @@ import ltg.evl.uic.poster.widgets.PictureZone;
 import ltg.evl.uic.poster.widgets.PictureZoneBuilder;
 import ltg.evl.uic.poster.widgets.ZoneHelper;
 import ltg.evl.util.ImageLoader;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import processing.core.PImage;
-import vialab.SMT.SMT;
 
 import java.util.concurrent.ExecutionException;
 
@@ -37,7 +37,13 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                     case IMAGE:
                         if (posterItem.getContent() != null) {
                             try {
-                                pImage = ImageLoader.downloadImage(posterItem.getContent());
+
+                                if (posterItem.getContent().contains("https")) {
+                                    String newUrl = StringUtils.replace(posterItem.getContent(), "https", "http");
+                                    pImage = ImageLoader.downloadImage(newUrl);
+                                } else {
+                                    pImage = ImageLoader.downloadImage(posterItem.getContent());
+                                }
                             } catch (ExecutionException | InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -59,8 +65,8 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                 }
 
                 if (posterItem.getX() == 0 && posterItem.getY() == 0) {
-                    posterItem.setY(ZoneHelper.random(0, SMT.getApplet().getHeight() - 100));
-                    posterItem.setX(ZoneHelper.random(0, SMT.getApplet().getWidth()));
+                    posterItem.setY(ZoneHelper.random(200, 500));
+                    posterItem.setX(ZoneHelper.random(200, 500));
                 }
             }
 
