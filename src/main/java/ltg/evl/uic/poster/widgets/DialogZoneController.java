@@ -140,7 +140,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
         Predicate<User> predicateMike = new Predicate<User>() {
             @Override
             public boolean apply(User input) {
-                return StringUtils.lowerCase(input.getClassname()).equals("mike");
+                return StringUtils.lowerCase(input.getClassname()).equals("michael");
             }
         };
 
@@ -161,7 +161,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
             builder.put("Ben", resultBen);
 
         if (!resultMike.isEmpty())
-            builder.put("Mike", resultMike);
+            builder.put("Michael", resultMike);
 
         if (!resultTest.isEmpty())
             builder.put("Test", resultTest);
