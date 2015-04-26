@@ -36,6 +36,8 @@ public class PosterItem extends GenericJson {
     @Key
     private String color;
     @Key
+    private String originator;
+    @Key
     private String content;
     @Key
     private long lastEdited;

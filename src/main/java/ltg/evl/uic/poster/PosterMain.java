@@ -139,7 +139,7 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
                     for (PictureZone pz : list) {
                         if (pz != null) {
                             if (SMT.add(pz)) {
-                                pz.applyScaleRotation();
+                                // pz.applyScaleRotation();
                                 pz.setIsEditing(lastIsEditToggle);
                                 pz.startAni(0.5f, 0f);
                             }

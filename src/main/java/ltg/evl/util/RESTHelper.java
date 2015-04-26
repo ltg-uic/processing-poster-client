@@ -105,7 +105,7 @@ public class RESTHelper {
         }
     }
 
-    public void updatePosterItems(
+    public ListenableFuture<List<HttpResponse>> updatePosterItems(
             FluentIterable<PosterItem> posterItems) throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
         List<ListenableFuture<HttpResponse>> listOfFutures = Lists.newArrayList();
 
@@ -118,6 +118,8 @@ public class RESTHelper {
                     PosterItem posterItem = new PosterItem();
                     posterItem.setHeight(pi.getHeight());
                     posterItem.setWidth(pi.getWidth());
+                    posterItem.setScale(pi.getScale());
+                    posterItem.setRotation(pi.getRotation());
                     posterItem.setY(pi.getY());
                     posterItem.setX(pi.getX());
 
@@ -135,19 +137,7 @@ public class RESTHelper {
         ListenableFuture<List<HttpResponse>> successfullQueries = Futures.successfulAsList(listOfFutures);
 
 
-        Futures.addCallback(successfullQueries, new FutureCallback<List<HttpResponse>>() {
-            // we want this handler to run immediately after we push the big red button!
-            @Override
-            public void onSuccess(List<HttpResponse> listOfReponses) {
-                logger.log(Level.INFO, "PATCHING POSTER ITEM SUCCESS");
-            }
-
-            @SuppressWarnings("NullableProblems")
-            @Override
-            public void onFailure(Throwable thrown) {
-                thrown.printStackTrace();
-            }
-        });
+        return successfullQueries;
     }
 
     //region http

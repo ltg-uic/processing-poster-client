@@ -25,7 +25,7 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
     final static Logger logger = Logger.getLogger(PosterItemToPictureZone.class);
 
     @Override
-    public PictureZone apply(final PosterItem posterItem) {
+    public PictureZone apply(PosterItem posterItem) {
         //logger.log(Level.INFO, "New PosterItem: " + posterItem);
 
         PictureZone pictureZone;

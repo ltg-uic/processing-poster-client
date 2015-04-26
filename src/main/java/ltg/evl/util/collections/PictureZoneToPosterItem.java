@@ -37,7 +37,7 @@ public class PictureZoneToPosterItem implements Function<PictureZone, PosterItem
 
                 modPosteritem.setHeight(pictureZone.getHeight());
                 modPosteritem.setWidth(pictureZone.getWidth());
-                modPosteritem.setRotation(pictureZone.getZoneRotation());
+                modPosteritem.setRotation(pictureZone.getRotationAngle() + "");
                 modPosteritem.setScale(pictureZone.getZoneScale());
                 modPosteritem.setY(pictureZone.getY());
                 modPosteritem.setX(pictureZone.getX());

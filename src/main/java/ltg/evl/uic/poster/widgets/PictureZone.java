@@ -1,9 +1,7 @@
 package ltg.evl.uic.poster.widgets;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Optional;
-import com.google.common.base.Splitter;
 import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
 import ltg.evl.uic.poster.widgets.buttons.DeleteButton;
@@ -17,8 +15,6 @@ import vialab.SMT.ImageZone;
 import vialab.SMT.SMT;
 import vialab.SMT.Touch;
 import vialab.SMT.Zone;
-
-import java.util.List;
 
 public class PictureZone extends ImageZone implements DeleteButtonListener {
 
@@ -48,8 +44,7 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
         super(uuid, image, x, SMT.getApplet().getHeight(), width, height);
 
 
-        this.setZoneScale(rotation);
-        this.setZoneScale(scale);
+        setZoneRotation(rotation);
 
         this.initialX = x;
         this.initialY = SMT.getApplet().getHeight() + offScreenPadding;
@@ -80,43 +75,15 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
         this.isDeleteMode = false;
     }
 
-    private void convertScale(String scale) {
-        if (scale != null) {
-            this.setZoneScale(scale);
-            List<String> strings = Splitter.on(',').splitToList(scale);
-            this.scale(new Float(strings.get(0)), new Float(strings.get(1)), new Float(strings.get(2)));
-        }
-    }
-
-    protected void convertRotation(String rotation) {
-        if (rotation != null) {
-            this.setZoneRotation(rotation);
-            List<String> strings = Splitter.on(',').splitToList(rotation);
-            this.rotate(new Float(strings.get(0)), new Float(strings.get(1)), new Float(strings.get(2)),
-                        new Float(strings.get(3)));
-        }
+    @Override
+    public void rotate(float angle) {
+        super.rotate(angle);
+        setZoneRotation(angle + "");
     }
 
     @Override
-    public void scale(float x, float y, float z) {
-        setZoneScale(Joiner.on(",").join(x, y, z));
-        super.scale(x, y, z);
-    }
-
-    @Override
-    public void rotate(float angle, float x, float y, float z) {
-        setZoneRotation(Joiner.on(",").join(angle, x, y, z));
-        super.rotate(angle, x, y, z);
-    }
-
-    @Override
-    protected void rotateImpl(float angle, float v0, float v1, float v2) {
-        super.rotateImpl(angle, v0, v1, v2);
-    }
-
-    public void applyScaleRotation() {
-        convertRotation(getZoneRotation());
-        convertScale(getZoneScale());
+    protected void invokeTouchMethod() {
+        super.invokeTouchMethod();
     }
 
     public void startAni(float speed, float delay) {
@@ -194,7 +161,9 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
 
 
             if (this.getZoneImage() != null) {
-
+//                System.out.println(this.getRotationAngle()*180/PI);
+////                System.out.println(
+////                        "PictureZone.drawImpl w:" + getWidth() + " h: " + getHeight() + " scale: " + getZoneScale() + " rotation: " +);
                 image(this.getZoneImage(), padding, padding, this.getWidth() - paddingOffset,
                       this.getHeight() - paddingOffset);
             } else {
@@ -314,6 +283,10 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
 
     public void setZoneScale(String zoneScale) {
         this.zoneScale = zoneScale;
+    }
+
+    public void applyScaleRotation() {
+        super.rotate(new Float(getZoneRotation()) * 180 / PI);
     }
 
 

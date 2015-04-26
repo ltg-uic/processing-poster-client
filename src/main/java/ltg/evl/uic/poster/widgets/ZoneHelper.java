@@ -31,10 +31,10 @@ public class ZoneHelper {
     public static final String SELECT_A_POSTER = "Select a Poster";
     public static final int GRID_SPACER = 15;
     public static final int CLASS_BUTTON_SIZE = 150;
-    public static final int BUTTON_WIDTH = 250;
+    public static final int BUTTON_WIDTH = 300;
     public static final int BUTTON_HEIGHT = 100;
     public static final int LOGOUT_BUTTON_HEIGHT = 75;
-    public static final int LOGOUT_BUTTON_WIDTH = 150;
+    public static final int LOGOUT_BUTTON_WIDTH = 200;
     public static final int POSTER_BUTTON_WIDTH = 300;
     public static final int POSTER_BUTTON_HEIGHT = 125;
     public static final String LOGOUT = "Logout";

@@ -8,7 +8,6 @@ import ltg.evl.util.RESTHelper;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
-import org.junit.Test;
 import org.kohsuke.randname.RandomNameGenerator;
 
 import java.io.IOException;
@@ -222,7 +221,7 @@ public class MongoDBTest {
         System.out.println("DONE WITH TEST MOFO!!!");
     }
 
-    @Test
+    @Ignore
     public void testPatch() throws InterruptedException, GeneralSecurityException, ExecutionException, IOException {
 
         PosterItem posterItem = new PosterItem();

@@ -1,5 +1,6 @@
 package ltg.evl.uic.poster.json.mongo;
 
+import com.google.api.client.http.HttpResponse;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
@@ -239,7 +240,27 @@ public class PosterDataModel {
 
 
                 try {
-                    RESTHelper.getInstance().updatePosterItems(posterItems);
+
+                    ListenableFuture<List<HttpResponse>> listListenableFutures = RESTHelper.getInstance()
+                                                                                           .updatePosterItems(
+                                                                                                   posterItems);
+                    Futures.addCallback(listListenableFutures, new FutureCallback<List<HttpResponse>>() {
+                        // we want this handler to run immediately after we push the big red button!
+                        @Override
+                        public void onSuccess(List<HttpResponse> listOfReponses) {
+                            logger.log(Level.INFO, "PATCHING POSTER ITEMS SUCCESS");
+                            loginCollectionListener.logoutDoneEvent();
+                        }
+
+                        @SuppressWarnings("NullableProblems")
+                        @Override
+                        public void onFailure(Throwable thrown) {
+                            thrown.printStackTrace();
+                        }
+                    });
+
+
+
                 } catch (InterruptedException | IOException | ExecutionException | GeneralSecurityException e) {
                     e.printStackTrace();
                 }
@@ -247,7 +268,7 @@ public class PosterDataModel {
 
             }
 
-            this.loginCollectionListener.logoutDoneEvent();
+
         }
     }
 
