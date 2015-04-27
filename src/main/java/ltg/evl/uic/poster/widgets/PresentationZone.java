@@ -124,6 +124,33 @@ public class PresentationZone extends Zone {
 
 
         final int heading_height = 50;
+
+        Zone heading = new Zone("heading", x2, y2, total_width, heading_height + total_height) {
+            @Override
+            public void draw() {
+                stroke(97, 97, 97);
+                strokeWeight(3);
+                fill(255);
+                rect(0, 0, this.getWidth(), this.getHeight(), ZoneHelper.ROUND_CORNER);
+
+                stroke(224, 224, 224);
+                strokeWeight(3);
+                fill(255);
+                rect(1, 1, this.getWidth() - 2, this.getHeight() - 2, ZoneHelper.ROUND_CORNER);
+
+                textFont(font, 20);
+                textAlign(CENTER, CENTER);
+                textSize(20);
+                fill(0);
+                text(text, getWidth() / 2 - 2, heading_height / 2);
+            }
+
+            @Override
+            public void touch() {
+                super.touch();
+            }
+        };
+
         Zone frame = new Zone("frame", 0, heading_height, total_width, total_height) {
             @Override
             public void draw() {
@@ -139,29 +166,8 @@ public class PresentationZone extends Zone {
             }
         };
 
-        Zone heading = new Zone("heading", x2, y2, total_width, heading_height + total_height) {
-            @Override
-            public void draw() {
-                fill(255);
-                stroke(ZoneHelper.greyOutline);
-                strokeWeight(2);
-                rect(0, 0, this.getWidth(), this.getHeight(), ZoneHelper.ROUND_CORNER);
 
-                textFont(font, 20);
-                textAlign(CENTER, CENTER);
-                textSize(20);
-                fill(0);
-                text(text, getWidth() / 2 - 2, heading_height / 2);
-            }
-
-            @Override
-            public void touch() {
-                super.touch();
-            }
-        };
-
-
-        YesButton yesButton = new YesButton("Yes", "Yes", DIALOG_WIDTH, DIALOG_WIDTH, ZoneHelper.redOutline, 20) {
+        YesButton yesButton = new YesButton("Yes", "Yes", DIALOG_WIDTH, DIALOG_WIDTH, ZoneHelper.redOutline, 24) {
             @Override
             public void touchUp(Touch touch) {
                 super.touchUp(touch);
@@ -171,7 +177,7 @@ public class PresentationZone extends Zone {
 
         yesButton.initButton();
 
-        YesButton noButton = new YesButton("No", "No", DIALOG_WIDTH, DIALOG_WIDTH, ZoneHelper.blueOutline, 20) {
+        YesButton noButton = new YesButton("No", "No", DIALOG_WIDTH, DIALOG_WIDTH, ZoneHelper.blueOutline, 24) {
             @Override
             public void touchUp(Touch touch) {
                 super.touchUp(touch);
@@ -186,7 +192,7 @@ public class PresentationZone extends Zone {
 
         heading.add(frame);
         this.add(heading);
-        this.fade(3f, 0, alpha, true);
+        this.fade(3f, 0, alpha, false);
     }
 
     public void doYesAction() {

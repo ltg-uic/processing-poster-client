@@ -553,6 +553,11 @@ public class RESTHelper {
 
             final PosterMessage posterMessage = posterMessageOptional.get();
 
+            if (posterMessage.getAction().equals(PosterMessage.REFRESH_DATA)) {
+                PosterDataModel.helper().refreshMessageRecieved();
+                return;
+            }
+
 
             Optional<User> userOptional = Optional.fromNullable(PosterDataModel.helper().getCurrentUser());
 

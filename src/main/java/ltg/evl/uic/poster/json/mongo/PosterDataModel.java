@@ -425,6 +425,11 @@ public class PosterDataModel {
         }
     }
 
+    public void refreshMessageRecieved() {
+        logger.log(Level.INFO, "Refresh Message Recieved");
+        loginCollectionListener.refreshEventReceived();
+    }
+
     private void sendMQTTDeleteMessage(String posterItemUuid) {
         if (posterItemUuid != null) {
             PosterMessage posterMessage = new PosterMessage();
@@ -545,6 +550,8 @@ public class PosterDataModel {
     public void setCurrentUserPosters(Collection<Poster> currentUserPosters) {
         this.currentUserPosters = currentUserPosters;
     }
+
+
     //end region
 
 

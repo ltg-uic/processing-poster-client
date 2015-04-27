@@ -20,4 +20,6 @@ public interface LoginCollectionListener {
     void updatePosterItem(ObjectEvent objectEvent);
 
     void deletePosterItem(ObjectEvent objectEvent);
+
+    void refreshEventReceived();
 }

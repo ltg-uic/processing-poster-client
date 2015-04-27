@@ -10,6 +10,7 @@ public class PosterMessage extends GenericJson {
     public static String DELETE = "DELETE";
     public static String POSTER = "POSTER";
     public static String POSTER_ITEM = "POSTER_ITEM";
+    public static String REFRESH_DATA = "REFRESH_DATA";
     public static String USER = "USER";
     @Key
     private String action;

@@ -41,11 +41,13 @@ public class ZoneHelper {
     public static final String REMOVE = "Remove";
     public static final String EDIT = "Editing";
     public static final String PRESENT = "Presenting";
+    public static final int REFRESH_BUTTON_WIDTH = 100;
     public static PImage deleteImage;
     public static PFont helveticaNeue18Font;
     public static PFont helveticaNeue48Font;
     public static Font helveticaNeue20JavaFont = new Font("HelveticaNeue", Font.BOLD, 20);
     public static PImage scaleImage;
+    public static PImage refreshImage;
     public static PFont helveticaNeue48BoldFont;
     public static int[] colors = {SMT.getApplet().color(126, 87, 194), SMT.getApplet()
                                                                           .color(92, 107, 192), SMT.getApplet()
@@ -72,6 +74,7 @@ public class ZoneHelper {
     public static int orangeColor = SMT.getApplet().color(251, 140, 0);
     private static ZoneHelper ourInstance = new ZoneHelper();
 
+
     private ZoneHelper() {
         //fuck you processing
         helveticaNeue18Font = SMT.getApplet().loadFont(
@@ -82,7 +85,7 @@ public class ZoneHelper {
                 Resources.getResource("HelveticaNeue-Bold-48.vlw").getPath().replaceAll("%20", " "));
         deleteImage = SMT.getApplet().loadImage("delete_button_transparent.png");
         scaleImage = SMT.getApplet().loadImage("scale_button_transparent.png");
-
+        refreshImage = SMT.getApplet().loadImage("refresh_button_transparent.png");
     }
 
     public static ZoneHelper getInstance() {

@@ -94,6 +94,19 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
         SMT.remove(posterItemId);
     }
 
+    @Override
+    public void refreshEventReceived() {
+        //check if the dialog is up
+        System.out.println("PosterMain.refreshEventReceived isShowing " + DialogZoneController.dialog().isShowing());
+
+        if (DialogZoneController.dialog().isShowing()) {
+            DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
+            PosterDataModel.helper().startInitialization();
+        } else {
+            logger.info("DialogZoneController NOT SHOWING ON MESSAGE RECEIVED");
+        }
+    }
+
     //endregion LoginCollectionListener
 
     @Override
@@ -158,9 +171,21 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
                                                    ZoneHelper.LOGOUT_BUTTON_HEIGHT) {
             @Override
             public void logoutAction() {
-                final PresentationZone presentationZone = new PresentationZone("s", 0, 0,
+                final PresentationZone presentationZone = new PresentationZone("shouldLogoutPresentation", 0, 0,
                                                                                SMT.getApplet().getWidth(),
                                                                                SMT.getApplet().getHeight()) {
+
+
+                    @Override
+                    public void doTouchAction() {
+                        System.out.println("PosterMain.doTouchAction");
+                    }
+
+                    @Override
+                    public void delete() {
+                        System.out.println("PosterMain.delete");
+                    }
+
                     @Override
                     public void doYesAction() {
                         PosterDataModel.helper().logout();

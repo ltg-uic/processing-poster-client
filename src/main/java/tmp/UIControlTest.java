@@ -280,6 +280,12 @@ public class UIControlTest extends PApplet {
         };
         SMT.add(mqttZone);
 
+
+        ImageButtonZone imageZone = new ImageButtonZone("h", 200, 200, ZoneHelper.REFRESH_BUTTON_WIDTH, 100,
+                                                        ZoneHelper.refreshImage, ZoneHelper.whiteOutline);
+
+        SMT.add(imageZone);
+
 //        PresentationZone presentationZone = new PresentationZone("s", 0, 0, SMT.getApplet().getWidth(),
 //                                                                 SMT.getApplet().getHeight());
 //

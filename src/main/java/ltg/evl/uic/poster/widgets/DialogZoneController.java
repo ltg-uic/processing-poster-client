@@ -35,6 +35,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
     private Ani ani;
     private float aniSpeed = 1.0f;
     private PresentationZone presentationZone;
+    private boolean isShowing;
 
 
     private DialogZoneController() {
@@ -50,23 +51,29 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
         switch (page) {
             case CLASS_PAGE:
                 this.showClassPage();
+                setIsShowing(true);
                 break;
             case POSTER_PAGE:
                 this.showPosterPage();
+                setIsShowing(true);
                 break;
             case USER_PAGE:
                 this.showUserPage();
+                setIsShowing(true);
                 break;
             case NO_PRES:
                 this.hidePresentationPage();
+                setIsShowing(false);
                 break;
             case PRES:
                 showPresentationPage();
+                setIsShowing(true);
                 break;
             case NONE:
                 this.hideClassPage();
                 this.hideUserPage();
                 this.hidePosterPage();
+                setIsShowing(false);
                 break;
         }
     }
@@ -124,7 +131,6 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
     }
 
     public void showClassPage() {
-
         ImmutableList<User> imAllUsers = ImmutableList.copyOf(PosterDataModel.helper().allUsers);
 
         Predicate<User> predicateBen = new Predicate<User>() {
@@ -353,6 +359,14 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
 
     public void setAni(Ani ani) {
         this.ani = ani;
+    }
+
+    public boolean isShowing() {
+        return isShowing;
+    }
+
+    public void setIsShowing(boolean isShowing) {
+        this.isShowing = isShowing;
     }
 
     public enum PAGE_TYPES {CLASS_PAGE, POSTER_PAGE, USER_PAGE, NONE, NO_PRES, PRES, CONTROL}
