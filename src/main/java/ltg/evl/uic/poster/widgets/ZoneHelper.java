@@ -1,6 +1,5 @@
 package ltg.evl.uic.poster.widgets;
 
-import com.google.common.io.Resources;
 import ltg.evl.uic.poster.widgets.buttons.DeleteButton;
 import ltg.evl.uic.poster.widgets.buttons.DeleteButtonBuilder;
 import ltg.evl.uic.poster.widgets.buttons.DeleteButtonListener;
@@ -49,23 +48,21 @@ public class ZoneHelper {
     public static PImage scaleImage;
     public static PImage refreshImage;
     public static PFont helveticaNeue48BoldFont;
-    public static int[] colors = {SMT.getApplet().color(126, 87, 194), SMT.getApplet()
-                                                                          .color(92, 107, 192), SMT.getApplet()
-                                                                                                   .color(66, 165,
-                                                                                                          245), SMT
+    public static int[] colors = {SMT.getApplet().color(93, 64, 55), SMT.getApplet()
+                                                                        .color(69, 90, 100), SMT.getApplet()
+                                                                                                .color(221, 44, 0), SMT
             .getApplet()
-            .color(41, 182, 246), SMT.getApplet().color(38, 198, 218), SMT.getApplet()
-                                                                          .color(38, 166, 154), SMT.getApplet()
+            .color(255, 109, 0), SMT.getApplet().color(56, 142, 60), SMT.getApplet()
+                                                                        .color(255, 160, 0), SMT.getApplet()
                                                                                                    .color(102, 187,
                                                                                                           106), SMT.getApplet()
                                                                                                                    .color(156,
                                                                                                                           204,
                                                                                                                           101), SMT
             .getApplet()
-            .color(212, 167, 38), SMT
-            .getApplet()
-            .color(189, 189, 189), SMT.getApplet().color(122, 186, 58)};
-    public static int greenColor = SMT.getApplet().color(122, 186, 58);
+            .color(212, 167, 38), SMT.getApplet().color(122, 186, 58)};
+    public static int greenColor = SMT.getApplet().color(38, 166, 154);
+    public static int darkBlueOutline = SMT.getApplet().color(1, 87, 155);
     public static int blueOutline = SMT.getApplet().color(29, 128, 240);
     public static int redOutline = SMT.getApplet().color(238, 43, 41);
     public static int whiteOutline = SMT.getApplet().color(255, 255, 255);
@@ -77,12 +74,8 @@ public class ZoneHelper {
 
     private ZoneHelper() {
         //fuck you processing
-        helveticaNeue18Font = SMT.getApplet().loadFont(
-                Resources.getResource("HelveticaNeue-18.vlw").getPath().replaceAll("%20", " "));
-        helveticaNeue48Font = SMT.getApplet().loadFont(
-                Resources.getResource("HelveticaNeue-48.vlw").getPath().replaceAll("%20", " "));
-        helveticaNeue48BoldFont = SMT.getApplet().loadFont(
-                Resources.getResource("HelveticaNeue-Bold-48.vlw").getPath().replaceAll("%20", " "));
+        helveticaNeue18Font = SMT.getApplet().createFont("HelveticaNeue", 18);
+        helveticaNeue48Font = SMT.getApplet().createFont("HelveticaNeue", 48);
         deleteImage = SMT.getApplet().loadImage("delete_button_transparent.png");
         scaleImage = SMT.getApplet().loadImage("scale_button_transparent.png");
         refreshImage = SMT.getApplet().loadImage("refresh_button_transparent.png");

@@ -221,7 +221,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
             if (!imAllClassUsers.isEmpty()) {
                 int size = imAllClassUsers.size();
 
-                int cols = 10;
+                int cols = 4;
 
                 int reminder;
                 int rows;
@@ -268,7 +268,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
             if (!posters.isEmpty()) {
 
                 int size = posters.size();
-                int cols = 10;
+                int cols = 4;
 
                 int reminder;
                 int rows;

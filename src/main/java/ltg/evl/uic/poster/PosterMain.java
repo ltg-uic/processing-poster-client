@@ -117,7 +117,7 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
         int w = displayWidth;
         int h = displayHeight;
 
-        size(w, h, SMT.RENDERER);
+        // size(SMT.RENDERER);
         SMT.init(this, TouchSource.AUTOMATIC);
 
         setupControlButtons();
@@ -128,6 +128,25 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
         RESTHelper.getInstance().initAllCollections();
     }
 
+    @Override
+    public String sketchRenderer() {
+        return SMT.RENDERER;
+    }
+
+    @Override
+    public int sketchWidth() {
+        return displayWidth;
+    }
+
+    @Override
+    public int sketchHeight() {
+        return displayHeight;
+    }
+
+    @Override
+    public boolean sketchFullScreen() {
+        return true;
+    }
 
     public void loadPosterItemsForCurrentUserAndPoster(Collection<PosterItem> posterItems, boolean shouldRemove) {
 

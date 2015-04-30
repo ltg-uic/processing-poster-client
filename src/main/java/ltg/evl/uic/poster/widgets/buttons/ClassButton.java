@@ -30,7 +30,7 @@ public class ClassButton extends Zone {
 
 
     public void initButton() {
-        this.unpressedButtonColor = ZoneHelper.blueOutline;
+        this.unpressedButtonColor = ZoneHelper.greenColor;
         this.pressedButtonColor = ZoneHelper.greyOutline;
         this.currentColor = unpressedButtonColor;
         this.outline = ZoneHelper.greyOutline;

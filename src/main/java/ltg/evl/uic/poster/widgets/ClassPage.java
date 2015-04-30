@@ -33,7 +33,7 @@ public class ClassPage extends Zone {
     public void draw() {
 
 
-        stroke(97, 97, 97);
+        stroke(ZoneHelper.greyOutline);
         strokeWeight(3);
         fill(255);
         rect(0, 0, this.getWidth(), this.getHeight() + heading_height, ZoneHelper.ROUND_CORNER);

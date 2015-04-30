@@ -51,7 +51,7 @@ public class PresentationZone extends Zone {
 
     @Override
     public void draw() {
-        fill(117, 177, 177, bgAlpha);
+        fill(ZoneHelper.darkBlueOutline, bgAlpha);
         rect(0, 0, this.getWidth(), this.getHeight());
     }
 

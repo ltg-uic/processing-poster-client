@@ -50,7 +50,7 @@ public class UserButton extends Zone {
         this.font = ZoneHelper.helveticaNeue18Font;
         //this.text = user.getName();
 
-        this.fontSize = 18;
+        this.fontSize = 16;
     }
 
     public void initButton() {
@@ -117,14 +117,15 @@ public class UserButton extends Zone {
             float hght = textAscent();
             int x1 = getWidth() / 2;
             int y1 = (int) (getHeight() / 2 - (hght / 2));
-            text(text, x1, y1);
+            rectMode(CENTER);
+            text(text, x1, y1, getWidth(), getHeight());
             if (this.nameTags != null) {
                 textAlign(CENTER, CENTER);
                 textSize(fontSize - 4);
                 fill(textColor);
                 smooth(4);
                 float h = textAscent();
-                text(nameTags, x1, y1 + (h * 2));
+                text(nameTags, x1, y1 + (h * 3));
             }
 
         }
