@@ -1,7 +1,6 @@
-package ltg.evl.uic.poster.widgets.buttons;
+package ltg.evl.uic.poster.widgets;
 
 import com.google.common.base.MoreObjects;
-import ltg.evl.uic.poster.widgets.ZoneHelper;
 import processing.core.PFont;
 import vialab.SMT.Touch;
 import vialab.SMT.Zone;

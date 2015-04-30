@@ -6,7 +6,7 @@ import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
 import ltg.evl.uic.poster.json.mongo.User;
 import ltg.evl.uic.poster.widgets.PictureZone;
-import ltg.evl.uic.poster.widgets.buttons.UserButton;
+import ltg.evl.uic.poster.widgets.UserButton;
 import org.apache.log4j.Logger;
 import processing.core.PApplet;
 import processing.core.PFont;

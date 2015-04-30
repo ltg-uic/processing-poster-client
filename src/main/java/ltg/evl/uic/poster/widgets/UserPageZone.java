@@ -3,7 +3,6 @@ package ltg.evl.uic.poster.widgets;
 import com.google.common.collect.ImmutableList;
 import ltg.evl.uic.poster.json.mongo.User;
 import ltg.evl.uic.poster.listeners.LoadUserListener;
-import ltg.evl.uic.poster.widgets.buttons.UserButton;
 import ltg.evl.util.de.looksgood.ani.Ani;
 import processing.core.PFont;
 import processing.core.PVector;

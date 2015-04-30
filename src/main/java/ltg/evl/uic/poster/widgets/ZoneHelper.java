@@ -1,8 +1,5 @@
 package ltg.evl.uic.poster.widgets;
 
-import ltg.evl.uic.poster.widgets.buttons.DeleteButton;
-import ltg.evl.uic.poster.widgets.buttons.DeleteButtonBuilder;
-import ltg.evl.uic.poster.widgets.buttons.DeleteButtonListener;
 import processing.core.PFont;
 import processing.core.PImage;
 import vialab.SMT.SMT;

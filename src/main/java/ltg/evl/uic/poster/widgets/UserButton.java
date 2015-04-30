@@ -1,10 +1,9 @@
-package ltg.evl.uic.poster.widgets.buttons;
+package ltg.evl.uic.poster.widgets;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import ltg.evl.uic.poster.json.mongo.User;
 import ltg.evl.uic.poster.listeners.LoadUserListener;
-import ltg.evl.uic.poster.widgets.ZoneHelper;
 import org.apache.commons.lang.WordUtils;
 import processing.core.PFont;
 import vialab.SMT.Touch;

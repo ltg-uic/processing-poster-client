@@ -1,4 +1,4 @@
-package ltg.evl.uic.poster.widgets.buttons;
+package ltg.evl.uic.poster.widgets;
 
 import processing.core.PFont;
 import vialab.SMT.ButtonZone;

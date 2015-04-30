@@ -1,7 +1,6 @@
 package ltg.evl.uic.poster.widgets;
 
 import ltg.evl.uic.poster.listeners.LoadPosterListener;
-import ltg.evl.uic.poster.widgets.buttons.UserButton;
 import vialab.SMT.Touch;
 
 /**

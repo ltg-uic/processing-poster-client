@@ -1,6 +1,5 @@
-package ltg.evl.uic.poster.widgets.buttons;
+package ltg.evl.uic.poster.widgets;
 
-import ltg.evl.uic.poster.widgets.ZoneHelper;
 import vialab.SMT.Touch;
 
 /**
