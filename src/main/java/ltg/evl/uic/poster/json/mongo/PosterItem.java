@@ -2,7 +2,7 @@ package ltg.evl.uic.poster.json.mongo;
 
 import com.google.api.client.json.GenericJson;
 import com.google.api.client.util.Key;
-import ltg.evl.util.ModelHelper;
+import ltg.evl.uic.poster.util.ModelHelper;
 
 import java.io.IOException;
 import java.util.Map;

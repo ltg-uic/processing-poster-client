@@ -4,7 +4,7 @@ import com.google.common.base.CharMatcher;
 import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
 import ltg.evl.uic.poster.json.mongo.*;
-import ltg.evl.util.RESTHelper;
+import ltg.evl.uic.poster.util.RESTHelper;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Ignore;

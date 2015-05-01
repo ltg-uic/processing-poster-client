@@ -1,5 +1,8 @@
 package ltg.evl.uic.poster.widgets;
 
+import ltg.evl.uic.poster.widgets.button.DeleteButton;
+import ltg.evl.uic.poster.widgets.button.DeleteButtonBuilder;
+import ltg.evl.uic.poster.widgets.button.DeleteButtonListener;
 import processing.core.PFont;
 import processing.core.PImage;
 import vialab.SMT.SMT;
@@ -29,8 +32,8 @@ public class ZoneHelper {
     public static final int CLASS_BUTTON_SIZE = 150;
     public static final int BUTTON_WIDTH = 300;
     public static final int BUTTON_HEIGHT = 100;
-    public static final int LOGOUT_BUTTON_HEIGHT = 75;
-    public static final int LOGOUT_BUTTON_WIDTH = 200;
+    public static final int LOGOUT_BUTTON_HEIGHT = 100;
+    public static final int LOGOUT_BUTTON_WIDTH = 250;
     public static final int POSTER_BUTTON_WIDTH = 300;
     public static final int POSTER_BUTTON_HEIGHT = 125;
     public static final String LOGOUT = "Logout";
@@ -44,7 +47,6 @@ public class ZoneHelper {
     public static Font helveticaNeue20JavaFont = new Font("HelveticaNeue", Font.BOLD, 20);
     public static PImage scaleImage;
     public static PImage refreshImage;
-    public static PFont helveticaNeue48BoldFont;
     public static int[] colors = {SMT.getApplet().color(93, 64, 55), SMT.getApplet()
                                                                         .color(69, 90, 100), SMT.getApplet()
                                                                                                 .color(221, 44, 0), SMT
@@ -74,7 +76,7 @@ public class ZoneHelper {
         helveticaNeue18Font = SMT.getApplet().createFont("HelveticaNeue", 18);
         helveticaNeue48Font = SMT.getApplet().createFont("HelveticaNeue", 48);
         deleteImage = SMT.getApplet().loadImage("delete_button_transparent.png");
-        scaleImage = SMT.getApplet().loadImage("scale_button_transparent.png");
+        //scaleImage = SMT.getApplet().loadImage("scale_button_transparent.png");
         refreshImage = SMT.getApplet().loadImage("refresh_button_transparent.png");
     }
 

@@ -2,7 +2,8 @@ package ltg.evl.uic.poster.widgets;
 
 import ltg.evl.uic.poster.json.mongo.Poster;
 import ltg.evl.uic.poster.listeners.LoadPosterListener;
-import ltg.evl.util.de.looksgood.ani.Ani;
+import ltg.evl.uic.poster.util.de.looksgood.ani.Ani;
+import ltg.evl.uic.poster.widgets.button.PosterButton;
 import org.apache.commons.lang.WordUtils;
 import processing.core.PFont;
 import processing.core.PVector;

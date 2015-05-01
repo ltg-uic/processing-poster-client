@@ -1,6 +1,6 @@
 package tmp;
 
-import ltg.evl.util.MQTTPipe;
+import ltg.evl.uic.poster.util.MQTTPipe;
 
 /**
  * Created by aperritano on 3/23/15.

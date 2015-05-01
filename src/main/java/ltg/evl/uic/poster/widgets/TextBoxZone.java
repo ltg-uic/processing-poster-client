@@ -5,6 +5,8 @@ import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
 import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
+import ltg.evl.uic.poster.widgets.button.DeleteButton;
+import ltg.evl.uic.poster.widgets.button.DeleteButtonListener;
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PImage;

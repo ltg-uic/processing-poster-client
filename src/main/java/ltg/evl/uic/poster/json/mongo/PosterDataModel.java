@@ -10,10 +10,10 @@ import com.google.common.util.concurrent.*;
 import com.google.gson.GsonBuilder;
 import ltg.evl.uic.poster.listeners.LoginCollectionListener;
 import ltg.evl.uic.poster.listeners.LoginDialogEvent;
+import ltg.evl.uic.poster.util.MQTTPipe;
+import ltg.evl.uic.poster.util.RESTHelper;
+import ltg.evl.uic.poster.util.collections.PictureZoneToPosterItem;
 import ltg.evl.uic.poster.widgets.PictureZone;
-import ltg.evl.util.MQTTPipe;
-import ltg.evl.util.RESTHelper;
-import ltg.evl.util.collections.PictureZoneToPosterItem;
 import org.apache.commons.lang.StringUtils;
 import vialab.SMT.SMT;
 import vialab.SMT.Zone;
@@ -240,7 +240,6 @@ public class PosterDataModel {
 
 
                 try {
-
                     ListenableFuture<List<HttpResponse>> listListenableFutures = RESTHelper.getInstance()
                                                                                            .updatePosterItems(
                                                                                                    posterItems);
@@ -256,16 +255,14 @@ public class PosterDataModel {
                         @Override
                         public void onFailure(Throwable thrown) {
                             thrown.printStackTrace();
+                            loginCollectionListener.logoutDoneEvent();
                         }
                     });
-
-
-
                 } catch (InterruptedException | IOException | ExecutionException | GeneralSecurityException e) {
                     e.printStackTrace();
                 }
-
-
+            } else {
+                loginCollectionListener.logoutDoneEvent();
             }
 
 

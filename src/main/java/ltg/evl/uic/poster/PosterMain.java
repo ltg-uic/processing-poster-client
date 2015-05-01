@@ -10,11 +10,17 @@ import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
 import ltg.evl.uic.poster.listeners.LoginCollectionListener;
 import ltg.evl.uic.poster.listeners.LoginDialogEvent;
-import ltg.evl.uic.poster.widgets.*;
-import ltg.evl.util.MQTTPipe;
-import ltg.evl.util.RESTHelper;
-import ltg.evl.util.collections.PosterItemToPictureZone;
-import ltg.evl.util.de.looksgood.ani.Ani;
+import ltg.evl.uic.poster.util.MQTTPipe;
+import ltg.evl.uic.poster.util.RESTHelper;
+import ltg.evl.uic.poster.util.collections.PosterItemToPictureZone;
+import ltg.evl.uic.poster.util.de.looksgood.ani.Ani;
+import ltg.evl.uic.poster.widgets.DialogZoneController;
+import ltg.evl.uic.poster.widgets.PictureZone;
+import ltg.evl.uic.poster.widgets.PresentationZone;
+import ltg.evl.uic.poster.widgets.ZoneHelper;
+import ltg.evl.uic.poster.widgets.button.EditModeButton;
+import ltg.evl.uic.poster.widgets.button.LogoutButton;
+import ltg.evl.uic.poster.widgets.button.RemoveModeButton;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import processing.core.PApplet;
@@ -26,10 +32,6 @@ import java.util.Collection;
 
 import static org.apache.commons.lang.WordUtils.capitalize;
 
-
-/**
- * Created by aperritano on 9/24/14.
- */
 public class PosterMain extends PApplet implements LoginCollectionListener {
 
 
@@ -40,7 +42,14 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
         logger = Logger.getLogger(PosterMain.class.getName());
         logger.setLevel(Level.ALL);
         MQTTPipe.getInstance();
-        PApplet.main(new String[]{"ltg.evl.uic.poster.PosterMain"});
+
+
+        String[] appletArgs = new String[]{"ltg.evl.uic.poster.PosterMain"};
+        if (args != null) {
+            PApplet.main(concat(appletArgs, args));
+        } else {
+            PApplet.main(appletArgs);
+        }
     }
 
     //region LoginCollectionListener
@@ -105,14 +114,9 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
 
     @Override
     public void setup() {
-
-        Ani.init(this);
-        Ani.autostart();
-        int w = displayWidth;
-        int h = displayHeight;
-
-        // size(SMT.RENDERER);
-        SMT.init(this, TouchSource.AUTOMATIC);
+        size(300, 300, SMT.RENDERER);
+//        hint(ENABLE_RETINA_PIXELS);
+        SMT.init(this, TouchSource.MOUSE);
 
         setupControlButtons();
 
@@ -120,27 +124,18 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
         PosterDataModel.helper().addLoginCollectionListener(this);
 
         RESTHelper.getInstance().initAllCollections();
+
+        Ani.init(this);
+        Ani.autostart();
     }
 
     @Override
-    public String sketchRenderer() {
-        return SMT.RENDERER;
+    public void draw() {
+        background(255);
+        text(round(frameRate) + "fps, # of zones: " + SMT.getZones().length, width / 2, 10);
     }
 
-    @Override
-    public int sketchWidth() {
-        return displayWidth;
-    }
 
-    @Override
-    public int sketchHeight() {
-        return displayHeight;
-    }
-
-    @Override
-    public boolean sketchFullScreen() {
-        return true;
-    }
 
     public void loadPosterItemsForCurrentUserAndPoster(Collection<PosterItem> posterItems, boolean shouldRemove) {
 
@@ -187,8 +182,6 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
                 final PresentationZone presentationZone = new PresentationZone("shouldLogoutPresentation", 0, 0,
                                                                                SMT.getApplet().getWidth(),
                                                                                SMT.getApplet().getHeight()) {
-
-
                     @Override
                     public void doTouchAction() {
                         System.out.println("PosterMain.doTouchAction");
@@ -205,8 +198,6 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
                         SMT.remove(this);
 
                     }
-
-
                 };
 
 
@@ -301,12 +292,6 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
         }
     }
 
-    @Override
-    public void draw() {
-        background(255);
-        fill(0);
-        text(round(frameRate) + "fps, # of zones: " + SMT.getZones().length, width / 2, 10);
-    }
 
     public void hideAlZones() {
         for (Zone zone : SMT.getZones()) {

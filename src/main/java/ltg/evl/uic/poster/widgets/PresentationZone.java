@@ -1,6 +1,7 @@
 package ltg.evl.uic.poster.widgets;
 
-import ltg.evl.util.de.looksgood.ani.Ani;
+import ltg.evl.uic.poster.util.de.looksgood.ani.Ani;
+import ltg.evl.uic.poster.widgets.button.YesButton;
 import processing.core.PFont;
 import processing.core.PImage;
 import processing.core.PVector;
