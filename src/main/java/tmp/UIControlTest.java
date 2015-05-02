@@ -60,7 +60,7 @@ public class UIControlTest extends PApplet {
         thread("doInit");
         final int screen_width = 1200;
         final int screen_height = 800;
-        size(displayWidth, displayHeight, SMT.RENDERER);
+        size(800, 800, SMT.RENDERER);
         SMT.init(this, TouchSource.AUTOMATIC);
         // SMT.debug = true;
         SMT.setTouchDraw(TouchDraw.NONE);
@@ -129,10 +129,10 @@ public class UIControlTest extends PApplet {
 //        PVector point1 = new PVector(50, 50);
 
 
-        //ideoZone videoZone = new VideoZone("vid", 200, 200, 400, 400);
+        VideoZone videoZone = new VideoZone("vid", 200, 200, 400, 400);
 
 
-        //SMT.add(colorZone);
+        SMT.add(videoZone);
 
 
 //        ButtonZone mqttZone = new ButtonZone("b", 400, 400, 50, 50) {

@@ -13,6 +13,7 @@ import ltg.evl.uic.poster.listeners.LoginDialogEvent;
 import ltg.evl.uic.poster.util.MQTTPipe;
 import ltg.evl.uic.poster.util.RESTHelper;
 import ltg.evl.uic.poster.util.collections.PictureZoneToPosterItem;
+import ltg.evl.uic.poster.widgets.DialogZoneController;
 import ltg.evl.uic.poster.widgets.PictureZone;
 import org.apache.commons.lang.StringUtils;
 import vialab.SMT.SMT;
@@ -83,7 +84,7 @@ public class PosterDataModel {
     }
 
     public void logout() {
-        PosterDataModel.helper().savePosterItemsForCurrentUser();
+        PosterDataModel.helper().savePosterItemsForCurrentUser(true);
     }
 
     public void startInitialization() {
@@ -215,12 +216,16 @@ public class PosterDataModel {
     }
 
 
-    public void savePosterItemsForCurrentUser() {
+    public void savePosterItemsForCurrentUser(boolean shouldLogout) {
         final List<PictureZone> pictureZoneList = Lists.newArrayList();
         ImmutableList<Zone> zones = ImmutableList.copyOf(SMT.getZones());
 
         if (zones.isEmpty()) {
-            this.loginCollectionListener.logoutDoneEvent();
+            if (shouldLogout) {
+                this.loginCollectionListener.logoutDoneEvent();
+            } else {
+                DialogZoneController.dialog().showOKDialog("Saved!");
+            }
         } else {
 
             for (Zone zone : zones) {
@@ -248,21 +253,37 @@ public class PosterDataModel {
                         @Override
                         public void onSuccess(List<HttpResponse> listOfReponses) {
                             logger.log(Level.INFO, "PATCHING POSTER ITEMS SUCCESS");
-                            loginCollectionListener.logoutDoneEvent();
+
+                            if (shouldLogout) {
+                                loginCollectionListener.logoutDoneEvent();
+                            } else {
+                                DialogZoneController.dialog().showOKDialog("Saved!");
+                            }
+
                         }
 
                         @SuppressWarnings("NullableProblems")
                         @Override
                         public void onFailure(Throwable thrown) {
                             thrown.printStackTrace();
-                            loginCollectionListener.logoutDoneEvent();
+
+                            if (shouldLogout) {
+                                loginCollectionListener.logoutDoneEvent();
+                            } else {
+                                DialogZoneController.dialog().showOKDialog("Saved!");
+                            }
                         }
                     });
                 } catch (InterruptedException | IOException | ExecutionException | GeneralSecurityException e) {
                     e.printStackTrace();
                 }
             } else {
-                loginCollectionListener.logoutDoneEvent();
+
+                if (shouldLogout) {
+                    loginCollectionListener.logoutDoneEvent();
+                } else {
+                    DialogZoneController.dialog().showOKDialog("Saved!");
+                }
             }
 
 

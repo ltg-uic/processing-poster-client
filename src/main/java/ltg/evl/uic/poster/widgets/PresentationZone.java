@@ -19,6 +19,7 @@ public class PresentationZone extends Zone {
     private PFont font;
     private int bgAlpha;
     private boolean shouldDelete;
+    private String okDialogText;
 
     public PresentationZone(String name, int x, int y, int width, int height) {
         super(name, x, y, width, height);
@@ -181,7 +182,7 @@ public class PresentationZone extends Zone {
             @Override
             public void touchUp(Touch touch) {
                 super.touchUp(touch);
-                SMT.remove(PresentationZone.this);
+                doCancelAction();
             }
         };
         noButton.initButton();
@@ -195,8 +196,87 @@ public class PresentationZone extends Zone {
         this.fade(3f, 0, alpha, false);
     }
 
+    public void showOKDialog(final String text, int alpha) {
+
+        okDialogText = text;
+        int num_per_col = 1;
+        int reminder = 2 % num_per_col;
+
+        int rows = ((2 - reminder) / 2) + reminder;
+
+        int total_width = (num_per_col * 25) + (num_per_col * DIALOG_WIDTH) + 25;
+        int total_height = (rows * 25) + (rows * DIALOG_WIDTH) + 25;
+
+        int x2 = (this.getWidth() / 2) - (total_width / 2);
+        int y2 = (this.getHeight() / 2) - (total_height / 2);
+
+
+        final int heading_height = 50;
+
+        Zone heading = new Zone("heading", x2, y2, total_width, heading_height + total_height) {
+            @Override
+            public void draw() {
+                stroke(97, 97, 97);
+                strokeWeight(3);
+                fill(255);
+                rect(0, 0, this.getWidth(), this.getHeight(), ZoneHelper.ROUND_CORNER);
+
+                stroke(224, 224, 224);
+                strokeWeight(3);
+                fill(255);
+                rect(1, 1, this.getWidth() - 2, this.getHeight() - 2, ZoneHelper.ROUND_CORNER);
+
+                textFont(font, 20);
+                textAlign(CENTER, CENTER);
+                textSize(20);
+                fill(0);
+                text(okDialogText, getWidth() / 2 - 2, heading_height / 2);
+            }
+
+            @Override
+            public void touch() {
+                super.touch();
+            }
+        };
+
+        Zone frame = new Zone("frame", 0, heading_height, total_width, total_height) {
+            @Override
+            public void draw() {
+                stroke(255);
+                strokeWeight(0);
+                fill(255);
+                rect(3, 0, getWidth() - 6, getHeight() - 3, ZoneHelper.ROUND_CORNER);
+            }
+
+            @Override
+            public void touch() {
+                super.touch();
+            }
+        };
+
+        YesButton cancelButton = new YesButton("OK", "OK", DIALOG_WIDTH, DIALOG_WIDTH, ZoneHelper.blueOutline, 24) {
+            @Override
+            public void touchUp(Touch touch) {
+                super.touchUp(touch);
+                doCancelAction();
+            }
+        };
+        cancelButton.initButton();
+        frame.add(cancelButton);
+
+        SMT.grid(25, 25, frame.getWidth(), 25, 25, frame.getChildren());
+
+        heading.add(frame);
+        this.add(heading);
+        this.fade(3f, 0, alpha, false);
+    }
+
     public void doYesAction() {
 
+    }
+
+    public void doCancelAction() {
+        SMT.remove(this.getName());
     }
 
 
@@ -226,5 +306,9 @@ public class PresentationZone extends Zone {
 
     public void setBgAlpha(int bgAlpha) {
         this.bgAlpha = bgAlpha;
+    }
+
+    public void setOkDialogText(String okDialogText) {
+        this.okDialogText = okDialogText;
     }
 }

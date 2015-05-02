@@ -40,6 +40,7 @@ public class ZoneHelper {
     public static final String REMOVE = "Remove";
     public static final String EDIT = "Editing";
     public static final String PRESENT = "Presenting";
+    public static final String SAVE = "Save";
     public static final int REFRESH_BUTTON_WIDTH = 100;
     public static PImage deleteImage;
     public static PFont helveticaNeue18Font;

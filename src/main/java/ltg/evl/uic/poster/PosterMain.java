@@ -21,6 +21,7 @@ import ltg.evl.uic.poster.widgets.ZoneHelper;
 import ltg.evl.uic.poster.widgets.button.EditModeButton;
 import ltg.evl.uic.poster.widgets.button.LogoutButton;
 import ltg.evl.uic.poster.widgets.button.RemoveModeButton;
+import ltg.evl.uic.poster.widgets.button.SaveButton;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import processing.core.PApplet;
@@ -114,8 +115,8 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
 
     @Override
     public void setup() {
-        size(300, 300, SMT.RENDERER);
-//        hint(ENABLE_RETINA_PIXELS);
+        size(displayWidth, displayHeight, SMT.RENDERER);
+        //hint(ENABLE_RETINA_PIXELS);
         SMT.init(this, TouchSource.MOUSE);
 
         setupControlButtons();
@@ -271,7 +272,22 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
         };
         editModeButton.initButton();
         editModeButton.setVisible(true);
-        DialogZoneController.dialog().createControlPage(logoutZone, removeModeButton, editModeButton);
+
+
+        SaveButton saveButton = new SaveButton("Save", ZoneHelper.LOGOUT_BUTTON_WIDTH,
+                                               ZoneHelper.LOGOUT_BUTTON_HEIGHT) {
+
+            @Override
+            public void saveAction() {
+                DialogZoneController.dialog().showOKDialog("Saving...");
+                PosterDataModel.helper().savePosterItemsForCurrentUser(false);
+            }
+        };
+
+        saveButton.initButton();
+        saveButton.setVisible(true);
+
+        DialogZoneController.dialog().createControlPage(logoutZone, removeModeButton, editModeButton, saveButton);
 
 
 

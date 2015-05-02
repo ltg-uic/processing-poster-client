@@ -8,7 +8,9 @@
     <artifactId>processing-poster-client</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+
     <build>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -33,7 +35,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>ltg.evl.uic.poster.PosterMain</mainClass>
+                                    <mainClass>tmp.UIControlTest</mainClass>
                                 </transformer>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
@@ -62,6 +64,31 @@
             <artifactId>jogl-all-main</artifactId>
             <version>2.1.5-01</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.processing</groupId>
+            <artifactId>video</artifactId>
+            <version>2.2.1</version>
+        </dependency>
+
+        <!--<dependency>-->
+        <!--<groupId>com.apple</groupId>-->
+        <!--<artifactId>AppleJavaExtensions</artifactId>-->
+        <!--<version>1.4</version>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+        <!--<groupId>com.googlecode.gstreamer-java</groupId>-->
+        <!--<artifactId>gstreamer-java</artifactId>-->
+        <!--<version>1.5</version>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>com.googlecode.gstreamer-java</groupId>
+            <artifactId>gstreamer-java</artifactId>
+            <version>1.6</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.jbox2d</groupId>
