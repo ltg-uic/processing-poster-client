@@ -132,11 +132,20 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
 
     @Override
     public void draw() {
-        background(255);
+        background(ZoneHelper.lightGreyBackground);
         text(round(frameRate) + "fps, # of zones: " + SMT.getZones().length, width / 2, 10);
     }
 
 
+    public void removeDupZone(String zoneName) {
+        Zone[] zones = SMT.getZones();
+        for (Zone zone : zones) {
+            if (zone.getName().equals(zoneName)) {
+                SMT.remove(zone);
+                logger.info("REMOVED DUP ZONE: " + zoneName);
+            }
+        }
+    }
 
     public void loadPosterItemsForCurrentUserAndPoster(Collection<PosterItem> posterItems, boolean shouldRemove) {
 
@@ -145,6 +154,14 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
             if (shouldRemove) {
                 removeAlZones();
             }
+
+
+            //first check to see if it is on the board
+
+            for (PosterItem addPosterItem : posterItems) {
+                this.removeDupZone(addPosterItem.getUuid());
+            }
+
             FluentIterable<PictureZone> pictureZones = FluentIterable.from(posterItems)
                                                                      .transform(
                                                                              new PosterItemToPictureZone());

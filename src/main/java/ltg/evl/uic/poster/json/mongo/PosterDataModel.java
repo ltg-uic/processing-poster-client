@@ -21,8 +21,8 @@ import vialab.SMT.Zone;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -461,15 +461,43 @@ public class PosterDataModel {
         }
     }
 
-    public void updatePosterItemCollection(PosterItem posterItem) {
-        if (Optional.fromNullable(posterItem).isPresent()) {
+    public Collection<PosterItem> findDuplicatePosterItems(PosterItem posterItem) {
 
-            ArrayList<PosterItem> one = Lists.newArrayList(posterItem);
+        if (posterItem == null) {
+            return Collections.emptyList();
+        }
+
+        Predicate<PosterItem> predicate = new Predicate<PosterItem>() {
+            @Override
+            public boolean apply(PosterItem input) {
+                return input.equals(posterItem);
+            }
+        };
+
+        ImmutableList<PosterItem> posterItemsImmutableList = ImmutableList.copyOf(allPosterItems);
+        Collection<PosterItem> result = Collections2.filter(posterItemsImmutableList, predicate);
+
+        return result;
+    }
+
+    public void updatePosterItemCollection(PosterItem newPosterItem) {
+        if (Optional.fromNullable(newPosterItem).isPresent()) {
+
+
+            Collection<PosterItem> duplicatePosterItems = findDuplicatePosterItems(newPosterItem);
+
+            if (!duplicatePosterItems.isEmpty()) {
+                logger.log(Level.INFO,
+                           "PosterItem: " + newPosterItem.getUuid() + " DUP x " + duplicatePosterItems.size());
+                allPosterItems.removeAll(duplicatePosterItems);
+
+            }
+
             ImmutableList<PosterItem> two = ImmutableList.copyOf(allPosterItems);
-            allPosterItems = Lists.newArrayList(Iterables.concat(one, two));
+            allPosterItems = Lists.newArrayList(Iterables.concat(Lists.newArrayList(newPosterItem), two));
             if (this.loginCollectionListener != null) {
                 this.loginCollectionListener.updatePosterItem(
-                        new ObjectEvent(ObjectEvent.OBJ_TYPES.POST_ITEM, posterItem));
+                        new ObjectEvent(ObjectEvent.OBJ_TYPES.POST_ITEM, newPosterItem));
             }
         }
     }
@@ -483,7 +511,16 @@ public class PosterDataModel {
             public Poster apply(Poster poster) {
 
                 if (poster.getUuid().equals(posterId)) {
-                    poster.addPosterItems(posterItemUuuid);
+
+                    if (poster.getPosterItems() == null || poster.getPosterItems().isEmpty()) {
+                        List<String> posterItems = Collections.emptyList();
+                        posterItems.add(posterItemUuuid);
+                        poster.setPosterItems(posterItems);
+                    } else if (!poster.getPosterItems().contains(posterItemUuuid)) {
+                        poster.getPosterItems().add(posterItemUuuid);
+                    } else {
+                        logger.log(Level.INFO, "PosterItem: " + posterItemUuuid + "is a DUP in " + posterId);
+                    }
                 }
 
                 return poster;

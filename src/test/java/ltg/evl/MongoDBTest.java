@@ -8,6 +8,7 @@ import ltg.evl.uic.poster.util.RESTHelper;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.kohsuke.randname.RandomNameGenerator;
 
 import java.io.IOException;
@@ -48,6 +49,13 @@ public class MongoDBTest {
         return rand.nextInt((max - min) + 1) + min;
     }
 
+    @Test
+    public void testMath() {
+        double ceil = Math.ceil(5.0 / 4.0);
+        double floor = Math.floor(5.0 / 4.0);
+
+        System.out.println("ceil: " + ceil + " floor: " + floor);
+    }
 
     public List<PosterItem> getPosterItems() throws IOException {
 

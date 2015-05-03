@@ -38,6 +38,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
     private float aniSpeed = 1.0f;
     private PresentationZone presentationZone;
     private boolean isShowing;
+    private PresentationZone okDialog;
 
 
     private DialogZoneController() {
@@ -187,7 +188,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
 
             //int rows = ((size - reminder) / 2) + reminder;
             int rows = 1;
-            Dimension dimension = ZoneHelper.calcGrid(rows, size, ZoneHelper.GRID_SPACER, ZoneHelper.CLASS_BUTTON_SIZE,
+            Dimension dimension = ZoneHelper.calcGrid(size, size, ZoneHelper.GRID_SPACER, ZoneHelper.CLASS_BUTTON_SIZE,
                                                       ZoneHelper.CLASS_BUTTON_SIZE);
 
             int total_width = (int) dimension.getWidth();
@@ -223,21 +224,10 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
             if (!imAllClassUsers.isEmpty()) {
                 int size = imAllClassUsers.size();
 
-                int cols = 4;
-
-                int reminder;
-                int rows;
-                if (size < cols) {
-                    cols = size;
-                    reminder = 1;
-                } else {
-                    reminder = size % cols;
-                }
-
-                rows = reminder;
+                double cols = 4.0;
 
 
-                Dimension dimension = ZoneHelper.calcGrid(rows, cols, ZoneHelper.GRID_SPACER, ZoneHelper.BUTTON_WIDTH,
+                Dimension dimension = ZoneHelper.calcGrid(size, cols, ZoneHelper.GRID_SPACER, ZoneHelper.BUTTON_WIDTH,
                                                           ZoneHelper.BUTTON_HEIGHT);
 
                 int total_width = (int) dimension.getWidth();
@@ -269,21 +259,11 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
 
             if (!posters.isEmpty()) {
 
-                int size = posters.size();
-                int cols = 4;
+                double size = posters.size();
+                double cols = 4.0;
 
-                int reminder;
-                int rows;
-                if (size < cols) {
-                    cols = size;
-                    reminder = 1;
-                } else {
-                    reminder = size % cols;
-                }
 
-                rows = reminder;
-
-                Dimension dimension = ZoneHelper.calcGrid(rows, cols, ZoneHelper.GRID_SPACER,
+                Dimension dimension = ZoneHelper.calcGrid(size, cols, ZoneHelper.GRID_SPACER,
                                                           ZoneHelper.POSTER_BUTTON_WIDTH,
                                                           ZoneHelper.POSTER_BUTTON_HEIGHT);
 
@@ -309,7 +289,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
 
     public void createControlPage(Zone... userButtons) {
         int cols = 1;
-        int rows = 3;
+        int rows = 4;
 
         Dimension dimension = ZoneHelper.calcGrid(rows, cols, ZoneHelper.GRID_SPACER, ZoneHelper.LOGOUT_BUTTON_WIDTH,
                                                   ZoneHelper.LOGOUT_BUTTON_HEIGHT);
@@ -332,6 +312,48 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
             controlPage.setVisible(true);
             SMT.putZoneOnTop(controlPage);
             //controlPage.startAni(new PVector(x2, y2), aniSpeed, 0f);
+        }
+    }
+
+    public void showOKDialog(String text) {
+        if (okDialog != null) {
+            okDialog.setOkDialogText(text);
+        } else {
+            okDialog = new PresentationZone("okDialog", 0, 0,
+                                            SMT.getApplet().getWidth(),
+                                            SMT.getApplet().getHeight()) {
+                @Override
+                public void doTouchAction() {
+                    System.out.println("PosterMain.doTouchAction");
+                }
+
+                @Override
+                public void delete() {
+                    System.out.println("PosterMain.delete");
+                }
+
+                @Override
+                public void doYesAction() {
+                    hideOKDialog();
+                }
+
+                @Override
+                public void doCancelAction() {
+                    super.doCancelAction();
+                    hideOKDialog();
+                }
+            };
+            okDialog.showOKDialog(text, 200);
+            SMT.add(okDialog);
+        }
+
+
+    }
+
+    public void hideOKDialog() {
+        if (okDialog != null) {
+            SMT.remove(okDialog);
+            okDialog = null;
         }
     }
 

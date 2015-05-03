@@ -129,10 +129,10 @@ public class UIControlTest extends PApplet {
 //        PVector point1 = new PVector(50, 50);
 
 
-        VideoZone videoZone = new VideoZone("vid", 200, 200, 400, 400);
-
-
-        SMT.add(videoZone);
+//        VideoZone videoZone = new VideoZone("vid", 200, 200, 400, 400);
+//
+//
+//        SMT.add(videoZone);
 
 
 //        ButtonZone mqttZone = new ButtonZone("b", 400, 400, 50, 50) {

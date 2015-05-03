@@ -63,6 +63,7 @@ public class ZoneHelper {
             .color(212, 167, 38), SMT.getApplet().color(122, 186, 58)};
     public static int greenColor = SMT.getApplet().color(38, 166, 154);
     public static int darkBlueOutline = SMT.getApplet().color(1, 87, 155);
+    public static int lightGreyBackground = SMT.getApplet().color(238, 238, 238);
     public static int blueOutline = SMT.getApplet().color(29, 128, 240);
     public static int redOutline = SMT.getApplet().color(238, 43, 41);
     public static int whiteOutline = SMT.getApplet().color(255, 255, 255);
@@ -177,7 +178,19 @@ public class ZoneHelper {
     }
 
 
-    public static Dimension calcGrid(int rows, int cols, int spacer, int zoneWidth, int zoneHeight) {
+    public static Dimension calcGrid(double size, double cols, int spacer, int zoneWidth, int zoneHeight) {
+
+        double reminder;
+        double rows;
+        if (size <= cols) {
+            cols = size;
+            reminder = 1.0;
+        } else {
+            reminder = Math.ceil(size / cols);
+        }
+
+        rows = reminder;
+
         int x = spacer;
         int y = spacer;
 
