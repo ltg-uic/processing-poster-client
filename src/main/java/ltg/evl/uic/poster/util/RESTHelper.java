@@ -16,7 +16,9 @@ import ltg.evl.uic.poster.json.mongo.*;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.*;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -36,6 +38,7 @@ public class RESTHelper {
     public User currentUser = null;
     public Poster currentPoster = null;
     public List<PosterItem> currentPosterItems = null;
+    public Map<PosterUrl, Class<?>> responseGenericJsonMap = new HashMap<PosterUrl, Class<?>>();
 
 
     //region setup
@@ -88,8 +91,18 @@ public class RESTHelper {
                 // we want this handler to run immediately after we push the big red button!
 
                 @Override
-                public void onSuccess(List<HttpResponse> result) {
+                public void onSuccess(List<HttpResponse> results) {
                     logger.log(Level.INFO, "STARTING ALL REST DONE START INIT");
+
+                    for (HttpResponse response : results) {
+                        try {
+                            parseAllResponse(response, null);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+
                     PosterDataModel.helper().initializationDone();
                 }
 
@@ -342,24 +355,26 @@ public class RESTHelper {
         ListenableFuture<HttpResponse> userFuture = JdkFutureAdapters.listenInPoolThread(
                 httpUserResponseFuture);
 
-        Futures.addCallback(userFuture, new FutureCallback<HttpResponse>() {
-            @Override
-            public void onSuccess(HttpResponse userResponse) {
-                try {
-                    logger.log(Level.INFO, "RECIEVED USER COLLECTIONS RESPONSE");
-                    parseAllResponse(userResponse, User.class);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+//        Futures.addCallback(userFuture, new FutureCallback<HttpResponse>() {
+//            @Override
+//            public void onSuccess(HttpResponse userResponse) {
+//                try {
+//                    logger.log(Level.INFO, "RECIEVED USER COLLECTIONS RESPONSE");
+//                    parseAllResponse(userResponse, User.class);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Throwable thrown) {
+//                logger.log(Level.SEVERE, "USER FETCH FAILED");
+//                handleHttpFailure(thrown);
+//
+//            }
+//        });
 
-            @Override
-            public void onFailure(Throwable thrown) {
-                logger.log(Level.SEVERE, "USER FETCH FAILED");
-                handleHttpFailure(thrown);
-
-            }
-        });
+        responseGenericJsonMap.put(url, User.class);
 
         futures.add(userFuture);
 
@@ -372,23 +387,25 @@ public class RESTHelper {
         ListenableFuture<HttpResponse> posterFuture = JdkFutureAdapters.listenInPoolThread(
                 httpPosterResponseFuture);
 
-        Futures.addCallback(posterFuture, new FutureCallback<HttpResponse>() {
-            @Override
-            public void onSuccess(HttpResponse posterReponse) {
-                try {
-                    logger.log(Level.INFO, "RECEIVED POSTER COLLECTIONS RESPONSE");
-                    parseAllResponse(posterReponse, Poster.class);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+//        Futures.addCallback(posterFuture, new FutureCallback<HttpResponse>() {
+//            @Override
+//            public void onSuccess(HttpResponse posterReponse) {
+//                try {
+//                    logger.log(Level.INFO, "RECEIVED POSTER COLLECTIONS RESPONSE");
+//                    parseAllResponse(posterReponse, Poster.class);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Throwable thrown) {
+//                logger.log(Level.SEVERE, "POSTER FETCH FAILED");
+//                handleHttpFailure(thrown);
+//            }
+//        });
 
-            @Override
-            public void onFailure(Throwable thrown) {
-                logger.log(Level.SEVERE, "POSTER FETCH FAILED");
-                handleHttpFailure(thrown);
-            }
-        });
+        responseGenericJsonMap.put(url, Poster.class);
 
         futures.add(posterFuture);
 
@@ -404,24 +421,26 @@ public class RESTHelper {
         ListenableFuture<HttpResponse> posterItemFuture = JdkFutureAdapters.listenInPoolThread(
                 httpPosterItemResponseFuture);
 
-        Futures.addCallback(posterItemFuture, new FutureCallback<HttpResponse>() {
-            @Override
-            public void onSuccess(HttpResponse posterItemFuture) {
-                try {
-                    logger.log(Level.INFO, "RECEIVED POSTER ITEM COLLECTIONS RESPONSE");
-                    parseAllResponse(posterItemFuture, PosterItem.class);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+//        Futures.addCallback(posterItemFuture, new FutureCallback<HttpResponse>() {
+//            @Override
+//            public void onSuccess(HttpResponse posterItemFuture) {
+//                try {
+//                    logger.log(Level.INFO, "RECEIVED POSTER ITEM COLLECTIONS RESPONSE");
+//                    parseAllResponse(posterItemFuture, PosterItem.class);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Throwable thrown) {
+//                logger.log(Level.SEVERE, "POSTERITEM FETCH FAILED");
+//
+//                handleHttpFailure(thrown);
+//            }
+//        });
 
-            @Override
-            public void onFailure(Throwable thrown) {
-                logger.log(Level.SEVERE, "POSTERITEM FETCH FAILED");
-
-                handleHttpFailure(thrown);
-            }
-        });
+        responseGenericJsonMap.put(url, PosterItem.class);
 
         futures.add(posterItemFuture);
 
@@ -433,9 +452,15 @@ public class RESTHelper {
     }
 
     private void parseAllResponse(HttpResponse response, Class<?> someClass) throws IOException {
-        if (someClass.equals(User.class)) {
+
+
+        Class<?> aClass = responseGenericJsonMap.get(response.getRequest().getUrl());
+
+
+        if (aClass.equals(User.class)) {
             logger.log(Level.INFO, "PROCESSING USER RESPONSE");
             User[] users = response.parseAs(User[].class);
+
 
             List<User> userList = Lists.newArrayList();
             if (users.length < 0) {
@@ -445,7 +470,7 @@ public class RESTHelper {
                 Collections.addAll(userList, users);
                 PosterDataModel.helper().updateAllUserCollection(userList);
             }
-        } else if (someClass.equals(Poster.class)) {
+        } else if (aClass.equals(Poster.class)) {
             logger.log(Level.INFO, "PROCESSING POSTER RESPONSE");
             Poster[] posters = response.parseAs(Poster[].class);
 
@@ -459,7 +484,7 @@ public class RESTHelper {
                 PosterDataModel.helper().updateAllPosterCollection(posterList);
             }
 
-        } else if (someClass.equals(PosterItem.class)) {
+        } else if (aClass.equals(PosterItem.class)) {
             logger.log(Level.INFO, "PROCESSING POSTER_ITEM RESPONSE");
             PosterItem[] posterItems = response.parseAs(PosterItem[].class);
 
@@ -467,7 +492,6 @@ public class RESTHelper {
             if (posterItems.length < 0) {
                 PosterDataModel.helper().updateAllPosterItemsCollection(posterItemList);
             } else {
-
                 Collections.addAll(posterItemList, posterItems);
                 PosterDataModel.helper().updateAllPosterItemsCollection(posterItemList);
             }

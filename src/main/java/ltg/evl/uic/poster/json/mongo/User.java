@@ -2,6 +2,7 @@ package ltg.evl.uic.poster.json.mongo;
 
 import com.google.api.client.json.GenericJson;
 import com.google.api.client.util.Key;
+import com.google.common.base.Optional;
 import ltg.evl.uic.poster.util.ModelHelper;
 
 import java.io.IOException;
@@ -111,6 +112,23 @@ public class User extends GenericJson {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof User)) {
+            return false;
+        }
+
+        if (Optional.fromNullable(o).isPresent()) {
+            User user = (User) o;
+
+            if (this.uuid != null && user.getUuid() != null) {
+                return this.uuid.equals(user.getUuid());
+            }
+        }
+
+        return false;
     }
 
     public List<String> getNameTags() {

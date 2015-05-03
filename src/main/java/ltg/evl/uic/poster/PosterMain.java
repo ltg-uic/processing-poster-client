@@ -76,9 +76,17 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
     public void loadPosterEvent(LoginDialogEvent loginDialogEvent) {
         DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
         DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NO_PRES);
-        loadPosterItemsForCurrentUserAndPoster(
-                PosterDataModel.helper().getAllPostersItemsForPoster(loginDialogEvent.getUuid()), true);
+
+        new Thread() {
+            @Override
+            public void run() {
+                loadPosterItemsForCurrentUserAndPoster(
+                        PosterDataModel.helper().getAllPostersItemsForPoster(loginDialogEvent.getUuid()), true);
+            }
+        }.start();
+
     }
+
 
     @Override
     public void loadClassEvent(LoginDialogEvent loginDialogEvent) {
@@ -115,6 +123,10 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
 
     @Override
     public void setup() {
+
+        Ani.init(this);
+        Ani.autostart();
+
         size(displayWidth, displayHeight, SMT.RENDERER);
         //hint(ENABLE_RETINA_PIXELS);
         SMT.init(this, TouchSource.MOUSE);
@@ -126,8 +138,7 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
 
         RESTHelper.getInstance().initAllCollections();
 
-        Ani.init(this);
-        Ani.autostart();
+
     }
 
     @Override
@@ -177,10 +188,15 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
                 if (!list.isEmpty()) {
                     for (PictureZone pz : list) {
                         if (pz != null) {
+                            // pz.setVisible(false);
                             if (SMT.add(pz)) {
+                                pz.setVisible(true);
+
+                                //  pz.fade(1.0f, 0.0f, 255);
                                 // pz.applyScaleRotation();
                                 pz.setIsEditing(lastIsEditToggle);
-                                pz.startAni(0.5f, 0f);
+                                //pz.startAni(0.5f, 0f);
+
                             }
                         }
                     }

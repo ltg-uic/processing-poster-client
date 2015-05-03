@@ -24,6 +24,7 @@ import java.security.GeneralSecurityException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -530,25 +531,81 @@ public class PosterDataModel {
 
     public void updateAllUserCollection(List<User> users) {
         this.allUsers = Lists.newArrayList();
-        allUsers.addAll(users);
+
+        for (User user : users) {
+            if (!this.allUsers.contains(user)) {
+                this.allUsers.add(user);
+            } else {
+                logger.log(Level.SEVERE, "DUP USER: " + user.getUuid());
+            }
+        }
     }
 
     public void updateAllPosterItemsCollection(List<PosterItem> posterItems) {
         this.allPosterItems = Lists.newArrayList();
-        allPosterItems.addAll(posterItems);
+
+        for (PosterItem posterItem : posterItems) {
+
+            if (!allPosterItems.contains(posterItem)) {
+                this.allPosterItems.add(posterItem);
+            } else {
+                logger.log(Level.SEVERE, "DUP POSTER_ITEM: " + posterItem.getUuid());
+            }
+        }
     }
 
     public void updateAllPosterCollection(List<Poster> posters) {
         this.allPosters = Lists.newArrayList();
-        allPosters.addAll(posters);
+
+        for (Poster poster : posters) {
+            if (!allPosters.contains(poster)) {
+                this.allPosters.add(poster);
+            } else {
+                logger.log(Level.SEVERE, "DUP POSTER: " + poster.getUuid());
+            }
+        }
     }
 
+    //untested
     public void updateUserCollection(User user) {
-        allUsers.add(user);
+        if (allUsers != null) {
+
+            if (allUsers.contains(user)) {
+                ListIterator<User> listIterator = allUsers.listIterator();
+                while (listIterator.hasNext()) {
+                    User nextUser = listIterator.next();
+                    if (allUsers.contains(nextUser)) {
+                        listIterator.set(user);
+                        logger.log(Level.SEVERE, "UPDATE DUP USER: " + user.getUuid());
+                    }
+                }
+            } else {
+                allUsers.add(user);
+            }
+
+        }
+
+
     }
 
+    //untested
     public void updatePosterCollection(Poster poster) {
-        allPosters.add(poster);
+        if (allPosters != null) {
+            if (allPosters.contains(poster)) {
+                ListIterator<Poster> listIterator = allPosters.listIterator();
+
+                while (listIterator.hasNext()) {
+                    Poster nextPoster = listIterator.next();
+                    if (allPosters.contains(nextPoster)) {
+                        listIterator.set(poster);
+                        logger.log(Level.SEVERE, "UPDATE DUP POSTER: " + poster.getUuid());
+                    }
+                }
+            } else {
+                allPosters.add(poster);
+            }
+        }
+
     }
 
 

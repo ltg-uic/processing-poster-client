@@ -110,6 +110,7 @@ public class Poster extends GenericJson {
         return posterItems;
     }
 
+
     public void setPosterItems(List<String> posterItems) {
         this.posterItems = posterItems;
     }

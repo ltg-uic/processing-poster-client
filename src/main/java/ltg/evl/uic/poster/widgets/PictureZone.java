@@ -38,6 +38,7 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
     private boolean isDeleteMode;
     private String zoneRotation;
     private String zoneScale;
+    private int bgAlpha;
 
     public PictureZone(PImage image, String uuid, int x, int y, int width, int height, String type, String zoneName,
                        String rotation, String scale) {
@@ -50,7 +51,7 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
         this.initialY = SMT.getApplet().getHeight() + offScreenPadding;
         this.target.y = y;
         this.setX(x);
-        this.setY(SMT.getApplet().getHeight() + offScreenPadding);
+        this.setY(y);
         this.setHeight(height);
         this.setWidth(width);
         this.type = type;
@@ -58,6 +59,8 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
         this.isEditing = true;
         this.isAnimating = false;
         this.isDeleteMode = false;
+        this.bgAlpha = 0;
+        alpha(bgAlpha);
     }
 
     public PictureZone(PosterItem posterItem) {
@@ -73,6 +76,8 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
         this.isEditing = true;
         this.isAnimating = false;
         this.isDeleteMode = false;
+        this.bgAlpha = 0;
+        alpha(bgAlpha);
     }
 
     @Override
@@ -90,6 +95,11 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
         isAnimating = true;
         //this.setIsEditing(true);
         Ani diameterAni = new Ani(this, speed, delay, "initialY", target.y, Ani.EXPO_IN_OUT, "onEnd:done");
+        diameterAni.start();
+    }
+
+    public void fade(float speed, float delay, int alpha) {
+        Ani diameterAni = new Ani(this, speed, delay, "bgAlpha", alpha, Ani.LINEAR, "onEnd:done");
         diameterAni.start();
     }
 
@@ -142,9 +152,9 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
 
     @Override
     public void drawImpl() {
-        if (isAnimating)
-            setY(initialY);
-
+        //if (isAnimating)
+        //     setY(initialY);
+        alpha(bgAlpha);
         if (isEditing) {
             fill(255, 255, 255);
             if (isDrawingOutline) {

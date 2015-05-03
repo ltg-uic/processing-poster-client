@@ -2,6 +2,7 @@ package ltg.evl.uic.poster.json.mongo;
 
 import com.google.api.client.json.GenericJson;
 import com.google.api.client.util.Key;
+import com.google.common.base.Optional;
 import ltg.evl.uic.poster.util.ModelHelper;
 
 import java.io.IOException;
@@ -139,6 +140,23 @@ public class PosterItem extends GenericJson {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof PosterItem)) {
+            return false;
+        }
+
+        if (Optional.fromNullable(o).isPresent()) {
+            PosterItem posterItem = (PosterItem) o;
+
+            if (this.uuid != null && posterItem.getUuid() != null) {
+                return this.uuid.equals(posterItem.getUuid());
+            }
+        }
+
+        return false;
     }
 
     public String getColor() {
