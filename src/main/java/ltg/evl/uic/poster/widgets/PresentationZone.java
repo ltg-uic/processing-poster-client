@@ -20,6 +20,7 @@ public class PresentationZone extends Zone {
     private int bgAlpha;
     private boolean shouldDelete;
     private String okDialogText;
+    private int color;
 
     public PresentationZone(String name, int x, int y, int width, int height) {
         super(name, x, y, width, height);
@@ -34,6 +35,7 @@ public class PresentationZone extends Zone {
     protected void initZone() {
         this.bgAlpha = 255;
         this.font = ZoneHelper.helveticaNeue18Font;
+        this.color = ZoneHelper.darkBlueOutline;
     }
 
     @Override
@@ -52,14 +54,28 @@ public class PresentationZone extends Zone {
 
     @Override
     public void draw() {
-        fill(ZoneHelper.darkBlueOutline, bgAlpha);
+        fill(color, bgAlpha);
         rect(0, 0, this.getWidth(), this.getHeight());
     }
 
     public void presentImageZone(PImage pImage) {
 
-        Dimension scaledDimension = ZoneHelper.getScaledDimension(new Dimension(pImage.width, pImage.height),
-                                                                  new Dimension(this.getWidth(), this.getHeight()));
+        this.color = ZoneHelper.whiteOutline;
+//        Dimension scaledDimension = ZoneHelper.getScaledDimension(new Dimension(pImage.width, pImage.height),
+//                                                                  new Dimension(this.getWidth(), this.getHeight()));
+
+        PImage newPImage = pImage.get();
+        if (newPImage.width > this.getWidth() && newPImage.height < this.getHeight()) {
+            newPImage.resize(this.getWidth(), 0);
+        } else if (newPImage.width < this.getWidth() && newPImage.height > this.getHeight()) {
+            newPImage.resize(0, this.getHeight() - 50);
+        } else if (newPImage.width <= this.getWidth() && newPImage.height <= this.getHeight()) {
+            newPImage.resize(0, this.getHeight() - 50);
+        }
+
+
+        System.out.println("New height: " + pImage.height + " New width: " + pImage.width);
+        Dimension scaledDimension = new Dimension(newPImage.width, newPImage.height);
 
         int x2 = (int) (PresentationZone.this.getHalfSize().getWidth() - (scaledDimension.getWidth() / 2));
         int y2 = (int) (PresentationZone.this.getHalfSize().getHeight() - (scaledDimension.getHeight() / 2));
@@ -68,24 +84,17 @@ public class PresentationZone extends Zone {
 
         final PVector targetPoint = new PVector(x2, y2);
 
-        ImageZone imageZone = new ImageZone(pImage, x2, this.getHeight(), (int) scaledDimension.getWidth(),
+        ImageZone imageZone = new ImageZone(newPImage, x2, y2, (int) scaledDimension.getWidth(),
                                             (int) scaledDimension.getHeight()) {
 
             int initY = PresentationZone.this.getHeight();
+
 
             @Override
             public void touch() {
                 rst(false, false, false);
             }
 
-            @Override
-            public void draw() {
-                super.draw();
-                stroke(0);
-                strokeWeight(2);
-                fill(255);
-                rect(0, 0, this.getWidth(), this.getHeight(), 10);
-            }
 
             @Override
             public void touchUp(Touch touch) {
@@ -105,7 +114,7 @@ public class PresentationZone extends Zone {
             }
 
 
-        }.doScaleAni(.5f, 0f, 255);
+        };//.doScaleAni(.5f, 0f, 255);
 
         this.add(imageZone);
     }

@@ -42,6 +42,7 @@ public class ZoneHelper {
     public static final String PRESENT = "Presenting";
     public static final String SAVE = "Save";
     public static final int REFRESH_BUTTON_WIDTH = 100;
+    public static final int CONTROL_BUTTON_FONT_SIZE = 34;
     public static PImage deleteImage;
     public static PFont helveticaNeue18Font;
     public static PFont helveticaNeue48Font;
@@ -65,6 +66,7 @@ public class ZoneHelper {
     public static int darkBlueOutline = SMT.getApplet().color(1, 87, 155);
     public static int lightGreyBackground = SMT.getApplet().color(238, 238, 238);
     public static int blueOutline = SMT.getApplet().color(29, 128, 240);
+    public static int purpleOutline = SMT.getApplet().color(149, 117, 205);
     public static int redOutline = SMT.getApplet().color(238, 43, 41);
     public static int whiteOutline = SMT.getApplet().color(255, 255, 255);
     public static int greyOutline = SMT.getApplet().color(224, 224, 224);
@@ -230,12 +232,24 @@ public class ZoneHelper {
 
     public static Dimension getScaledDimension(Dimension imgSize, Dimension boundary) {
 
+//        Compute two ratios (with floating point result):
+//
+//        input width divided by maximum allowed width
+//        input height divided by maximum allowed height
+//                Then,
+//
+//        if both ratios < 1.0, don't resize.
+//        if one of the ratio > 1.0, scale down by that factor.
+//        if both ratios > 1.0, scale down by the bigger of the two factors.
         float width_ratio = new Float(boundary.width).floatValue() / new Float(imgSize.width).floatValue();
         float height_ratio = new Float(boundary.height).floatValue() / new Float(imgSize.height).floatValue();
         float new_width;
         float new_height;
 
-        float scale = Math.min(width_ratio, height_ratio);
+
+        float scale = Math.min(1, Math.min(width_ratio, height_ratio));
+
+
 
         new_width = scale * new Float(imgSize.width).floatValue();
         new_height = scale * new Float(imgSize.height).floatValue();
@@ -245,6 +259,49 @@ public class ZoneHelper {
         }
 
         return new Dimension((int) new_width, (int) new_height);
+    }
+
+    public static Image resizeImage(Image image, int width, int height, boolean max) {
+        if (width < 0 && height > 0) {
+            return resizeImageBy(image, height, false);
+        } else if (width > 0 && height < 0) {
+            return resizeImageBy(image, width, true);
+        } else if (width < 0 && height < 0) {
+            System.out.println("Setting the image size to (width, height) of: ("
+                                       + width + ", " + height + ") effectively means \"do nothing\"... Returning original image");
+            return image;
+            //alternatively you can use System.err.println("");
+            //or you could just ignore this case
+        }
+        int currentHeight = image.getHeight(null);
+        int currentWidth = image.getWidth(null);
+        int expectedWidth = (height * currentWidth) / currentHeight;
+        //Size will be set to the height
+        //unless the expectedWidth is greater than the width and the constraint is maximum
+        //or the expectedWidth is less than the width and the constraint is minimum
+        int size = height;
+        if (max && expectedWidth > width) {
+            size = width;
+        } else if (!max && expectedWidth < width) {
+            size = width;
+        }
+        return resizeImageBy(image, size, (size == width));
+    }
+
+    /**
+     * Resizes the given image using Image.SCALE_SMOOTH.
+     *
+     * @param image    the image to be resized
+     * @param size     the size to resize the width/height by (see setWidth)
+     * @param setWidth whether the size applies to the height or to the width
+     * @return the resized image
+     */
+    public static Image resizeImageBy(Image image, int size, boolean setWidth) {
+        if (setWidth) {
+            return image.getScaledInstance(size, -1, Image.SCALE_SMOOTH);
+        } else {
+            return image.getScaledInstance(-1, size, Image.SCALE_SMOOTH);
+        }
     }
 
     public int randomColor() {

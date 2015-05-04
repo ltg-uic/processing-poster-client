@@ -38,7 +38,7 @@ public class RemoveModeButton extends Zone {
         this.text = ZoneHelper.REMOVE;
         this.outline = ZoneHelper.greyOutline;
         this.font = ZoneHelper.helveticaNeue18Font;
-        this.fontSize = 18;
+        this.fontSize = ZoneHelper.CONTROL_BUTTON_FONT_SIZE;
         this.textColor = color(255);
     }
 

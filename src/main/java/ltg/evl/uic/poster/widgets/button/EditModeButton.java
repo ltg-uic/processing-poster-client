@@ -38,7 +38,7 @@ public class EditModeButton extends Zone {
         this.pressedButtonColor = ZoneHelper.greyOutline;
         this.outline = ZoneHelper.greyOutline;
         this.font = ZoneHelper.helveticaNeue18Font;
-        this.fontSize = 18;
+        this.fontSize = ZoneHelper.CONTROL_BUTTON_FONT_SIZE;
         this.textColor = color(255);
     }
 

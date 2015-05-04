@@ -11,6 +11,7 @@ import ltg.evl.uic.poster.widgets.ZoneHelper;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import processing.core.PImage;
+import vialab.SMT.SMT;
 
 import java.util.concurrent.ExecutionException;
 
@@ -67,6 +68,10 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                 if (posterItem.getX() == 0 && posterItem.getY() == 0) {
                     posterItem.setY(ZoneHelper.random(200, 500));
                     posterItem.setX(ZoneHelper.random(200, 500));
+                } else if (posterItem.getX() >= SMT.getApplet().displayWidth) {
+                    posterItem.setX(ZoneHelper.random(200, SMT.getApplet().displayWidth - 50));
+                } else if (posterItem.getY() >= SMT.getApplet().displayHeight) {
+                    posterItem.setY(ZoneHelper.random(200, SMT.getApplet().displayHeight - 50));
                 }
             }
 

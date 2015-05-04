@@ -121,6 +121,12 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
 
     //endregion LoginCollectionListener
 
+
+    @Override
+    public boolean sketchFullScreen() {
+        return true;
+    }
+
     @Override
     public void setup() {
 

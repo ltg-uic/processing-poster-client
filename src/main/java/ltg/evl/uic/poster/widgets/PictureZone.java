@@ -194,7 +194,7 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
         if (isEditing) {
             super.touch();
             SMT.putZoneOnTop(this);
-            rst(true, true, true);
+            rst(false, true, true);
             super.touch();
         } else if (isDeleteMode) {
             rst(false, false, false);

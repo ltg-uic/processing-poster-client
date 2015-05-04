@@ -30,14 +30,14 @@ public class SaveButton extends Zone {
 
     public void initButton() {
 
-        this.unpressedButtonColor = ZoneHelper.blueOutline;
+        this.unpressedButtonColor = ZoneHelper.purpleOutline;
         this.currentColor = unpressedButtonColor;
         this.text = ZoneHelper.SAVE;
         this.textColor = ZoneHelper.whiteOutline;
         this.pressedButtonColor = ZoneHelper.greyOutline;
         this.outline = ZoneHelper.greyOutline;
         this.font = ZoneHelper.helveticaNeue18Font;
-        this.fontSize = 18;
+        this.fontSize = ZoneHelper.CONTROL_BUTTON_FONT_SIZE;
         this.textColor = color(255);
     }
 
