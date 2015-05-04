@@ -73,7 +73,7 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
     }
 
     @Override
-    public void loadPosterEvent(LoginDialogEvent loginDialogEvent) {
+    public void loadPosterEvent(final LoginDialogEvent loginDialogEvent) {
         DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
         DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NO_PRES);
 
