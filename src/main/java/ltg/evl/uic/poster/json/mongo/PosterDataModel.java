@@ -61,7 +61,6 @@ public class PosterDataModel {
             @Override
             public void flush() {
             }
-
             @Override
             public void publish(LogRecord record) {
                 // default ConsoleHandler will print >= INFO to System.err
@@ -545,11 +544,13 @@ public class PosterDataModel {
         this.allPosterItems = Lists.newArrayList();
 
         for (PosterItem posterItem : posterItems) {
-
-            if (!allPosterItems.contains(posterItem)) {
-                this.allPosterItems.add(posterItem);
-            } else {
-                logger.log(Level.SEVERE, "DUP POSTER_ITEM: " + posterItem.getUuid());
+            ListIterator<PosterItem> listIterator = allPosterItems.listIterator();
+            while (listIterator.hasNext()) {
+                PosterItem nextPosterItem = listIterator.next();
+                if (allPosterItems.contains(nextPosterItem)) {
+                    listIterator.set(nextPosterItem);
+                    logger.log(Level.SEVERE, "UPDATE DUP POSTER ITEM: " + nextPosterItem.getUuid());
+                }
             }
         }
     }
@@ -558,10 +559,13 @@ public class PosterDataModel {
         this.allPosters = Lists.newArrayList();
 
         for (Poster poster : posters) {
-            if (!allPosters.contains(poster)) {
-                this.allPosters.add(poster);
-            } else {
-                logger.log(Level.SEVERE, "DUP POSTER: " + poster.getUuid());
+            ListIterator<Poster> listIterator = allPosters.listIterator();
+            while (listIterator.hasNext()) {
+                Poster nextPoster = listIterator.next();
+                if (allPosters.contains(nextPoster)) {
+                    listIterator.set(poster);
+                    logger.log(Level.SEVERE, "UPDATE DUP POSTER: " + poster.getUuid());
+                }
             }
         }
     }
