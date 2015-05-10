@@ -2,7 +2,7 @@
 
 # PosterKit Multi-Touch Interface
 
-This is the multi-touch interface of the PosterKit that supports creation and editing of poster content. 
+This is the multi-touch interface of the PosterKit that supports creation and editing of poster content. [Its built on Processing](https://processing.org) and the [Simple Multi-touch Tookit (SMT)](http://vialab.science.uoit.ca/smt/)
 
 There is a companion iOS app that helps admin and test the functionality of the processing client. 
 
