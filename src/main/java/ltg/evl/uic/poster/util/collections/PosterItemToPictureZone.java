@@ -65,13 +65,13 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                     }
                 }
 
-                if (posterItem.getX() == 0 && posterItem.getY() == 0) {
+                if (posterItem.getX() <= 0 || posterItem.getY() <= 0) {
                     posterItem.setY(ZoneHelper.random(200, 500));
                     posterItem.setX(ZoneHelper.random(200, 500));
-                } else if (posterItem.getX() >= SMT.getApplet().displayWidth) {
-                    posterItem.setX(ZoneHelper.random(200, SMT.getApplet().displayWidth - 50));
+                } else if ((posterItem.getX() >= SMT.getApplet().displayWidth)) {
+                    posterItem.setX(ZoneHelper.random(200, SMT.getApplet().displayWidth - posterItem.getWidth()));
                 } else if (posterItem.getY() >= SMT.getApplet().displayHeight) {
-                    posterItem.setY(ZoneHelper.random(200, SMT.getApplet().displayHeight - 50));
+                    posterItem.setY(ZoneHelper.random(200, SMT.getApplet().displayHeight - posterItem.getHeight()));
                 }
             }
 

@@ -542,32 +542,32 @@ public class PosterDataModel {
 
     public void updateAllPosterItemsCollection(List<PosterItem> posterItems) {
         this.allPosterItems = Lists.newArrayList();
-
-        for (PosterItem posterItem : posterItems) {
-            ListIterator<PosterItem> listIterator = allPosterItems.listIterator();
-            while (listIterator.hasNext()) {
-                PosterItem nextPosterItem = listIterator.next();
-                if (allPosterItems.contains(nextPosterItem)) {
-                    listIterator.set(nextPosterItem);
-                    logger.log(Level.SEVERE, "UPDATE DUP POSTER ITEM: " + nextPosterItem.getUuid());
-                }
-            }
-        }
+        this.allPosterItems.addAll(posterItems);
+//        for (PosterItem posterItem : posterItems) {
+//            ListIterator<PosterItem> listIterator = allPosterItems.listIterator();
+//            while (listIterator.hasNext()) {
+//                PosterItem nextPosterItem = listIterator.next();
+//                if (allPosterItems.contains(nextPosterItem)) {
+//                    listIterator.set(nextPosterItem);
+//                    logger.log(Level.SEVERE, "UPDATE DUP POSTER ITEM: " + nextPosterItem.getUuid());
+//                }
+//            }
+//        }
     }
 
     public void updateAllPosterCollection(List<Poster> posters) {
         this.allPosters = Lists.newArrayList();
-
-        for (Poster poster : posters) {
-            ListIterator<Poster> listIterator = allPosters.listIterator();
-            while (listIterator.hasNext()) {
-                Poster nextPoster = listIterator.next();
-                if (allPosters.contains(nextPoster)) {
-                    listIterator.set(poster);
-                    logger.log(Level.SEVERE, "UPDATE DUP POSTER: " + poster.getUuid());
-                }
-            }
-        }
+        this.allPosters.addAll(posters);
+//        for (Poster poster : posters) {
+//            ListIterator<Poster> listIterator = allPosters.listIterator();
+//            while (listIterator.hasNext()) {
+//                Poster nextPoster = listIterator.next();
+//                if (allPosters.contains(nextPoster)) {
+//                    listIterator.set(poster);
+//                    logger.log(Level.SEVERE, "UPDATE DUP POSTER: " + poster.getUuid());
+//                }
+//            }
+//        }
     }
 
     //untested

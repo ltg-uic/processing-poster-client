@@ -36,11 +36,11 @@ public class ZoneHelper {
     public static final int LOGOUT_BUTTON_WIDTH = 250;
     public static final int POSTER_BUTTON_WIDTH = 300;
     public static final int POSTER_BUTTON_HEIGHT = 125;
-    public static final String LOGOUT = "Logout";
-    public static final String REMOVE = "Remove";
-    public static final String EDIT = "Editing";
-    public static final String PRESENT = "Presenting";
-    public static final String SAVE = "Save";
+    public static final String LOGOUT = "LOGOUT";
+    public static final String REMOVE = "REMOVE";
+    public static final String EDIT = "EDIT";
+    public static final String PRESENT = "PRESENT";
+    public static final String SAVE = "SAVE";
     public static final int REFRESH_BUTTON_WIDTH = 100;
     public static final int CONTROL_BUTTON_FONT_SIZE = 34;
     public static PImage deleteImage;
@@ -230,7 +230,35 @@ public class ZoneHelper {
         return new Dimension(currentX, currentY);
     }
 
-    public static Dimension getScaledDimension(Dimension imgSize, Dimension boundary) {
+    public static Dimension resizeImage(PImage image, int maxWidth, int maxHeight) {
+        Dimension largestDimension = new Dimension(maxWidth, maxHeight);
+
+        // Original size
+        float imageWidth = new Float(image.width).floatValue();
+        float imageHeight = new Float(image.height).floatValue();
+
+        float aspectRatio = imageWidth / imageHeight;
+
+        float w_aspect = imageWidth / maxWidth;
+        float h_aspect = imageHeight / maxHeight;
+
+        float scale = Math.min(1, Math.min(w_aspect, h_aspect));
+
+        if (imageWidth > maxWidth || imageHeight > maxHeight) {
+            if ((float) largestDimension.width / largestDimension.height > aspectRatio) {
+                largestDimension.width = (int) Math.ceil(largestDimension.height * aspectRatio);
+            } else {
+                largestDimension.height = (int) Math.ceil(largestDimension.width / aspectRatio);
+            }
+
+            imageWidth = largestDimension.width;
+            imageHeight = largestDimension.height;
+        }
+
+        return new Dimension(largestDimension.width, largestDimension.height);
+    }
+
+    public static Dimension getScaledDimension(PImage imgSize, Dimension boundary) {
 
 //        Compute two ratios (with floating point result):
 //
@@ -250,13 +278,12 @@ public class ZoneHelper {
         float scale = Math.min(1, Math.min(width_ratio, height_ratio));
 
 
-
-        new_width = scale * new Float(imgSize.width).floatValue();
+        new_width = Math.round(scale * new Float(imgSize.width).floatValue());
         new_height = scale * new Float(imgSize.height).floatValue();
 
-        if ((imgSize.getHeight() >= new_height) || (imgSize.getWidth() >= new_width)) {
-            return imgSize;
-        }
+//        if ((imgSize.getHeight() >= new_height) || (imgSize.getWidth() >= new_width)) {
+//            return imgSize;
+//        }
 
         return new Dimension((int) new_width, (int) new_height);
     }

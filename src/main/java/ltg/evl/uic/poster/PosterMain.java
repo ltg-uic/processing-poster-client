@@ -26,6 +26,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import processing.core.PApplet;
 import vialab.SMT.SMT;
+import vialab.SMT.TouchDraw;
 import vialab.SMT.TouchSource;
 import vialab.SMT.Zone;
 
@@ -68,12 +69,14 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
 
     @Override
     public void loadUserEvent(LoginDialogEvent loginDialogEvent) {
+        logger.info("UserLoaded: " + loginDialogEvent.getUuid());
         DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
         DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.POSTER_PAGE);
     }
 
     @Override
     public void loadPosterEvent(final LoginDialogEvent loginDialogEvent) {
+        logger.info("PosterLoaded: " + loginDialogEvent.getUuid());
         DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
         DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NO_PRES);
 
@@ -90,19 +93,23 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
 
     @Override
     public void loadClassEvent(LoginDialogEvent loginDialogEvent) {
+        logger.info("ClassLoaded: " + loginDialogEvent.getUuid());
         DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
         DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.USER_PAGE);
     }
 
     @Override
     public void updatePosterItem(ObjectEvent objectEvent) {
+
         PosterItem newPosterItem = (PosterItem) objectEvent.getGenericJson();
+        logger.info("PosterItemLoaded: " + newPosterItem.getUuid());
         loadPosterItemsForCurrentUserAndPoster(Lists.newArrayList(newPosterItem), false);
     }
 
     @Override
     public void deletePosterItem(ObjectEvent objectEvent) {
         String posterItemId = objectEvent.getItemId();
+        logger.info("PosterIdDeleted: " + posterItemId);
         SMT.remove(posterItemId);
     }
 
@@ -135,7 +142,8 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
 
         size(displayWidth, displayHeight, SMT.RENDERER);
         //hint(ENABLE_RETINA_PIXELS);
-        SMT.init(this, TouchSource.MOUSE);
+        SMT.init(this, TouchSource.AUTOMATIC);
+        SMT.setTouchDraw(TouchDraw.NONE);
 
         setupControlButtons();
 
@@ -196,7 +204,7 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
                         if (pz != null) {
                             // pz.setVisible(false);
                             if (SMT.add(pz)) {
-                                pz.setVisible(true);
+                                //pz.setVisible(true);
 
                                 //  pz.fade(1.0f, 0.0f, 255);
                                 // pz.applyScaleRotation();

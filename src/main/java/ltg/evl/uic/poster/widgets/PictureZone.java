@@ -5,7 +5,6 @@ import com.google.common.base.Optional;
 import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
 import ltg.evl.uic.poster.util.ImageLoader;
-import ltg.evl.uic.poster.util.de.looksgood.ani.Ani;
 import ltg.evl.uic.poster.widgets.button.DeleteButton;
 import ltg.evl.uic.poster.widgets.button.DeleteButtonBuilder;
 import ltg.evl.uic.poster.widgets.button.DeleteButtonListener;
@@ -23,11 +22,8 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
     public PVector point = new PVector(0, 0);
     public PVector target = new PVector(0, 0);
     int paddingOffset = (2 * padding);
-    int offScreenPadding = 10;
     private boolean isEditing;
     private String zoneName;
-    private int initialX = 0;
-    private int initialY = 0;
     private DeleteButton deleteButton;
     private boolean isDrawingOutline;
     private int selectedOutline = ZoneHelper.blueOutline;
@@ -38,18 +34,12 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
     private boolean isDeleteMode;
     private String zoneRotation;
     private String zoneScale;
-    private int bgAlpha;
 
     public PictureZone(PImage image, String uuid, int x, int y, int width, int height, String type, String zoneName,
                        String rotation, String scale) {
-        super(uuid, image, x, SMT.getApplet().getHeight(), width, height);
+        super(uuid, image, x, y, width, height);
 
 
-        setZoneRotation(rotation);
-
-        this.initialX = x;
-        this.initialY = SMT.getApplet().getHeight() + offScreenPadding;
-        this.target.y = y;
         this.setX(x);
         this.setY(y);
         this.setHeight(height);
@@ -59,48 +49,23 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
         this.isEditing = true;
         this.isAnimating = false;
         this.isDeleteMode = false;
-        this.bgAlpha = 0;
-        alpha(bgAlpha);
     }
 
     public PictureZone(PosterItem posterItem) {
         super(posterItem.getUuid(), ImageLoader.toPImage(posterItem.getImageBytes()), posterItem.getX(),
               posterItem.getY(), posterItem.getWidth(),
               posterItem.getHeight());
-        this.setZoneRotation(posterItem.getRotation());
-        this.setZoneScale(posterItem.getScale());
-        this.initialX = posterItem.getX();
-        this.initialY = SMT.getApplet().getHeight() + offScreenPadding;
+
         this.type = posterItem.getType();
         this.zoneName = posterItem.getName();
         this.isEditing = true;
         this.isAnimating = false;
         this.isDeleteMode = false;
-        this.bgAlpha = 0;
-        alpha(bgAlpha);
-    }
-
-    @Override
-    public void rotate(float angle) {
-        super.rotate(angle);
-        setZoneRotation(angle + "");
     }
 
     @Override
     protected void invokeTouchMethod() {
         super.invokeTouchMethod();
-    }
-
-    public void startAni(float speed, float delay) {
-        isAnimating = true;
-        //this.setIsEditing(true);
-        Ani diameterAni = new Ani(this, speed, delay, "initialY", target.y, Ani.EXPO_IN_OUT, "onEnd:done");
-        diameterAni.start();
-    }
-
-    public void fade(float speed, float delay, int alpha) {
-        Ani diameterAni = new Ani(this, speed, delay, "bgAlpha", alpha, Ani.LINEAR, "onEnd:done");
-        diameterAni.start();
     }
 
     public void setIsDeleteMode(boolean isDeleteMode) {
@@ -137,13 +102,6 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
 
     }
 
-    public void done() {
-        // this.setIsEditing(true);
-        isAnimating = false;
-        setY(initialY);
-        System.out.println("PictureZone.done " + getName());
-    }
-
     @Override
     public void deleteZone(Zone zone) {
         PosterDataModel.helper().removePosterItem(this.getName());
@@ -152,9 +110,6 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
 
     @Override
     public void drawImpl() {
-        //if (isAnimating)
-        //     setY(initialY);
-        alpha(bgAlpha);
         if (isEditing) {
             fill(255, 255, 255);
             if (isDrawingOutline) {
@@ -178,6 +133,8 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
                       this.getHeight() - paddingOffset);
             } else {
                 //TODO put text problem with img server.
+                fill(255, 255, 255);
+                rect(padding, padding, this.getWidth() - paddingOffset, this.getHeight() - paddingOffset);
             }
             //fill(255,255,255);
             //rect(padding, padding, this.getWidth()-paddingOffset, this.getHeight()-paddingOffset);

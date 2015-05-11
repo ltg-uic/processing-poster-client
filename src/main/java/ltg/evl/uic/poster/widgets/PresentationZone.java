@@ -61,21 +61,20 @@ public class PresentationZone extends Zone {
     public void presentImageZone(PImage pImage) {
 
         this.color = ZoneHelper.whiteOutline;
-//        Dimension scaledDimension = ZoneHelper.getScaledDimension(new Dimension(pImage.width, pImage.height),
-//                                                                  new Dimension(this.getWidth(), this.getHeight()));
+        Dimension scaledDimension = ZoneHelper.resizeImage(pImage, this.getWidth(), this.getHeight());
 
-        PImage newPImage = pImage.get();
-        if (newPImage.width > this.getWidth() && newPImage.height < this.getHeight()) {
-            newPImage.resize(this.getWidth(), 0);
-        } else if (newPImage.width < this.getWidth() && newPImage.height > this.getHeight()) {
-            newPImage.resize(0, this.getHeight() - 50);
-        } else if (newPImage.width <= this.getWidth() && newPImage.height <= this.getHeight()) {
-            newPImage.resize(0, this.getHeight() - 50);
-        }
+//        PImage newPImage = pImage.get();
+//        if (newPImage.width > this.getWidth() && newPImage.height < this.getHeight()) {
+//            newPImage.resize(this.getWidth(), 0);
+//        } else if (newPImage.width < this.getWidth() && newPImage.height > this.getHeight()) {
+//            newPImage.resize(0, this.getHeight() - 50);
+//        } else if (newPImage.width <= this.getWidth() && newPImage.height <= this.getHeight()) {
+//            newPImage.resize(0, this.getHeight() - 50);
+//        }
 
 
-        System.out.println("New height: " + pImage.height + " New width: " + pImage.width);
-        Dimension scaledDimension = new Dimension(newPImage.width, newPImage.height);
+//        System.out.println("New height: " + pImage.height + " New width: " + pImage.width);
+//        Dimension scaledDimension = new Dimension(newPImage.width, newPImage.height);
 
         int x2 = (int) (PresentationZone.this.getHalfSize().getWidth() - (scaledDimension.getWidth() / 2));
         int y2 = (int) (PresentationZone.this.getHalfSize().getHeight() - (scaledDimension.getHeight() / 2));
@@ -84,7 +83,7 @@ public class PresentationZone extends Zone {
 
         final PVector targetPoint = new PVector(x2, y2);
 
-        ImageZone imageZone = new ImageZone(newPImage, x2, y2, (int) scaledDimension.getWidth(),
+        ImageZone imageZone = new ImageZone(pImage, x2, y2, (int) scaledDimension.getWidth(),
                                             (int) scaledDimension.getHeight()) {
 
             int initY = PresentationZone.this.getHeight();
