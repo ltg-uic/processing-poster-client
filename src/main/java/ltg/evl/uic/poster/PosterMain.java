@@ -26,7 +26,6 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import processing.core.PApplet;
 import vialab.SMT.SMT;
-import vialab.SMT.TouchDraw;
 import vialab.SMT.TouchSource;
 import vialab.SMT.Zone;
 
@@ -143,7 +142,9 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
         size(displayWidth, displayHeight, SMT.RENDERER);
         //hint(ENABLE_RETINA_PIXELS);
         SMT.init(this, TouchSource.AUTOMATIC);
-        SMT.setTouchDraw(TouchDraw.NONE);
+
+        SMT.setTouchColor(33, 150, 243, 220);
+        //SMT.setTouchDraw(TouchDraw.DEBUG);
 
         setupControlButtons();
 
@@ -158,7 +159,8 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
     @Override
     public void draw() {
         background(ZoneHelper.lightGreyBackground);
-        text(round(frameRate) + "fps, # of zones: " + SMT.getZones().length, width / 2, 10);
+        fill(0);
+        text(round(frameRate) + "v1.4 fps, # of zones: " + SMT.getZones().length, width / 2, 10);
     }
 
 
@@ -173,6 +175,26 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
     }
 
     public void loadPosterItemsForCurrentUserAndPoster(Collection<PosterItem> posterItems, boolean shouldRemove) {
+
+        ZoneHelper.getInstance().maxX = 0;
+        ZoneHelper.getInstance().maxY = 0;
+
+        PosterItem pi = posterItems.iterator().next();
+        if (pi.getXn() < 0) {
+            for (PosterItem p : posterItems) {
+                if ((p.getX() + p.getWidth()) > ZoneHelper.getInstance().maxX) {
+                    ZoneHelper.getInstance().maxX = p.getX() + p.getWidth();
+                }
+                if ((p.getY() + p.getHeight()) > ZoneHelper.getInstance().maxY) {
+                    ZoneHelper.getInstance().maxY = p.getY() + p.getHeight();
+                }
+
+            }
+
+            ZoneHelper.getInstance().maxX = 2560;
+            ZoneHelper.getInstance().maxY = 1600;
+        }
+
 
         if (Optional.fromNullable(posterItems).isPresent()) {
 
@@ -199,22 +221,27 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
                 ImmutableList<PictureZone> list = fluentIterableOptional.get().toList();
 
 
-                if (!list.isEmpty()) {
-                    for (PictureZone pz : list) {
-                        if (pz != null) {
-                            // pz.setVisible(false);
-                            if (SMT.add(pz)) {
-                                //pz.setVisible(true);
-
-                                //  pz.fade(1.0f, 0.0f, 255);
-                                // pz.applyScaleRotation();
-                                pz.setIsEditing(lastIsEditToggle);
-                                //pz.startAni(0.5f, 0f);
-
-                            }
-                        }
-                    }
-                }
+//                if (!list.isEmpty()) {
+//                    for (PictureZone pz : list) {
+//                        if (pz != null) {
+//                            // pz.setVisible(false);
+//
+//
+//
+//                            if (SMT.add(pz)) {
+//                                //pz.setVisible(true);
+//                                pz.resetToInitPos();
+//                                //  pz.fade(1.0f, 0.0f, 255);
+//                                // pz.applyScaleRotation();
+//                                pz.setLocation(pz.init)
+//                                pz.setIsEditing(lastIsEditToggle);
+//
+//                                //pz.startAni(0.5f, 0f);
+//
+//                            }
+//                        }
+//                    }
+//                }
             }
 
 

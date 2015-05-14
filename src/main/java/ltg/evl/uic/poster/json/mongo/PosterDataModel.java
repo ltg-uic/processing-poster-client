@@ -61,6 +61,7 @@ public class PosterDataModel {
             @Override
             public void flush() {
             }
+
             @Override
             public void publish(LogRecord record) {
                 // default ConsoleHandler will print >= INFO to System.err
@@ -71,8 +72,6 @@ public class PosterDataModel {
         });
 
     }
-
-
 
 
     public static PosterDataModel helper() {
@@ -116,7 +115,6 @@ public class PosterDataModel {
             }
         }
     }
-
 
 
     public void loadUser(User user) {
@@ -225,6 +223,7 @@ public class PosterDataModel {
                 this.loginCollectionListener.logoutDoneEvent();
             } else {
                 DialogZoneController.dialog().showOKDialog("Saved!");
+                DialogZoneController.dialog().hideOKDialog();
             }
         } else {
 
@@ -258,11 +257,11 @@ public class PosterDataModel {
                                 loginCollectionListener.logoutDoneEvent();
                             } else {
                                 DialogZoneController.dialog().showOKDialog("Saved!");
+                                DialogZoneController.dialog().hideOKDialog();
                             }
 
                         }
 
-                        @SuppressWarnings("NullableProblems")
                         @Override
                         public void onFailure(Throwable thrown) {
                             thrown.printStackTrace();
@@ -271,6 +270,7 @@ public class PosterDataModel {
                                 loginCollectionListener.logoutDoneEvent();
                             } else {
                                 DialogZoneController.dialog().showOKDialog("Saved!");
+                                DialogZoneController.dialog().hideOKDialog();
                             }
                         }
                     });
@@ -283,6 +283,7 @@ public class PosterDataModel {
                     loginCollectionListener.logoutDoneEvent();
                 } else {
                     DialogZoneController.dialog().showOKDialog("Saved!");
+                    DialogZoneController.dialog().hideOKDialog();
                 }
             }
 
@@ -365,7 +366,8 @@ public class PosterDataModel {
             }
         };
 
-        return Collections2.filter(imPosterItems, filterPosterItem);
+        Collection<PosterItem> filter = Collections2.filter(imPosterItems, filterPosterItem);
+        return filter;
     }
 
     public PosterItem findPosterItemWithPosterItemUuid(final String posterItemUuid) {
@@ -461,6 +463,17 @@ public class PosterDataModel {
         }
     }
 
+    public void replacePosterItem(PosterItem posterItem) {
+        ListIterator<PosterItem> iterator = this.allPosterItems.listIterator();
+        while (iterator.hasNext()) {
+            PosterItem p = iterator.next();
+            if (p.equals(posterItem)) {
+                iterator.set(posterItem);
+            }
+        }
+
+    }
+
     public Collection<PosterItem> findDuplicatePosterItems(PosterItem posterItem) {
 
         if (posterItem == null) {
@@ -479,6 +492,45 @@ public class PosterDataModel {
 
         return result;
     }
+
+    public Collection<Poster> findDuplicatePosters(Poster poster) {
+
+        if (poster == null) {
+            return Collections.emptyList();
+        }
+
+        Predicate<Poster> predicate = new Predicate<Poster>() {
+            @Override
+            public boolean apply(Poster input) {
+                return input.equals(poster);
+            }
+        };
+
+        ImmutableList<Poster> posterImmutableList = ImmutableList.copyOf(allPosters);
+        Collection<Poster> result = Collections2.filter(posterImmutableList, predicate);
+
+        return result;
+    }
+
+    public Collection<User> findDuplicateUsers(User user) {
+
+        if (user == null) {
+            return Collections.emptyList();
+        }
+
+        Predicate<User> predicate = new Predicate<User>() {
+            @Override
+            public boolean apply(User input) {
+                return input.equals(user);
+            }
+        };
+
+        ImmutableList<User> userImmutableList = ImmutableList.copyOf(allUsers);
+        Collection<User> result = Collections2.filter(userImmutableList, predicate);
+
+        return result;
+    }
+
 
     public void updatePosterItemCollection(PosterItem newPosterItem) {
         if (Optional.fromNullable(newPosterItem).isPresent()) {
@@ -519,7 +571,8 @@ public class PosterDataModel {
                     } else if (!poster.getPosterItems().contains(posterItemUuuid)) {
                         poster.getPosterItems().add(posterItemUuuid);
                     } else {
-                        logger.log(Level.INFO, "PosterItem: " + posterItemUuuid + "is a DUP in " + posterId);
+                        logger.log(Level.SEVERE,
+                                   "REMOVING and ADDING PosterItem: " + posterItemUuuid + " is a DUP in " + posterId);
                     }
                 }
 
@@ -530,12 +583,12 @@ public class PosterDataModel {
 
     public void updateAllUserCollection(List<User> users) {
         this.allUsers = Lists.newArrayList();
+        this.allUsers.addAll(users);
 
         for (User user : users) {
-            if (!this.allUsers.contains(user)) {
-                this.allUsers.add(user);
-            } else {
-                logger.log(Level.SEVERE, "DUP USER: " + user.getUuid());
+            Collection<User> duplicateUsers = findDuplicateUsers(user);
+            if (duplicateUsers.size() > 1) {
+                logger.log(Level.SEVERE, "UPDATING ALL USER found DUP: " + duplicateUsers.iterator().next().getUuid());
             }
         }
     }
@@ -543,31 +596,30 @@ public class PosterDataModel {
     public void updateAllPosterItemsCollection(List<PosterItem> posterItems) {
         this.allPosterItems = Lists.newArrayList();
         this.allPosterItems.addAll(posterItems);
-//        for (PosterItem posterItem : posterItems) {
-//            ListIterator<PosterItem> listIterator = allPosterItems.listIterator();
-//            while (listIterator.hasNext()) {
-//                PosterItem nextPosterItem = listIterator.next();
-//                if (allPosterItems.contains(nextPosterItem)) {
-//                    listIterator.set(nextPosterItem);
-//                    logger.log(Level.SEVERE, "UPDATE DUP POSTER ITEM: " + nextPosterItem.getUuid());
-//                }
-//            }
-//        }
+        for (PosterItem posterItem : posterItems) {
+
+            Collection<PosterItem> duplicatePosterItems = findDuplicatePosterItems(posterItem);
+
+            if (duplicatePosterItems.size() > 1) {
+                logger.log(Level.SEVERE,
+                           "UPDATING ALL POSTER_ITEMS found DUP: " + duplicatePosterItems.iterator().next()
+                                                                                         .getUuid());
+            }
+        }
     }
 
     public void updateAllPosterCollection(List<Poster> posters) {
         this.allPosters = Lists.newArrayList();
         this.allPosters.addAll(posters);
-//        for (Poster poster : posters) {
-//            ListIterator<Poster> listIterator = allPosters.listIterator();
-//            while (listIterator.hasNext()) {
-//                Poster nextPoster = listIterator.next();
-//                if (allPosters.contains(nextPoster)) {
-//                    listIterator.set(poster);
-//                    logger.log(Level.SEVERE, "UPDATE DUP POSTER: " + poster.getUuid());
-//                }
-//            }
-//        }
+        for (Poster poster : posters) {
+
+            Collection<Poster> duplicatePoster = findDuplicatePosters(poster);
+
+            if (duplicatePoster.size() > 1) {
+                logger.log(Level.SEVERE, "UPDATING ALL POSTERS found DUP: " + duplicatePoster.iterator().next()
+                                                                                             .getUuid());
+            }
+        }
     }
 
     //untested

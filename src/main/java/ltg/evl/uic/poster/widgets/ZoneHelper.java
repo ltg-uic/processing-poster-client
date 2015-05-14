@@ -1,5 +1,9 @@
 package ltg.evl.uic.poster.widgets;
 
+import com.google.common.base.Optional;
+import ltg.evl.uic.poster.json.mongo.PosterDataModel;
+import ltg.evl.uic.poster.json.mongo.PosterItem;
+import ltg.evl.uic.poster.util.ModelHelper;
 import ltg.evl.uic.poster.widgets.button.DeleteButton;
 import ltg.evl.uic.poster.widgets.button.DeleteButtonBuilder;
 import ltg.evl.uic.poster.widgets.button.DeleteButtonListener;
@@ -62,6 +66,9 @@ public class ZoneHelper {
                                                                                                                           101), SMT
             .getApplet()
             .color(212, 167, 38), SMT.getApplet().color(122, 186, 58)};
+
+
+    public static int darkTeal = SMT.getApplet().color(96, 125, 139);
     public static int greenColor = SMT.getApplet().color(38, 166, 154);
     public static int darkBlueOutline = SMT.getApplet().color(1, 87, 155);
     public static int lightGreyBackground = SMT.getApplet().color(238, 238, 238);
@@ -73,6 +80,8 @@ public class ZoneHelper {
     public static int darkGreenColor = SMT.getApplet().color(67, 160, 71);
     public static int orangeColor = SMT.getApplet().color(251, 140, 0);
     private static ZoneHelper ourInstance = new ZoneHelper();
+    public int maxY;
+    public int maxX;
 
 
     private ZoneHelper() {
@@ -329,6 +338,48 @@ public class ZoneHelper {
         } else {
             return image.getScaledInstance(-1, size, Image.SCALE_SMOOTH);
         }
+    }
+
+    public static void computeCoefficient(PosterItem posterItem) {
+
+
+        double xn = (posterItem.getX() * 1.0) / ZoneHelper.getInstance().maxX;
+        posterItem.setXn(xn);
+        double yn = (posterItem.getY() * 1.0) / ZoneHelper.getInstance().maxY;
+        posterItem.setYn(yn);
+        double wn = (posterItem.getWidth() * 1.0) / ZoneHelper.getInstance().maxX;
+        posterItem.setWn(wn);
+        double hn = (posterItem.getHeight() * 1.0) / ZoneHelper.getInstance().maxY;
+        posterItem.setHn(hn);
+
+    }
+
+    public static PosterItem pictureZoneToPosterItem(PictureZone pictureZone) {
+
+        Optional<PosterItem> posterItemOptional = Optional.fromNullable(
+                PosterDataModel.helper().findPosterItemWithPosterItemUuid(pictureZone.getName()));
+
+        PosterItem modPosteritem = null;
+
+        if (posterItemOptional.isPresent()) {
+            modPosteritem = posterItemOptional.get();
+
+
+            Dimension screenSize = pictureZone.getScreenSize();
+            System.out.println("screenSize " + screenSize.toString());
+
+            Dimension size = pictureZone.getSize();
+            System.out.println("Size " + size.toString());
+
+
+            modPosteritem.setLastEdited(ModelHelper.getTimestampMilli());
+            modPosteritem.setXn((pictureZone.getX() * 1.0) / SMT.getApplet().displayWidth);
+            modPosteritem.setYn((pictureZone.getY() * 1.0) / SMT.getApplet().displayHeight);
+            modPosteritem.setWn((pictureZone.getWidth() * 1.0) / SMT.getApplet().displayWidth);
+            modPosteritem.setHn((pictureZone.getHeight() * 1.0) / SMT.getApplet().displayHeight);
+            return modPosteritem;
+        }
+        return null;
     }
 
     public int randomColor() {

@@ -8,9 +8,12 @@ import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
 import ltg.evl.uic.poster.util.ModelHelper;
 import ltg.evl.uic.poster.widgets.PictureZone;
+import ltg.evl.uic.poster.widgets.ZoneHelper;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import vialab.SMT.SMT;
 
+import java.awt.*;
 import java.util.concurrent.Executors;
 
 public class PictureZoneToPosterItem implements Function<PictureZone, PosterItem> {
@@ -35,16 +38,27 @@ public class PictureZoneToPosterItem implements Function<PictureZone, PosterItem
 
                 logger.log(Level.INFO, "MOD PosterItem: " + modPosteritem);
 
-                modPosteritem.setHeight(pictureZone.getHeight());
-                modPosteritem.setWidth(pictureZone.getWidth());
-                modPosteritem.setRotation(pictureZone.getRotationAngle() + "");
-                modPosteritem.setScale(pictureZone.getZoneScale());
-                modPosteritem.setY(pictureZone.getY());
-                modPosteritem.setX(pictureZone.getX());
+
+                Dimension screenSize = pictureZone.getScreenSize();
+                System.out.println("screenSize " + screenSize.toString());
+
+                Dimension size = pictureZone.getSize();
+                System.out.println("Size " + size.toString());
+
+
+                ZoneHelper.computeCoefficient(modPosteritem);
+
                 modPosteritem.setLastEdited(ModelHelper.getTimestampMilli());
+                modPosteritem.setXn((pictureZone.getX() * 1.0) / SMT.getApplet().displayWidth);
+                modPosteritem.setYn((pictureZone.getY() * 1.0) / SMT.getApplet().displayHeight);
+                modPosteritem.setWn((pictureZone.getWidth() * 1.0) / SMT.getApplet().displayWidth);
+                modPosteritem.setHn((pictureZone.getHeight() * 1.0) / SMT.getApplet().displayHeight);
+
+
+                return modPosteritem;
             }
 
-            return modPosteritem;
+
         }
         return null;
     }

@@ -49,7 +49,7 @@ public class UserPageZone extends Zone {
         for (User user : users) {
 
 
-            user.setColor(ZoneHelper.getInstance().randomColor());
+            user.setColor(ZoneHelper.darkTeal);
             UserButton userButton = new UserButton(user.getUuid(), ZoneHelper.BUTTON_WIDTH, ZoneHelper.BUTTON_HEIGHT);
             userButton.setUser(user);
             userButton.initButton();

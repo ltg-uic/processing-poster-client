@@ -1,22 +1,20 @@
 package ltg.evl;
 
+import com.google.api.client.http.HttpResponse;
 import com.google.common.base.CharMatcher;
 import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
+import com.google.common.util.concurrent.ListenableFuture;
 import ltg.evl.uic.poster.json.mongo.*;
 import ltg.evl.uic.poster.util.RESTHelper;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
-import org.junit.Test;
 import org.kohsuke.randname.RandomNameGenerator;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -49,7 +47,7 @@ public class MongoDBTest {
         return rand.nextInt((max - min) + 1) + min;
     }
 
-    @Test
+    @Ignore
     public void testMath() {
         double ceil = Math.ceil(5.0 / 4.0);
         double floor = Math.floor(5.0 / 4.0);
@@ -93,6 +91,91 @@ public class MongoDBTest {
         return pis;
     }
 
+    @Ignore
+    public void fixPixels() {
+
+        int i = 0;
+
+        try {
+            List<ListenableFuture<HttpResponse>> allRequests = RESTHelper.getInstance().getAllCollectionRequests();
+
+//            HttpResponse httpResponse = allPosterItems.get();
+//
+//            RESTHelper.getInstance().parseAllResponse(httpResponse, PosterItem.class);
+//
+//            processPosterItems();
+
+            for (ListenableFuture<HttpResponse> r : allRequests) {
+                HttpResponse httpResponse = r.get();
+                try {
+                    i++;
+                    if (RESTHelper.getInstance().parseAllResponse(httpResponse, null)) {
+                        if (i == 3) {
+                            processPosterItems();
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+            // processPosterItems();
+//
+//
+//
+//            ListenableFuture<List<HttpResponse>> successfulRequests = Futures.successfulAsList(allRequests);
+//
+//            Futures.addCallback(successfulRequests, new FutureCallback<List<HttpResponse>>() {
+//                // we want this handler to run immediately after we push the big red button!
+//
+//                @Override
+//                public void onSuccess(List<HttpResponse> results) {
+//                    Logger.getRootLogger().info("STARTING ALL REST DONE START INIT");
+//
+//                    for (HttpResponse response : results) {
+//                        try {
+//                            RESTHelper.getInstance().parseAllResponse(response, null);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//
+//                    processPosterItems();
+//
+//                }
+//
+//                @Override
+//                public void onFailure(Throwable thrown) {
+//                    Logger.getRootLogger().info("REST FAILED!");
+//                    thrown.printStackTrace();
+//                }
+//            });
+////
+//
+//            List<HttpResponse> httpResponses = successfulRequests.get();
+            //
+        } catch (IOException | GeneralSecurityException | InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void processPosterItems() {
+
+        //anika
+        String userUUID = "55390634f196f96bab000000-gruser";
+        String posterUUID = "55390634f196f96bab000000-poster";
+        Collection<PosterItem> allPostersItemsForPoster = PosterDataModel.helper()
+                                                                         .getAllPostersItemsForPoster(posterUUID);
+
+        for (PosterItem posterItem : allPostersItemsForPoster) {
+            System.out.println(posterItem.toString());
+        }
+
+
+    }
 
     @Ignore
     public void multipleRequests() throws IOException, InterruptedException, GeneralSecurityException, ExecutionException {

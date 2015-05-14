@@ -3,6 +3,7 @@ package ltg.evl.uic.poster.util.collections;
 import com.google.api.client.repackaged.com.google.common.base.Strings;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
+import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
 import ltg.evl.uic.poster.util.ImageLoader;
 import ltg.evl.uic.poster.widgets.PictureZone;
@@ -13,6 +14,7 @@ import org.apache.log4j.Logger;
 import processing.core.PImage;
 import vialab.SMT.SMT;
 
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import static ltg.evl.uic.poster.json.mongo.PosterItem.IMAGE;
@@ -65,28 +67,69 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                     }
                 }
 
-                if (posterItem.getX() <= 0 || posterItem.getY() <= 0) {
+                if (posterItem.getY() < 0) {
                     posterItem.setY(ZoneHelper.random(200, 500));
-                    posterItem.setX(ZoneHelper.random(200, 500));
-                } else if ((posterItem.getX() >= SMT.getApplet().displayWidth)) {
-                    posterItem.setX(ZoneHelper.random(200, SMT.getApplet().displayWidth - posterItem.getWidth()));
-                } else if (posterItem.getY() >= SMT.getApplet().displayHeight) {
-                    posterItem.setY(ZoneHelper.random(200, SMT.getApplet().displayHeight - posterItem.getHeight()));
                 }
+
+                if (posterItem.getX() < 0) {
+                    posterItem.setX(ZoneHelper.random(200, 500));
+                }
+
+                //convert legacy items
+                if (posterItem.getXn() < 0) {
+                    ZoneHelper.computeCoefficient(posterItem);
+                }
+
+                int new_x = (int) ((posterItem.getXn() * SMT.getApplet().displayWidth));
+                int new_y = (int) ((posterItem.getYn() * SMT.getApplet().displayHeight));
+                int new_w = (int) ((posterItem.getWn() * SMT.getApplet().displayWidth));
+                int new_h = (int) ((posterItem.getHn() * SMT.getApplet().displayHeight));
+
+
+                PosterDataModel.helper().replacePosterItem(posterItem);
+
+
+//                pictureZone = new PictureZoneBuilder().setImage(pImage)
+//                                                      .setUuid(Strings.nullToEmpty(posterItem.getUuid()))
+////                                                      .setX(new_x)
+////                                                      .setY(new_y)
+////                                                      .setWidth(new_w)
+////                                                      .setHeight(new_h)
+////                                                      .setRotation(posterItem.getRotation())
+////                                                      .setScale(posterItem.getScale())
+////                                                      .setZoneName(Strings.nullToEmpty(posterItem.getName()))
+//                                                      .setType(posterItem.getType())
+//                                                      .createPictureZone();
+
+                pictureZone = new PictureZone(pImage, Strings.nullToEmpty(posterItem.getUuid()), new_x, new_y, new_w,
+                                              new_h);
+
+                if (SMT.add(pictureZone)) {
+                    pictureZone.setLocation(new_x, new_y);
+                    pictureZone.setSize(new_w, new_h);
+                }
+
+
+            } else {
+
+                String uuid = UUID.randomUUID().toString();
+
+                pictureZone = new PictureZoneBuilder().setUuid(uuid)
+                                                      .setX(ZoneHelper.random(0, 500))
+                                                      .setY(ZoneHelper.random(0, 500))
+                                                      .setWidth(200)
+                                                      .setHeight(200)
+                                                      .setRotation("0")
+                                                      .setScale("0")
+                                                      .setZoneName(uuid)
+                                                      .setType("txt")
+                                                      .createPictureZone();
+
             }
 
 
-            pictureZone = new PictureZoneBuilder().setImage(pImage)
-                                                      .setUuid(Strings.nullToEmpty(posterItem.getUuid()))
-                                                      .setX(posterItem.getX())
-                                                      .setY(posterItem.getY())
-                                                      .setWidth(posterItem.getWidth())
-                                                      .setHeight(posterItem.getHeight())
-                                                      .setRotation(posterItem.getRotation())
-                                                      .setScale(posterItem.getScale())
-                                                      .setZoneName(Strings.nullToEmpty(posterItem.getName()))
-                                                      .setType(posterItem.getType())
-                                                      .createPictureZone();
+
+
 
                 return pictureZone;
 

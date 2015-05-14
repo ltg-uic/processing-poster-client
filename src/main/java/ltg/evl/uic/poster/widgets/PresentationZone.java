@@ -21,6 +21,7 @@ public class PresentationZone extends Zone {
     private boolean shouldDelete;
     private String okDialogText;
     private int color;
+    private boolean shouldShowButton;
 
     public PresentationZone(String name, int x, int y, int width, int height) {
         super(name, x, y, width, height);
@@ -120,6 +121,7 @@ public class PresentationZone extends Zone {
 
     public void showDialog(final String text, int alpha) {
 
+
         int num_per_col = 2;
         int reminder = 2 % num_per_col;
 
@@ -205,7 +207,6 @@ public class PresentationZone extends Zone {
     }
 
     public void showOKDialog(final String text, int alpha) {
-
         okDialogText = text;
         int num_per_col = 1;
         int reminder = 2 % num_per_col;
@@ -270,11 +271,13 @@ public class PresentationZone extends Zone {
             }
         };
         cancelButton.initButton();
-        frame.add(cancelButton);
+//        if(shouldShowButton) {
+//            frame.add(cancelButton);
+//        }
 
-        SMT.grid(25, 25, frame.getWidth(), 25, 25, frame.getChildren());
+        //SMT.grid(25, 25, frame.getWidth(), 25, 25, frame.getChildren());
 
-        heading.add(frame);
+        //heading.add(frame);
         this.add(heading);
         this.fade(3f, 0, alpha, false);
     }

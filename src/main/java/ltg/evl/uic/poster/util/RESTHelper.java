@@ -128,15 +128,7 @@ public class RESTHelper {
 
                 if (posterItemOptional.isPresent()) {
 
-                    PosterItem posterItem = new PosterItem();
-                    posterItem.setHeight(pi.getHeight());
-                    posterItem.setWidth(pi.getWidth());
-                    posterItem.setScale(pi.getScale());
-                    posterItem.setRotation(pi.getRotation());
-                    posterItem.setY(pi.getY());
-                    posterItem.setX(pi.getX());
-
-                    listOfFutures.add(postCollection(posterItem, RESTHelper.PosterUrl.patchPosterItem(
+                    listOfFutures.add(postCollection(pi, RESTHelper.PosterUrl.patchPosterItem(
                                                              pi.get_id().get("$oid").toString(),
                                                              PosterUrl.REQUEST_TYPE.PATCH),
                                                      PosterItem.class, false));
@@ -324,7 +316,60 @@ public class RESTHelper {
     }
 
 
+    public ListenableFuture<HttpResponse> getAllPosterItems() throws GeneralSecurityException, IOException {
 
+        logger.log(Level.INFO, "STARTING ALL POSTER COLLECTIONS FETCH");
+
+        List<ListenableFuture<HttpResponse>> futures = Lists.newArrayList();
+
+
+        ListeningExecutorService service = MoreExecutors.listeningDecorator(
+                Executors.newCachedThreadPool());
+
+        ApacheHttpTransport transport = new ApacheHttpTransport.Builder().doNotValidateCertificate().build();
+
+        HttpRequestFactory requestFactory =
+                transport.createRequestFactory(new HttpRequestInitializer() {
+                    @Override
+                    public void initialize(com.google.api.client.http.HttpRequest request) throws IOException {
+                        request.setParser(new JsonObjectParser(JSON_FACTORY));
+                    }
+
+
+                });
+
+        PosterUrl url = new PosterUrl(
+                PosterServices.getInstance().getConfig().getString("poster.base.url") + "/poster_item");
+
+        HttpRequest posterItemRequest = requestFactory.buildGetRequest(url);
+
+        Future<HttpResponse> httpPosterItemResponseFuture = posterItemRequest.executeAsync(service);
+
+        ListenableFuture<HttpResponse> posterItemFuture = JdkFutureAdapters.listenInPoolThread(
+                httpPosterItemResponseFuture);
+
+        return posterItemFuture;
+
+//        Futures.addCallback(posterItemFuture, new FutureCallback<HttpResponse>() {
+//            @Override
+//            public void onSuccess(HttpResponse posterItemFuture) {
+//                try {
+//                    logger.log(Level.INFO, "RECEIVED POSTER ITEM COLLECTIONS RESPONSE");
+//                    parseAllResponse(posterItemFuture, PosterItem.class);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Throwable thrown) {
+//                logger.log(Level.SEVERE, "POSTERITEM FETCH FAILED");
+//
+//                handleHttpFailure(thrown);
+//            }
+//        });
+
+    }
 
     public List<ListenableFuture<HttpResponse>> getAllCollectionRequests() throws IOException, GeneralSecurityException, ExecutionException, InterruptedException {
 
@@ -451,13 +496,15 @@ public class RESTHelper {
         thrown.printStackTrace();
     }
 
-    private void parseAllResponse(HttpResponse response, Class<?> someClass) throws IOException {
+    public boolean parseAllResponse(HttpResponse response, Class<?> someClass) throws IOException {
 
 
-        Class<?> aClass = responseGenericJsonMap.get(response.getRequest().getUrl());
+        if (someClass == null) {
+            someClass = responseGenericJsonMap.get(response.getRequest().getUrl());
+        }
 
 
-        if (aClass.equals(User.class)) {
+        if (someClass.equals(User.class)) {
             logger.log(Level.INFO, "PROCESSING USER RESPONSE");
             User[] users = response.parseAs(User[].class);
 
@@ -470,7 +517,9 @@ public class RESTHelper {
                 Collections.addAll(userList, users);
                 PosterDataModel.helper().updateAllUserCollection(userList);
             }
-        } else if (aClass.equals(Poster.class)) {
+
+            return true;
+        } else if (someClass.equals(Poster.class)) {
             logger.log(Level.INFO, "PROCESSING POSTER RESPONSE");
             Poster[] posters = response.parseAs(Poster[].class);
 
@@ -484,7 +533,8 @@ public class RESTHelper {
                 PosterDataModel.helper().updateAllPosterCollection(posterList);
             }
 
-        } else if (aClass.equals(PosterItem.class)) {
+            return true;
+        } else if (someClass.equals(PosterItem.class)) {
             logger.log(Level.INFO, "PROCESSING POSTER_ITEM RESPONSE");
             PosterItem[] posterItems = response.parseAs(PosterItem[].class);
 
@@ -495,8 +545,10 @@ public class RESTHelper {
                 Collections.addAll(posterItemList, posterItems);
                 PosterDataModel.helper().updateAllPosterItemsCollection(posterItemList);
             }
+            return true;
         }
 
+        return false;
     }
 
     public void fetchPosterItem(

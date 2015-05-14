@@ -42,8 +42,20 @@ public class PosterItem extends GenericJson {
     private String content;
     @Key
     private long lastEdited;
+    @Key
+    private double xn;
+    @Key
+    private double yn;
+    @Key
+    private double wn;
+    @Key
+    private double hn;
 
     public PosterItem() {
+        this.setXn(-1.0);
+        this.setWn(-1.0);
+        this.setYn(-1.0);
+        this.setHn(-1.0);
     }
 
     public PosterItem(String uuid, int x, int y, int width, int height, String name, String type, String imageBytes,
@@ -89,14 +101,17 @@ public class PosterItem extends GenericJson {
     }
 
     public void setWidth(int width) {
+
         this.width = width;
     }
 
     public int getHeight() {
+
         return height;
     }
 
     public void setHeight(int height) {
+
         this.height = height;
     }
 
@@ -197,5 +212,37 @@ public class PosterItem extends GenericJson {
 
     public void setScale(String scale) {
         this.scale = scale;
+    }
+
+    public double getXn() {
+        return xn;
+    }
+
+    public void setXn(double xn) {
+        this.xn = xn;
+    }
+
+    public double getYn() {
+        return yn;
+    }
+
+    public void setYn(double yn) {
+        this.yn = yn;
+    }
+
+    public double getWn() {
+        return wn;
+    }
+
+    public void setWn(double wn) {
+        this.wn = wn;
+    }
+
+    public double getHn() {
+        return hn;
+    }
+
+    public void setHn(double hn) {
+        this.hn = hn;
     }
 }

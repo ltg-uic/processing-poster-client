@@ -70,11 +70,7 @@ public class PictureZoneBuilder {
     public PictureZone createPictureZone() {
 
 
-        return new PictureZone(image, uuid, x, y, width, height, type, zoneName, rotation, scale);
-    }
-
-    public PictureZone createPictureZoneWithPosterItem() {
-        return new PictureZone(posterItem);
+        return new PictureZone(image, uuid, x, y, width, height);
     }
 
     public PictureZoneBuilder setScale(String scale) {
