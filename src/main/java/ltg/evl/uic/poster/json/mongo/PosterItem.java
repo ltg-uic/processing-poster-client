@@ -83,6 +83,9 @@ public class PosterItem extends GenericJson {
     public int getX() {
         return x;
     }
+    public int getThisX() {
+        return this.x;
+    }
 
     public void setX(int x) {
         this.x = x;

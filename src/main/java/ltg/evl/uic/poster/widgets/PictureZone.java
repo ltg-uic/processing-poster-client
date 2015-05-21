@@ -33,6 +33,9 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
     private int initWidth;
     private int initHeight;
 
+    // Debugging: Kyle
+    private int printCounter = 0;
+
     public PictureZone(PImage image, String uuid, int x, int y, int width, int height) {
         super(uuid, image, x, y, width, height);
         this.isEditing = true;
@@ -193,9 +196,8 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
     public void touch() {
         super.touch();
 
+
         printThisShit();
-
-
 
 
         if (isEditing) {
@@ -207,13 +209,26 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
     }
 
     public void printThisShit() {
-        System.out.println("width: " + getWidth());
-        System.out.println("height: " + getHeight());
-        System.out.println("get screen size: " + getScreenSize());
-        System.out.println("get size: " + getSize());
-        System.out.println("get rotationradius: " + getRntRadius());
-        System.out.println("NAME: " + getName());
+        printCounter++;
+        if (printCounter < 2) {
+            System.out.println("\nIn PictureZone.java");
+            System.out.println("===================");
+            System.out.println("Print This SHIT!!");
+            System.out.println("===================");
+            System.out.println("width: " + getWidth());
+            System.out.println("height: " + getHeight());
+            System.out.println("get screen size: " + getScreenSize());
+            System.out.println("get size: " + getSize());
+            System.out.println("get rotationradius: " + getRntRadius());
+            System.out.println("NAME: " + getName());
+            System.out.println("System Width: " + SMT.getApplet().displayWidth);
+            System.out.println("System Height: " + SMT.getApplet().displayHeight);
+            System.out.println("       Size: " + SMT.getApplet().getSize());
+            System.out.println("===================\n");
+        }
+        if (printCounter == 1000) printCounter = 0;
     }
+
     @Override
     public void touchDown(Touch touch) {
         super.touchDown(touch);

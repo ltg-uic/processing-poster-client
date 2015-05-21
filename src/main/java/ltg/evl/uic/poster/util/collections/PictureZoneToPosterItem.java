@@ -54,6 +54,24 @@ public class PictureZoneToPosterItem implements Function<PictureZone, PosterItem
                 modPosteritem.setWn((pictureZone.getWidth() * 1.0) / SMT.getApplet().displayWidth);
                 modPosteritem.setHn((pictureZone.getHeight() * 1.0) / SMT.getApplet().displayHeight);
 
+                System.out.println("\nIn PictureZoneToPosterItem.java");
+                System.out.println("===================================================");
+                System.out.println("pictureZone.getX(): " + pictureZone.getX() * 1.0);
+                System.out.println("SMT.getApplet().displayWidth: " + SMT.getApplet().displayWidth);
+                System.out.println("Combined: " + (pictureZone.getX() * 1.0) / SMT.getApplet().displayWidth);
+
+                System.out.println("\npictureZone.getY(): " + pictureZone.getY() * 1.0);
+                System.out.println("SMT.getApplet().displayHeight: " + SMT.getApplet().displayHeight);
+                System.out.println("Combined: " + (pictureZone.getY() * 1.0) / SMT.getApplet().displayHeight);
+
+                System.out.println("\npictureZone.getWidth(): " + pictureZone.getWidth() * 1.0);
+                System.out.println("SMT.getApplet().displayWidth: " + SMT.getApplet().displayWidth);
+                System.out.println("Combined: " + (pictureZone.getWidth() * 1.0) / SMT.getApplet().displayWidth);
+
+                System.out.println("\npictureZone.getHeight(): " + pictureZone.getHeight() * 1.0);
+                System.out.println("SMT.getApplet().displayHeight: " + SMT.getApplet().displayHeight);
+                System.out.println("Combined: " + (pictureZone.getHeight() * 1.0) / SMT.getApplet().displayHeight);
+                System.out.println("===================================================");
 
                 return modPosteritem;
             }

@@ -88,6 +88,8 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
 
                 PosterDataModel.helper().replacePosterItem(posterItem);
 
+                // Print information to track whats going on
+                printDebugInfo(posterItem, new_x, new_y, new_w, new_h);
 
 //                pictureZone = new PictureZoneBuilder().setImage(pImage)
 //                                                      .setUuid(Strings.nullToEmpty(posterItem.getUuid()))
@@ -137,5 +139,29 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
         return null;
     }
 
-
+    private void printDebugInfo(PosterItem posterItem, int nX, int nY, int nW, int nH){
+        System.out.println("\nIn PosterItemToPictureZone");
+        System.out.println("===================");
+        System.out.println("X Values!!");
+        System.out.println("new_x: " + nX);
+        System.out.println("posterItem X: " + posterItem.getX());
+        System.out.println("posterItem this.X: " + posterItem.getThisX());
+        System.out.println("posterItem Xn: " + posterItem.getXn());
+        System.out.println("\n===================");
+        System.out.println("Y Values!!");
+        System.out.println("new_y: " + nY);
+        System.out.println("posterItem Y: " + posterItem.getY());
+        System.out.println("posterItem Yn: " + posterItem.getYn());
+        System.out.println("\n===================");
+        System.out.println("Width Values!!");
+        System.out.println("new_w: " + nW);
+        System.out.println("posterItem W: " + posterItem.getWidth());
+        System.out.println("posterItem Wn: " + posterItem.getWn());
+        System.out.println("\n===================");
+        System.out.println("Height Values!!");
+        System.out.println("new_h: " + nH);
+        System.out.println("posterItem H: " + posterItem.getHeight());
+        System.out.println("posterItem Hn: " + posterItem.getHn());
+        System.out.println("===================\n");
+    }
 }
