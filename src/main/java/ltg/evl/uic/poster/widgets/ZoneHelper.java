@@ -107,6 +107,15 @@ public class ZoneHelper {
         map.put(TextAttribute.FAMILY, font.getName());
         map.put(TextAttribute.SIZE, new Float(30.0));
 
+        int offsetSize = text.length()/ 2;
+        System.out.println("renderTextToImage: " + text);
+        for (int i = 0; i < offsetSize; i++) {
+            text = " " + text;
+            System.out.println("renderTextToImage: " + i + " " + text);
+        }
+        System.out.println("renderTextToImage: " + text);
+
+
         //map.put(TextAttribute.FONT, font);
         AttributedString attributedString = new AttributedString(text, map);
         AttributedCharacterIterator paragraph = attributedString.getIterator();
@@ -115,6 +124,8 @@ public class ZoneHelper {
         int paragraphStart = paragraph.getBeginIndex();
         int paragraphEnd = paragraph.getEndIndex();
         LineBreakMeasurer lineMeasurer = new LineBreakMeasurer(paragraph, frc);
+
+
 
         float drawPosY = 0;
 
@@ -262,7 +273,9 @@ public class ZoneHelper {
         return new Dimension(currentX, currentY);
     }
 
+    //here
     public static Dimension resizeImage(PImage image, int maxWidth, int maxHeight) {
+
         Dimension largestDimension = new Dimension(maxWidth, maxHeight);
 
         // Original size
@@ -271,10 +284,20 @@ public class ZoneHelper {
 
         float aspectRatio = imageWidth / imageHeight;
 
-        float w_aspect = imageWidth / maxWidth;
-        float h_aspect = imageHeight / maxHeight;
+        float w_aspect = imageWidth / (float) maxWidth;
+        float h_aspect = imageHeight / (float) maxHeight;
 
         float scale = Math.min(1, Math.min(w_aspect, h_aspect));
+
+        System.out.println("\nIn ZoneHelper");
+        System.out.println("=============================");
+        System.out.println("imageWidth:" + imageWidth );
+        System.out.println("imageHeight:" + imageHeight );
+        System.out.println("aspectRatio:" + aspectRatio );
+        System.out.println("w_aspect:" + w_aspect );
+        System.out.println("h_aspect:" + h_aspect);
+        System.out.println("maxWidth:" + maxWidth );
+        System.out.println("maxHeight:" + maxHeight );
 
         if (imageWidth > maxWidth || imageHeight > maxHeight) {
             if ((float) largestDimension.width / largestDimension.height > aspectRatio) {
@@ -287,8 +310,83 @@ public class ZoneHelper {
             imageHeight = largestDimension.height;
         }
 
+        System.out.println("largestDimension.width:" + largestDimension.width );
+        System.out.println("largestDimension.heightt:" + largestDimension.height );
+
         return new Dimension(largestDimension.width, largestDimension.height);
     }
+
+    public static Dimension resizeImageKRA(PImage image, int maxWidth, int maxHeight) {
+        Dimension largestDimension = new Dimension(maxWidth, maxHeight);
+
+        // Original size
+        float imageWidth = new Float(image.width).floatValue();
+        float imageHeight = new Float(image.height).floatValue();
+
+        float aspectRatio = imageWidth / imageHeight;
+        float w_aspect = imageWidth / (float) maxWidth;
+        float h_aspect = imageHeight / (float) maxHeight;
+
+        System.out.println("\nIn ZoneHelper KRA");
+        System.out.println("=============================");
+        System.out.println("imageWidth:" + imageWidth );
+        System.out.println("imageHeight:" + imageHeight );
+        System.out.println("aspectRatio:" + aspectRatio );
+        System.out.println("maxWidth:" + maxWidth );
+        System.out.println("maxHeight:" + maxHeight );
+
+//        while ( largestDimension.width > maxWidth || largestDimension.height > maxHeight) {
+//        }
+        if (imageWidth > maxWidth) {
+            System.out.println("Its too wide!");
+            float imageHeightAdjusted = maxWidth * imageHeight / imageWidth;
+            largestDimension = resizeImageKRAHelper(largestDimension, maxWidth, imageHeightAdjusted);
+        } else if (imageHeight > maxHeight) {
+            System.out.println("Its too tall!");
+            float imageWidthAdjusted = maxHeight * imageWidth / imageHeight;
+            largestDimension = resizeImageKRAHelper(largestDimension, imageWidthAdjusted, maxHeight);
+        } else {
+            System.out.println("All riiiight");
+            largestDimension = resizeImageKRAHelper(largestDimension, imageWidth, imageHeight);
+        }
+
+        System.out.println("------------------------------\nChecking...");
+        System.out.println("largestDimension.width:" + largestDimension.width);
+        System.out.println("largestDimension.height:" + largestDimension.height);
+        System.out.println("maxWidth:" + maxWidth );
+        System.out.println("maxHeight:" + maxHeight );
+
+        if (largestDimension.width > maxWidth && largestDimension.height > maxHeight ) {
+            System.out.println("Both too large...do something about it!");
+        } else if ( largestDimension.width > maxWidth ) {
+            System.out.println("Its too wide!" + ((largestDimension.height / largestDimension.width*1.0) * maxWidth));
+            largestDimension.height = (int)((largestDimension.height / largestDimension.width*1.0) * maxWidth);
+            largestDimension.width = maxWidth;
+
+        } else if ( largestDimension.height > maxHeight ) {
+            System.out.println("Its too tall!" + ((largestDimension.width / largestDimension.height*1.0) * maxHeight));
+            largestDimension.width = (int)((largestDimension.width / largestDimension.height*1.0) * maxHeight);
+            largestDimension.height = maxHeight;
+        }
+
+        System.out.println("largestDimension.width:" + largestDimension.width);
+        System.out.println("largestDimension.height:" + largestDimension.height);
+        return new Dimension(largestDimension.width, largestDimension.height);
+    }
+
+    /**
+     * Simple helper function to encapsulate repetitive code
+     * */
+    private static Dimension resizeImageKRAHelper(Dimension largestDimension, float imageWidth, float imageHeight) {
+        if ( imageWidth > imageHeight ) {
+            largestDimension.height = (int) (largestDimension.width * (imageHeight / imageWidth));
+        }
+        else if ( imageHeight > imageWidth ) {
+            largestDimension.width = (int) (largestDimension.height * (imageWidth / imageHeight));
+        }
+        return new Dimension(largestDimension.width, largestDimension.height);
+    }
+
 
     public static Dimension getScaledDimension(PImage imgSize, Dimension boundary) {
 
@@ -400,6 +498,7 @@ public class ZoneHelper {
             modPosteritem.setYn((pictureZone.getY() * 1.0) / SMT.getApplet().displayHeight);
             modPosteritem.setWn((pictureZone.getWidth() * 1.0) / SMT.getApplet().displayWidth);
             modPosteritem.setHn((pictureZone.getHeight() * 1.0) / SMT.getApplet().displayHeight);
+
             return modPosteritem;
         }
         return null;

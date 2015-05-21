@@ -142,6 +142,7 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
         //hint(ENABLE_RETINA_PIXELS);
         SMT.init(this, TouchSource.AUTOMATIC);
 
+
         SMT.setTouchColor(33, 150, 243, 220);
         SMT.drawDebugTouchPoints();
         //SMT.setTouchDraw(TouchDraw.DEBUG);

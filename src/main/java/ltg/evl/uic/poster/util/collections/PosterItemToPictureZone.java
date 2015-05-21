@@ -60,10 +60,6 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                 }
 
 
-                if( posterItem.getUuid().equals("5553a2b8e1b8325b2500105d")) {
-                    System.out.println("FOUND YOU");
-                }
-
                 if (posterItem.getHeight() == 0 && posterItem.getWidth() == 0) {
                     if (pImage != null) {
                         posterItem.setWidth(pImage.width);
@@ -80,7 +76,7 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                 }
 
                 //convert legacy items
-                if (posterItem.getXn() <= 0) {
+                if (posterItem.getXn() < 0) {
                     ZoneHelper.computeCoefficient(posterItem);
                 }
 
@@ -89,75 +85,31 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                 int new_w = (int) ((posterItem.getWn() * SMT.getApplet().displayWidth));
                 int new_h = (int) ((posterItem.getHn() * SMT.getApplet().displayHeight));
 
-                float rotationRad = 0f;
-                if( posterItem.getRotation() != null || !posterItem.isEmpty()) {
-                    rotationRad = new Float(posterItem.getRotation()).floatValue();
-                }
-
 
                 PosterDataModel.helper().replacePosterItem(posterItem);
 
-               // pImage.resize(new_w,0);
+                // Print information to track whats going on
+                printDebugInfo(posterItem, new_x, new_y, new_w, new_h);
 
-                pictureZone = new PictureZone(pImage, Strings.nullToEmpty(posterItem.getUuid()), new_x, new_y, new_w, new_h);
+//                pictureZone = new PictureZoneBuilder().setImage(pImage)
+//                                                      .setUuid(Strings.nullToEmpty(posterItem.getUuid()))
+////                                                      .setX(new_x)
+////                                                      .setY(new_y)
+////                                                      .setWidth(new_w)
+////                                                      .setHeight(new_h)
+////                                                      .setRotation(posterItem.getRotation())
+////                                                      .setScale(posterItem.getScale())
+////                                                      .setZoneName(Strings.nullToEmpty(posterItem.getName()))
+//                                                      .setType(posterItem.getType())
+//                                                      .createPictureZone();
 
+                pictureZone = new PictureZone(pImage, Strings.nullToEmpty(posterItem.getUuid()), new_x, new_y, new_w,
+                                              new_h);
 
-                        if( SMT.add(pictureZone) ) {
-
-
-
-
-                            //System.out.println("scale factor: " + s);
-                            System.out.println("out w: " + SMT.getApplet().displayWidth*1.0/ZoneHelper.getInstance().maxX);
-                            System.out.println("out h: " + SMT.getApplet().displayHeight*1.0/ZoneHelper.getInstance().maxY);
-                            System.out.println("out sh: " + new_h/(SMT.getApplet().displayHeight*1.0));
-                            System.out.println("out sw: " + new_w/(SMT.getApplet().displayWidth*1.0));
-
-
-//                            pictureZone.setX(new_x);
-//                            pictureZone.setY(new_y);
-//
-                            pictureZone.setSize(new_w, new_h);
-//                            pictureZone.scale(1f);
-
-                            //float sw = (float) ((posterItem.getWn() * SMT.getApplet().displayWidth)/(pictureZone.getZoneImage().width*1.0f));
-                            //float sh = (float) ((posterItem.getHn() * SMT.getApplet().displayHeight)/(pictureZone.getZoneImage().height*1.0f));
-
-                            float sw = (new_w *1.0f)/pImage.width;
-
-                            float sh = (new_h *1.0f)/pImage.height;
-
-
-                            float diffw = pImage.width - new_w * 1.0f;
-                            float diffh = pImage.height - new_h * 1.0f;
-
-                            float nw = (float) (diffw / (pImage.width * 1.0));
-                            float nh = (float) (diffh / (pImage.height * 1.0));
-
-                            //going smaller
-                            if( diffw > 0 ) {
-                                pictureZone.scale(Math.abs(nw));
-                            } else {
-                                pictureZone.scale(1.0f + Math.abs(nw));
-                            }
-//
-//                            pictureZone.refreshResolution();
-
-
-
-
-                            //pictureZone.scale(sw, sh, 1f);
-                            //pictureZone.refreshResolution();
-
-                            //pictureZone.defaultInit(new_x, new_y,new_w, new_h);
-
-                          //  pictureZone.translate(new_x/2.0f, new_y/2.0f);
-
-
-
-                            //pictureZone.setSize(new_w, new_h);
-
-                        }
+                if (SMT.add(pictureZone)) {
+                    pictureZone.setLocation(new_x, new_y);
+                    pictureZone.setSize(new_w, new_h);
+                }
 
 
             } else {
@@ -187,5 +139,29 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
         return null;
     }
 
-
+    private void printDebugInfo(PosterItem posterItem, int nX, int nY, int nW, int nH){
+        System.out.println("\nIn PosterItemToPictureZone");
+        System.out.println("===================");
+        System.out.println("X Values!!");
+        System.out.println("new_x: " + nX);
+        System.out.println("posterItem X: " + posterItem.getX());
+        System.out.println("posterItem this.X: " + posterItem.getThisX());
+        System.out.println("posterItem Xn: " + posterItem.getXn());
+        System.out.println("\n===================");
+        System.out.println("Y Values!!");
+        System.out.println("new_y: " + nY);
+        System.out.println("posterItem Y: " + posterItem.getY());
+        System.out.println("posterItem Yn: " + posterItem.getYn());
+        System.out.println("\n===================");
+        System.out.println("Width Values!!");
+        System.out.println("new_w: " + nW);
+        System.out.println("posterItem W: " + posterItem.getWidth());
+        System.out.println("posterItem Wn: " + posterItem.getWn());
+        System.out.println("\n===================");
+        System.out.println("Height Values!!");
+        System.out.println("new_h: " + nH);
+        System.out.println("posterItem H: " + posterItem.getHeight());
+        System.out.println("posterItem Hn: " + posterItem.getHn());
+        System.out.println("===================\n");
+    }
 }

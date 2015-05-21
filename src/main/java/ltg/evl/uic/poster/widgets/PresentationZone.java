@@ -62,7 +62,8 @@ public class PresentationZone extends Zone {
     public void presentImageZone(PImage pImage) {
 
         this.color = ZoneHelper.whiteOutline;
-        Dimension scaledDimension = ZoneHelper.resizeImage(pImage, this.getWidth(), this.getHeight());
+//        Dimension scaledDimension = ZoneHelper.resizeImage(pImage, this.getWidth(), this.getHeight());
+        Dimension scaledDimension = ZoneHelper.resizeImageKRA(pImage, this.getWidth(), this.getHeight());
 
 //        PImage newPImage = pImage.get();
 //        if (newPImage.width > this.getWidth() && newPImage.height < this.getHeight()) {
