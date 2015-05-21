@@ -103,6 +103,15 @@ public class ZoneHelper {
         map.put(TextAttribute.FAMILY, font.getName());
         map.put(TextAttribute.SIZE, new Float(30.0));
 
+        int offsetSize = text.length()/ 2;
+        System.out.println("renderTextToImage: " + text);
+        for (int i = 0; i < offsetSize; i++) {
+            text = " " + text;
+            System.out.println("renderTextToImage: " + i + " " + text);
+        }
+        System.out.println("renderTextToImage: " + text);
+
+
         //map.put(TextAttribute.FONT, font);
         AttributedString attributedString = new AttributedString(text, map);
         AttributedCharacterIterator paragraph = attributedString.getIterator();
@@ -111,6 +120,8 @@ public class ZoneHelper {
         int paragraphStart = paragraph.getBeginIndex();
         int paragraphEnd = paragraph.getEndIndex();
         LineBreakMeasurer lineMeasurer = new LineBreakMeasurer(paragraph, frc);
+
+
 
         float drawPosY = 0;
 
@@ -293,7 +304,7 @@ public class ZoneHelper {
         float w_aspect = imageWidth / (float) maxWidth;
         float h_aspect = imageHeight / (float) maxHeight;
 
-        System.out.println("\nIn ZoneHelper");
+        System.out.println("\nIn ZoneHelper KRA");
         System.out.println("=============================");
         System.out.println("imageWidth:" + imageWidth );
         System.out.println("imageHeight:" + imageHeight );
@@ -301,16 +312,60 @@ public class ZoneHelper {
         System.out.println("maxWidth:" + maxWidth );
         System.out.println("maxHeight:" + maxHeight );
 
+//        while ( largestDimension.width > maxWidth || largestDimension.height > maxHeight) {
+//        }
+        if (imageWidth > maxWidth) {
+            System.out.println("Its too wide!");
+            float imageHeightAdjusted = maxWidth * imageHeight / imageWidth;
+            largestDimension = resizeImageKRAHelper(largestDimension, maxWidth, imageHeightAdjusted);
+        } else if (imageHeight > maxHeight) {
+            System.out.println("Its too tall!");
+            float imageWidthAdjusted = maxHeight * imageWidth / imageHeight;
+            largestDimension = resizeImageKRAHelper(largestDimension, imageWidthAdjusted, maxHeight);
+        } else {
+            System.out.println("All riiiight");
+            largestDimension = resizeImageKRAHelper(largestDimension, imageWidth, imageHeight);
+        }
+
+        System.out.println("------------------------------\nChecking...");
+        System.out.println("largestDimension.width:" + largestDimension.width);
+        System.out.println("largestDimension.height:" + largestDimension.height);
+        System.out.println("maxWidth:" + maxWidth );
+        System.out.println("maxHeight:" + maxHeight );
+
+        if (largestDimension.width > maxWidth && largestDimension.height > maxHeight ) {
+            System.out.println("Both too large...do something about it!");
+        } else if ( largestDimension.width > maxWidth ) {
+            System.out.println("Its too wide!" + ((largestDimension.height / largestDimension.width*1.0) * maxWidth));
+            largestDimension.height = (int)((largestDimension.height / largestDimension.width*1.0) * maxWidth);
+            largestDimension.width = maxWidth;
+            largestDimension = new Dimension(largestDimension.width, largestDimension.height);
+
+        } else if ( largestDimension.height > maxHeight ) {
+            System.out.println("Its too tall!" + ((largestDimension.width / largestDimension.height*1.0) * maxHeight));
+            largestDimension.width = (int)((largestDimension.width / largestDimension.height*1.0) * maxHeight);
+            largestDimension.height = maxHeight;
+            largestDimension = new Dimension(largestDimension.width, largestDimension.height);
+        }
+
+        System.out.println("largestDimension.width:" + largestDimension.width);
+        System.out.println("largestDimension.height:" + largestDimension.height);
+        return new Dimension(largestDimension.width, largestDimension.height);
+    }
+
+    /**
+     * Simple helper function to encapsulate repetitive code
+     * */
+    private static Dimension resizeImageKRAHelper(Dimension largestDimension, float imageWidth, float imageHeight) {
         if ( imageWidth > imageHeight ) {
             largestDimension.height = (int) (largestDimension.width * (imageHeight / imageWidth));
         }
-        else if ( imageWidth < imageHeight ) {
+        else if ( imageHeight > imageWidth ) {
             largestDimension.width = (int) (largestDimension.height * (imageWidth / imageHeight));
         }
-
         return new Dimension(largestDimension.width, largestDimension.height);
-
     }
+
 
     public static Dimension getScaledDimension(PImage imgSize, Dimension boundary) {
 
