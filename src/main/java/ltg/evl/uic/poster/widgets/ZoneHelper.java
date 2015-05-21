@@ -339,13 +339,11 @@ public class ZoneHelper {
             System.out.println("Its too wide!" + ((largestDimension.height / largestDimension.width*1.0) * maxWidth));
             largestDimension.height = (int)((largestDimension.height / largestDimension.width*1.0) * maxWidth);
             largestDimension.width = maxWidth;
-            largestDimension = new Dimension(largestDimension.width, largestDimension.height);
 
         } else if ( largestDimension.height > maxHeight ) {
             System.out.println("Its too tall!" + ((largestDimension.width / largestDimension.height*1.0) * maxHeight));
             largestDimension.width = (int)((largestDimension.width / largestDimension.height*1.0) * maxHeight);
             largestDimension.height = maxHeight;
-            largestDimension = new Dimension(largestDimension.width, largestDimension.height);
         }
 
         System.out.println("largestDimension.width:" + largestDimension.width);
