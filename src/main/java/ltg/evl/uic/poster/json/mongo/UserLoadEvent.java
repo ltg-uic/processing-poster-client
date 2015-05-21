@@ -1,20 +1,17 @@
 package ltg.evl.uic.poster.json.mongo;
 
 import com.google.common.eventbus.Subscribe;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 /**
  * Created by aperritano on 3/30/15.
  */
 public class UserLoadEvent {
 
-
-    private final Logger logger;
+    private final Logger logger = org.apache.log4j.Logger.getLogger(this.getClass());
 
     public UserLoadEvent() {
-        logger = Logger.getLogger(UserLoadEvent.class.getName());
         logger.setLevel(Level.ALL);
     }
 

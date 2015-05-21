@@ -16,6 +16,7 @@ import ltg.evl.uic.poster.util.collections.PictureZoneToPosterItem;
 import ltg.evl.uic.poster.widgets.DialogZoneController;
 import ltg.evl.uic.poster.widgets.PictureZone;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Level;
 import vialab.SMT.SMT;
 import vialab.SMT.Zone;
 
@@ -28,18 +29,10 @@ import java.util.ListIterator;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
 
-/**
- * Created by aperritano on 3/18/15.
- */
 public class PosterDataModel {
 
     private static PosterDataModel ourInstance = new PosterDataModel();
-    private static Logger logger;
     public List<User> allUsers = Lists.newArrayList();
     public List<PosterItem> allPosterItems = Lists.newArrayList();
     public List<Poster> allPosters = Lists.newArrayList();
@@ -50,27 +43,10 @@ public class PosterDataModel {
     private Collection<Poster> currentUserPosters;
     private LoginCollectionListener loginCollectionListener;
 
+    private final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(this.getClass());
+
     private PosterDataModel() {
-        logger = Logger.getLogger(PosterDataModel.class.getName());
         logger.setLevel(Level.ALL);
-        logger.addHandler(new Handler() {
-            @Override
-            public void close() throws SecurityException {
-            }
-
-            @Override
-            public void flush() {
-            }
-
-            @Override
-            public void publish(LogRecord record) {
-                // default ConsoleHandler will print >= INFO to System.err
-                if (record.getLevel().intValue() < Level.INFO.intValue()) {
-                    System.out.println(record.getMessage());
-                }
-            }
-        });
-
     }
 
 
@@ -109,6 +85,7 @@ public class PosterDataModel {
             for (User user : imAllUsers) {
                 if (user.getUuid().equals(userUuid)) {
                     this.currentUser = user;
+                    logger.log(Level.INFO, "LOADING USER: " + user.getUuid());
                     this.loginCollectionListener.loadUserEvent(
                             new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.USER, userUuid, buttonColor));
                 }
@@ -121,6 +98,7 @@ public class PosterDataModel {
         if (Optional.fromNullable(user).isPresent()) {
             this.currentUser = user;
             fetchAllPostersForCurrentUser();
+            logger.log(Level.INFO, "LOADING USER: " + user.getUuid());
             this.loginCollectionListener.loadUserEvent(new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.USER, user));
         }
     }
@@ -143,6 +121,8 @@ public class PosterDataModel {
             for (Poster poster : imAllPosters) {
                 if (poster.getUuid().equals(posterUuid)) {
                     this.currentPoster = poster;
+                    logger.log(Level.INFO, "LOADING POSTER: " + poster.getUuid());
+
                     this.loginCollectionListener.loadPosterEvent(
                             new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.POSTER, posterUuid));
                 }
@@ -163,6 +143,8 @@ public class PosterDataModel {
         };
 
         setCurrentClassName(classname);
+
+        logger.log(Level.INFO, "LOADING CLASS: " + classname);
 
         this.loginCollectionListener.loadClassEvent(
                 new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.CLASS_NAME, classname));
@@ -400,7 +382,7 @@ public class PosterDataModel {
 
         if (posterItemUuid != null) {
 
-            logger.log(Level.INFO, "REMOVING POSTER_ITEM");
+            logger.log(Level.INFO, "REMOVING POSTER_ITEM: " + posterItemUuid);
             final Poster foundPoster = findPosterWithPosterItemUuid(posterItemUuid);
             final PosterItem foundPosterItem = findPosterItemWithPosterItemUuid(posterItemUuid);
             foundPoster.getPosterItems().remove(posterItemUuid);
@@ -428,7 +410,7 @@ public class PosterDataModel {
 
                 @Override
                 public void onSuccess(Poster poster) {
-                    logger.log(Level.SEVERE, "DELETED POSTERITEM " + posterItemUuid + " SUCCESS!");
+                    logger.log(Level.INFO, "DELETED POSTER_ITEM " + posterItemUuid + " SUCCESS!");
                     sendMQTTDeleteMessage(posterItemUuid);
                     loginCollectionListener.deletePosterItem(
                             new ObjectEvent(ObjectEvent.OBJ_TYPES.DELETE_POSTER_ITEM, posterItemUuid));
@@ -436,12 +418,12 @@ public class PosterDataModel {
 
                 @Override
                 public void onFailure(Throwable thrown) {
-                    logger.log(Level.SEVERE, "DELETED POSTERITEM " + posterItemUuid + " FAILED!");
+                    logger.log(Level.INFO, "DELETED POSTER_ITEM " + posterItemUuid + " FAILED!");
                     thrown.printStackTrace();
                 }
             });
         } else {
-            logger.log(Level.SEVERE, "TRYING TO REMOVE NULL POSTER_ITEM PosterDataModel.removePosterItem");
+            logger.log(Level.INFO, "TRYING TO REMOVE NULL POSTER_ITEM PosterDataModel.removePosterItem");
         }
     }
 
@@ -458,8 +440,9 @@ public class PosterDataModel {
             posterMessage.setAction(PosterMessage.DELETE);
             com.google.gson.Gson gson = new GsonBuilder().create();
             MQTTPipe.getInstance().publishMessage(gson.toJson(posterMessage));
+            logger.log(Level.INFO, "PosterDataModel.sendMQTTDeleteMessage posterUuid: " + posterItemUuid);
         } else {
-            logger.log(Level.SEVERE, "PosterDataModel.sendMQTTDeleteMessage posterUuid Null");
+            logger.log(Level.INFO, "PosterDataModel.sendMQTTDeleteMessage posterUuid Null");
         }
     }
 
@@ -540,7 +523,7 @@ public class PosterDataModel {
 
             if (!duplicatePosterItems.isEmpty()) {
                 logger.log(Level.INFO,
-                           "PosterItem: " + newPosterItem.getUuid() + " DUP x " + duplicatePosterItems.size());
+                           "UPDATE POSTER_ITEM: " + newPosterItem.getUuid() + " DUP x " + duplicatePosterItems.size());
                 allPosterItems.removeAll(duplicatePosterItems);
 
             }
@@ -548,6 +531,8 @@ public class PosterDataModel {
             ImmutableList<PosterItem> two = ImmutableList.copyOf(allPosterItems);
             allPosterItems = Lists.newArrayList(Iterables.concat(Lists.newArrayList(newPosterItem), two));
             if (this.loginCollectionListener != null) {
+                logger.log(Level.INFO,
+                           "UPDATE POSTER_ITEM: " + newPosterItem.getUuid());
                 this.loginCollectionListener.updatePosterItem(
                         new ObjectEvent(ObjectEvent.OBJ_TYPES.POST_ITEM, newPosterItem));
             }
@@ -568,10 +553,14 @@ public class PosterDataModel {
                         List<String> posterItems = Collections.emptyList();
                         posterItems.add(posterItemUuuid);
                         poster.setPosterItems(posterItems);
+                        logger.log(Level.INFO,
+                                   "ADDING PosterItem: " + posterItemUuuid);
                     } else if (!poster.getPosterItems().contains(posterItemUuuid)) {
                         poster.getPosterItems().add(posterItemUuuid);
+                        logger.log(Level.INFO,
+                                   "ADDING PosterItem: " + posterItemUuuid);
                     } else {
-                        logger.log(Level.SEVERE,
+                        logger.log(Level.INFO,
                                    "REMOVING and ADDING PosterItem: " + posterItemUuuid + " is a DUP in " + posterId);
                     }
                 }
@@ -588,7 +577,7 @@ public class PosterDataModel {
         for (User user : users) {
             Collection<User> duplicateUsers = findDuplicateUsers(user);
             if (duplicateUsers.size() > 1) {
-                logger.log(Level.SEVERE, "UPDATING ALL USER found DUP: " + duplicateUsers.iterator().next().getUuid());
+                logger.log(Level.INFO, "UPDATING ALL USER found DUP: " + duplicateUsers.iterator().next().getUuid());
             }
         }
     }
@@ -601,7 +590,7 @@ public class PosterDataModel {
             Collection<PosterItem> duplicatePosterItems = findDuplicatePosterItems(posterItem);
 
             if (duplicatePosterItems.size() > 1) {
-                logger.log(Level.SEVERE,
+                logger.log(Level.INFO,
                            "UPDATING ALL POSTER_ITEMS found DUP: " + duplicatePosterItems.iterator().next()
                                                                                          .getUuid());
             }
@@ -616,7 +605,7 @@ public class PosterDataModel {
             Collection<Poster> duplicatePoster = findDuplicatePosters(poster);
 
             if (duplicatePoster.size() > 1) {
-                logger.log(Level.SEVERE, "UPDATING ALL POSTERS found DUP: " + duplicatePoster.iterator().next()
+                logger.log(Level.INFO, "UPDATING ALL POSTERS found DUP: " + duplicatePoster.iterator().next()
                                                                                              .getUuid());
             }
         }
@@ -632,7 +621,7 @@ public class PosterDataModel {
                     User nextUser = listIterator.next();
                     if (allUsers.contains(nextUser)) {
                         listIterator.set(user);
-                        logger.log(Level.SEVERE, "UPDATE DUP USER: " + user.getUuid());
+                        logger.log(Level.INFO, "UPDATE DUP USER: " + user.getUuid());
                     }
                 }
             } else {
@@ -654,7 +643,7 @@ public class PosterDataModel {
                     Poster nextPoster = listIterator.next();
                     if (allPosters.contains(nextPoster)) {
                         listIterator.set(poster);
-                        logger.log(Level.SEVERE, "UPDATE DUP POSTER: " + poster.getUuid());
+                        logger.log(Level.INFO, "UPDATE DUP POSTER: " + poster.getUuid());
                     }
                 }
             } else {

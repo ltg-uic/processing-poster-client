@@ -12,6 +12,7 @@ public class PosterItem extends GenericJson {
 
     public static final String IMAGE = "img";
     public static final String TEXT = "txt";
+    public static final String VIDEO = "vid";
     @Key
     private Map _id;
     @Key

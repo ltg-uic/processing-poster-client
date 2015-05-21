@@ -12,6 +12,8 @@ import com.google.common.base.Optional;
 import com.google.common.collect.FluentIterable;
 import com.google.common.util.concurrent.*;
 import ltg.evl.uic.poster.json.mongo.*;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -20,10 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
+
 
 /**
  * Created by aperritano on 2/11/15.
@@ -34,7 +33,7 @@ public class RESTHelper {
     static final GsonFactory JSON_FACTORY = new GsonFactory();
     public static String BASE_URL;
     private static RESTHelper ourInstance = new RESTHelper();
-    private static Logger logger;
+    private final Logger logger = Logger.getLogger(this.getClass());
     public User currentUser = null;
     public Poster currentPoster = null;
     public List<PosterItem> currentPosterItems = null;
@@ -44,7 +43,6 @@ public class RESTHelper {
     //region setup
     private RESTHelper() {
         BASE_URL = PosterServices.getInstance().getConfig().getString("poster.base.url");
-        enableLogging();
     }
 
 
@@ -52,29 +50,6 @@ public class RESTHelper {
         return ourInstance;
     }
 
-
-    public static void enableLogging() {
-        logger = Logger.getLogger(HttpTransport.class.getName());
-        logger.setLevel(Level.ALL);
-        logger.addHandler(new Handler() {
-
-            @Override
-            public void close() throws SecurityException {
-            }
-
-            @Override
-            public void flush() {
-            }
-
-            @Override
-            public void publish(LogRecord record) {
-                // default ConsoleHandler will print >= INFO to System.err
-                if (record.getLevel().intValue() < Level.INFO.intValue()) {
-                    System.out.println(record.getMessage());
-                }
-            }
-        });
-    }
 
     //endregion setup
 
@@ -133,7 +108,7 @@ public class RESTHelper {
                                                              PosterUrl.REQUEST_TYPE.PATCH),
                                                      PosterItem.class, false));
                 } else {
-                    logger.log(Level.SEVERE, "UPDATE POSTER ITEM NULL");
+                    logger.log(Level.INFO, "UPDATE POSTER ITEM NULL");
                 }
             }
         }
@@ -689,7 +664,7 @@ public class RESTHelper {
                                        .getUuid());
                 }
             } else {
-                logger.log(Level.SEVERE, "MESSAGE IS NULL");
+                logger.log(Level.INFO, "MESSAGE IS NULL");
             }
         }
     }

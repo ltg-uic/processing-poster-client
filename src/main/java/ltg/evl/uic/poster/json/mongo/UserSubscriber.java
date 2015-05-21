@@ -1,14 +1,17 @@
 package ltg.evl.uic.poster.json.mongo;
 
 import com.google.common.eventbus.Subscribe;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
-/**
- * Created by aperritano on 3/18/15.
- */
+
 public class UserSubscriber {
+
+    private final Logger logger = Logger.getLogger(this.getClass());
+
 
     @Subscribe
     public void handleUpdatedAllUsers(CollectionEvent userEvent) {
-        System.out.println("ALLLLL USERS UPDATED");
+        logger.log(Level.INFO, "ALL USERS UPDATED");
     }
 }

@@ -1,5 +1,6 @@
 package ltg.evl.uic.poster.widgets;
 
+import com.google.api.client.util.Lists;
 import com.google.common.base.Optional;
 import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
@@ -20,7 +21,10 @@ import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
+import java.text.BreakIterator;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -165,6 +169,25 @@ public class ZoneHelper {
 
         graphics.dispose();
         return image;
+    }
+
+
+
+    public static ArrayList<Object> tokenize(String text, String language, String country){
+        ArrayList<Object> sentences = Lists.newArrayList();
+        Locale currentLocale = new Locale(language, country);
+        BreakIterator sentenceIterator = BreakIterator.getSentenceInstance(currentLocale);
+        sentenceIterator.setText(text);
+        int boundary = sentenceIterator.first();
+        int lastBoundary = 0;
+        while (boundary != BreakIterator.DONE) {
+            boundary = sentenceIterator.next();
+            if(boundary != BreakIterator.DONE){
+                sentences.add(text.substring(lastBoundary, boundary));
+            }
+            lastBoundary = boundary;
+        }
+        return sentences;
     }
 
     /**
@@ -343,13 +366,13 @@ public class ZoneHelper {
     public static void computeCoefficient(PosterItem posterItem) {
 
 
-        double xn = (posterItem.getX() * 1.0) / ZoneHelper.getInstance().maxX;
+        double xn = Math.abs((posterItem.getX() * 1.0) / ZoneHelper.getInstance().maxX);
         posterItem.setXn(xn);
-        double yn = (posterItem.getY() * 1.0) / ZoneHelper.getInstance().maxY;
+        double yn = Math.abs((posterItem.getY() * 1.0) / ZoneHelper.getInstance().maxY);
         posterItem.setYn(yn);
-        double wn = (posterItem.getWidth() * 1.0) / ZoneHelper.getInstance().maxX;
+        double wn = Math.abs((posterItem.getWidth() * 1.0) / ZoneHelper.getInstance().maxX);
         posterItem.setWn(wn);
-        double hn = (posterItem.getHeight() * 1.0) / ZoneHelper.getInstance().maxY;
+        double hn = Math.abs((posterItem.getHeight() * 1.0) / ZoneHelper.getInstance().maxY);
         posterItem.setHn(hn);
 
     }

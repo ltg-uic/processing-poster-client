@@ -36,11 +36,10 @@ import static org.apache.commons.lang.WordUtils.capitalize;
 public class PosterMain extends PApplet implements LoginCollectionListener {
 
 
-    protected static org.apache.log4j.Logger logger;
+    protected static org.apache.log4j.Logger logger = Logger.getLogger(PosterMain.class.getName());
     private boolean lastIsEditToggle = true;
 
     public static void main(String args[]) {
-        logger = Logger.getLogger(PosterMain.class.getName());
         logger.setLevel(Level.ALL);
         MQTTPipe.getInstance();
 
@@ -144,6 +143,7 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
         SMT.init(this, TouchSource.AUTOMATIC);
 
         SMT.setTouchColor(33, 150, 243, 220);
+        SMT.drawDebugTouchPoints();
         //SMT.setTouchDraw(TouchDraw.DEBUG);
 
         setupControlButtons();
@@ -176,25 +176,41 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
 
     public void loadPosterItemsForCurrentUserAndPoster(Collection<PosterItem> posterItems, boolean shouldRemove) {
 
-        ZoneHelper.getInstance().maxX = 0;
-        ZoneHelper.getInstance().maxY = 0;
 
-        PosterItem pi = posterItems.iterator().next();
-        if (pi.getXn() < 0) {
-            for (PosterItem p : posterItems) {
-                if ((p.getX() + p.getWidth()) > ZoneHelper.getInstance().maxX) {
-                    ZoneHelper.getInstance().maxX = p.getX() + p.getWidth();
+
+        if( !posterItems.isEmpty() ) {
+            ZoneHelper.getInstance().maxX = 0;
+            ZoneHelper.getInstance().maxY = 0;
+
+            boolean needsFix = false;
+            for(PosterItem posterItem: posterItems) {
+                if (posterItem.getXn() < 0 ) {
+                    needsFix = true;
+                    break;
                 }
-                if ((p.getY() + p.getHeight()) > ZoneHelper.getInstance().maxY) {
-                    ZoneHelper.getInstance().maxY = p.getY() + p.getHeight();
+            }
+            if ( needsFix) {
+                for (PosterItem p : posterItems) {
+                    if ((p.getX() + p.getWidth()) > ZoneHelper.getInstance().maxX) {
+                        ZoneHelper.getInstance().maxX = p.getX() + p.getWidth();
+                    }
+                    if ((p.getY() + p.getHeight()) > ZoneHelper.getInstance().maxY) {
+                        ZoneHelper.getInstance().maxY = p.getY() + p.getHeight();
+                    }
+
                 }
 
+                ZoneHelper.getInstance().maxX = 2560;
+                ZoneHelper.getInstance().maxY = 1600;
             }
 
-            ZoneHelper.getInstance().maxX = 2560;
-            ZoneHelper.getInstance().maxY = 1600;
         }
 
+//        ZoneHelper.getInstance().maxX = 2560;
+//        ZoneHelper.getInstance().maxY = 1600;
+
+        ZoneHelper.getInstance().maxX = 2560;
+        ZoneHelper.getInstance().maxY = 1600;
 
         if (Optional.fromNullable(posterItems).isPresent()) {
 
@@ -221,27 +237,6 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
                 ImmutableList<PictureZone> list = fluentIterableOptional.get().toList();
 
 
-//                if (!list.isEmpty()) {
-//                    for (PictureZone pz : list) {
-//                        if (pz != null) {
-//                            // pz.setVisible(false);
-//
-//
-//
-//                            if (SMT.add(pz)) {
-//                                //pz.setVisible(true);
-//                                pz.resetToInitPos();
-//                                //  pz.fade(1.0f, 0.0f, 255);
-//                                // pz.applyScaleRotation();
-//                                pz.setLocation(pz.init)
-//                                pz.setIsEditing(lastIsEditToggle);
-//
-//                                //pz.startAni(0.5f, 0f);
-//
-//                            }
-//                        }
-//                    }
-//                }
             }
 
 
@@ -354,7 +349,16 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
             @Override
             public void saveAction() {
                 DialogZoneController.dialog().showOKDialog("Saving...");
-                PosterDataModel.helper().savePosterItemsForCurrentUser(false);
+
+                new Thread() {
+
+                    @Override
+                    public void run() {
+                        PosterDataModel.helper().savePosterItemsForCurrentUser(false);
+                    }
+                }.start();
+
+
             }
         };
 

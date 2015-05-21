@@ -8,8 +8,6 @@ import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
 import ltg.evl.uic.poster.util.ModelHelper;
 import ltg.evl.uic.poster.widgets.PictureZone;
-import ltg.evl.uic.poster.widgets.ZoneHelper;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import vialab.SMT.SMT;
 
@@ -36,7 +34,7 @@ public class PictureZoneToPosterItem implements Function<PictureZone, PosterItem
             if (posterItemOptional.isPresent()) {
                 modPosteritem = posterItemOptional.get();
 
-                logger.log(Level.INFO, "MOD PosterItem: " + modPosteritem);
+                //logger.log(Level.INFO, "MOD PosterItem: " + modPosteritem);
 
 
                 Dimension screenSize = pictureZone.getScreenSize();
@@ -46,14 +44,16 @@ public class PictureZoneToPosterItem implements Function<PictureZone, PosterItem
                 System.out.println("Size " + size.toString());
 
 
-                ZoneHelper.computeCoefficient(modPosteritem);
+               //ZoneHelper.computeCoefficient(modPosteritem);
 
                 modPosteritem.setLastEdited(ModelHelper.getTimestampMilli());
-                modPosteritem.setXn((pictureZone.getX() * 1.0) / SMT.getApplet().displayWidth);
-                modPosteritem.setYn((pictureZone.getY() * 1.0) / SMT.getApplet().displayHeight);
-                modPosteritem.setWn((pictureZone.getWidth() * 1.0) / SMT.getApplet().displayWidth);
-                modPosteritem.setHn((pictureZone.getHeight() * 1.0) / SMT.getApplet().displayHeight);
-
+//                modPosteritem.setX(1);
+//                modPosteritem.setY(1);
+                modPosteritem.setRotation(pictureZone.getRntRadius() +"");
+                modPosteritem.setXn(Math.abs((pictureZone.getLocalX() * 1.0) / SMT.getApplet().displayWidth));
+                modPosteritem.setYn(Math.abs((pictureZone.getLocalY() * 1.0) / SMT.getApplet().displayHeight));
+                modPosteritem.setWn(Math.abs((pictureZone.getWidth() * 1.0) / SMT.getApplet().displayWidth));
+                modPosteritem.setHn(Math.abs((pictureZone.getHeight() * 1.0) / SMT.getApplet().displayHeight));
 
                 return modPosteritem;
             }
