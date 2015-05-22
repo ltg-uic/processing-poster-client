@@ -33,8 +33,9 @@ import java.util.Random;
 public class ZoneHelper {
 
     public static final int ROUND_CORNER = 10;
-    public static final String WHICH_CLASS_ARE_YOU_IN = "Select a Class";
-    public static final String WHICH_GROUP_ARE_YOU_IN = "Select a Group";
+    public static final String WHICH_CLASS_ARE_YOU_IN = "What class are you in?";
+    public static final String WHICH_GROUP_ARE_YOU_IN = "Which group do you want to look at?";
+    public static final String WHICH_GROUP_ARE_YOU_IN_SHARE = "Which group to share with?";
     public static final String SELECT_A_POSTER = "Select a Poster";
     public static final int GRID_SPACER = 15;
     public static final int CLASS_BUTTON_SIZE = 150;
@@ -83,6 +84,7 @@ public class ZoneHelper {
     public static int greyOutline = SMT.getApplet().color(224, 224, 224);
     public static int darkGreenColor = SMT.getApplet().color(67, 160, 71);
     public static int orangeColor = SMT.getApplet().color(251, 140, 0);
+    public static int yellowColor = SMT.getApplet().color(255, 152, 0);
     private static ZoneHelper ourInstance = new ZoneHelper();
     public int maxY;
     public int maxX;

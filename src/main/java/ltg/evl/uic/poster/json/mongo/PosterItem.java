@@ -52,6 +52,13 @@ public class PosterItem extends GenericJson {
     @Key
     private double hn;
 
+    @Key
+    private String cited_from_poster_item_uuid;
+    @Key
+    private String cited_from_poster_uuid;
+    @Key
+    private String cited_from_user_uuid;
+
     public PosterItem() {
         this.setXn(-1.0);
         this.setWn(-1.0);
@@ -84,12 +91,13 @@ public class PosterItem extends GenericJson {
     public int getX() {
         return x;
     }
-    public int getThisX() {
-        return this.x;
-    }
 
     public void setX(int x) {
         this.x = x;
+    }
+
+    public int getThisX() {
+        return this.x;
     }
 
     public int getY() {
@@ -248,5 +256,29 @@ public class PosterItem extends GenericJson {
 
     public void setHn(double hn) {
         this.hn = hn;
+    }
+
+    public String getCited_from_poster_item_uuid() {
+        return cited_from_poster_item_uuid;
+    }
+
+    public void setCited_from_poster_item_uuid(String cited_from_poster_item_uuid) {
+        this.cited_from_poster_item_uuid = cited_from_poster_item_uuid;
+    }
+
+    public String getCited_from_poster_uuid() {
+        return cited_from_poster_uuid;
+    }
+
+    public void setCited_from_poster_uuid(String cited_from_poster_uuid) {
+        this.cited_from_poster_uuid = cited_from_poster_uuid;
+    }
+
+    public String getCited_from_user_uuid() {
+        return cited_from_user_uuid;
+    }
+
+    public void setCited_from_user_uuid(String cited_from_user_uuid) {
+        this.cited_from_user_uuid = cited_from_user_uuid;
     }
 }

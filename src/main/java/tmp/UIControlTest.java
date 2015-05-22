@@ -190,11 +190,11 @@ public class UIControlTest extends PApplet {
 //                logoutZone.setVisible(true);
 //
 //
-//                RemoveModeButton removeModeButton = new RemoveModeButton("Group", ZoneHelper.LOGOUT_BUTTON_WIDTH,
+//                ShareButton removeModeButton = new ShareButton("Group", ZoneHelper.LOGOUT_BUTTON_WIDTH,
 //                                                                         ZoneHelper.LOGOUT_BUTTON_HEIGHT) {
 //                    @Override
-//                    public void removeAction() {
-//                        super.removeAction();
+//                    public void shareAction() {
+//                        super.shareAction();
 //                    }
 //
 //                };

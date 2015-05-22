@@ -53,7 +53,7 @@ public class LogoutButton extends Zone {
         } else {
 
             this.unpressedButtonColor = ZoneHelper.blueOutline;
-            this.text = ZoneHelper.LOGOUT;
+            this.text = "HOME";
         }
 
         this.pressedButtonColor = ZoneHelper.greyOutline;
@@ -105,7 +105,7 @@ public class LogoutButton extends Zone {
             int x1 = getWidth() / 2;
             //int y1 = (int) (getHeight() / 2 - (hght / 2));
             int y1 = (int) hght;
-            text(ZoneHelper.LOGOUT, x1, y1 + (padding / 2));
+            text("HOME", x1, y1 + (padding / 2));
 
 
             //UserName

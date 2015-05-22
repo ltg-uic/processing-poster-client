@@ -17,17 +17,21 @@ import java.util.Collection;
 public class ClassPage extends Zone {
 
     private final PFont font;
+    public int BACKGROUND_COLOR = 255;
     int heading_height = 50;
     //private Ani ani;
     private LoadClassListener loadClassListener;
     private int initY;
 
     public ClassPage(String name, int x, int y, int width, int height,
-                     LoadClassListener loadClassListener) {
+                     LoadClassListener loadClassListener, boolean isShare) {
         super(name, x, y, width, height);
         this.loadClassListener = loadClassListener;
         this.initY = SMT.getApplet().getHeight();
         this.font = ZoneHelper.helveticaNeue18Font;
+
+        if (isShare)
+            this.BACKGROUND_COLOR = ZoneHelper.yellowColor;
     }
 
     @Override
@@ -36,12 +40,12 @@ public class ClassPage extends Zone {
 
         stroke(ZoneHelper.greyOutline);
         strokeWeight(3);
-        fill(255);
+        fill(BACKGROUND_COLOR);
         rect(0, 0, this.getWidth(), this.getHeight() + heading_height, ZoneHelper.ROUND_CORNER);
 
         stroke(224, 224, 224);
         strokeWeight(3);
-        fill(255);
+        fill(BACKGROUND_COLOR);
         rect(1, 1, this.getWidth() - 2, this.getHeight() + heading_height - 2, ZoneHelper.ROUND_CORNER);
 
         textFont(font, 20);
@@ -75,9 +79,9 @@ public class ClassPage extends Zone {
         Zone body = new Zone("bodyc", 0, heading_height, this.getWidth(), getHeight()) {
             @Override
             public void draw() {
-                stroke(255);
+                stroke(BACKGROUND_COLOR);
                 strokeWeight(0);
-                fill(255);
+                fill(BACKGROUND_COLOR);
                 rect(3, 0, getWidth() - 6, getHeight() - 3, ZoneHelper.ROUND_CORNER);
             }
 

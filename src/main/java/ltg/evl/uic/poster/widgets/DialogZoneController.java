@@ -1,12 +1,15 @@
 package ltg.evl.uic.poster.widgets;
 
+import com.google.api.client.util.Lists;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import com.google.common.base.Splitter;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import ltg.evl.uic.poster.json.mongo.Poster;
 import ltg.evl.uic.poster.json.mongo.PosterDataModel;
+import ltg.evl.uic.poster.json.mongo.PosterGrab;
 import ltg.evl.uic.poster.json.mongo.User;
 import ltg.evl.uic.poster.listeners.LoadClassListener;
 import ltg.evl.uic.poster.listeners.LoadPosterListener;
@@ -28,6 +31,10 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
     public static String posterpage_id = "PosterPage";
     public static String classpage_id = "ClassPage";
     public static String presentation_id = "PresentationPage";
+
+    public static String share_userpage_id = "ShareUserPage";
+    public static String share_classpage_id = "ShareClassPage";
+
     private static DialogZoneController ourInstance = new DialogZoneController();
     public String controlpage_id = "ControlPage";
     int c_width = 800;
@@ -39,6 +46,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
     private PresentationZone presentationZone;
     private boolean isShowing;
     private PresentationZone okDialog;
+    private PosterGrab sharingObject;
 
 
     private DialogZoneController() {
@@ -50,18 +58,26 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
         return ourInstance;
     }
 
+    public PosterGrab getSharingObject() {
+        return sharingObject;
+    }
+
+    public void setSharingObject(PosterGrab sharingObject) {
+        this.sharingObject = sharingObject;
+    }
+
     public void showPage(PAGE_TYPES page) {
         switch (page) {
             case CLASS_PAGE:
-                this.showClassPage();
+                this.showClassPage(classpage_id);
                 setIsShowing(true);
                 break;
             case POSTER_PAGE:
-                this.showPosterPage();
+                this.showPosterPage(posterpage_id);
                 setIsShowing(true);
                 break;
             case USER_PAGE:
-                this.showUserPage();
+                this.showUserPage(userpage_id);
                 setIsShowing(true);
                 break;
             case NO_PRES:
@@ -73,9 +89,22 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
                 setIsShowing(true);
                 break;
             case NONE:
-                this.hideClassPage();
-                this.hideUserPage();
-                this.hidePosterPage();
+                this.hidePage(classpage_id);
+                this.hidePage(userpage_id);
+                this.hidePage(posterpage_id);
+                setIsShowing(false);
+                break;
+            case SHARE_CLASSPAGE:
+                this.showClassPage(share_classpage_id);
+                setIsShowing(true);
+                break;
+            case SHARE_USER_PAGE:
+                this.showUserPage(share_userpage_id);
+                setIsShowing(true);
+                break;
+            case SHARE_NONE:
+                this.hidePage(share_classpage_id);
+                this.hidePage(share_userpage_id);
                 setIsShowing(false);
                 break;
         }
@@ -112,7 +141,6 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
 
     }
 
-
     public void hidePresentationPage() {
         Optional<PresentationZone> presentationZoneOptional = Optional.fromNullable(presentationZone);
         if (presentationZoneOptional.isPresent()) {
@@ -121,69 +149,177 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
         }
     }
 
-    public void hideUserPage() {
-        this.removeZone(userpage_id);
+    public void hidePage(String page_id) {
+        this.removeZone(page_id);
     }
 
-    public void hidePosterPage() {
-        this.removeZone(posterpage_id);
-    }
+    public void showClassPage(String page_id) {
 
-    public void hideClassPage() {
-        this.removeZone(classpage_id);
-    }
+        ImmutableMap<String, Collection<User>> classMap;
 
-    public void showClassPage() {
-        ImmutableList<User> imAllUsers = ImmutableList.copyOf(PosterDataModel.helper().allUsers);
+        if (page_id.equals(classpage_id)) {
+            ImmutableList<User> imAllUsers = ImmutableList.copyOf(PosterDataModel.helper().allUsers);
 
-        Predicate<User> predicateBen = new Predicate<User>() {
-            @Override
-            public boolean apply(User input) {
-                return StringUtils.lowerCase(input.getClassname()).equals("ben");
+            Predicate<User> predicateBen = new Predicate<User>() {
+                @Override
+                public boolean apply(User input) {
+                    return StringUtils.lowerCase(input.getClassname()).equals("ben");
+                }
+            };
+
+            Collection<User> resultBen = Collections2.filter(imAllUsers, predicateBen);
+
+
+            Predicate<User> predicateMike = new Predicate<User>() {
+                @Override
+                public boolean apply(User input) {
+                    return StringUtils.lowerCase(input.getClassname()).equals("michael");
+                }
+            };
+
+            Collection<User> resultMike = Collections2.filter(imAllUsers, predicateMike);
+
+            Predicate<User> predicateTest = new Predicate<User>() {
+                @Override
+                public boolean apply(User input) {
+                    return StringUtils.lowerCase(input.getClassname()).equals("test");
+                }
+            };
+
+            Collection<User> resultTest = Collections2.filter(imAllUsers, predicateTest);
+
+            ImmutableMap.Builder<String, Collection<User>> builder = new ImmutableMap.Builder<>();
+
+            if (!resultBen.isEmpty())
+                builder.put("Ben", resultBen);
+
+            if (!resultMike.isEmpty())
+                builder.put("Michael", resultMike);
+
+            if (!resultTest.isEmpty())
+                builder.put("Test", resultTest);
+
+
+            classMap = builder.build();
+        } else {
+
+
+            Iterable<String> splitTest = Splitter.on(',')
+                                                 .trimResults()
+                                                 .omitEmptyStrings()
+                                                 .split("alexander," +
+                                                                "aman," +
+                                                                "anika," +
+                                                                "ayleen," +
+                                                                "blaede," +
+                                                                "claire," +
+                                                                "eli," +
+                                                                "erin," +
+                                                                "hamish," +
+                                                                "harper," +
+                                                                "imogen," +
+                                                                "jayden," +
+                                                                "jessica," +
+                                                                "julia," +
+                                                                "lindsay," +
+                                                                "marten," +
+                                                                "morgan," +
+                                                                "norah," +
+                                                                "rahim," +
+                                                                "ruby," +
+                                                                "sam," +
+                                                                "teadora," +
+                                                                "thomas");
+
+            Iterable<String> splitBen = Splitter.on(',')
+                                                .trimResults()
+                                                .omitEmptyStrings().split("abby," +
+                                                                                  "adam," +
+                                                                                  "amelia," +
+                                                                                  "anna," +
+                                                                                  "anthony," +
+                                                                                  "carson," +
+                                                                                  "chloe," +
+                                                                                  "cole," +
+                                                                                  "daeja," +
+                                                                                  "elliot," +
+                                                                                  "eva," +
+                                                                                  "frank," +
+                                                                                  "kismet," +
+                                                                                  "liam," +
+                                                                                  "marshall," +
+                                                                                  "michael," +
+                                                                                  "mira," +
+                                                                                  "mylo," +
+                                                                                  "niku," +
+                                                                                  "phoebe," +
+                                                                                  "teacher," +
+                                                                                  "trevor," +
+                                                                                  "vita," +
+                                                                                  "will");
+
+            Iterable<String> splitMike = Splitter.on(',')
+                                                 .trimResults()
+                                                 .omitEmptyStrings().split("alexander," +
+                                                                                   "aman," +
+                                                                                   "anika," +
+                                                                                   "ayleen," +
+                                                                                   "blaede," +
+                                                                                   "claire," +
+                                                                                   "eli," +
+                                                                                   "erin," +
+                                                                                   "hamish," +
+                                                                                   "harper," +
+                                                                                   "imogen," +
+                                                                                   "jayden," +
+                                                                                   "jessica," +
+                                                                                   "julia," +
+                                                                                   "lindsay," +
+                                                                                   "marten," +
+                                                                                   "morgan," +
+                                                                                   "norah," +
+                                                                                   "rahim," +
+                                                                                   "ruby," +
+                                                                                   "sam," +
+                                                                                   "teacher," +
+                                                                                   "teadora," +
+                                                                                   "thomas");
+
+            Collection<User> resultBen = Lists.newArrayList();
+            for (String s : splitBen) {
+                resultBen.add(new User(s, "Ben"));
             }
-        };
 
-        Collection<User> resultBen = Collections2.filter(imAllUsers, predicateBen);
-
-
-        Predicate<User> predicateMike = new Predicate<User>() {
-            @Override
-            public boolean apply(User input) {
-                return StringUtils.lowerCase(input.getClassname()).equals("michael");
+            Collection<User> resultMike = Lists.newArrayList();
+            for (String s : splitMike) {
+                resultMike.add(new User(s, "Michael"));
             }
-        };
 
-        Collection<User> resultMike = Collections2.filter(imAllUsers, predicateMike);
-
-        Predicate<User> predicateTest = new Predicate<User>() {
-            @Override
-            public boolean apply(User input) {
-                return StringUtils.lowerCase(input.getClassname()).equals("test");
+            Collection<User> resultTest = Lists.newArrayList();
+            for (String s : splitTest) {
+                resultMike.add(new User(s, "Test"));
             }
-        };
-
-        Collection<User> resultTest = Collections2.filter(imAllUsers, predicateTest);
-
-        ImmutableMap.Builder<String, Collection<User>> builder = new ImmutableMap.Builder<>();
-
-        if (!resultBen.isEmpty())
-            builder.put("Ben", resultBen);
-
-        if (!resultMike.isEmpty())
-            builder.put("Michael", resultMike);
-
-        if (!resultTest.isEmpty())
-            builder.put("Test", resultTest);
 
 
-        ImmutableMap<String, Collection<User>> classMap = builder.build();
+            ImmutableMap.Builder<String, Collection<User>> builder = new ImmutableMap.Builder<>();
+
+            if (!resultBen.isEmpty())
+                builder.put("Ben", resultBen);
+
+            if (!resultMike.isEmpty())
+                builder.put("Michael", resultMike);
+
+            if (!resultTest.isEmpty())
+                builder.put("Test", resultTest);
+
+
+            classMap = builder.build();
+
+        }
 
         if (!classMap.isEmpty()) {
 
             int size = classMap.keySet().size();
-
-
-
 
 
             //int rows = ((size - reminder) / 2) + reminder;
@@ -198,8 +334,28 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
             int x2 = (SMT.getApplet().getWidth() / 2) - (total_width / 2);
             int y2 = (SMT.getApplet().getHeight() / 2) - (total_height / 2);
 
-            ClassPage classPage = new ClassPage(classpage_id, x2, SMT.getApplet().getHeight(), total_width,
-                                                total_height, this);
+            ClassPage classPage;
+
+            boolean isShare = false;
+
+            LoadClassListener lcl = null;
+            String title = null;
+            if (page_id.equals(share_classpage_id)) {
+                isShare = true;
+                lcl = new LoadClassListener() {
+                    @Override
+                    public void loadClass(String classname) {
+                        PosterDataModel.helper().fetchAllUsersForCurrentClass(classname, true);
+
+                    }
+                };
+            } else {
+                lcl = this;
+            }
+            classPage = new ClassPage(page_id, x2, SMT.getApplet().getHeight(), total_width,
+                                      total_height, lcl, isShare);
+
+
             classPage.addClasses(classMap);
 
 
@@ -210,7 +366,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
         }
     }
 
-    public void showUserPage() {
+    public void showUserPage(String page_id) {
 
         Optional<String> classNamOp = Optional.fromNullable(PosterDataModel.helper().getCurrentClassName());
         Optional<Collection<User>> classUsersOp = Optional.fromNullable(
@@ -236,9 +392,33 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
 
                 int x2 = (SMT.getApplet().getWidth() / 2) - (total_width / 2);
                 int y2 = (SMT.getApplet().getHeight() / 2) - (total_height / 2);
-                UserPageZone userPage = new UserPageZone(userpage_id, x2, SMT.getApplet().getHeight(),
+                boolean isShare = false;
+                LoadUserListener lul;
+                if (page_id.equals(share_userpage_id)) {
+
+
+                    isShare = true;
+                    lul = new LoadUserListener() {
+                        @Override
+                        public void loadUser(String userUuid, int buttonColor) {
+
+                        }
+
+                        @Override
+                        public void loadUser(User user) {
+                            PosterDataModel.helper().loadUser(user, true);
+                        }
+                    };
+
+                } else {
+                    isShare = false;
+                    lul = this;
+                }
+
+
+                UserPageZone userPage = new UserPageZone(page_id, x2, SMT.getApplet().getHeight(),
                                                          (int) dimension.getWidth(),
-                                                         (int) dimension.getHeight(), this);
+                                                         (int) dimension.getHeight(), lul, isShare);
 
                 userPage.addUsers(imAllClassUsers);
                 //userPage.setY(y2);
@@ -249,7 +429,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
         }
     }
 
-    public void showPosterPage() {
+    public void showPosterPage(String posterpage_id) {
 
         Optional<Collection<Poster>> collectionOptional = Optional.fromNullable(
                 PosterDataModel.helper().getCurrentUserPosters());
@@ -273,7 +453,8 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
 
                 int x2 = (SMT.getApplet().getWidth() / 2) - (total_width / 2);
                 int y2 = (SMT.getApplet().getHeight() / 2) - (total_height / 2);
-                PosterPageZone posterPage = new PosterPageZone(posterpage_id, x2, SMT.getApplet().getHeight(),
+                PosterPageZone posterPage = new PosterPageZone(DialogZoneController.posterpage_id, x2,
+                                                               SMT.getApplet().getHeight(),
                                                                total_width,
                                                                total_height, this);
                 posterPage.addPosters(posters);
@@ -289,7 +470,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
 
     public void createControlPage(Zone... userButtons) {
         int cols = 1;
-        int rows = 4;
+        int rows = 3;
 
         Dimension dimension = ZoneHelper.calcGrid(rows, cols, ZoneHelper.GRID_SPACER, ZoneHelper.LOGOUT_BUTTON_WIDTH,
                                                   ZoneHelper.LOGOUT_BUTTON_HEIGHT);
@@ -364,7 +545,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
 
     @Override
     public void loadUser(User user) {
-        PosterDataModel.helper().loadUser(user);
+        PosterDataModel.helper().loadUser(user, false);
     }
 
     @Override
@@ -374,7 +555,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
 
     @Override
     public void loadClass(String classname) {
-        PosterDataModel.helper().fetchAllUsersForCurrentClass(classname);
+        PosterDataModel.helper().fetchAllUsersForCurrentClass(classname, false);
     }
 
     public Ani getAni() {
@@ -393,5 +574,8 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
         this.isShowing = isShowing;
     }
 
-    public enum PAGE_TYPES {CLASS_PAGE, POSTER_PAGE, USER_PAGE, NONE, NO_PRES, PRES, CONTROL}
+    public enum PAGE_TYPES {CLASS_PAGE, POSTER_PAGE, USER_PAGE, NONE, NO_PRES, PRES, CONTROL, SHARE_CLASSPAGE, SHARE_USER_PAGE, SHARE_NONE}
+
+
+
 }

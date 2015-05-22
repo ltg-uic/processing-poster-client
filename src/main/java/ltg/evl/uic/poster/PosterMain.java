@@ -20,8 +20,8 @@ import ltg.evl.uic.poster.widgets.PresentationZone;
 import ltg.evl.uic.poster.widgets.ZoneHelper;
 import ltg.evl.uic.poster.widgets.button.EditModeButton;
 import ltg.evl.uic.poster.widgets.button.LogoutButton;
-import ltg.evl.uic.poster.widgets.button.RemoveModeButton;
 import ltg.evl.uic.poster.widgets.button.SaveButton;
+import ltg.evl.uic.poster.widgets.button.ShareButton;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import processing.core.PApplet;
@@ -29,6 +29,7 @@ import vialab.SMT.SMT;
 import vialab.SMT.TouchSource;
 import vialab.SMT.Zone;
 
+import java.io.IOException;
 import java.util.Collection;
 
 import static org.apache.commons.lang.WordUtils.capitalize;
@@ -37,7 +38,7 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
 
 
     protected static org.apache.log4j.Logger logger = Logger.getLogger(PosterMain.class.getName());
-    private boolean lastIsEditToggle = true;
+    private boolean lastIsEditToggle = false;
 
     public static void main(String args[]) {
         logger.setLevel(Level.ALL);
@@ -68,8 +69,38 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
     @Override
     public void loadUserEvent(LoginDialogEvent loginDialogEvent) {
         logger.info("UserLoaded: " + loginDialogEvent.getUuid());
-        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
-        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.POSTER_PAGE);
+
+        if (loginDialogEvent.getEventType().equals(LoginDialogEvent.EVENT_TYPES.USER)) {
+            DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
+            DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.POSTER_PAGE);
+        } else {
+            PosterItem posterItem = PosterDataModel.helper()
+                                                   .findPosterItemWithPosterItemUuid(DialogZoneController.dialog()
+                                                                                                         .getSharingObject()
+                                                                                                         .getGrabbed_poster_item_uuid());
+
+
+            DialogZoneController.dialog().getSharingObject().update(posterItem);
+            DialogZoneController.dialog().getSharingObject().update(PosterDataModel.helper().getCurrentPoster());
+            DialogZoneController.dialog().getSharingObject().update(PosterDataModel.helper().getCurrentUser(), true);
+            DialogZoneController.dialog().getSharingObject().update(loginDialogEvent.getUser(), false);
+            DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.SHARE_NONE);
+
+            try {
+                System.out.println(DialogZoneController.dialog().getSharingObject().toPrettyString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            new Thread() {
+                @Override
+                public void run() {
+                    PosterDataModel.helper()
+                                   .sendMQTTPosterGrabMessage(DialogZoneController.dialog().getSharingObject());
+                }
+            }.start();
+        }
+
     }
 
     @Override
@@ -92,8 +123,16 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
     @Override
     public void loadClassEvent(LoginDialogEvent loginDialogEvent) {
         logger.info("ClassLoaded: " + loginDialogEvent.getUuid());
-        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
-        DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.USER_PAGE);
+
+        if (loginDialogEvent.getEventType().equals(LoginDialogEvent.EVENT_TYPES.CLASS_NAME)) {
+            DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.NONE);
+            DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.USER_PAGE);
+        } else {
+            DialogZoneController.dialog().getSharingObject().setClass_name(loginDialogEvent.getUuid());
+            DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.SHARE_NONE);
+            DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.SHARE_USER_PAGE);
+        }
+
     }
 
     @Override
@@ -298,10 +337,10 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
         logoutZone.setVisible(true);
 
 
-        RemoveModeButton removeModeButton = new RemoveModeButton("Group", ZoneHelper.LOGOUT_BUTTON_WIDTH,
+        ShareButton shareButton = new ShareButton("Group", ZoneHelper.LOGOUT_BUTTON_WIDTH,
                                                                  ZoneHelper.LOGOUT_BUTTON_HEIGHT) {
             @Override
-            public void removeAction() {
+            public void shareAction() {
                 boolean shouldDelete = false;
                 boolean foundFlag = false;
                 Zone[] zones = SMT.getZones();
@@ -324,15 +363,15 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
             }
 
         };
-        removeModeButton.initButton();
-        removeModeButton.setVisible(true);
+        shareButton.initButton();
+        // shareButton.setVisible(true);
 
 
         EditModeButton editModeButton = new EditModeButton("Edit", ZoneHelper.LOGOUT_BUTTON_WIDTH,
                                                            ZoneHelper.LOGOUT_BUTTON_HEIGHT) {
             @Override
             public void editAction() {
-                toggleIsEdit(true);
+                toggleIsEdit(!lastIsEditToggle);
             }
 
             @Override
@@ -366,7 +405,7 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
         saveButton.initButton();
         saveButton.setVisible(true);
 
-        DialogZoneController.dialog().createControlPage(logoutZone, removeModeButton, editModeButton, saveButton);
+        DialogZoneController.dialog().createControlPage(logoutZone, editModeButton, saveButton);
 
 
 
@@ -382,6 +421,7 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
                 if (zone != null & zone instanceof PictureZone) {
                     PictureZone pz = (PictureZone) zone;
                     pz.setIsEditing(isEditing);
+                    pz.setIsDeleteMode(isEditing);
                 }
             }
         }

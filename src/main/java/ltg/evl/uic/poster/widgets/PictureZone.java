@@ -4,19 +4,23 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Optional;
 import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.widgets.button.DeleteButton;
+import ltg.evl.uic.poster.widgets.button.DeleteButtonBuilder;
 import ltg.evl.uic.poster.widgets.button.DeleteButtonListener;
+import ltg.evl.uic.poster.widgets.page.PosterImageZone;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import processing.core.PImage;
-import vialab.SMT.ImageZone;
 import vialab.SMT.SMT;
 import vialab.SMT.Touch;
 import vialab.SMT.Zone;
 
-public class PictureZone extends ImageZone implements DeleteButtonListener {
+public class PictureZone extends PosterImageZone implements DeleteButtonListener {
 
 
     public static int padding = 6;
 
     public static int paddingOffset = (2 * padding);
+    private final Logger logger = Logger.getLogger(this.getClass());
     private boolean isEditing;
     private DeleteButton deleteButton;
     private boolean isDrawingOutline;
@@ -32,19 +36,12 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
     private int initY;
     private int initWidth;
     private int initHeight;
-
     // Debugging: Kyle
     private int printCounter = 0;
 
     public PictureZone(PImage image, String uuid, int x, int y, int width, int height) {
         super(uuid, image, x, y, width, height);
-        this.isEditing = true;
-        this.isAnimating = false;
-        this.isDeleteMode = false;
-        this.initX = x;
-        this.initY = y;
-        this.initHeight = height;
-        this.initWidth = width;
+        init();
     }
 
     public PictureZone(PictureZone pictureZone) {
@@ -52,6 +49,14 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
              pictureZone.getWidth(), pictureZone.getHeight());
     }
 
+    public void init() {
+        this.isEditing = false;
+        this.isDeleteMode = false;
+        this.initX = getX();
+        this.initY = getY();
+        this.initHeight = getHeight();
+        this.initWidth = getWidth();
+    }
 
     public void resetToInitPos() {
         this.setX(this.initX);
@@ -59,82 +64,67 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
         this.setWidth(this.initWidth);
         this.setHeight(this.initHeight);
     }
-
-    @Override
-    public void setHeight(int height) {
-        super.setHeight(height);
-        System.out.println("height: " + height);
-        System.out.println("image height: " + getZoneImage().height);
-    }
-
-    @Override
-    public void setWidth(int width) {
-        super.setWidth(width);
-        System.out.println("width: " + width);
-        System.out.println("image width: " + getZoneImage().width);
-    }
-
-
-    @Override
-    public void scale() {
-        super.scale();
-    }
-
-    @Override
-    protected void scaleImpl(float sx, float sy, float sz) {
-        super.scaleImpl(sx, sy, sz);
-        System.out.println("Scale " + " " + sx + " " + sy + " " + sz);
-    }
-
-    @Override
-    public void scale(float x, float y) {
-        super.scale(x, y);
-        System.out.println("Scale " + x + " y" + y);
-    }
-
-    @Override
-    public void scale(float s) {
-        super.scale(s);
-        System.out.println("scale " + s);
-    }
-
-
-    @Override
-    public void setSize(int width, int height) {
-        super.setSize(width, height);
-        System.out.println("width: " + width + " " + "height: " + height);
-    }
-
-    @Override
-    public void scale(float x, float y, float z) {
-        // System.out.println("x: " + x + "y: " + y + "z: " + z);
-        super.scale(x, y, z);
-    }
+//
+//    @Override
+//    public void scale() {
+//        super.scale();
+//    }
+//
+//    @Override
+//    protected void scaleImpl(float sx, float sy, float sz) {
+//        super.scaleImpl(sx, sy, sz);
+//        System.out.println("Scale " + " " + sx + " " + sy + " " + sz);
+//    }
+//
+//    @Override
+//    public void scale(float x, float y) {
+//        super.scale(x, y);
+//        System.out.println("Scale " + x + " y" + y);
+//    }
+//
+//    @Override
+//    public void scale(float s) {
+//        super.scale(s);
+//        System.out.println("scale " + s);
+//    }
+//
+//
+//    @Override
+//    public void setSize(int width, int height) {
+//        super.setSize(width, height);
+//        System.out.println("width: " + width + " " + "height: " + height);
+//    }
+//
+//    @Override
+//    public void scale(float x, float y, float z) {
+//        // System.out.println("x: " + x + "y: " + y + "z: " + z);
+//        super.scale(x, y, z);
+//    }
 
 
 
     public void setIsDeleteMode(boolean isDeleteMode) {
         this.isDeleteMode = isDeleteMode;
-        if (isDeleteMode) {
+        if (isEditing) {
 
 
-//            double buttonSize = SMT.getApplet().getHeight() * .03;
-//            double adjustedButtonSize = (buttonSize / 2.0);
-//            int x = (int) (this.getWidth() - adjustedButtonSize) - 2;
-//            int y = (int) (2 - adjustedButtonSize);
-//
-////        System.out.println(
-////                "delete button: " + buttonSize + " adjust button size: " + adjustedButtonSize + " x: " + x + " y: " + y);
-//
-//            deleteButton = new DeleteButtonBuilder().setUUID(DeleteButton.DELETE_NAME)
-//                                                    .setImage(ZoneHelper.deleteImage)
-//                                                    .setX(x)
-//                                                    .setY(y)
-//                                                    .setWidth((int) buttonSize)
-//                                                    .setHeight((int) buttonSize).createDeleteButton();
-//            deleteButton.addDeleteListener(this);
-//            deleteButton.rotate(this.getRotationAngle());
-//            this.add(deleteButton);
+            double buttonSize = SMT.getApplet().getHeight() * .03;
+            double adjustedButtonSize = (buttonSize / 2.0);
+            int x = (int) (this.getWidth() - adjustedButtonSize) - 2;
+            int y = (int) (2 - adjustedButtonSize);
+
+//        System.out.println(
+//                "delete button: " + buttonSize + " adjust button size: " + adjustedButtonSize + " x: " + x + " y: " + y);
+
+            deleteButton = new DeleteButtonBuilder().setUUID(DeleteButton.DELETE_NAME)
+                                                    .setImage(ZoneHelper.deleteImage)
+                                                    .setX(x)
+                                                    .setY(y)
+                                                    .setWidth((int) buttonSize)
+                                                    .setHeight((int) buttonSize).createDeleteButton();
+            deleteButton.addDeleteListener(this);
+            deleteButton.rotate(this.getRotationAngle());
+            this.add(deleteButton);
 
 
         } else {
@@ -154,52 +144,41 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
 
 
     @Override
-    public void drawImpl() {
-        super.drawImpl();
-//        if (isEditing) {
-//            fill(255, 255, 255);
-//            if (isDrawingOutline) {
-//                stroke(selectedOutline);
-//                strokeWeight(2);
-//                smooth();
-//                rect(0, 0, this.getWidth(), this.getHeight(), 5);
-//            } else {
-//                stroke(unselectedOutline);
-//                strokeWeight(2);
-//                smooth();
-//                rect(0, 0, this.getWidth(), this.getHeight(), 5);
-//            }
-//
-//
-//            if (this.getZoneImage() != null) {
-////                System.out.println(this.getRotationAngle()*180/PI);
-//////                System.out.println(
-//////                        "PictureZone.drawImpl w:" + getWidth() + " h: " + getHeight() + " scale: " + getZoneScale() + " rotation: " +);
-//                image(this.getZoneImage(), padding, padding, this.getWidth() - paddingOffset,
-//                      this.getHeight() - paddingOffset);
-//            } else {
-//                //TODO put text problem with img server.
-//                fill(255, 255, 255);
-//                rect(padding, padding, this.getWidth() - paddingOffset, this.getHeight() - paddingOffset);
-//            }
-//            //fill(255,255,255);
-//            //rect(padding, padding, this.getWidth()-paddingOffset, this.getHeight()-paddingOffset);
-//
-//
-//        } else {
-//            image(this.getZoneImage(), 0, 0, this.getWidth(),
-//                  this.getHeight());
-//        }
+    public void draw() {
+        if (isEditing) {
+            fill(255, 255, 255);
+            if (isDrawingOutline) {
+                stroke(selectedOutline);
+                strokeWeight(1);
+                smooth();
+                rect(0, 0, this.getWidth(), this.getHeight());
+            } else {
+                stroke(unselectedOutline);
+                strokeWeight(2);
+                smooth();
+                rect(0, 0, this.getWidth(), this.getHeight());
+    }
+
+            if (this.getZoneImage() != null) {
+                image(this.getZoneImage(), 0, 0, this.getWidth(),
+                      this.getHeight());
+            } else {
+                //TODO put text problem with img server.
+                fill(255, 255, 255);
+                rect(0, 0, this.getWidth(), this.getHeight());
+            }
+        } else {
+            image(this.getZoneImage(), 0, 0, this.getWidth(),
+                  this.getHeight());
+        }
+
     }
 
     @Override
     public void touch() {
         super.touch();
-
-
-        printThisShit();
-
-
+        logger.log(Level.INFO, "TOUCHED PZ: " + this.getName());
+        // printThisShit();
         if (isEditing) {
             SMT.putZoneOnTop(this);
             rst(false, true, true);
@@ -243,7 +222,7 @@ public class PictureZone extends ImageZone implements DeleteButtonListener {
             //
             SMT.add(presentationZone);
             presentationZone.fade(1f, 0f, 255, false);
-            presentationZone.presentImageZone(this.getZoneImage());
+            presentationZone.presentImageZone(this.getZoneImage(), this.getName());
         }
     }
 

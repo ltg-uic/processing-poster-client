@@ -15,6 +15,7 @@ import vialab.SMT.Zone;
  */
 public class UserPageZone extends Zone {
 
+    private final boolean isShare;
     PVector point = new PVector(0, 0);
     int heading_height = 50;
     private PFont font;
@@ -22,11 +23,13 @@ public class UserPageZone extends Zone {
     private int greyColor = ZoneHelper.greyOutline;
     private LoadUserListener loadUserListerner;
 
-    public UserPageZone(String name, int x, int y, int width, int height, LoadUserListener loadUserListerner) {
+    public UserPageZone(String name, int x, int y, int width, int height, LoadUserListener loadUserListerner,
+                        boolean isShare) {
         super(name, x, y, width, height);
         this.initY = SMT.getApplet().getHeight();
         this.loadUserListerner = loadUserListerner;
         this.font = ZoneHelper.helveticaNeue18Font;
+        this.isShare = isShare;
     }
     public void addUsers(ImmutableList<User> users) {
 

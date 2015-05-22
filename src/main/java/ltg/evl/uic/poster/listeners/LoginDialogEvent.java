@@ -59,7 +59,7 @@ public class LoginDialogEvent {
         this.user = user;
     }
 
-    public enum EVENT_TYPES {USER, POST_ITEM, CLASS_NAME, POSTER, LOGOUT, LOGOUT_DONE}
+    public enum EVENT_TYPES {USER, POST_ITEM, CLASS_NAME, POSTER, LOGOUT, CLASS_NAME_SHARE, USER_SHARE, LOGOUT_DONE}
 
 
 }

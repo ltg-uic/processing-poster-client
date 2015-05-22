@@ -41,6 +41,11 @@ public class User extends GenericJson {
 
     }
 
+    public User(String name, String classname) {
+        this.name = name;
+        this.classname = classname;
+    }
+
     public User(String name, String uuid, String classname, List<String> nameTags, int color, List<String> posters) {
         this.name = name;
         this.uuid = uuid;

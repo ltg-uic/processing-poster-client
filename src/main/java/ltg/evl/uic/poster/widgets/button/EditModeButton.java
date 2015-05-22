@@ -33,9 +33,9 @@ public class EditModeButton extends Zone {
 
         this.toggleButton();
 
-        this.currentColor = unpressedButtonColor;
+        this.currentColor = ZoneHelper.greyOutline;
 
-        this.pressedButtonColor = ZoneHelper.greyOutline;
+        this.pressedButtonColor = ZoneHelper.greenColor;
         this.outline = ZoneHelper.greyOutline;
         this.font = ZoneHelper.helveticaNeue18Font;
         this.fontSize = ZoneHelper.CONTROL_BUTTON_FONT_SIZE;
@@ -47,8 +47,8 @@ public class EditModeButton extends Zone {
             this.text = ZoneHelper.EDIT;
             this.unpressedButtonColor = ZoneHelper.greenColor;
         } else {
-            this.text = ZoneHelper.PRESENT;
-            this.unpressedButtonColor = ZoneHelper.orangeColor;
+            this.text = ZoneHelper.EDIT;
+            this.unpressedButtonColor = ZoneHelper.greyOutline;
         }
     }
 
@@ -61,17 +61,16 @@ public class EditModeButton extends Zone {
     public void touchDown(Touch touch) {
         this.currentColor = pressedButtonColor;
         this.isEditing = !this.isEditing;
-        this.toggleButton();
+
     }
 
     @Override
     public void touchUp(Touch touch) {
         this.currentColor = unpressedButtonColor;
-        if (isEditing) {
-            editAction();
-        } else {
-            presentAction();
-        }
+
+        editAction();
+
+        this.toggleButton();
     }
 
     public void editAction() {

@@ -119,7 +119,7 @@ public class PosterTest extends PApplet {
 //                if (!imAllUsers.isEmpty()) {
 //                    for (User user : imAllUsers) {
 //                        if (user.getUuid().equals(userUuid)) {
-//                            DialogZoneController.dialog().hideUserPage();
+//                            DialogZoneController.dialog().hidePage();
 //                            loadPosterForUser(user);
 //                        }
 //                    }

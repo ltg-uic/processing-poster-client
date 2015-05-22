@@ -1,6 +1,7 @@
 package ltg.evl.uic.poster.widgets;
 
 import ltg.evl.uic.poster.util.de.looksgood.ani.Ani;
+import ltg.evl.uic.poster.widgets.button.ShareButton;
 import ltg.evl.uic.poster.widgets.button.YesButton;
 import processing.core.PFont;
 import processing.core.PImage;
@@ -59,7 +60,7 @@ public class PresentationZone extends Zone {
         rect(0, 0, this.getWidth(), this.getHeight());
     }
 
-    public void presentImageZone(PImage pImage) {
+    public void presentImageZone(PImage pImage, String posterItemUuid) {
 
         this.color = ZoneHelper.whiteOutline;
 //        Dimension scaledDimension = ZoneHelper.resizeImage(pImage, this.getWidth(), this.getHeight());
@@ -117,7 +118,22 @@ public class PresentationZone extends Zone {
 
         };//.doScaleAni(.5f, 0f, 255);
 
+        //add share button
+
+        int size = 100;
+
+        int xa = imageZone.getWidth() - (size * 2);
+        ShareButton shareButton = new ShareButton("addme", 100, 100);
+        shareButton.initButton();
+        shareButton.setPosterItemUuid(posterItemUuid);
+        shareButton.setVisible(true);
+
+
+
         this.add(imageZone);
+        imageZone.add(shareButton);
+        shareButton.translate(xa, 50);
+        //imageZone.putChildOnTop(shareButton);
     }
 
     public void showDialog(final String text, int alpha) {

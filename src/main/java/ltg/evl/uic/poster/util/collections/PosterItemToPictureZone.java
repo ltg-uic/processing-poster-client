@@ -89,7 +89,7 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                 PosterDataModel.helper().replacePosterItem(posterItem);
 
                 // Print information to track whats going on
-                printDebugInfo(posterItem, new_x, new_y, new_w, new_h);
+                //printDebugInfo(posterItem, new_x, new_y, new_w, new_h);
 
 //                pictureZone = new PictureZoneBuilder().setImage(pImage)
 //                                                      .setUuid(Strings.nullToEmpty(posterItem.getUuid()))
@@ -130,6 +130,12 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
             }
 
 
+            System.out.println("PI ID: " + posterItem.getCited_from_poster_item_uuid());
+            System.out.println("POSTER ID: " + posterItem.getCited_from_poster_uuid());
+            System.out.println("USER ID: " + posterItem.getCited_from_user_uuid());
+            System.out.println("ACTUCAL" + posterItem.getUuid());
+
+            //green cite
 
 
 

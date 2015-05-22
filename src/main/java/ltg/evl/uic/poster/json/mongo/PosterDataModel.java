@@ -33,6 +33,7 @@ import java.util.concurrent.Executors;
 public class PosterDataModel {
 
     private static PosterDataModel ourInstance = new PosterDataModel();
+    private final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(this.getClass());
     public List<User> allUsers = Lists.newArrayList();
     public List<PosterItem> allPosterItems = Lists.newArrayList();
     public List<Poster> allPosters = Lists.newArrayList();
@@ -42,8 +43,9 @@ public class PosterDataModel {
     private Collection<User> currentClassUsers;
     private Collection<Poster> currentUserPosters;
     private LoginCollectionListener loginCollectionListener;
-
-    private final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(this.getClass());
+    private Collection<User> currentClassUsersForSharing;
+    private String currentSharingClassName;
+    private User currentSharingUser;
 
     private PosterDataModel() {
         logger.setLevel(Level.ALL);
@@ -94,12 +96,22 @@ public class PosterDataModel {
     }
 
 
-    public void loadUser(User user) {
+    public void loadUser(User user, boolean isShare) {
         if (Optional.fromNullable(user).isPresent()) {
-            this.currentUser = user;
-            fetchAllPostersForCurrentUser();
-            logger.log(Level.INFO, "LOADING USER: " + user.getUuid());
-            this.loginCollectionListener.loadUserEvent(new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.USER, user));
+
+            if (isShare) {
+                this.setCurrentSharingUser(user);
+                //fetchAllPostersForCurrentUser();
+                logger.log(Level.INFO, "LOADING SHARE USER: " + user.getUuid());
+                this.loginCollectionListener.loadUserEvent(
+                        new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.USER_SHARE, user));
+            } else {
+                this.setCurrentUser(user);
+                fetchAllPostersForCurrentUser();
+                logger.log(Level.INFO, "LOADING USER: " + user.getUuid());
+                this.loginCollectionListener.loadUserEvent(
+                        new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.USER, user));
+            }
         }
     }
     //endregion
@@ -132,28 +144,36 @@ public class PosterDataModel {
 
     //endregion loading poster
 
-    public void loadClass(final String classname) {
-        ImmutableList<User> imAllUsers = ImmutableList.copyOf(PosterDataModel.helper().allUsers);
+//    public void loadClass(final String classname) {
+//        ImmutableList<User> imAllUsers = ImmutableList.copyOf(PosterDataModel.helper().allUsers);
+//
+//        Predicate<User> predicateClass = new Predicate<User>() {
+//            @Override
+//            public boolean apply(User input) {
+//                return StringUtils.lowerCase(input.getClassname()).equals(classname);
+//            }
+//        };
+//
+//        setCurrentClassName(classname);
+//
+//        logger.log(Level.INFO, "LOADING CLASS: " + classname);
+//
+//        this.loginCollectionListener.loadClassEvent(
+//                new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.CLASS_NAME, classname));
+//    }
 
-        Predicate<User> predicateClass = new Predicate<User>() {
-            @Override
-            public boolean apply(User input) {
-                return StringUtils.lowerCase(input.getClassname()).equals(classname);
-            }
-        };
+    //    public void fetchAllUsersForCurrentClass(String className, boolean isShare) {
+//        //if( isShare ) {
+//            //fetchAllUsersForCurrentClass(className, isShare); //LoginDialogEvent.EVENT_TYPES.CLASS_NAME_SHARE, this.currentClassUsersForSharing);
+////        } else {
+////            fetchAllUsersForCurrentClass(className, LoginDialogEvent.EVENT_TYPES.CLASS_NAME, this.currentClassUsers);
+////
+////        }
+//    }
+    public void fetchAllUsersForCurrentClass(String className, boolean isShare) {
 
-        setCurrentClassName(classname);
 
-        logger.log(Level.INFO, "LOADING CLASS: " + classname);
-
-        this.loginCollectionListener.loadClassEvent(
-                new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.CLASS_NAME, classname));
-    }
-
-    public void fetchAllUsersForCurrentClass(String className) {
-
-        setCurrentClassName(className);
-        Optional<String> classNameOptional = Optional.fromNullable(getCurrentClassName());
+        Optional<String> classNameOptional = Optional.fromNullable(className);
 
         if (classNameOptional.isPresent()) {
             final String cname = StringUtils.lowerCase(classNameOptional.get());
@@ -170,28 +190,23 @@ public class PosterDataModel {
                 }
             };
 
-            ListeningExecutorService service = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(10));
-            ListenableFuture<Collection<User>> explosion = service.submit(new Callable<Collection<User>>() {
-                public Collection<User> call() {
-                    return Collections2.filter(imAllUsers, predicateClass);
-                }
-            });
+            LoginDialogEvent.EVENT_TYPES event_type;
+            if (isShare) {
+                this.currentClassUsersForSharing = Collections2.filter(imAllUsers, predicateClass);
+                event_type = LoginDialogEvent.EVENT_TYPES.CLASS_NAME_SHARE;
+                setCurrentSharingClassName(className);
+                loginCollectionListener.loadClassEvent(
+                        new LoginDialogEvent(event_type, cname));
+            } else {
+                this.currentClassUsers = Collections2.filter(imAllUsers, predicateClass);
+                event_type = LoginDialogEvent.EVENT_TYPES.CLASS_NAME;
+                setCurrentClassName(className);
+                loginCollectionListener.loadClassEvent(
+                        new LoginDialogEvent(event_type, cname));
+            }
 
-            Futures.addCallback(explosion, new FutureCallback<Collection<User>>() {
 
 
-                @Override
-                public void onSuccess(Collection<User> result) {
-                    currentClassUsers = result;
-                    loginCollectionListener.loadClassEvent(
-                            new LoginDialogEvent(LoginDialogEvent.EVENT_TYPES.CLASS_NAME, cname));
-                }
-
-                @Override
-                public void onFailure(Throwable throwable) {
-                    throwable.printStackTrace();
-                }
-            });
         }
     }
 
@@ -446,6 +461,21 @@ public class PosterDataModel {
         }
     }
 
+    public void sendMQTTPosterGrabMessage(PosterGrab posterGrab) {
+        if (posterGrab != null) {
+
+            com.google.gson.Gson gson = new GsonBuilder().create();
+            MQTTPipe.getInstance().publishMessage(gson.toJson(posterGrab));
+            try {
+                logger.log(Level.INFO,
+                           "PosterDataModel.sendMQTTPosterGrabMessage PosterGrab: " + posterGrab.toPrettyString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            logger.log(Level.INFO, "PosterDataModel.sendMQTTPosterGrabMessage PosterGrab Null");
+        }
+    }
     public void replacePosterItem(PosterItem posterItem) {
         ListIterator<PosterItem> iterator = this.allPosterItems.listIterator();
         while (iterator.hasNext()) {
@@ -706,6 +736,14 @@ public class PosterDataModel {
 
     public void setCurrentUserPosters(Collection<Poster> currentUserPosters) {
         this.currentUserPosters = currentUserPosters;
+    }
+
+    public void setCurrentSharingClassName(String currentSharingClassName) {
+        this.currentSharingClassName = currentSharingClassName;
+    }
+
+    public void setCurrentSharingUser(User currentSharingUser) {
+        this.currentSharingUser = currentSharingUser;
     }
 
 
