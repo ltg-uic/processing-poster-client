@@ -83,8 +83,9 @@ public class ZoneHelper {
     public static int whiteOutline = SMT.getApplet().color(255, 255, 255);
     public static int greyOutline = SMT.getApplet().color(224, 224, 224);
     public static int darkGreenColor = SMT.getApplet().color(67, 160, 71);
-    public static int orangeColor = SMT.getApplet().color(251, 140, 0);
+    public static int orangeColor = SMT.getApplet().color(230, 74, 25);
     public static int yellowColor = SMT.getApplet().color(255, 152, 0);
+    public static int darkGrey = SMT.getApplet().color(158, 158, 158);
     private static ZoneHelper ourInstance = new ZoneHelper();
     public int maxY;
     public int maxX;

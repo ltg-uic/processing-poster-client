@@ -1,9 +1,7 @@
 package ltg.evl.uic.poster.widgets;
 
-import com.google.api.client.util.Lists;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
-import com.google.common.base.Splitter;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -34,6 +32,8 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
 
     public static String share_userpage_id = "ShareUserPage";
     public static String share_classpage_id = "ShareClassPage";
+    public static String share_presentation_id = "SharePresentationPage";
+
 
     private static DialogZoneController ourInstance = new DialogZoneController();
     public String controlpage_id = "ControlPage";
@@ -47,6 +47,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
     private boolean isShowing;
     private PresentationZone okDialog;
     private PosterGrab sharingObject;
+    private PresentationZone sharingPresentationZone;
 
 
     private DialogZoneController() {
@@ -95,6 +96,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
                 setIsShowing(false);
                 break;
             case SHARE_CLASSPAGE:
+                this.showSharingBackground();
                 this.showClassPage(share_classpage_id);
                 setIsShowing(true);
                 break;
@@ -105,7 +107,16 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
             case SHARE_NONE:
                 this.hidePage(share_classpage_id);
                 this.hidePage(share_userpage_id);
+                this.hidePage(share_presentation_id);
                 setIsShowing(false);
+                break;
+            case SHARE_NO_CLASS:
+                this.hidePage(share_classpage_id);
+                setIsShowing(false);
+                break;
+            case SHARE_PRES:
+                showSharingBackground();
+                setIsShowing(true);
                 break;
         }
     }
@@ -138,6 +149,23 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
         presentationZone.setBgAlpha(0);
         SMT.add(presentationZone);
         presentationZone.fade(1.0f, 0f, 255, false);
+
+    }
+
+    public void showSharingBackground() {
+
+        sharingPresentationZone = new PresentationZone(share_presentation_id) {
+            @Override
+            public void doTouchAction() {
+                super.doTouchAction();
+                DialogZoneController.dialog().showPage(PAGE_TYPES.SHARE_NONE);
+            }
+        };
+        sharingPresentationZone.color = ZoneHelper.orangeColor;
+        sharingPresentationZone.setBgAlpha(200);
+
+        SMT.add(sharingPresentationZone);
+        //presentationZone.fade(1.0f, 0f, 200, true);
 
     }
 
@@ -204,116 +232,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
         } else {
 
 
-            Iterable<String> splitTest = Splitter.on(',')
-                                                 .trimResults()
-                                                 .omitEmptyStrings()
-                                                 .split("alexander," +
-                                                                "aman," +
-                                                                "anika," +
-                                                                "ayleen," +
-                                                                "blaede," +
-                                                                "claire," +
-                                                                "eli," +
-                                                                "erin," +
-                                                                "hamish," +
-                                                                "harper," +
-                                                                "imogen," +
-                                                                "jayden," +
-                                                                "jessica," +
-                                                                "julia," +
-                                                                "lindsay," +
-                                                                "marten," +
-                                                                "morgan," +
-                                                                "norah," +
-                                                                "rahim," +
-                                                                "ruby," +
-                                                                "sam," +
-                                                                "teadora," +
-                                                                "thomas");
-
-            Iterable<String> splitBen = Splitter.on(',')
-                                                .trimResults()
-                                                .omitEmptyStrings().split("abby," +
-                                                                                  "adam," +
-                                                                                  "amelia," +
-                                                                                  "anna," +
-                                                                                  "anthony," +
-                                                                                  "carson," +
-                                                                                  "chloe," +
-                                                                                  "cole," +
-                                                                                  "daeja," +
-                                                                                  "elliot," +
-                                                                                  "eva," +
-                                                                                  "frank," +
-                                                                                  "kismet," +
-                                                                                  "liam," +
-                                                                                  "marshall," +
-                                                                                  "michael," +
-                                                                                  "mira," +
-                                                                                  "mylo," +
-                                                                                  "niku," +
-                                                                                  "phoebe," +
-                                                                                  "teacher," +
-                                                                                  "trevor," +
-                                                                                  "vita," +
-                                                                                  "will");
-
-            Iterable<String> splitMike = Splitter.on(',')
-                                                 .trimResults()
-                                                 .omitEmptyStrings().split("alexander," +
-                                                                                   "aman," +
-                                                                                   "anika," +
-                                                                                   "ayleen," +
-                                                                                   "blaede," +
-                                                                                   "claire," +
-                                                                                   "eli," +
-                                                                                   "erin," +
-                                                                                   "hamish," +
-                                                                                   "harper," +
-                                                                                   "imogen," +
-                                                                                   "jayden," +
-                                                                                   "jessica," +
-                                                                                   "julia," +
-                                                                                   "lindsay," +
-                                                                                   "marten," +
-                                                                                   "morgan," +
-                                                                                   "norah," +
-                                                                                   "rahim," +
-                                                                                   "ruby," +
-                                                                                   "sam," +
-                                                                                   "teacher," +
-                                                                                   "teadora," +
-                                                                                   "thomas");
-
-            Collection<User> resultBen = Lists.newArrayList();
-            for (String s : splitBen) {
-                resultBen.add(new User(s, "Ben"));
-            }
-
-            Collection<User> resultMike = Lists.newArrayList();
-            for (String s : splitMike) {
-                resultMike.add(new User(s, "Michael"));
-            }
-
-            Collection<User> resultTest = Lists.newArrayList();
-            for (String s : splitTest) {
-                resultMike.add(new User(s, "Test"));
-            }
-
-
-            ImmutableMap.Builder<String, Collection<User>> builder = new ImmutableMap.Builder<>();
-
-            if (!resultBen.isEmpty())
-                builder.put("Ben", resultBen);
-
-            if (!resultMike.isEmpty())
-                builder.put("Michael", resultMike);
-
-            if (!resultTest.isEmpty())
-                builder.put("Test", resultTest);
-
-
-            classMap = builder.build();
+            classMap = PosterDataModel.helper().getClassMap();
 
         }
 
@@ -366,67 +285,79 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
         }
     }
 
+
     public void showUserPage(String page_id) {
 
-        Optional<String> classNamOp = Optional.fromNullable(PosterDataModel.helper().getCurrentClassName());
-        Optional<Collection<User>> classUsersOp = Optional.fromNullable(
-                PosterDataModel.helper().getCurrentClassUsers());
-        if (classNamOp.isPresent() && classUsersOp.isPresent()) {
+        Optional<String> classNamOp;
+        Optional<Collection<User>> classUsersOp;
+        if (page_id.equals(share_userpage_id)) {
 
+            classNamOp = Optional.fromNullable(PosterDataModel.helper().getCurrentSharingClassName());
 
-            ImmutableList<User> imAllClassUsers = ImmutableList.copyOf(classUsersOp.get());
+            classUsersOp = Optional.fromNullable(
+                    PosterDataModel.helper().getCurrentClassUsersForSharing());
+        } else {
+            classNamOp = Optional.fromNullable(PosterDataModel.helper().getCurrentClassName());
+            classUsersOp = Optional.fromNullable(
+                    PosterDataModel.helper().getCurrentClassUsers());
 
-
-            if (!imAllClassUsers.isEmpty()) {
-                int size = imAllClassUsers.size();
-
-                double cols = 4.0;
-
-
-                Dimension dimension = ZoneHelper.calcGrid(size, cols, ZoneHelper.GRID_SPACER, ZoneHelper.BUTTON_WIDTH,
-                                                          ZoneHelper.BUTTON_HEIGHT);
-
-                int total_width = (int) dimension.getWidth();
-                int total_height = (int) dimension.getHeight();
-
-
-                int x2 = (SMT.getApplet().getWidth() / 2) - (total_width / 2);
-                int y2 = (SMT.getApplet().getHeight() / 2) - (total_height / 2);
-                boolean isShare = false;
-                LoadUserListener lul;
-                if (page_id.equals(share_userpage_id)) {
-
-
-                    isShare = true;
-                    lul = new LoadUserListener() {
-                        @Override
-                        public void loadUser(String userUuid, int buttonColor) {
-
-                        }
-
-                        @Override
-                        public void loadUser(User user) {
-                            PosterDataModel.helper().loadUser(user, true);
-                        }
-                    };
-
-                } else {
-                    isShare = false;
-                    lul = this;
-                }
-
-
-                UserPageZone userPage = new UserPageZone(page_id, x2, SMT.getApplet().getHeight(),
-                                                         (int) dimension.getWidth(),
-                                                         (int) dimension.getHeight(), lul, isShare);
-
-                userPage.addUsers(imAllClassUsers);
-                //userPage.setY(y2);
-                if (SMT.add(userPage)) {
-                    userPage.startAni(new PVector(x2, y2), aniSpeed, 0f);
-                }
-            }
         }
+
+        ImmutableList<User> imAllClassUsers = ImmutableList.copyOf(classUsersOp.get());
+
+
+        if (!imAllClassUsers.isEmpty()) {
+            int size = imAllClassUsers.size();
+
+            double cols = 4.0;
+
+
+            Dimension dimension = ZoneHelper.calcGrid(size, cols, ZoneHelper.GRID_SPACER,
+                                                      ZoneHelper.BUTTON_WIDTH,
+                                                      ZoneHelper.BUTTON_HEIGHT);
+
+            int total_width = (int) dimension.getWidth();
+            int total_height = (int) dimension.getHeight();
+
+
+            int x2 = (SMT.getApplet().getWidth() / 2) - (total_width / 2);
+            int y2 = (SMT.getApplet().getHeight() / 2) - (total_height / 2);
+            boolean isShare = false;
+            LoadUserListener lul;
+            if (page_id.equals(share_userpage_id)) {
+
+
+                isShare = true;
+                lul = new LoadUserListener() {
+                    @Override
+                    public void loadUser(String userUuid, int buttonColor) {
+
+                    }
+
+                    @Override
+                    public void loadUser(User user) {
+                        PosterDataModel.helper().loadUser(user, true);
+                    }
+                };
+
+            } else {
+                isShare = false;
+                lul = this;
+            }
+
+
+            UserPageZone userPage = new UserPageZone(page_id, x2, SMT.getApplet().getHeight(),
+                                                     (int) dimension.getWidth(),
+                                                     (int) dimension.getHeight(), lul, isShare);
+
+            userPage.addUsers(imAllClassUsers);
+            //userPage.setY(y2);
+            if (SMT.add(userPage)) {
+                userPage.startAni(new PVector(x2, y2), aniSpeed, 0f);
+            }
+                }
+
+
     }
 
     public void showPosterPage(String posterpage_id) {
@@ -574,7 +505,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
         this.isShowing = isShowing;
     }
 
-    public enum PAGE_TYPES {CLASS_PAGE, POSTER_PAGE, USER_PAGE, NONE, NO_PRES, PRES, CONTROL, SHARE_CLASSPAGE, SHARE_USER_PAGE, SHARE_NONE}
+    public enum PAGE_TYPES {CLASS_PAGE, POSTER_PAGE, USER_PAGE, NONE, NO_PRES, PRES, CONTROL, SHARE_CLASSPAGE, SHARE_USER_PAGE, SHARE_NONE, SHARE_PRES, SHARE_NO_USER_PAGE, SHARE_NO_CLASS}
 
 
 

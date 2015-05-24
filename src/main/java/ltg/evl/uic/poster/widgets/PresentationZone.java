@@ -17,11 +17,11 @@ import java.awt.*;
 public class PresentationZone extends Zone {
 
     private static final int DIALOG_WIDTH = 120;
+    public int color;
     private PFont font;
     private int bgAlpha;
     private boolean shouldDelete;
     private String okDialogText;
-    private int color;
     private boolean shouldShowButton;
 
     public PresentationZone(String name, int x, int y, int width, int height) {
@@ -122,7 +122,7 @@ public class PresentationZone extends Zone {
 
         int size = 100;
 
-        int xa = imageZone.getWidth() - (size * 2);
+        int xa = this.getWidth() - (size * 2);
         ShareButton shareButton = new ShareButton("addme", 100, 100);
         shareButton.initButton();
         shareButton.setPosterItemUuid(posterItemUuid);
@@ -131,7 +131,7 @@ public class PresentationZone extends Zone {
 
 
         this.add(imageZone);
-        imageZone.add(shareButton);
+        this.add(shareButton);
         shareButton.translate(xa, 50);
         //imageZone.putChildOnTop(shareButton);
     }

@@ -129,7 +129,7 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
             DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.USER_PAGE);
         } else {
             DialogZoneController.dialog().getSharingObject().setClass_name(loginDialogEvent.getUuid());
-            DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.SHARE_NONE);
+            DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.SHARE_NO_CLASS);
             DialogZoneController.dialog().showPage(DialogZoneController.PAGE_TYPES.SHARE_USER_PAGE);
         }
 

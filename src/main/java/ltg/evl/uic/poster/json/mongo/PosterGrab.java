@@ -66,7 +66,7 @@ public class PosterGrab extends GenericJson {
         if (originator) {
             setUser_from_uuid(user.getUuid());
         } else {
-            setGrabbing_user_name(user.getNameTags().get(0));
+            setGrabbing_user_name(user.getName());
         }
     }
 

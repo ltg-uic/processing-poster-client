@@ -38,6 +38,7 @@ public class PictureZone extends PosterImageZone implements DeleteButtonListener
     private int initHeight;
     // Debugging: Kyle
     private int printCounter = 0;
+    private boolean hasBeenCited;
 
     public PictureZone(PImage image, String uuid, int x, int y, int width, int height) {
         super(uuid, image, x, y, width, height);
@@ -56,6 +57,7 @@ public class PictureZone extends PosterImageZone implements DeleteButtonListener
         this.initY = getY();
         this.initHeight = getHeight();
         this.initWidth = getWidth();
+        this.hasBeenCited = false;
     }
 
     public void resetToInitPos() {
@@ -172,6 +174,13 @@ public class PictureZone extends PosterImageZone implements DeleteButtonListener
                   this.getHeight());
         }
 
+        if (hasBeenCited) {
+            stroke(ZoneHelper.orangeColor);
+            strokeWeight(3);
+            smooth();
+            noFill();
+            rect(0, 0, this.getWidth(), this.getHeight());
+        }
     }
 
     @Override
@@ -287,6 +296,14 @@ public class PictureZone extends PosterImageZone implements DeleteButtonListener
 
     public void applyScaleRotation() {
         super.rotate(new Float(getZoneRotation()) * 180 / PI);
+    }
+
+    public boolean isHasBeenCited() {
+        return hasBeenCited;
+    }
+
+    public void setHasBeenCited(boolean hasBeenCited) {
+        this.hasBeenCited = hasBeenCited;
     }
 
 

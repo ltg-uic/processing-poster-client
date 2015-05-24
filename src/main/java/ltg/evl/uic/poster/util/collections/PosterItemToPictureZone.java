@@ -116,6 +116,7 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
 
                 String uuid = UUID.randomUUID().toString();
 
+
                 pictureZone = new PictureZoneBuilder().setUuid(uuid)
                                                       .setX(ZoneHelper.random(0, 500))
                                                       .setY(ZoneHelper.random(0, 500))
@@ -130,14 +131,18 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
             }
 
 
-            System.out.println("PI ID: " + posterItem.getCited_from_poster_item_uuid());
-            System.out.println("POSTER ID: " + posterItem.getCited_from_poster_uuid());
-            System.out.println("USER ID: " + posterItem.getCited_from_user_uuid());
-            System.out.println("ACTUCAL" + posterItem.getUuid());
+//            System.out.println("PI ID: " + posterItem.getCited_from_poster_item_uuid());
+//            System.out.println("POSTER ID: " + posterItem.getCited_from_poster_uuid());
+//            System.out.println("USER ID: " + posterItem.getCited_from_user_uuid());
+//            System.out.println("ACTUCAL" + posterItem.getUuid());
 
             //green cite
 
 
+            if (posterItem.getCited_from_user_uuid() != null || StringUtils.stripToNull(
+                    posterItem.getCited_from_poster_item_uuid()) != null) {
+                pictureZone.setHasBeenCited(true);
+            }
 
                 return pictureZone;
 

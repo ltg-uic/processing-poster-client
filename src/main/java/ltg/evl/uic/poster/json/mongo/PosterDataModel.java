@@ -1,10 +1,7 @@
 package ltg.evl.uic.poster.json.mongo;
 
 import com.google.api.client.http.HttpResponse;
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.base.Strings;
+import com.google.common.base.*;
 import com.google.common.collect.*;
 import com.google.common.util.concurrent.*;
 import com.google.gson.GsonBuilder;
@@ -170,6 +167,121 @@ public class PosterDataModel {
 ////
 ////        }
 //    }
+
+    public ImmutableMap<String, Collection<User>> getClassMap() {
+        ImmutableMap<String, Collection<User>> classMap;
+        Iterable<String> splitTest = Splitter.on(',')
+                                             .trimResults()
+                                             .omitEmptyStrings()
+                                             .split("alexander," +
+                                                            "aman," +
+                                                            "anika," +
+                                                            "ayleen," +
+                                                            "blaede," +
+                                                            "claire," +
+                                                            "eli," +
+                                                            "erin," +
+                                                            "hamish," +
+                                                            "harper," +
+                                                            "imogen," +
+                                                            "jayden," +
+                                                            "jessica," +
+                                                            "julia," +
+                                                            "lindsay," +
+                                                            "marten," +
+                                                            "morgan," +
+                                                            "norah," +
+                                                            "rahim," +
+                                                            "ruby," +
+                                                            "sam," +
+                                                            "teadora," +
+                                                            "thomas");
+
+        Iterable<String> splitBen = Splitter.on(',')
+                                            .trimResults()
+                                            .omitEmptyStrings().split("abby," +
+                                                                              "adam," +
+                                                                              "amelia," +
+                                                                              "anna," +
+                                                                              "anthony," +
+                                                                              "carson," +
+                                                                              "chloe," +
+                                                                              "cole," +
+                                                                              "daeja," +
+                                                                              "elliot," +
+                                                                              "eva," +
+                                                                              "frank," +
+                                                                              "kismet," +
+                                                                              "liam," +
+                                                                              "marshall," +
+                                                                              "michael," +
+                                                                              "mira," +
+                                                                              "mylo," +
+                                                                              "niku," +
+                                                                              "phoebe," +
+                                                                              "teacher," +
+                                                                              "trevor," +
+                                                                              "vita," +
+                                                                              "will");
+
+        Iterable<String> splitMike = Splitter.on(',')
+                                             .trimResults()
+                                             .omitEmptyStrings().split("alexander," +
+                                                                               "aman," +
+                                                                               "anika," +
+                                                                               "ayleen," +
+                                                                               "blaede," +
+                                                                               "claire," +
+                                                                               "eli," +
+                                                                               "erin," +
+                                                                               "hamish," +
+                                                                               "harper," +
+                                                                               "imogen," +
+                                                                               "jayden," +
+                                                                               "jessica," +
+                                                                               "julia," +
+                                                                               "lindsay," +
+                                                                               "marten," +
+                                                                               "morgan," +
+                                                                               "norah," +
+                                                                               "rahim," +
+                                                                               "ruby," +
+                                                                               "sam," +
+                                                                               "teacher," +
+                                                                               "teadora," +
+                                                                               "thomas");
+
+        Collection<User> resultBen = com.google.api.client.util.Lists.newArrayList();
+        for (String s : splitBen) {
+            resultBen.add(new User(s, "Ben"));
+        }
+
+        Collection<User> resultMike = com.google.api.client.util.Lists.newArrayList();
+        for (String s : splitMike) {
+            resultMike.add(new User(s, "Michael"));
+        }
+
+        Collection<User> resultTest = com.google.api.client.util.Lists.newArrayList();
+        for (String s : splitTest) {
+            resultTest.add(new User(s, "Test"));
+        }
+
+
+        ImmutableMap.Builder<String, Collection<User>> builder = new ImmutableMap.Builder<>();
+
+        if (!resultBen.isEmpty())
+            builder.put("Ben", resultBen);
+
+        if (!resultMike.isEmpty())
+            builder.put("Michael", resultMike);
+
+        if (!resultTest.isEmpty())
+            builder.put("Test", resultTest);
+
+
+        classMap = builder.build();
+        return classMap;
+    }
     public void fetchAllUsersForCurrentClass(String className, boolean isShare) {
 
 
@@ -192,7 +304,9 @@ public class PosterDataModel {
 
             LoginDialogEvent.EVENT_TYPES event_type;
             if (isShare) {
-                this.currentClassUsersForSharing = Collections2.filter(imAllUsers, predicateClass);
+                this.currentClassUsersForSharing = getClassMap().get(className);
+
+
                 event_type = LoginDialogEvent.EVENT_TYPES.CLASS_NAME_SHARE;
                 setCurrentSharingClassName(className);
                 loginCollectionListener.loadClassEvent(
@@ -738,12 +852,29 @@ public class PosterDataModel {
         this.currentUserPosters = currentUserPosters;
     }
 
+    public String getCurrentSharingClassName() {
+        return currentSharingClassName;
+    }
+
     public void setCurrentSharingClassName(String currentSharingClassName) {
         this.currentSharingClassName = currentSharingClassName;
     }
 
+    public User getCurrentSharingUser() {
+        return currentSharingUser;
+    }
+
     public void setCurrentSharingUser(User currentSharingUser) {
         this.currentSharingUser = currentSharingUser;
+    }
+
+    public Collection<User> getCurrentClassUsersForSharing() {
+        return currentClassUsersForSharing;
+    }
+
+    public void setCurrentClassUsersForSharing(
+            Collection<User> currentClassUsersForSharing) {
+        this.currentClassUsersForSharing = currentClassUsersForSharing;
     }
 
 

@@ -17,8 +17,9 @@ import java.util.Collection;
 public class ClassPage extends Zone {
 
     private final PFont font;
-    public int BACKGROUND_COLOR = 255;
     int heading_height = 50;
+    private int BACKGROUND_COLOR = 255;
+    private int TEXT_COLOR = 0;
     //private Ani ani;
     private LoadClassListener loadClassListener;
     private int initY;
@@ -30,8 +31,13 @@ public class ClassPage extends Zone {
         this.initY = SMT.getApplet().getHeight();
         this.font = ZoneHelper.helveticaNeue18Font;
 
-        if (isShare)
-            this.BACKGROUND_COLOR = ZoneHelper.yellowColor;
+        if (isShare) {
+            this.BACKGROUND_COLOR = ZoneHelper.darkGrey;
+            this.TEXT_COLOR = 255;
+        } else {
+            this.BACKGROUND_COLOR = ZoneHelper.whiteOutline;
+            this.TEXT_COLOR = 0;
+        }
     }
 
     @Override
@@ -51,7 +57,7 @@ public class ClassPage extends Zone {
         textFont(font, 20);
         textAlign(CENTER, CENTER);
         textSize(22);
-        fill(0);
+        fill(TEXT_COLOR);
         text(ZoneHelper.WHICH_CLASS_ARE_YOU_IN, getWidth() / 2 - 2, heading_height / 2);
     }
 
