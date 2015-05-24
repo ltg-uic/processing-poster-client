@@ -38,10 +38,10 @@ public class ShareButton extends Zone {
 
     public void initButton() {
 
-        this.unpressedButtonColor = ZoneHelper.redOutline;
+        this.unpressedButtonColor = ZoneHelper.orangeColor;
         this.pressedButtonColor = ZoneHelper.greyOutline;
         this.currentColor = unpressedButtonColor;
-        this.text = "+";
+        this.text = "GRAB";
         this.outline = ZoneHelper.greyOutline;
         this.font = ZoneHelper.helveticaNeue18Font;
         this.fontSize = ZoneHelper.CONTROL_BUTTON_FONT_SIZE;

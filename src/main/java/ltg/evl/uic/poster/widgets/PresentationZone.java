@@ -123,7 +123,7 @@ public class PresentationZone extends Zone {
         int size = 100;
 
         int xa = this.getWidth() - (size * 2);
-        ShareButton shareButton = new ShareButton("addme", 100, 100);
+        ShareButton shareButton = new ShareButton("addme", 125, 75);
         shareButton.initButton();
         shareButton.setPosterItemUuid(posterItemUuid);
         shareButton.setVisible(true);
