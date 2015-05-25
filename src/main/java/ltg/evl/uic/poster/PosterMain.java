@@ -26,6 +26,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import processing.core.PApplet;
 import vialab.SMT.SMT;
+import vialab.SMT.Touch;
 import vialab.SMT.TouchSource;
 import vialab.SMT.Zone;
 
@@ -37,10 +38,13 @@ import static org.apache.commons.lang.WordUtils.capitalize;
 public class PosterMain extends PApplet implements LoginCollectionListener {
 
 
-    protected static org.apache.log4j.Logger logger = Logger.getLogger(PosterMain.class.getName());
+    private static Logger logger;
     private boolean lastIsEditToggle = false;
 
     public static void main(String args[]) {
+//        System.setProperty("logfilename", UUID.randomUUID().toString() + System.currentTimeMillis());
+        logger = Logger.getLogger(PosterMain.class.getName());
+
         logger.setLevel(Level.ALL);
         MQTTPipe.getInstance();
 
@@ -177,13 +181,15 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
         Ani.init(this);
         Ani.autostart();
 
+        logger.log(Level.INFO, "DISPLAY WIDTH: " + displayWidth + " " + "DISPLAY HEIGHT: " + displayHeight);
+
         size(displayWidth, displayHeight, SMT.RENDERER);
         //hint(ENABLE_RETINA_PIXELS);
         SMT.init(this, TouchSource.AUTOMATIC);
 
 
         SMT.setTouchColor(33, 150, 243, 220);
-        SMT.drawDebugTouchPoints();
+        //SMT.drawDebugTouchPoints();
         //SMT.setTouchDraw(TouchDraw.DEBUG);
 
         setupControlButtons();
@@ -201,6 +207,29 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
         background(ZoneHelper.lightGreyBackground);
         fill(0);
         text(round(frameRate) + "v1.4 fps, # of zones: " + SMT.getZones().length, width / 2, 10);
+        //draw touches
+        logTouches();
+    }
+
+    private void logTouches() {
+        Touch[] touches = SMT.getTouches();
+        for (vialab.SMT.Touch touch : SMT.getTouches()) {
+            String touch_text = String.format(
+                    "id: %d\n" +
+                            "source: %s\n" +
+                            "raw x,y: %.2f, %.2f\n" +
+                            "fitted getX,Y: %.2f, %.2f\n" +
+                            "rounded : %d, %d",
+                    touch.cursorID,
+                    touch.getTouchSource(),
+                    touch.getRawX(), touch.getRawY(),
+                    touch.getX(), touch.getY(),
+                    touch.x, touch.y);
+
+
+            logger.log(Level.INFO,
+                       "current time: " + System.currentTimeMillis() + " nano time: " + System.nanoTime() + " touch: " + touch_text);
+        }
     }
 
 

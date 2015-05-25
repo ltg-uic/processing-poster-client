@@ -12,12 +12,22 @@
         </layout>
     </appender>
 
-    <appender name="default.file" class="org.apache.log4j.FileAppender">
+
+    <!--<appender name="RollingAppender" class="org.apache.log4j.DailyRollingFileAppender">-->
+    <!--<param name="File" value="app.log" />-->
+    <!--<param name="DatePattern" value="'.'yyyy-MM-dd" />-->
+    <!--<layout class="org.apache.log4j.PatternLayout">-->
+    <!--<param name="ConversionPattern" value="[%p] %d %c %M - %m%n"/>-->
+    <!--</layout>-->
+    <!--</appender>-->
+
+    <appender name="default.file" class="org.apache.log4j.DailyRollingFileAppender">
         <param name="file" value="posterout.log"/>
-        <param name="append" value="false"/>
+        <param name='Append' value='true'/>
         <param name="threshold" value="all"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{1}] - %m%n"/>
+            <param name="ConversionPattern" value="[%p] %d %c %M - %m%n"/>
         </layout>
     </appender>
 
@@ -25,11 +35,12 @@
     <logger name="ltg.evl.uic.poster.PosterMain" additivity="false">
         <level value="all"/>
         <appender-ref ref="default.console"/>
+        <appender-ref ref="default.file"/>
     </logger>
 
     <root>
         <priority value="all"/>
         <appender-ref ref="default.console"/>
-        <!--<appender-ref ref="default.file"/>-->
+        <appender-ref ref="default.file"/>
     </root>
 </log4j:configuration>
