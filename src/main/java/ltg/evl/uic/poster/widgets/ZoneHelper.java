@@ -110,13 +110,14 @@ public class ZoneHelper {
         map.put(TextAttribute.FAMILY, font.getName());
         map.put(TextAttribute.SIZE, new Float(30.0));
 
-        int offsetSize = text.length()/ 2;
-        System.out.println("renderTextToImage: " + text);
-        for (int i = 0; i < offsetSize; i++) {
-            text = " " + text;
-            System.out.println("renderTextToImage: " + i + " " + text);
-        }
-        System.out.println("renderTextToImage: " + text);
+        // KRBA: Removed whitespace padding to text image. 
+        // int offsetSize = text.length()/ 2;
+        // System.out.println("renderTextToImage: " + text);
+        // for (int i = 0; i < offsetSize; i++) {
+        //     text = " " + text;
+        //     System.out.println("renderTextToImage: " + i + " " + text);
+        // }
+        // System.out.println("renderTextToImage: " + text);
 
 
         //map.put(TextAttribute.FONT, font);
