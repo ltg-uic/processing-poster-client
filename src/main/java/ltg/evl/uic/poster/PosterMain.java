@@ -267,7 +267,8 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
 
             FluentIterable<PictureZone> pictureZones = FluentIterable.from(posterItems)
                                                                      .transform(
-                                                                             new PosterItemToPictureZone());
+                                                                             new PosterItemToPictureZone(
+                                                                                     lastIsEditToggle));
 
 
             Optional<FluentIterable<PictureZone>> fluentIterableOptional = Optional.fromNullable(pictureZones);

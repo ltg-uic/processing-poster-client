@@ -48,6 +48,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
     private PresentationZone okDialog;
     private PosterGrab sharingObject;
     private PresentationZone sharingPresentationZone;
+    private ControlPage controlPage;
 
 
     private DialogZoneController() {
@@ -57,6 +58,10 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
 
     public static DialogZoneController dialog() {
         return ourInstance;
+    }
+
+    public ControlPage getControlPage() {
+        return controlPage;
     }
 
     public PosterGrab getSharingObject() {
@@ -413,7 +418,7 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
         int x2 = 25;
         int y2 = 25;
 
-        ControlPage controlPage = new ControlPage(controlpage_id, -total_width + 15, y2, total_width,
+        controlPage = new ControlPage(controlpage_id, -total_width + 15, y2, total_width,
                                                   total_height);
 
 
@@ -424,6 +429,12 @@ public class DialogZoneController implements LoadUserListener, LoadPosterListene
             controlPage.setVisible(true);
             SMT.putZoneOnTop(controlPage);
             //controlPage.startAni(new PVector(x2, y2), aniSpeed, 0f);
+        }
+    }
+
+    public void putControlPageOnTop() {
+        if (controlPage != null) {
+            SMT.putZoneOnTop(controlPage);
         }
     }
 

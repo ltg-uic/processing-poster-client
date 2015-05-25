@@ -6,6 +6,7 @@ import com.google.common.base.Optional;
 import ltg.evl.uic.poster.json.mongo.PosterDataModel;
 import ltg.evl.uic.poster.json.mongo.PosterItem;
 import ltg.evl.uic.poster.util.ImageLoader;
+import ltg.evl.uic.poster.widgets.DialogZoneController;
 import ltg.evl.uic.poster.widgets.PictureZone;
 import ltg.evl.uic.poster.widgets.PictureZoneBuilder;
 import ltg.evl.uic.poster.widgets.ZoneHelper;
@@ -26,6 +27,12 @@ import static ltg.evl.uic.poster.json.mongo.PosterItem.TEXT;
 public class PosterItemToPictureZone implements Function<PosterItem, PictureZone> {
 
     final static Logger logger = Logger.getLogger(PosterItemToPictureZone.class);
+    private final boolean isEditing;
+
+    public PosterItemToPictureZone(
+            boolean lastIsEditToggle) {
+        this.isEditing = lastIsEditToggle;
+    }
 
     @Override
     public PictureZone apply(PosterItem posterItem) {
@@ -144,7 +151,12 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                 pictureZone.setHasBeenCited(true);
             }
 
-                return pictureZone;
+            pictureZone.setIsEditing(true);
+
+            DialogZoneController.dialog().putControlPageOnTop();
+
+
+            return pictureZone;
 
         }
         return null;

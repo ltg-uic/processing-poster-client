@@ -292,15 +292,15 @@ public class ZoneHelper {
 
         float scale = Math.min(1, Math.min(w_aspect, h_aspect));
 
-        System.out.println("\nIn ZoneHelper");
-        System.out.println("=============================");
-        System.out.println("imageWidth:" + imageWidth );
-        System.out.println("imageHeight:" + imageHeight );
-        System.out.println("aspectRatio:" + aspectRatio );
-        System.out.println("w_aspect:" + w_aspect );
-        System.out.println("h_aspect:" + h_aspect);
-        System.out.println("maxWidth:" + maxWidth );
-        System.out.println("maxHeight:" + maxHeight );
+//        System.out.println("\nIn ZoneHelper");
+//        System.out.println("=============================");
+//        System.out.println("imageWidth:" + imageWidth );
+//        System.out.println("imageHeight:" + imageHeight );
+//        System.out.println("aspectRatio:" + aspectRatio );
+//        System.out.println("w_aspect:" + w_aspect );
+//        System.out.println("h_aspect:" + h_aspect);
+//        System.out.println("maxWidth:" + maxWidth );
+//        System.out.println("maxHeight:" + maxHeight );
 
         if (imageWidth > maxWidth || imageHeight > maxHeight) {
             if ((float) largestDimension.width / largestDimension.height > aspectRatio) {
@@ -330,13 +330,13 @@ public class ZoneHelper {
         float w_aspect = imageWidth / (float) maxWidth;
         float h_aspect = imageHeight / (float) maxHeight;
 
-        System.out.println("\nIn ZoneHelper KRA");
-        System.out.println("=============================");
-        System.out.println("imageWidth:" + imageWidth );
-        System.out.println("imageHeight:" + imageHeight );
-        System.out.println("aspectRatio:" + aspectRatio );
-        System.out.println("maxWidth:" + maxWidth );
-        System.out.println("maxHeight:" + maxHeight );
+//        System.out.println("\nIn ZoneHelper KRA");
+//        System.out.println("=============================");
+//        System.out.println("imageWidth:" + imageWidth );
+//        System.out.println("imageHeight:" + imageHeight );
+//        System.out.println("aspectRatio:" + aspectRatio );
+//        System.out.println("maxWidth:" + maxWidth );
+//        System.out.println("maxHeight:" + maxHeight );
 
 //        while ( largestDimension.width > maxWidth || largestDimension.height > maxHeight) {
 //        }
