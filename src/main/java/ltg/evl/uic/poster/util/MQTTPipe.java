@@ -3,11 +3,13 @@ package ltg.evl.uic.poster.util;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonObjectParser;
 import com.google.api.client.json.gson.GsonFactory;
+import com.google.common.base.CharMatcher;
 import ltg.commons.MessageListener;
 import ltg.commons.SimpleMQTTClient;
 import ltg.evl.uic.poster.json.mongo.PosterMessage;
 
 import java.io.*;
+import java.util.UUID;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -40,12 +42,29 @@ public class MQTTPipe implements MessageListener {
                 logger.log(Level.INFO, "BASE_CHANNEL_OUT: " + BASE_CHANNEL_OUT);
                 logger.log(Level.INFO, "BASE_CHANNEL_IN: " + BASE_CHANNEL_IN);
 
-                posterMQTTClient = new SimpleMQTTClient(BASE_ADDRESS, BASE_CLIENT_ID);
+                String mqttId = UUID.randomUUID().toString();
+
+                String nohyphens = CharMatcher.anyOf("-").removeFrom(mqttId).substring(0, 19);
+
+
+                logger.log(Level.INFO, "MQTT ID: " + nohyphens);
+                posterMQTTClient = new SimpleMQTTClient(BASE_ADDRESS, nohyphens);
                 posterMQTTClient.subscribe(BASE_CHANNEL_IN, MQTTPipe.this);
 
 
 
     }
+
+    public String generateRandomClientId() {
+        int length = 22;
+        String chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String result = "";
+        for (int i = length; i > 0; --i) {
+            result += chars.substring((int) Math.round(Math.random() * (chars.length() - 1)));
+        }
+        return result;
+    }
+
 
     public static MQTTPipe getInstance() {
         return ourInstance;

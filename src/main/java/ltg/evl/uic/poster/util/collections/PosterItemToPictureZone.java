@@ -151,7 +151,8 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                 pictureZone.setHasBeenCited(true);
             }
 
-            pictureZone.setIsEditing(true);
+            pictureZone.setIsEditing(isEditing);
+            pictureZone.setIsDeleteMode(isEditing);
 
             DialogZoneController.dialog().putControlPageOnTop();
 
