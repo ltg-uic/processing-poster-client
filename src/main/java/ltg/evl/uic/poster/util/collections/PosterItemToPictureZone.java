@@ -13,7 +13,6 @@ import ltg.evl.uic.poster.widgets.ZoneHelper;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import processing.core.PImage;
-import tmp.VideoZone;
 import vialab.SMT.SMT;
 
 import java.util.Objects;
@@ -43,7 +42,7 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
         String newUrl = "";
         PImage pImage = null;
         PictureZone pictureZone = null;
-        VideoZone videoZone = null;
+        PictureZone.VideoZone videoZone = null;
 
         if (Optional.fromNullable(posterItem).isPresent()) {
             if (!Strings.isNullOrEmpty(posterItem.getType())) {
@@ -128,7 +127,7 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                 } else {
                     System.out.println("It IS a Video, make it happen...");
                     PImage _image = new PImage(new_w, new_h);
-                    pictureZone = new VideoZone(_image, newUrl, Strings.nullToEmpty(posterItem.getUuid()), new_x, new_y, new_w, new_h);
+                    pictureZone = new PictureZone.VideoZone(_image, newUrl, Strings.nullToEmpty(posterItem.getUuid()), new_x, new_y, new_w, new_h);
                     printDebugInfo(posterItem,new_x, new_y, new_w, new_h);
                 }
             } else {

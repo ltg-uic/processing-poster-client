@@ -23063,3 +23063,1250 @@ source: MOUSE
 raw x,y: 0.55, 0.22
 fitted getX,Y: 709.00, 179.00
 rounded : 709, 179
+[INFO] 2015-06-02 16:37:04,965 ltg.evl.uic.poster.PosterMain setup - DISPLAY WIDTH: 1280 DISPLAY HEIGHT: 800
+[INFO] 2015-06-02 16:37:06,388 ltg.evl.uic.poster.PosterMain setup - DISPLAY WIDTH: 1280 DISPLAY HEIGHT: 800
+[INFO] 2015-06-02 16:37:07,007 ltg.evl.uic.poster.util.RESTHelper getAllCollectionRequests - STARTING ALL COLLECTIONS FETCH
+[INFO] 2015-06-02 16:37:07,658 ltg.evl.uic.poster.util.RESTHelper onSuccess - STARTING ALL REST DONE START INIT
+[INFO] 2015-06-02 16:37:07,658 ltg.evl.uic.poster.util.RESTHelper parseAllResponse - PROCESSING USER RESPONSE
+[INFO] 2015-06-02 16:37:07,723 ltg.evl.uic.poster.util.RESTHelper parseAllResponse - PROCESSING POSTER RESPONSE
+[INFO] 2015-06-02 16:37:07,767 ltg.evl.uic.poster.util.RESTHelper parseAllResponse - PROCESSING POSTER_ITEM RESPONSE
+[INFO] 2015-06-02 16:37:08,147 ltg.evl.uic.poster.json.mongo.PosterDataModel updateAllPosterItemsCollection - UPDATING ALL POSTER_ITEMS found DUP: not set yet
+[INFO] 2015-06-02 16:37:08,231 ltg.evl.uic.poster.json.mongo.PosterDataModel updateAllPosterItemsCollection - UPDATING ALL POSTER_ITEMS found DUP: not set yet
+[INFO] 2015-06-02 16:37:12,050 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281032050 nano time: 208983863689576 touch: id: 0
+source: MOUSE
+raw x,y: 0.64, 0.58
+fitted getX,Y: 817.00, 468.00
+rounded : 817, 468
+[INFO] 2015-06-02 16:37:12,116 ltg.evl.uic.poster.PosterMain loadClassEvent - ClassLoaded: test
+[INFO] 2015-06-02 16:37:14,592 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281034592 nano time: 208986405345524 touch: id: 0
+source: MOUSE
+raw x,y: 0.62, 0.32
+fitted getX,Y: 791.00, 257.00
+rounded : 791, 257
+[INFO] 2015-06-02 16:37:14,633 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281034633 nano time: 208986446600466 touch: id: 0
+source: MOUSE
+raw x,y: 0.62, 0.32
+fitted getX,Y: 791.00, 257.00
+rounded : 791, 257
+[INFO] 2015-06-02 16:37:14,735 ltg.evl.uic.poster.json.mongo.PosterDataModel loadUser - LOADING USER: 552b01ee671cc17d54000000-gruser
+[INFO] 2015-06-02 16:37:14,736 ltg.evl.uic.poster.PosterMain loadUserEvent - UserLoaded: 552b01ee671cc17d54000000-gruser
+[INFO] 2015-06-02 16:37:15,824 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281035824 nano time: 208987637685202 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.57
+fitted getX,Y: 673.00, 458.00
+rounded : 673, 458
+[INFO] 2015-06-02 16:37:15,851 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281035851 nano time: 208987664370768 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.57
+fitted getX,Y: 673.00, 458.00
+rounded : 673, 458
+[INFO] 2015-06-02 16:37:15,868 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281035868 nano time: 208987681056649 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.57
+fitted getX,Y: 673.00, 458.00
+rounded : 673, 458
+[INFO] 2015-06-02 16:37:15,885 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281035885 nano time: 208987698114731 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.57
+fitted getX,Y: 673.00, 458.00
+rounded : 673, 458
+[INFO] 2015-06-02 16:37:15,906 ltg.evl.uic.poster.json.mongo.PosterDataModel loadPoster - LOADING POSTER: 552b01ee671cc17d54000000-poster
+[INFO] 2015-06-02 16:37:15,906 ltg.evl.uic.poster.PosterMain loadPosterEvent - PosterLoaded: 552b01ee671cc17d54000000-poster
+[INFO] 2015-06-02 16:37:36,945 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281056944 nano time: 209008757665370 touch: id: 0
+source: MOUSE
+raw x,y: 0.01, 0.30
+fitted getX,Y: 7.00, 241.00
+rounded : 7, 241
+[INFO] 2015-06-02 16:37:36,967 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281056967 nano time: 209008780166560 touch: id: 0
+source: MOUSE
+raw x,y: 0.01, 0.30
+fitted getX,Y: 7.00, 241.00
+rounded : 7, 241
+[INFO] 2015-06-02 16:37:38,626 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281058626 nano time: 209010438821020 touch: id: 0
+source: MOUSE
+raw x,y: 0.15, 0.58
+fitted getX,Y: 198.00, 462.00
+rounded : 198, 462
+[INFO] 2015-06-02 16:37:38,643 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281058643 nano time: 209010456220064 touch: id: 0
+source: MOUSE
+raw x,y: 0.15, 0.58
+fitted getX,Y: 198.00, 462.00
+rounded : 198, 462
+[INFO] 2015-06-02 16:37:38,673 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281058673 nano time: 209010486203730 touch: id: 0
+source: MOUSE
+raw x,y: 0.15, 0.58
+fitted getX,Y: 198.00, 462.00
+rounded : 198, 462
+[INFO] 2015-06-02 16:37:38,687 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281058687 nano time: 209010500196543 touch: id: 0
+source: MOUSE
+raw x,y: 0.15, 0.58
+fitted getX,Y: 198.00, 462.00
+rounded : 198, 462
+[INFO] 2015-06-02 16:37:38,709 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281058709 nano time: 209010522094329 touch: id: 0
+source: MOUSE
+raw x,y: 0.15, 0.58
+fitted getX,Y: 198.00, 462.00
+rounded : 198, 462
+[INFO] 2015-06-02 16:37:38,728 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281058728 nano time: 209010540958973 touch: id: 0
+source: MOUSE
+raw x,y: 0.15, 0.58
+fitted getX,Y: 198.00, 462.00
+rounded : 198, 462
+[INFO] 2015-06-02 16:37:38,754 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281058754 nano time: 209010566705065 touch: id: 0
+source: MOUSE
+raw x,y: 0.15, 0.58
+fitted getX,Y: 198.00, 462.00
+rounded : 198, 462
+[INFO] 2015-06-02 16:37:38,783 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281058783 nano time: 209010596027805 touch: id: 0
+source: MOUSE
+raw x,y: 0.15, 0.58
+fitted getX,Y: 198.00, 462.00
+rounded : 198, 462
+[INFO] 2015-06-02 16:37:38,806 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281058806 nano time: 209010619179399 touch: id: 0
+source: MOUSE
+raw x,y: 0.15, 0.58
+fitted getX,Y: 198.00, 462.00
+rounded : 198, 462
+[INFO] 2015-06-02 16:37:39,358 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059358 nano time: 209011171157626 touch: id: 0
+source: MOUSE
+raw x,y: 0.12, 0.58
+fitted getX,Y: 148.00, 466.00
+rounded : 148, 466
+[INFO] 2015-06-02 16:37:39,375 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059375 nano time: 209011188358857 touch: id: 0
+source: MOUSE
+raw x,y: 0.12, 0.58
+fitted getX,Y: 148.00, 466.00
+rounded : 148, 466
+[INFO] 2015-06-02 16:37:39,392 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059391 nano time: 209011204627221 touch: id: 0
+source: MOUSE
+raw x,y: 0.12, 0.58
+fitted getX,Y: 148.00, 466.00
+rounded : 148, 466
+[INFO] 2015-06-02 16:37:39,408 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059408 nano time: 209011221474691 touch: id: 0
+source: MOUSE
+raw x,y: 0.12, 0.58
+fitted getX,Y: 148.00, 466.00
+rounded : 148, 466
+[INFO] 2015-06-02 16:37:39,429 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059429 nano time: 209011242205190 touch: id: 0
+source: MOUSE
+raw x,y: 0.12, 0.58
+fitted getX,Y: 148.00, 466.00
+rounded : 148, 466
+[INFO] 2015-06-02 16:37:39,452 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059452 nano time: 209011265327184 touch: id: 0
+source: MOUSE
+raw x,y: 0.12, 0.58
+fitted getX,Y: 148.00, 466.00
+rounded : 148, 466
+[INFO] 2015-06-02 16:37:39,476 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059476 nano time: 209011288909300 touch: id: 0
+source: MOUSE
+raw x,y: 0.12, 0.58
+fitted getX,Y: 150.00, 466.00
+rounded : 150, 466
+[INFO] 2015-06-02 16:37:39,493 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059493 nano time: 209011306111839 touch: id: 0
+source: MOUSE
+raw x,y: 0.12, 0.58
+fitted getX,Y: 155.00, 466.00
+rounded : 155, 466
+[INFO] 2015-06-02 16:37:39,510 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059510 nano time: 209011322884190 touch: id: 0
+source: MOUSE
+raw x,y: 0.13, 0.58
+fitted getX,Y: 161.00, 466.00
+rounded : 161, 466
+[INFO] 2015-06-02 16:37:39,527 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059527 nano time: 209011339656043 touch: id: 0
+source: MOUSE
+raw x,y: 0.13, 0.58
+fitted getX,Y: 168.00, 466.00
+rounded : 168, 466
+[INFO] 2015-06-02 16:37:39,544 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059544 nano time: 209011356647745 touch: id: 0
+source: MOUSE
+raw x,y: 0.14, 0.58
+fitted getX,Y: 177.00, 466.00
+rounded : 177, 466
+[INFO] 2015-06-02 16:37:39,563 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059563 nano time: 209011375659950 touch: id: 0
+source: MOUSE
+raw x,y: 0.15, 0.58
+fitted getX,Y: 188.00, 466.00
+rounded : 188, 466
+[INFO] 2015-06-02 16:37:39,581 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059581 nano time: 209011393818194 touch: id: 0
+source: MOUSE
+raw x,y: 0.16, 0.58
+fitted getX,Y: 202.00, 466.00
+rounded : 202, 466
+[INFO] 2015-06-02 16:37:39,599 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059599 nano time: 209011412204705 touch: id: 0
+source: MOUSE
+raw x,y: 0.17, 0.58
+fitted getX,Y: 218.00, 466.00
+rounded : 218, 466
+[INFO] 2015-06-02 16:37:39,618 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059618 nano time: 209011431166937 touch: id: 0
+source: MOUSE
+raw x,y: 0.18, 0.58
+fitted getX,Y: 235.00, 466.00
+rounded : 235, 466
+[INFO] 2015-06-02 16:37:39,638 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059638 nano time: 209011451309438 touch: id: 0
+source: MOUSE
+raw x,y: 0.19, 0.58
+fitted getX,Y: 249.00, 468.00
+rounded : 249, 468
+[INFO] 2015-06-02 16:37:39,655 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059655 nano time: 209011468518135 touch: id: 0
+source: MOUSE
+raw x,y: 0.21, 0.59
+fitted getX,Y: 263.00, 470.00
+rounded : 263, 470
+[INFO] 2015-06-02 16:37:39,679 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059679 nano time: 209011492346508 touch: id: 0
+source: MOUSE
+raw x,y: 0.22, 0.59
+fitted getX,Y: 276.00, 472.00
+rounded : 276, 472
+[INFO] 2015-06-02 16:37:39,703 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059703 nano time: 209011515815706 touch: id: 0
+source: MOUSE
+raw x,y: 0.23, 0.59
+fitted getX,Y: 289.00, 474.00
+rounded : 289, 474
+[INFO] 2015-06-02 16:37:39,725 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059725 nano time: 209011538107194 touch: id: 0
+source: MOUSE
+raw x,y: 0.24, 0.60
+fitted getX,Y: 306.00, 477.00
+rounded : 306, 477
+[INFO] 2015-06-02 16:37:39,742 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059742 nano time: 209011555118697 touch: id: 0
+source: MOUSE
+raw x,y: 0.24, 0.60
+fitted getX,Y: 311.00, 478.00
+rounded : 311, 478
+[INFO] 2015-06-02 16:37:39,758 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059758 nano time: 209011571353429 touch: id: 0
+source: MOUSE
+raw x,y: 0.24, 0.60
+fitted getX,Y: 313.00, 478.00
+rounded : 313, 478
+[INFO] 2015-06-02 16:37:39,775 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059775 nano time: 209011588338994 touch: id: 0
+source: MOUSE
+raw x,y: 0.25, 0.60
+fitted getX,Y: 315.00, 479.00
+rounded : 315, 479
+[INFO] 2015-06-02 16:37:39,795 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059795 nano time: 209011608407605 touch: id: 0
+source: MOUSE
+raw x,y: 0.25, 0.60
+fitted getX,Y: 315.00, 479.00
+rounded : 315, 479
+[INFO] 2015-06-02 16:37:39,819 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059819 nano time: 209011632321933 touch: id: 0
+source: MOUSE
+raw x,y: 0.25, 0.60
+fitted getX,Y: 315.00, 479.00
+rounded : 315, 479
+[INFO] 2015-06-02 16:37:39,841 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059841 nano time: 209011654344505 touch: id: 0
+source: MOUSE
+raw x,y: 0.25, 0.60
+fitted getX,Y: 315.00, 479.00
+rounded : 315, 479
+[INFO] 2015-06-02 16:37:39,859 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059859 nano time: 209011671642709 touch: id: 0
+source: MOUSE
+raw x,y: 0.25, 0.60
+fitted getX,Y: 315.00, 479.00
+rounded : 315, 479
+[INFO] 2015-06-02 16:37:39,875 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059875 nano time: 209011688429575 touch: id: 0
+source: MOUSE
+raw x,y: 0.25, 0.60
+fitted getX,Y: 315.00, 479.00
+rounded : 315, 479
+[INFO] 2015-06-02 16:37:39,894 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059894 nano time: 209011707007403 touch: id: 0
+source: MOUSE
+raw x,y: 0.25, 0.60
+fitted getX,Y: 315.00, 479.00
+rounded : 315, 479
+[INFO] 2015-06-02 16:37:39,910 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059910 nano time: 209011723394713 touch: id: 0
+source: MOUSE
+raw x,y: 0.25, 0.60
+fitted getX,Y: 314.00, 479.00
+rounded : 314, 479
+[INFO] 2015-06-02 16:37:39,932 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059932 nano time: 209011745167073 touch: id: 0
+source: MOUSE
+raw x,y: 0.24, 0.60
+fitted getX,Y: 311.00, 479.00
+rounded : 311, 479
+[INFO] 2015-06-02 16:37:39,950 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059950 nano time: 209011763387160 touch: id: 0
+source: MOUSE
+raw x,y: 0.24, 0.60
+fitted getX,Y: 305.00, 479.00
+rounded : 305, 479
+[INFO] 2015-06-02 16:37:39,970 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059970 nano time: 209011783018973 touch: id: 0
+source: MOUSE
+raw x,y: 0.23, 0.60
+fitted getX,Y: 295.00, 479.00
+rounded : 295, 479
+[INFO] 2015-06-02 16:37:39,993 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281059993 nano time: 209011806384398 touch: id: 0
+source: MOUSE
+raw x,y: 0.21, 0.60
+fitted getX,Y: 270.00, 479.00
+rounded : 270, 479
+[INFO] 2015-06-02 16:37:40,021 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060021 nano time: 209011834409258 touch: id: 0
+source: MOUSE
+raw x,y: 0.20, 0.60
+fitted getX,Y: 256.00, 479.00
+rounded : 256, 479
+[INFO] 2015-06-02 16:37:40,041 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060041 nano time: 209011854240112 touch: id: 0
+source: MOUSE
+raw x,y: 0.18, 0.60
+fitted getX,Y: 227.00, 481.00
+rounded : 227, 481
+[INFO] 2015-06-02 16:37:40,058 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060058 nano time: 209011871127775 touch: id: 0
+source: MOUSE
+raw x,y: 0.18, 0.60
+fitted getX,Y: 227.00, 481.00
+rounded : 227, 481
+[INFO] 2015-06-02 16:37:40,075 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060074 nano time: 209011887623914 touch: id: 0
+source: MOUSE
+raw x,y: 0.15, 0.60
+fitted getX,Y: 196.00, 481.00
+rounded : 196, 481
+[INFO] 2015-06-02 16:37:40,091 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060091 nano time: 209011904427532 touch: id: 0
+source: MOUSE
+raw x,y: 0.15, 0.60
+fitted getX,Y: 196.00, 481.00
+rounded : 196, 481
+[INFO] 2015-06-02 16:37:40,108 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060108 nano time: 209011921069505 touch: id: 0
+source: MOUSE
+raw x,y: 0.14, 0.60
+fitted getX,Y: 180.00, 481.00
+rounded : 180, 481
+[INFO] 2015-06-02 16:37:40,125 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060125 nano time: 209011937848443 touch: id: 0
+source: MOUSE
+raw x,y: 0.13, 0.60
+fitted getX,Y: 167.00, 479.00
+rounded : 167, 479
+[INFO] 2015-06-02 16:37:40,141 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060141 nano time: 209011954393127 touch: id: 0
+source: MOUSE
+raw x,y: 0.12, 0.60
+fitted getX,Y: 155.00, 477.00
+rounded : 155, 477
+[INFO] 2015-06-02 16:37:40,159 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060159 nano time: 209011971646951 touch: id: 0
+source: MOUSE
+raw x,y: 0.12, 0.60
+fitted getX,Y: 150.00, 476.00
+rounded : 150, 476
+[INFO] 2015-06-02 16:37:40,175 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060175 nano time: 209011988293338 touch: id: 0
+source: MOUSE
+raw x,y: 0.11, 0.59
+fitted getX,Y: 143.00, 475.00
+rounded : 143, 475
+[INFO] 2015-06-02 16:37:40,193 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060193 nano time: 209012006438490 touch: id: 0
+source: MOUSE
+raw x,y: 0.11, 0.59
+fitted getX,Y: 139.00, 474.00
+rounded : 139, 474
+[INFO] 2015-06-02 16:37:40,210 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060210 nano time: 209012023257663 touch: id: 0
+source: MOUSE
+raw x,y: 0.11, 0.59
+fitted getX,Y: 137.00, 473.00
+rounded : 137, 473
+[INFO] 2015-06-02 16:37:40,230 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060230 nano time: 209012042800210 touch: id: 0
+source: MOUSE
+raw x,y: 0.11, 0.59
+fitted getX,Y: 136.00, 473.00
+rounded : 136, 473
+[INFO] 2015-06-02 16:37:40,252 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060252 nano time: 209012064656974 touch: id: 0
+source: MOUSE
+raw x,y: 0.11, 0.59
+fitted getX,Y: 136.00, 473.00
+rounded : 136, 473
+[INFO] 2015-06-02 16:37:40,275 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060275 nano time: 209012088512542 touch: id: 0
+source: MOUSE
+raw x,y: 0.11, 0.59
+fitted getX,Y: 136.00, 473.00
+rounded : 136, 473
+[INFO] 2015-06-02 16:37:40,292 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060292 nano time: 209012105301022 touch: id: 0
+source: MOUSE
+raw x,y: 0.11, 0.59
+fitted getX,Y: 136.00, 473.00
+rounded : 136, 473
+[INFO] 2015-06-02 16:37:40,309 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060309 nano time: 209012121996329 touch: id: 0
+source: MOUSE
+raw x,y: 0.11, 0.59
+fitted getX,Y: 136.00, 473.00
+rounded : 136, 473
+[INFO] 2015-06-02 16:37:40,325 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060325 nano time: 209012138317115 touch: id: 0
+source: MOUSE
+raw x,y: 0.11, 0.59
+fitted getX,Y: 136.00, 473.00
+rounded : 136, 473
+[INFO] 2015-06-02 16:37:40,342 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060342 nano time: 209012155078561 touch: id: 0
+source: MOUSE
+raw x,y: 0.11, 0.59
+fitted getX,Y: 136.00, 473.00
+rounded : 136, 473
+[INFO] 2015-06-02 16:37:40,359 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060359 nano time: 209012171788270 touch: id: 0
+source: MOUSE
+raw x,y: 0.11, 0.59
+fitted getX,Y: 136.00, 473.00
+rounded : 136, 473
+[INFO] 2015-06-02 16:37:40,376 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060376 nano time: 209012188728821 touch: id: 0
+source: MOUSE
+raw x,y: 0.11, 0.59
+fitted getX,Y: 136.00, 473.00
+rounded : 136, 473
+[INFO] 2015-06-02 16:37:40,391 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060391 nano time: 209012204580630 touch: id: 0
+source: MOUSE
+raw x,y: 0.11, 0.59
+fitted getX,Y: 136.00, 473.00
+rounded : 136, 473
+[INFO] 2015-06-02 16:37:40,407 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060407 nano time: 209012219936211 touch: id: 0
+source: MOUSE
+raw x,y: 0.11, 0.59
+fitted getX,Y: 136.00, 473.00
+rounded : 136, 473
+[INFO] 2015-06-02 16:37:40,425 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060425 nano time: 209012238396510 touch: id: 0
+source: MOUSE
+raw x,y: 0.11, 0.59
+fitted getX,Y: 136.00, 473.00
+rounded : 136, 473
+[INFO] 2015-06-02 16:37:40,454 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060454 nano time: 209012267607931 touch: id: 0
+source: MOUSE
+raw x,y: 0.11, 0.59
+fitted getX,Y: 136.00, 473.00
+rounded : 136, 473
+[INFO] 2015-06-02 16:37:40,476 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281060476 nano time: 209012289041594 touch: id: 0
+source: MOUSE
+raw x,y: 0.11, 0.59
+fitted getX,Y: 136.00, 473.00
+rounded : 136, 473
+[INFO] 2015-06-02 16:37:41,290 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061290 nano time: 209013103427930 touch: id: 0
+source: MOUSE
+raw x,y: 0.52, 0.59
+fitted getX,Y: 670.00, 475.00
+rounded : 670, 475
+[INFO] 2015-06-02 16:37:41,307 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061307 nano time: 209013120087660 touch: id: 0
+source: MOUSE
+raw x,y: 0.52, 0.59
+fitted getX,Y: 670.00, 475.00
+rounded : 670, 475
+[INFO] 2015-06-02 16:37:41,323 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061323 nano time: 209013136400163 touch: id: 0
+source: MOUSE
+raw x,y: 0.52, 0.59
+fitted getX,Y: 670.00, 475.00
+rounded : 670, 475
+[INFO] 2015-06-02 16:37:41,341 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061341 nano time: 209013154031916 touch: id: 0
+source: MOUSE
+raw x,y: 0.52, 0.59
+fitted getX,Y: 670.00, 475.00
+rounded : 670, 475
+[INFO] 2015-06-02 16:37:41,357 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061357 nano time: 209013169930159 touch: id: 0
+source: MOUSE
+raw x,y: 0.52, 0.59
+fitted getX,Y: 670.00, 475.00
+rounded : 670, 475
+[INFO] 2015-06-02 16:37:41,376 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061376 nano time: 209013189200473 touch: id: 0
+source: MOUSE
+raw x,y: 0.52, 0.59
+fitted getX,Y: 670.00, 474.00
+rounded : 670, 474
+[INFO] 2015-06-02 16:37:41,392 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061392 nano time: 209013205557097 touch: id: 0
+source: MOUSE
+raw x,y: 0.52, 0.58
+fitted getX,Y: 670.00, 463.00
+rounded : 670, 463
+[INFO] 2015-06-02 16:37:41,407 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061407 nano time: 209013220079280 touch: id: 0
+source: MOUSE
+raw x,y: 0.52, 0.56
+fitted getX,Y: 670.00, 447.00
+rounded : 670, 447
+[INFO] 2015-06-02 16:37:41,425 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061425 nano time: 209013238537284 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.53
+fitted getX,Y: 673.00, 425.00
+rounded : 673, 425
+[INFO] 2015-06-02 16:37:41,442 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061442 nano time: 209013255381084 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.51
+fitted getX,Y: 675.00, 412.00
+rounded : 675, 412
+[INFO] 2015-06-02 16:37:41,460 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061460 nano time: 209013272716875 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.50
+fitted getX,Y: 678.00, 396.00
+rounded : 678, 396
+[INFO] 2015-06-02 16:37:41,473 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061473 nano time: 209013285916593 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.50
+fitted getX,Y: 678.00, 396.00
+rounded : 678, 396
+[INFO] 2015-06-02 16:37:41,492 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061492 nano time: 209013304707396 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.47
+fitted getX,Y: 680.00, 378.00
+rounded : 680, 378
+[INFO] 2015-06-02 16:37:41,509 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061509 nano time: 209013321942490 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.47
+fitted getX,Y: 680.00, 378.00
+rounded : 680, 378
+[INFO] 2015-06-02 16:37:41,529 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061529 nano time: 209013342134608 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.47
+fitted getX,Y: 680.00, 374.00
+rounded : 680, 374
+[INFO] 2015-06-02 16:37:41,553 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061553 nano time: 209013365692064 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.47
+fitted getX,Y: 680.00, 372.00
+rounded : 680, 372
+[INFO] 2015-06-02 16:37:41,575 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061575 nano time: 209013388051547 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.47
+fitted getX,Y: 680.00, 372.00
+rounded : 680, 372
+[INFO] 2015-06-02 16:37:41,591 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061591 nano time: 209013403802912 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.47
+fitted getX,Y: 680.00, 374.00
+rounded : 680, 374
+[INFO] 2015-06-02 16:37:41,608 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061608 nano time: 209013421502956 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.48
+fitted getX,Y: 680.00, 385.00
+rounded : 680, 385
+[INFO] 2015-06-02 16:37:41,626 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061626 nano time: 209013439101403 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.50
+fitted getX,Y: 680.00, 400.00
+rounded : 680, 400
+[INFO] 2015-06-02 16:37:41,644 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061644 nano time: 209013456844610 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.52
+fitted getX,Y: 680.00, 420.00
+rounded : 680, 420
+[INFO] 2015-06-02 16:37:41,662 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061662 nano time: 209013474633375 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.55
+fitted getX,Y: 680.00, 437.00
+rounded : 680, 437
+[INFO] 2015-06-02 16:37:41,679 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061679 nano time: 209013492387633 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.56
+fitted getX,Y: 679.00, 446.00
+rounded : 679, 446
+[INFO] 2015-06-02 16:37:41,698 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061698 nano time: 209013510948135 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.57
+fitted getX,Y: 678.00, 453.00
+rounded : 678, 453
+[INFO] 2015-06-02 16:37:41,714 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061714 nano time: 209013527076758 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.57
+fitted getX,Y: 677.00, 457.00
+rounded : 677, 457
+[INFO] 2015-06-02 16:37:41,736 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061736 nano time: 209013549172480 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.57
+fitted getX,Y: 677.00, 459.00
+rounded : 677, 459
+[INFO] 2015-06-02 16:37:41,755 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061755 nano time: 209013568376809 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.57
+fitted getX,Y: 676.00, 459.00
+rounded : 676, 459
+[INFO] 2015-06-02 16:37:41,787 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061787 nano time: 209013599625733 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.57
+fitted getX,Y: 676.00, 459.00
+rounded : 676, 459
+[INFO] 2015-06-02 16:37:41,807 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061807 nano time: 209013619755138 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.56
+fitted getX,Y: 676.00, 445.00
+rounded : 676, 445
+[INFO] 2015-06-02 16:37:41,825 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061825 nano time: 209013638516061 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.54
+fitted getX,Y: 676.00, 429.00
+rounded : 676, 429
+[INFO] 2015-06-02 16:37:41,842 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061842 nano time: 209013655372768 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.52
+fitted getX,Y: 676.00, 413.00
+rounded : 676, 413
+[INFO] 2015-06-02 16:37:41,857 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061857 nano time: 209013669968530 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.50
+fitted getX,Y: 676.00, 401.00
+rounded : 676, 401
+[INFO] 2015-06-02 16:37:41,874 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061874 nano time: 209013686684361 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.50
+fitted getX,Y: 676.00, 401.00
+rounded : 676, 401
+[INFO] 2015-06-02 16:37:41,890 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061890 nano time: 209013703324370 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.48
+fitted getX,Y: 676.00, 385.00
+rounded : 676, 385
+[INFO] 2015-06-02 16:37:41,908 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061908 nano time: 209013721315637 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.48
+fitted getX,Y: 676.00, 385.00
+rounded : 676, 385
+[INFO] 2015-06-02 16:37:41,924 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061924 nano time: 209013737201049 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.48
+fitted getX,Y: 676.00, 383.00
+rounded : 676, 383
+[INFO] 2015-06-02 16:37:41,946 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061946 nano time: 209013758809511 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.48
+fitted getX,Y: 676.00, 382.00
+rounded : 676, 382
+[INFO] 2015-06-02 16:37:41,970 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281061970 nano time: 209013782818892 touch: id: 0
+source: MOUSE
+raw x,y: 0.53, 0.48
+fitted getX,Y: 676.00, 382.00
+rounded : 676, 382
+[INFO] 2015-06-02 16:37:42,722 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281062722 nano time: 209014535181433 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.73
+fitted getX,Y: 431.00, 586.00
+rounded : 431, 586
+[INFO] 2015-06-02 16:37:42,738 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281062738 nano time: 209014551140110 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.73
+fitted getX,Y: 431.00, 586.00
+rounded : 431, 586
+[INFO] 2015-06-02 16:37:42,755 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281062755 nano time: 209014568602029 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.73
+fitted getX,Y: 431.00, 586.00
+rounded : 431, 586
+[INFO] 2015-06-02 16:37:42,772 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281062772 nano time: 209014584715298 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.73
+fitted getX,Y: 431.00, 586.00
+rounded : 431, 586
+[INFO] 2015-06-02 16:37:42,789 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281062789 nano time: 209014601627507 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.73
+fitted getX,Y: 431.00, 584.00
+rounded : 431, 584
+[INFO] 2015-06-02 16:37:42,805 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281062805 nano time: 209014617863721 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.72
+fitted getX,Y: 431.00, 574.00
+rounded : 431, 574
+[INFO] 2015-06-02 16:37:42,821 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281062821 nano time: 209014634502213 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.69
+fitted getX,Y: 431.00, 556.00
+rounded : 431, 556
+[INFO] 2015-06-02 16:37:42,838 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281062838 nano time: 209014651080132 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.67
+fitted getX,Y: 431.00, 534.00
+rounded : 431, 534
+[INFO] 2015-06-02 16:37:42,854 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281062854 nano time: 209014667541442 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.63
+fitted getX,Y: 437.00, 504.00
+rounded : 437, 504
+[INFO] 2015-06-02 16:37:42,871 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281062871 nano time: 209014684340733 touch: id: 0
+source: MOUSE
+raw x,y: 0.35, 0.60
+fitted getX,Y: 442.00, 477.00
+rounded : 442, 477
+[INFO] 2015-06-02 16:37:42,888 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281062888 nano time: 209014701220378 touch: id: 0
+source: MOUSE
+raw x,y: 0.35, 0.57
+fitted getX,Y: 444.00, 459.00
+rounded : 444, 459
+[INFO] 2015-06-02 16:37:42,905 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281062905 nano time: 209014718272018 touch: id: 0
+source: MOUSE
+raw x,y: 0.35, 0.56
+fitted getX,Y: 445.00, 448.00
+rounded : 445, 448
+[INFO] 2015-06-02 16:37:42,921 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281062921 nano time: 209014734351791 touch: id: 0
+source: MOUSE
+raw x,y: 0.35, 0.55
+fitted getX,Y: 445.00, 437.00
+rounded : 445, 437
+[INFO] 2015-06-02 16:37:42,939 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281062939 nano time: 209014752017584 touch: id: 0
+source: MOUSE
+raw x,y: 0.35, 0.54
+fitted getX,Y: 446.00, 433.00
+rounded : 446, 433
+[INFO] 2015-06-02 16:37:42,957 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281062957 nano time: 209014769639847 touch: id: 0
+source: MOUSE
+raw x,y: 0.35, 0.54
+fitted getX,Y: 446.00, 433.00
+rounded : 446, 433
+[INFO] 2015-06-02 16:37:42,989 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281062989 nano time: 209014801764568 touch: id: 0
+source: MOUSE
+raw x,y: 0.35, 0.54
+fitted getX,Y: 446.00, 433.00
+rounded : 446, 433
+[INFO] 2015-06-02 16:37:43,007 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063007 nano time: 209014819832491 touch: id: 0
+source: MOUSE
+raw x,y: 0.35, 0.56
+fitted getX,Y: 446.00, 450.00
+rounded : 446, 450
+[INFO] 2015-06-02 16:37:43,023 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063023 nano time: 209014836031087 touch: id: 0
+source: MOUSE
+raw x,y: 0.35, 0.59
+fitted getX,Y: 445.00, 474.00
+rounded : 445, 474
+[INFO] 2015-06-02 16:37:43,040 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063040 nano time: 209014852854328 touch: id: 0
+source: MOUSE
+raw x,y: 0.35, 0.59
+fitted getX,Y: 445.00, 474.00
+rounded : 445, 474
+[INFO] 2015-06-02 16:37:43,057 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063057 nano time: 209014870326799 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.63
+fitted getX,Y: 441.00, 505.00
+rounded : 441, 505
+[INFO] 2015-06-02 16:37:43,074 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063074 nano time: 209014886738401 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.67
+fitted getX,Y: 440.00, 539.00
+rounded : 440, 539
+[INFO] 2015-06-02 16:37:43,090 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063090 nano time: 209014903088685 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.70
+fitted getX,Y: 440.00, 562.00
+rounded : 440, 562
+[INFO] 2015-06-02 16:37:43,106 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063106 nano time: 209014919528012 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.72
+fitted getX,Y: 440.00, 578.00
+rounded : 440, 578
+[INFO] 2015-06-02 16:37:43,123 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063123 nano time: 209014936437161 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.74
+fitted getX,Y: 440.00, 593.00
+rounded : 440, 593
+[INFO] 2015-06-02 16:37:43,141 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063141 nano time: 209014953821759 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.75
+fitted getX,Y: 440.00, 599.00
+rounded : 440, 599
+[INFO] 2015-06-02 16:37:43,145 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:43,153 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063153 nano time: 209014966347116 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.75
+fitted getX,Y: 440.00, 600.00
+rounded : 440, 600
+[INFO] 2015-06-02 16:37:43,156 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:43,171 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063171 nano time: 209014983690620 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.75
+fitted getX,Y: 440.00, 600.00
+rounded : 440, 600
+[INFO] 2015-06-02 16:37:43,172 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:43,186 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063186 nano time: 209014998929157 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.75
+fitted getX,Y: 440.00, 600.00
+rounded : 440, 600
+[INFO] 2015-06-02 16:37:43,188 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:43,202 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063202 nano time: 209015015330722 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.75
+fitted getX,Y: 440.00, 598.00
+rounded : 440, 598
+[INFO] 2015-06-02 16:37:43,204 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:43,219 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063219 nano time: 209015032124045 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.73
+fitted getX,Y: 439.00, 584.00
+rounded : 439, 584
+[INFO] 2015-06-02 16:37:43,221 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:43,236 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063236 nano time: 209015048723109 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.70
+fitted getX,Y: 439.00, 562.00
+rounded : 439, 562
+[INFO] 2015-06-02 16:37:43,238 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:43,253 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063253 nano time: 209015065660416 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.67
+fitted getX,Y: 439.00, 532.00
+rounded : 439, 532
+[INFO] 2015-06-02 16:37:43,255 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:43,269 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063269 nano time: 209015082560212 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.64
+fitted getX,Y: 439.00, 510.00
+rounded : 439, 510
+[INFO] 2015-06-02 16:37:43,271 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:43,286 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063286 nano time: 209015099170821 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.62
+fitted getX,Y: 439.00, 495.00
+rounded : 439, 495
+[INFO] 2015-06-02 16:37:43,288 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:43,303 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063303 nano time: 209015115752413 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.61
+fitted getX,Y: 440.00, 484.00
+rounded : 440, 484
+[INFO] 2015-06-02 16:37:43,305 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:43,319 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063319 nano time: 209015131774944 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.60
+fitted getX,Y: 440.00, 477.00
+rounded : 440, 477
+[INFO] 2015-06-02 16:37:43,321 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:43,336 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063336 nano time: 209015149224386 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.60
+fitted getX,Y: 440.00, 476.00
+rounded : 440, 476
+[INFO] 2015-06-02 16:37:43,338 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:43,353 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063353 nano time: 209015165965008 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.60
+fitted getX,Y: 440.00, 476.00
+rounded : 440, 476
+[INFO] 2015-06-02 16:37:43,355 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:43,924 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063924 nano time: 209015737416477 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.61
+fitted getX,Y: 440.00, 488.00
+rounded : 440, 488
+[INFO] 2015-06-02 16:37:43,949 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063949 nano time: 209015762398400 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.61
+fitted getX,Y: 440.00, 488.00
+rounded : 440, 488
+[INFO] 2015-06-02 16:37:43,966 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:43,982 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281063982 nano time: 209015795268976 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.61
+fitted getX,Y: 440.00, 488.00
+rounded : 440, 488
+[INFO] 2015-06-02 16:37:43,985 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,002 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064002 nano time: 209015814792398 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.61
+fitted getX,Y: 440.00, 488.00
+rounded : 440, 488
+[INFO] 2015-06-02 16:37:44,004 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,018 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064018 nano time: 209015831381169 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.61
+fitted getX,Y: 440.00, 488.00
+rounded : 440, 488
+[INFO] 2015-06-02 16:37:44,021 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,035 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064035 nano time: 209015848199244 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.61
+fitted getX,Y: 440.00, 490.00
+rounded : 440, 490
+[INFO] 2015-06-02 16:37:44,038 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,052 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064052 nano time: 209015865561825 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.62
+fitted getX,Y: 440.00, 497.00
+rounded : 440, 497
+[INFO] 2015-06-02 16:37:44,056 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,069 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064069 nano time: 209015881911963 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.63
+fitted getX,Y: 440.00, 505.00
+rounded : 440, 505
+[INFO] 2015-06-02 16:37:44,072 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,085 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064085 nano time: 209015897920592 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.65
+fitted getX,Y: 440.00, 517.00
+rounded : 440, 517
+[INFO] 2015-06-02 16:37:44,088 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,103 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064103 nano time: 209015915875048 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.67
+fitted getX,Y: 440.00, 534.00
+rounded : 440, 534
+[INFO] 2015-06-02 16:37:44,105 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,121 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064121 nano time: 209015933987930 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.70
+fitted getX,Y: 440.00, 557.00
+rounded : 440, 557
+[INFO] 2015-06-02 16:37:44,123 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,137 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064137 nano time: 209015949835293 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.72
+fitted getX,Y: 440.00, 573.00
+rounded : 440, 573
+[INFO] 2015-06-02 16:37:44,140 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,159 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064159 nano time: 209015972206384 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.74
+fitted getX,Y: 440.00, 592.00
+rounded : 440, 592
+[INFO] 2015-06-02 16:37:44,163 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,182 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064182 nano time: 209015995019456 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.76
+fitted getX,Y: 440.00, 609.00
+rounded : 440, 609
+[INFO] 2015-06-02 16:37:44,184 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,200 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064200 nano time: 209016013281377 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.79
+fitted getX,Y: 440.00, 631.00
+rounded : 440, 631
+[INFO] 2015-06-02 16:37:44,204 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,217 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064217 nano time: 209016030017922 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.79
+fitted getX,Y: 440.00, 635.00
+rounded : 440, 635
+[INFO] 2015-06-02 16:37:44,222 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,234 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064234 nano time: 209016047274519 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 638.00
+rounded : 440, 638
+[INFO] 2015-06-02 16:37:44,237 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,251 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064251 nano time: 209016064490017 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 639.00
+rounded : 440, 639
+[INFO] 2015-06-02 16:37:44,255 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,268 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064268 nano time: 209016081052009 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 640.00
+rounded : 440, 640
+[INFO] 2015-06-02 16:37:44,272 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,287 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064287 nano time: 209016100018572 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 640.00
+rounded : 440, 640
+[INFO] 2015-06-02 16:37:44,289 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,302 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064302 nano time: 209016115578416 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 640.00
+rounded : 440, 640
+[INFO] 2015-06-02 16:37:44,306 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,320 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064320 nano time: 209016132700178 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 640.00
+rounded : 440, 640
+[INFO] 2015-06-02 16:37:44,322 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,336 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064336 nano time: 209016149028393 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 640.00
+rounded : 440, 640
+[INFO] 2015-06-02 16:37:44,339 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,354 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064354 nano time: 209016167506266 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 640.00
+rounded : 440, 640
+[INFO] 2015-06-02 16:37:44,357 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,368 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064368 nano time: 209016181593325 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 640.00
+rounded : 440, 640
+[INFO] 2015-06-02 16:37:44,371 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,384 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064384 nano time: 209016197552523 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 640.00
+rounded : 440, 640
+[INFO] 2015-06-02 16:37:44,388 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,402 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064402 nano time: 209016214917246 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 640.00
+rounded : 440, 640
+[INFO] 2015-06-02 16:37:44,405 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,419 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064419 nano time: 209016231683783 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 640.00
+rounded : 440, 640
+[INFO] 2015-06-02 16:37:44,422 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,436 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064436 nano time: 209016248756185 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 640.00
+rounded : 440, 640
+[INFO] 2015-06-02 16:37:44,437 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,452 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064452 nano time: 209016264831654 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 640.00
+rounded : 440, 640
+[INFO] 2015-06-02 16:37:44,453 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,468 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064468 nano time: 209016280676795 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 640.00
+rounded : 440, 640
+[INFO] 2015-06-02 16:37:44,469 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,484 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064484 nano time: 209016297298629 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 640.00
+rounded : 440, 640
+[INFO] 2015-06-02 16:37:44,486 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,502 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064502 nano time: 209016315276820 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 640.00
+rounded : 440, 640
+[INFO] 2015-06-02 16:37:44,504 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,518 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064518 nano time: 209016331505891 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 640.00
+rounded : 440, 640
+[INFO] 2015-06-02 16:37:44,521 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,535 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064535 nano time: 209016348395699 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 640.00
+rounded : 440, 640
+[INFO] 2015-06-02 16:37:44,537 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,552 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064552 nano time: 209016364729500 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 640.00
+rounded : 440, 640
+[INFO] 2015-06-02 16:37:44,554 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,568 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064568 nano time: 209016380662939 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 640.00
+rounded : 440, 640
+[INFO] 2015-06-02 16:37:44,571 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,587 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064587 nano time: 209016399968313 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 640.00
+rounded : 440, 640
+[INFO] 2015-06-02 16:37:44,589 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:44,602 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281064602 nano time: 209016415353248 touch: id: 0
+source: MOUSE
+raw x,y: 0.34, 0.80
+fitted getX,Y: 440.00, 640.00
+rounded : 440, 640
+[INFO] 2015-06-02 16:37:44,608 ltg.evl.uic.poster.widgets.PictureZone touch - TOUCHED PZ: 55518b8132fad24968000001-txtitem
+[INFO] 2015-06-02 16:37:45,041 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281065041 nano time: 209016854389329 touch: id: 0
+source: MOUSE
+raw x,y: 0.33, 0.75
+fitted getX,Y: 426.00, 600.00
+rounded : 426, 600
+[INFO] 2015-06-02 16:37:45,065 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281065065 nano time: 209016878422472 touch: id: 0
+source: MOUSE
+raw x,y: 0.33, 0.75
+fitted getX,Y: 426.00, 599.00
+rounded : 426, 599
+[INFO] 2015-06-02 16:37:45,091 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281065091 nano time: 209016903691114 touch: id: 0
+source: MOUSE
+raw x,y: 0.33, 0.75
+fitted getX,Y: 426.00, 599.00
+rounded : 426, 599
+[INFO] 2015-06-02 16:37:45,107 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281065107 nano time: 209016919743371 touch: id: 0
+source: MOUSE
+raw x,y: 0.33, 0.75
+fitted getX,Y: 426.00, 599.00
+rounded : 426, 599
+[INFO] 2015-06-02 16:37:45,123 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281065123 nano time: 209016936373432 touch: id: 0
+source: MOUSE
+raw x,y: 0.33, 0.75
+fitted getX,Y: 426.00, 599.00
+rounded : 426, 599
+[INFO] 2015-06-02 16:37:46,474 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281066474 nano time: 209018287010783 touch: id: 0
+source: MOUSE
+raw x,y: 0.14, 0.25
+fitted getX,Y: 181.00, 203.00
+rounded : 181, 203
+[INFO] 2015-06-02 16:37:46,485 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281066485 nano time: 209018297930848 touch: id: 0
+source: MOUSE
+raw x,y: 0.14, 0.25
+fitted getX,Y: 181.00, 203.00
+rounded : 181, 203
+[INFO] 2015-06-02 16:37:46,501 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281066501 nano time: 209018314453532 touch: id: 0
+source: MOUSE
+raw x,y: 0.14, 0.25
+fitted getX,Y: 181.00, 203.00
+rounded : 181, 203
+[INFO] 2015-06-02 16:37:46,518 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281066518 nano time: 209018331215457 touch: id: 0
+source: MOUSE
+raw x,y: 0.14, 0.25
+fitted getX,Y: 181.00, 203.00
+rounded : 181, 203
+[INFO] 2015-06-02 16:37:46,535 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281066535 nano time: 209018348122446 touch: id: 0
+source: MOUSE
+raw x,y: 0.14, 0.25
+fitted getX,Y: 181.00, 203.00
+rounded : 181, 203
+[INFO] 2015-06-02 16:37:46,552 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281066552 nano time: 209018365385495 touch: id: 0
+source: MOUSE
+raw x,y: 0.14, 0.25
+fitted getX,Y: 181.00, 203.00
+rounded : 181, 203
+[INFO] 2015-06-02 16:37:46,568 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281066568 nano time: 209018380702581 touch: id: 0
+source: MOUSE
+raw x,y: 0.14, 0.25
+fitted getX,Y: 181.00, 203.00
+rounded : 181, 203
+[INFO] 2015-06-02 16:37:46,585 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281066585 nano time: 209018398256227 touch: id: 0
+source: MOUSE
+raw x,y: 0.14, 0.25
+fitted getX,Y: 181.00, 203.00
+rounded : 181, 203
+[INFO] 2015-06-02 16:37:47,456 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281067455 nano time: 209019268593693 touch: id: 0
+source: MOUSE
+raw x,y: 0.14, 0.25
+fitted getX,Y: 181.00, 203.00
+rounded : 181, 203
+[INFO] 2015-06-02 16:37:47,468 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281067468 nano time: 209019280789769 touch: id: 0
+source: MOUSE
+raw x,y: 0.14, 0.25
+fitted getX,Y: 181.00, 203.00
+rounded : 181, 203
+[INFO] 2015-06-02 16:37:47,484 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281067484 nano time: 209019296890602 touch: id: 0
+source: MOUSE
+raw x,y: 0.14, 0.25
+fitted getX,Y: 181.00, 203.00
+rounded : 181, 203
+[INFO] 2015-06-02 16:37:47,501 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281067501 nano time: 209019314008456 touch: id: 0
+source: MOUSE
+raw x,y: 0.14, 0.25
+fitted getX,Y: 181.00, 203.00
+rounded : 181, 203
+[INFO] 2015-06-02 16:37:47,518 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281067518 nano time: 209019331017312 touch: id: 0
+source: MOUSE
+raw x,y: 0.14, 0.25
+fitted getX,Y: 181.00, 203.00
+rounded : 181, 203
+[INFO] 2015-06-02 16:37:47,534 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281067534 nano time: 209019346705159 touch: id: 0
+source: MOUSE
+raw x,y: 0.14, 0.25
+fitted getX,Y: 181.00, 203.00
+rounded : 181, 203
+[INFO] 2015-06-02 16:37:51,691 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281071691 nano time: 209023503621972 touch: id: 0
+source: MOUSE
+raw x,y: 0.12, 0.13
+fitted getX,Y: 153.00, 102.00
+rounded : 153, 102
+[INFO] 2015-06-02 16:37:51,702 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281071702 nano time: 209023515144261 touch: id: 0
+source: MOUSE
+raw x,y: 0.12, 0.13
+fitted getX,Y: 153.00, 102.00
+rounded : 153, 102
+[INFO] 2015-06-02 16:37:51,718 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281071718 nano time: 209023530687791 touch: id: 0
+source: MOUSE
+raw x,y: 0.12, 0.13
+fitted getX,Y: 153.00, 102.00
+rounded : 153, 102
+[INFO] 2015-06-02 16:37:51,735 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281071735 nano time: 209023548220752 touch: id: 0
+source: MOUSE
+raw x,y: 0.12, 0.13
+fitted getX,Y: 153.00, 102.00
+rounded : 153, 102
+[INFO] 2015-06-02 16:37:51,751 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281071751 nano time: 209023564341193 touch: id: 0
+source: MOUSE
+raw x,y: 0.12, 0.13
+fitted getX,Y: 153.00, 102.00
+rounded : 153, 102
+[INFO] 2015-06-02 16:37:51,768 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281071768 nano time: 209023580956555 touch: id: 0
+source: MOUSE
+raw x,y: 0.12, 0.13
+fitted getX,Y: 153.00, 102.00
+rounded : 153, 102
+[INFO] 2015-06-02 16:37:51,784 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281071784 nano time: 209023597488993 touch: id: 0
+source: MOUSE
+raw x,y: 0.12, 0.13
+fitted getX,Y: 153.00, 102.00
+rounded : 153, 102
+[INFO] 2015-06-02 16:37:53,009 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281073009 nano time: 209024822355856 touch: id: 0
+source: MOUSE
+raw x,y: 0.56, 0.53
+fitted getX,Y: 714.00, 421.00
+rounded : 714, 421
+[INFO] 2015-06-02 16:37:53,033 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281073033 nano time: 209024846533236 touch: id: 0
+source: MOUSE
+raw x,y: 0.56, 0.53
+fitted getX,Y: 714.00, 421.00
+rounded : 714, 421
+[INFO] 2015-06-02 16:37:53,050 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281073050 nano time: 209024863004159 touch: id: 0
+source: MOUSE
+raw x,y: 0.56, 0.53
+fitted getX,Y: 714.00, 421.00
+rounded : 714, 421
+[INFO] 2015-06-02 16:37:53,067 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281073067 nano time: 209024879953891 touch: id: 0
+source: MOUSE
+raw x,y: 0.56, 0.53
+fitted getX,Y: 714.00, 421.00
+rounded : 714, 421
+[INFO] 2015-06-02 16:37:53,084 ltg.evl.uic.poster.PosterMain logTouches - current time: 1433281073084 nano time: 209024896828842 touch: id: 0
+source: MOUSE
+raw x,y: 0.56, 0.53
+fitted getX,Y: 714.00, 421.00
+rounded : 714, 421
+[INFO] 2015-06-02 16:37:53,114 ltg.evl.uic.poster.util.collections.PictureZoneToPosterItem apply - MOD PosterItem: {
+  "_id": {
+    "$oid": "55518b85e1b8325b25000fec"
+  },
+  "content": "\nBt\nh\nt\nT\nH\ntn\nth\n\nnTH\ntnt\n",
+  "height": 35,
+  "hn": 0.03875,
+  "lastEdited": 1433280457794,
+  "type": "txt",
+  "uuid": "55518b8132fad24968000001-txtitem",
+  "width": 600,
+  "wn": 0.42890625,
+  "x": 1,
+  "xn": 0.25078125,
+  "y": 1,
+  "yn": 0.7475
+}
+[INFO] 2015-06-02 16:37:53,154 ltg.evl.uic.poster.util.collections.PictureZoneToPosterItem apply - MOD PosterItem: {
+  "_id": {
+    "$oid": "556e0b13e1b8325b25001387"
+  },
+  "content": "Trying a video...AGAIN",
+  "height": 35,
+  "hn": 0.02125,
+  "lastEdited": 1433280457822,
+  "type": "txt",
+  "uuid": "556e0b13e1b8325b25001387",
+  "width": 600,
+  "wn": 0.234375,
+  "x": 327,
+  "xn": 0.07421875,
+  "y": 213,
+  "yn": 0.6375,
+  "created_at": "2015-06-02T19:59:15.911Z"
+}
+[INFO] 2015-06-02 16:37:53,171 ltg.evl.uic.poster.util.collections.PictureZoneToPosterItem apply - MOD PosterItem: {
+  "_id": {
+    "$oid": "556de909e1b8325b25001360"
+  },
+  "content": "This is a video, I made dis!",
+  "height": 35,
+  "hn": 0.02125,
+  "lastEdited": 1433280457816,
+  "type": "txt",
+  "uuid": "556de909e1b8325b25001360",
+  "width": 600,
+  "wn": 0.234375,
+  "x": 339,
+  "xn": 0.4234375,
+  "y": 307,
+  "yn": 0.62625,
+  "created_at": "2015-06-02T17:34:02.152Z"
+}
+[INFO] 2015-06-02 16:37:53,322 ltg.evl.uic.poster.json.mongo.PosterDataModel onSuccess - PATCHING POSTER ITEMS SUCCESS
+[INFO] 2015-06-02 16:37:53,323 ltg.evl.uic.poster.util.RESTHelper getAllCollectionRequests - STARTING ALL COLLECTIONS FETCH
+[INFO] 2015-06-02 16:37:53,625 ltg.evl.uic.poster.util.RESTHelper onSuccess - STARTING ALL REST DONE START INIT
+[INFO] 2015-06-02 16:37:53,626 ltg.evl.uic.poster.util.RESTHelper parseAllResponse - PROCESSING USER RESPONSE
+[INFO] 2015-06-02 16:37:53,642 ltg.evl.uic.poster.util.RESTHelper parseAllResponse - PROCESSING POSTER RESPONSE
+[INFO] 2015-06-02 16:37:53,658 ltg.evl.uic.poster.util.RESTHelper parseAllResponse - PROCESSING POSTER_ITEM RESPONSE
+[INFO] 2015-06-02 16:37:53,811 ltg.evl.uic.poster.json.mongo.PosterDataModel updateAllPosterItemsCollection - UPDATING ALL POSTER_ITEMS found DUP: not set yet
+[INFO] 2015-06-02 16:37:53,826 ltg.evl.uic.poster.json.mongo.PosterDataModel updateAllPosterItemsCollection - UPDATING ALL POSTER_ITEMS found DUP: not set yet
