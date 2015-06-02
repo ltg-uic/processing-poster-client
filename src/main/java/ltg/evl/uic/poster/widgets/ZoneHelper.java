@@ -53,6 +53,8 @@ public class ZoneHelper {
     public static final int REFRESH_BUTTON_WIDTH = 100;
     public static final int CONTROL_BUTTON_FONT_SIZE = 34;
     public static PImage deleteImage;
+    public static PImage playImage;
+    public static PImage stopImage;
     public static PFont helveticaNeue18Font;
     public static PFont helveticaNeue48Font;
     public static Font helveticaNeue20JavaFont = new Font("HelveticaNeue", Font.BOLD, 20);
@@ -96,6 +98,8 @@ public class ZoneHelper {
         helveticaNeue18Font = SMT.getApplet().createFont("HelveticaNeue", 18);
         helveticaNeue48Font = SMT.getApplet().createFont("HelveticaNeue", 48);
         deleteImage = SMT.getApplet().loadImage("delete_button_transparent.png");
+        playImage = SMT.getApplet().loadImage("play_button_transparent.png");
+        stopImage = SMT.getApplet().loadImage("stop_button_transparent.png");
         //scaleImage = SMT.getApplet().loadImage("scale_button_transparent.png");
         refreshImage = SMT.getApplet().loadImage("refresh_button_transparent.png");
     }

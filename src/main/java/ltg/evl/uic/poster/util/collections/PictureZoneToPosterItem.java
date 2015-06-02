@@ -29,7 +29,6 @@ public class PictureZoneToPosterItem implements Function<PictureZone, PosterItem
         PosterItem modPosteritem = null;
         if (pictureZoneOptional.isPresent()) {
 
-
             Optional<PosterItem> posterItemOptional = Optional.fromNullable(
                     PosterDataModel.helper().findPosterItemWithPosterItemUuid(pictureZone.getName()));
 

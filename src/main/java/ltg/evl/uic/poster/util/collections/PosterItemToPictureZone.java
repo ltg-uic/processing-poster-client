@@ -13,13 +13,16 @@ import ltg.evl.uic.poster.widgets.ZoneHelper;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import processing.core.PImage;
+import tmp.VideoZone;
 import vialab.SMT.SMT;
 
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import static ltg.evl.uic.poster.json.mongo.PosterItem.IMAGE;
 import static ltg.evl.uic.poster.json.mongo.PosterItem.TEXT;
+import static ltg.evl.uic.poster.json.mongo.PosterItem.VIDEO;
 
 /**
  * Created by aperritano on 2/20/15.
@@ -38,8 +41,10 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
     public PictureZone apply(PosterItem posterItem) {
         //logger.log(Level.INFO, "New PosterItem: " + posterItem);
 
-        PictureZone pictureZone;
+        String newUrl;
+        VideoZone videoZone;
         PImage pImage = null;
+        PictureZone pictureZone = null;
 
         if (Optional.fromNullable(posterItem).isPresent()) {
             if (!Strings.isNullOrEmpty(posterItem.getType())) {
@@ -49,7 +54,7 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                             try {
 
                                 if (posterItem.getContent().contains("https")) {
-                                    String newUrl = StringUtils.replace(posterItem.getContent(), "https", "http");
+                                    newUrl = StringUtils.replace(posterItem.getContent(), "https", "http");
                                     pImage = ImageLoader.downloadImage(newUrl);
                                 } else {
                                     pImage = ImageLoader.downloadImage(posterItem.getContent());
@@ -64,8 +69,15 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                             pImage = ImageLoader.textToImage(posterItem.getContent());
                         }
                         break;
-                }
+                    case VIDEO:
+                        if (posterItem.getContent() != null) {
+                            if (posterItem.getContent().contains("https")) {
+                                newUrl = StringUtils.replace(posterItem.getContent(), "https", "http");
 
+                            }
+                        }
+                        break;
+                }
 
                 if (posterItem.getHeight() == 0 && posterItem.getWidth() == 0) {
                     if (pImage != null) {
@@ -98,25 +110,17 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                 // Print information to track whats going on
                 //printDebugInfo(posterItem, new_x, new_y, new_w, new_h);
 
-//                pictureZone = new PictureZoneBuilder().setImage(pImage)
-//                                                      .setUuid(Strings.nullToEmpty(posterItem.getUuid()))
-////                                                      .setX(new_x)
-////                                                      .setY(new_y)
-////                                                      .setWidth(new_w)
-////                                                      .setHeight(new_h)
-////                                                      .setRotation(posterItem.getRotation())
-////                                                      .setScale(posterItem.getScale())
-////                                                      .setZoneName(Strings.nullToEmpty(posterItem.getName()))
-//                                                      .setType(posterItem.getType())
-//                                                      .createPictureZone();
+                if (!Objects.equals(posterItem.getType(), VIDEO)) {
 
-                pictureZone = new PictureZone(pImage, Strings.nullToEmpty(posterItem.getUuid()), new_x, new_y, new_w,
-                                              new_h);
-
-                if (SMT.add(pictureZone)) {
-                    pictureZone.setLocation(new_x, new_y);
-                    pictureZone.setSize(new_w, new_h);
+                    pictureZone = new PictureZone(pImage, Strings.nullToEmpty(posterItem.getUuid()), new_x, new_y, new_w, new_h);
+                    if (SMT.add(pictureZone)) {
+                        pictureZone.setLocation(new_x, new_y);
+                        pictureZone.setSize(new_w, new_h);
+                    }
+                } else {
+                    videoZone = new VideoZone(null, Strings.nullToEmpty(posterItem.getUuid()), new_x, new_y, new_w, new_h);
                 }
+
 
 
             } else {

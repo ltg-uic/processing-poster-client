@@ -30,13 +30,15 @@ import vialab.SMT.Touch;
 import vialab.SMT.TouchSource;
 import vialab.SMT.Zone;
 
-import java.io.IOException;
+import java.lang.Runtime;
+//import java.io.IOException;
+import java.io.*;
 import java.util.Collection;
+
 
 import static org.apache.commons.lang.WordUtils.capitalize;
 
 public class PosterMain extends PApplet implements LoginCollectionListener {
-
 
     private static Logger logger;
     private boolean lastIsEditToggle = false;
@@ -47,7 +49,6 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
 
         logger.setLevel(Level.ALL);
         MQTTPipe.getInstance();
-
 
         String[] appletArgs = new String[]{"ltg.evl.uic.poster.PosterMain"};
         if (args != null) {
@@ -475,6 +476,4 @@ public class PosterMain extends PApplet implements LoginCollectionListener {
             }
         }
     }
-
-
 }
