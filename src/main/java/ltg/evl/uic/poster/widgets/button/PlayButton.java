@@ -29,6 +29,15 @@ public class PlayButton extends ImageZone {
         super(uuid, image, x, y, width, height);
         this.videoURL = url;
         isPlaying = false;
+        System.out.println("Making a PlayButton!");
+    }
+
+    @Override
+    public void draw() {
+        smooth();
+        fill(outline);
+        rect(0, 0, getWidth(), getHeight(), 10);
+        image(this.getZoneImage(), 0, 0, this.getWidth(), this.getHeight());
     }
 
     @Override

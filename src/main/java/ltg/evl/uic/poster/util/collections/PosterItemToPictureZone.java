@@ -32,8 +32,7 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
     final static Logger logger = Logger.getLogger(PosterItemToPictureZone.class);
     private final boolean isEditing;
 
-    public PosterItemToPictureZone(
-            boolean lastIsEditToggle) {
+    public PosterItemToPictureZone( boolean lastIsEditToggle) {
         this.isEditing = lastIsEditToggle;
     }
 
@@ -41,15 +40,16 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
     public PictureZone apply(PosterItem posterItem) {
         //logger.log(Level.INFO, "New PosterItem: " + posterItem);
 
-        String newUrl;
-        VideoZone videoZone;
+        String newUrl = "";
         PImage pImage = null;
         PictureZone pictureZone = null;
+        VideoZone videoZone = null;
 
         if (Optional.fromNullable(posterItem).isPresent()) {
             if (!Strings.isNullOrEmpty(posterItem.getType())) {
                 switch (posterItem.getType()) {
                     case IMAGE:
+                        System.out.println("We got a Image! ");
                         if (posterItem.getContent() != null) {
                             try {
 
@@ -67,14 +67,18 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                     case TEXT:
                         if (posterItem.getContent() != null) {
                             pImage = ImageLoader.textToImage(posterItem.getContent());
+                            System.out.println("We got a text! ");
                         }
                         break;
                     case VIDEO:
+                        System.out.print("We got a video! -> ");
                         if (posterItem.getContent() != null) {
                             if (posterItem.getContent().contains("https")) {
                                 newUrl = StringUtils.replace(posterItem.getContent(), "https", "http");
-
+                            } else if (posterItem.getContent().contains("http")) {
+                                newUrl = posterItem.getContent();
                             }
+                            System.out.println(newUrl);
                         }
                         break;
                 }
@@ -83,14 +87,18 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                     if (pImage != null) {
                         posterItem.setWidth(pImage.width);
                         posterItem.setHeight(pImage.height);
+                    } else {
+                        posterItem.setWidth(250);
+                        posterItem.setHeight(250);
                     }
+
                 }
 
-                if (posterItem.getY() < 0) {
+                if (posterItem.getY() <= 0) {
                     posterItem.setY(ZoneHelper.random(200, 500));
                 }
 
-                if (posterItem.getX() < 0) {
+                if (posterItem.getX() <= 0) {
                     posterItem.setX(ZoneHelper.random(200, 500));
                 }
 
@@ -111,22 +119,21 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                 //printDebugInfo(posterItem, new_x, new_y, new_w, new_h);
 
                 if (!Objects.equals(posterItem.getType(), VIDEO)) {
-
+                    System.out.println("Not video, but existing picture...");
                     pictureZone = new PictureZone(pImage, Strings.nullToEmpty(posterItem.getUuid()), new_x, new_y, new_w, new_h);
                     if (SMT.add(pictureZone)) {
                         pictureZone.setLocation(new_x, new_y);
                         pictureZone.setSize(new_w, new_h);
                     }
                 } else {
-                    videoZone = new VideoZone(null, Strings.nullToEmpty(posterItem.getUuid()), new_x, new_y, new_w, new_h);
+                    System.out.println("It IS a Video, make it happen...");
+                    PImage _image = new PImage(new_w, new_h);
+                    pictureZone = new VideoZone(_image, newUrl, Strings.nullToEmpty(posterItem.getUuid()), new_x, new_y, new_w, new_h);
+                    printDebugInfo(posterItem,new_x, new_y, new_w, new_h);
                 }
-
-
-
             } else {
-
                 String uuid = UUID.randomUUID().toString();
-
+                System.out.println("posterItem.getType() is NUll" + posterItem.getUuid());
 
                 pictureZone = new PictureZoneBuilder().setUuid(uuid)
                                                       .setX(ZoneHelper.random(0, 500))
@@ -138,7 +145,6 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                                                       .setZoneName(uuid)
                                                       .setType("txt")
                                                       .createPictureZone();
-
             }
 
 
@@ -146,9 +152,6 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
 //            System.out.println("POSTER ID: " + posterItem.getCited_from_poster_uuid());
 //            System.out.println("USER ID: " + posterItem.getCited_from_user_uuid());
 //            System.out.println("ACTUCAL" + posterItem.getUuid());
-
-            //green cite
-
 
             if (posterItem.getCited_from_user_uuid() != null || StringUtils.stripToNull(
                     posterItem.getCited_from_poster_item_uuid()) != null) {

@@ -69,7 +69,6 @@ public class PictureZoneBuilder {
 
     public PictureZone createPictureZone() {
 
-
         return new PictureZone(image, uuid, x, y, width, height);
     }
 

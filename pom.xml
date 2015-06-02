@@ -111,7 +111,6 @@
         <!--<version>1.6</version>-->
         <!--</dependency>-->
 
-
         <dependency>
             <groupId>org.jbox2d</groupId>
             <artifactId>jbox2d-testbed</artifactId>

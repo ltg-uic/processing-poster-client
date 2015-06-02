@@ -159,7 +159,7 @@ public class PictureZone extends PosterImageZone implements DeleteButtonListener
                 strokeWeight(2);
                 smooth();
                 rect(0, 0, this.getWidth(), this.getHeight());
-    }
+            }
 
             if (this.getZoneImage() != null) {
                 image(this.getZoneImage(), 0, 0, this.getWidth(),
