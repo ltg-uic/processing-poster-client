@@ -27,16 +27,16 @@ public class PlayButton extends ImageZone {
 
     public PlayButton(PImage image, String url, String uuid, int x, int y, int width, int height) {
         super(uuid, image, x, y, width, height);
-        this.videoURL = url;
+        setVideoURL(url);
         isPlaying = false;
         System.out.println("Making a PlayButton!");
     }
 
     @Override
-    public void draw() {
+    public void drawImpl() {
         smooth();
         fill(outline);
-        rect(0, 0, getWidth(), getHeight(), 10);
+        rect(0, 0, getWidth(), getHeight());
         image(this.getZoneImage(), 0, 0, this.getWidth(), this.getHeight());
     }
 
@@ -54,7 +54,8 @@ public class PlayButton extends ImageZone {
     public void touchUp(Touch touch) {
         if (isPlaying) {
             System.out.println("Kill the process");
-            process.destroy();
+            process.destroyForcibly();
+            System.out.println(process);
             this.setZoneImage(ZoneHelper.playImage);
         } else {
             this.playVideoAction();
@@ -66,14 +67,22 @@ public class PlayButton extends ImageZone {
 
     public void playVideoAction() {
         System.out.println("Playing a Video!");
-        ProcessBuilder pb = new ProcessBuilder("open", "-a", "Quicktime Player", this.videoURL);
+        ProcessBuilder pb = new ProcessBuilder("open", "-a", "Quicktime Player", getVideoURL());
         try {
             process = pb.start();
+            System.out.println(process);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    public void setVideoURL(String url) {
+        this.videoURL = url;
+    }
+
+    public String getVideoURL() {
+        return this.videoURL;
+    }
 //
 //    @Override
 //    public void draw() {
