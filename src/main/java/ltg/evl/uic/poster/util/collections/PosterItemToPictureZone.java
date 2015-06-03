@@ -72,6 +72,7 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                     case VIDEO:
                         System.out.print("We got a video! -> ");
                         if (posterItem.getContent() != null) {
+                            pImage = ZoneHelper.playImage;
                             if (posterItem.getContent().contains("https")) {
                                 newUrl = StringUtils.replace(posterItem.getContent(), "https", "http");
                             } else if (posterItem.getContent().contains("http")) {
@@ -120,21 +121,24 @@ public class PosterItemToPictureZone implements Function<PosterItem, PictureZone
                 if (!Objects.equals(posterItem.getType(), VIDEO)) {
                     System.out.println("Not video, but existing picture...");
                     pictureZone =  new PictureZone(pImage,  Strings.nullToEmpty(posterItem.getUuid()), new_x, new_y, new_w, new_h);
+                    if (SMT.add(pictureZone)) {
+                        pictureZone.setLocation(new_x, new_y);
+                        pictureZone.setSize(new_w, new_h);
+                    }
                 } else {
                     System.out.println("It IS a Video, make it happen...");
-                    PImage _image = new PImage(new_w, new_h);
-                    pictureZone = new VideoZone(_image, newUrl, Strings.nullToEmpty(posterItem.getUuid()), new_x, new_y, new_w, new_h);
-                    printDebugInfo(posterItem,new_x, new_y, new_w, new_h);
-                }
-                if (SMT.add(pictureZone)) {
-                    pictureZone.setLocation(new_x, new_y);
-                    pictureZone.setSize(new_w, new_h);
+                    pictureZone = new VideoZone(pImage, newUrl, Strings.nullToEmpty(posterItem.getUuid()), new_x, new_y, new_w/2, new_h/2);
+                    printDebugInfo(posterItem, new_w, new_h, new_w / 2, new_h / 2);
+                    if (SMT.add(pictureZone)) {
+                        pictureZone.setLocation(new_x, new_y);
+                        pictureZone.setSize(new_w/2, new_h/2);
+                    }
                 }
             } else {
                 String uuid = UUID.randomUUID().toString();
                 System.out.println("posterItem.getType() is NUll" + posterItem.getUuid());
 
-                pictureZone = (VideoZone) new PictureZoneBuilder().setUuid(uuid)
+                pictureZone = new PictureZoneBuilder().setUuid(uuid)
                                                       .setX(ZoneHelper.random(0, 500))
                                                       .setY(ZoneHelper.random(0, 500))
                                                       .setWidth(200)
