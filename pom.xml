@@ -6,7 +6,7 @@
 
     <groupId>ltg</groupId>
     <artifactId>processing-poster-client</artifactId>
-    <version>2.2-SNAPSHOT</version>
+    <version>2.3-SNAPSHOT</version>
 
 
     <build>
