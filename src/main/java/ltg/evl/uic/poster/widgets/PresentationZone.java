@@ -139,44 +139,18 @@ public class PresentationZone extends Zone {
     public void presentVideoZone(PImage pImage, String posterItemUuid, int x, int y) {
 
         this.color = ZoneHelper.whiteOutline;
-//        Dimension scaledDimension = ZoneHelper.resizeImage(pImage, this.getWidth(), this.getHeight());
-//        Dimension scaledDimension = ZoneHelper.resizeImageKRA(pImage, this.getWidth(), this.getHeight());
 
-//        int x2 = (int) (PresentationZone.this.getHalfSize().getWidth() - (scaledDimension.getWidth() / 2));
-//        int y2 = (int) (PresentationZone.this.getHalfSize().getHeight() - (scaledDimension.getHeight() / 2));
-//
-//        pImage.resize((int) scaledDimension.getWidth(), (int) scaledDimension.getHeight());
-
-        ImageZone imageZone = new ImageZone(pImage, x, y, pImage.width, pImage.height) {
-
-            int initY = PresentationZone.this.getHeight();
-
-            @Override
-            public void touch() {
-                rst(false, false, false);
-            }
-
-            @Override
-            public void touchUp(Touch touch) {
-                SMT.remove(PresentationZone.this);
-            }
-        };
-
-        //add share button
-
-        int size = 100;
-
-        int xa = this.getWidth() - (size * 2);
-        ShareButton shareButton = new ShareButton("addme", 45, 27);
+        int xa = this.getWidth();
+        ShareButton shareButton = new ShareButton("addme", 125, 75);
         shareButton.initButton();
         shareButton.setPosterItemUuid(posterItemUuid);
         shareButton.setVisible(true);
 
 
 
-        this.add(imageZone);
+//        this.add(imageZone);
         this.add(shareButton);
-        shareButton.translate(xa, 50);
+        shareButton.translate(xa, this.getHeight());
         //imageZone.putChildOnTop(shareButton);
     }
 

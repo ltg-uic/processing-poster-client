@@ -7,6 +7,7 @@ import processing.core.PImage;
 import vialab.SMT.SMT;
 import vialab.SMT.Touch;
 import com.google.common.io.Resources;
+import processing.core.PImage;
 
 import java.io.IOException;
 
@@ -16,6 +17,7 @@ import java.io.IOException;
 public class VideoZone extends PictureZone {
     private String videoURL;
     private boolean isPlaying;
+    private PImage currentImage;
 
     public VideoZone(PImage image, String url, String uuid, int x, int y, int width, int height) {
         super(image, uuid, x, y, width/2, height/2);
@@ -23,6 +25,7 @@ public class VideoZone extends PictureZone {
         System.out.println("kosher w/h: " + this.getWidth() + " " + this.getHeight());
         setVideoURL(url);
         isPlaying = false;
+        currentImage = image;
         super.init();
     }
 
@@ -75,18 +78,30 @@ public class VideoZone extends PictureZone {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            this.setZoneImage(ZoneHelper.playImage);
+            currentImage = ZoneHelper.playImage;
+            this.setZoneImage(currentImage);
         } else {
             this.playVideoAction();
-            this.setZoneImage(ZoneHelper.stopImage);
+            currentImage = ZoneHelper.stopImage;
+            this.setZoneImage(currentImage);
         }
         isPlaying = !isPlaying;
     }
 
     @Override
     public void touchDown(Touch touch) {
+        if (!isEditing()){
 //        super.touchDown(touch);
-        System.out.println("PictureZone.touchDown name: " + getName());
+            PresentationZone presentationZone =
+                    new PresentationZone(this.getName() + "-P", getX(), getY(), getWidth(), getHeight());
+            presentationZone.setBgAlpha(0);
+            //
+            SMT.add(presentationZone);
+//            presentationZone.fade(1f, 0f, 255, false);
+            presentationZone.presentVideoZone(currentImage, this.getName(), getX(), getY());
+        }
+
+        System.out.println("VideoZone.touchDown name: " + getName());
     }
 
     public void playVideoAction() {
