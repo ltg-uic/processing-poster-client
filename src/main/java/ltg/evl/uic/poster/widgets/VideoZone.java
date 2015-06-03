@@ -85,7 +85,7 @@ public class VideoZone extends PictureZone {
 
     @Override
     public void touchDown(Touch touch) {
-        super.touchDown(touch);
+//        super.touchDown(touch);
         System.out.println("PictureZone.touchDown name: " + getName());
     }
 
